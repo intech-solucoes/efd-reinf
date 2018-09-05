@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <Version>0.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,6 +13,7 @@
     <PackageReference Include="Dapper.Contrib" Version="1.50.5" />
     <PackageReference Include="MailKit" Version="2.0.6" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
     <PackageReference Include="Oracle.ManagedDataAccess" Version="12.2.1100" />
   </ItemGroup>
 

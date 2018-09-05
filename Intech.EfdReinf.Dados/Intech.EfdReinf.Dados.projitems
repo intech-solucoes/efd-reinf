@@ -16,5 +16,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)Scripts\Usuario\BuscarPorEmail.sql" />
+    <None Include="$(MSBuildThisFileDirectory)Scripts\Usuario\BuscarPorToken.sql" />
   </ItemGroup>
 </Project>

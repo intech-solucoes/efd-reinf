@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Intech.EfdReinf.Entidades;
 using Intech.EfdReinf.Negocio.Proxy;
+using Intech.Lib.Dominios;
 using Intech.Lib.Util.Seguranca;
+using Intech.Lib.Web;
 using Intech.Lib.Web.JWT;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -70,6 +72,35 @@ namespace Intech.EfdReinf.API.Controllers
                 var usuarioNovo = proxyUsuario.BuscarPorChave(oidUsuarioNovo);
 
                 return Json(usuarioNovo);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("confirmarEmail/{token}")]
+        public ActionResult ConfirmarEmail(string token)
+        {
+            try
+            {
+                var proxyUsuario = new UsuarioProxy();
+                var usuario = proxyUsuario.BuscarPorToken(token);
+
+                if (usuario == null)
+                    return BadRequest("Token inválido!");
+
+                usuario.IND_EMAIL_VERIFICADO = DMN_SN.SIM;
+
+                proxyUsuario.Atualizar(usuario);
+
+                var config = AppSettings.Get();
+
+                return new ContentResult()
+                {
+                    Content = $"E-mail confirmado com sucesso! Clique <a href=\"{config.PublicacaoPortal}\">aqui</a> para ir para o Portal.",
+                    ContentType = "text/html",
+                };
             }
             catch (Exception ex)
             {

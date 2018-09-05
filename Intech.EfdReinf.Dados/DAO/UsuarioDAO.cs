@@ -30,5 +30,22 @@ namespace Intech.EfdReinf.Dados.DAO
 			}
 		}
 
+		public virtual UsuarioEntidade BuscarPorToken(string TXT_TOKEN)
+		{
+			try
+			{
+				if(AppSettings.IS_SQL_SERVER_PROVIDER)
+					return Conexao.QuerySingleOrDefault<UsuarioEntidade>("SELECT * FROM EFD_USUARIO WHERE TXT_TOKEN = @TXT_TOKEN", new { TXT_TOKEN });
+				else if(AppSettings.IS_ORACLE_PROVIDER)
+					return Conexao.QuerySingleOrDefault<UsuarioEntidade>("SELECT * FROM EFD_USUARIO WHERE TXT_TOKEN=:TXT_TOKEN", new { TXT_TOKEN });
+				else
+					throw new Exception("Provider não suportado!");
+			}
+			finally
+			{
+				Conexao.Close();
+			}
+		}
+
     }
 }

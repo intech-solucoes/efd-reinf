@@ -1,8 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import registerServiceWorker from './registerServiceWorker';
+import MasterPageLogin from './MasterPageLogin';
 
-ReactDOM.render(<App />, document.getElementById('root'));
-registerServiceWorker();
+ReactDOM.render(<MasterPageLogin />, document.getElementById('root'));

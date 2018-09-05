@@ -1,7 +1,9 @@
 using Intech.EfdReinf.Dados.DAO;
 using Intech.EfdReinf.Entidades;
 using Intech.Lib.Dominios;
+using Intech.Lib.Util.Email;
 using Intech.Lib.Util.Seguranca;
+using Intech.Lib.Web;
 using System;
 
 namespace Intech.EfdReinf.Negocio.Proxy
@@ -24,7 +26,24 @@ namespace Intech.EfdReinf.Negocio.Proxy
 
             // TODO: Implementar tentativas
             if (usuario.PWD_USUARIO != senhaEncriptada)
+            {
+                usuario.NUM_TENTATIVA++;
+
+                Atualizar(usuario);
+
+                if (usuario.NUM_TENTATIVA >= 5)
+                {
+                    usuario.IND_BLOQUEADO = DMN_SN.SIM;
+                    Atualizar(usuario);
+                    throw new Exception("Número de tentativas de acesso esgotado. O usuário está bloqueado. Favor entrar em contato com a Intech");
+                }
+
                 throw new Exception("Credenciais Inválidas");
+            }
+
+            usuario.NUM_TENTATIVA = 0;
+
+            Atualizar(usuario);
 
             return usuario;
         }
@@ -32,6 +51,9 @@ namespace Intech.EfdReinf.Negocio.Proxy
         public override long Inserir(UsuarioEntidade usuario)
         {
             usuario.PWD_USUARIO = Criptografia.Encriptar(usuario.PWD_USUARIO);
+            usuario.COD_CPF = usuario.COD_CPF.LimparMascara();
+            usuario.COD_TELEFONE_CEL = usuario.COD_TELEFONE_CEL.LimparMascara();
+            usuario.COD_TELEFONE_FIXO = usuario.COD_TELEFONE_FIXO.LimparMascara();
 
             return base.Inserir(usuario);
         }
@@ -45,7 +67,18 @@ namespace Intech.EfdReinf.Negocio.Proxy
             usuario.IND_EMAIL_VERIFICADO = DMN_SN.NAO;
             usuario.NUM_TENTATIVA = 0;
 
+            // Todo: gerar token
+            usuario.TXT_TOKEN = Guid.NewGuid().ToString();
+
             decimal oidUsuario = Inserir(usuario);
+
+            // Envia e-mail com nova senha de acesso
+            var config = AppSettings.Get();
+
+            var textoEmail = $"<h2>Bem-Vindo ao Intech EFD-Reinf</h2>" +
+                $"Para confirmar seu cadastro, clique no link a seguir: <a href=\"{config.PublicacaoAPI}/usuario/confirmarEmail/{usuario.TXT_TOKEN}\">Confirmar e-mail</a>";
+
+            EnvioEmail.EnviarMailKit(config.Email, usuario.TXT_EMAIL, $"EFD-Reinf - Confirmação de Cadastro", textoEmail);
 
             return oidUsuario;
         }

@@ -29,6 +29,7 @@ namespace Intech.EfdReinf.API
         public void ConfigureServices(IServiceCollection services)
         {
             services
+                .AddCors()
                 .AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                 .AddJsonOptions(jsonOptions => {
@@ -93,15 +94,15 @@ namespace Intech.EfdReinf.API
                 app.UseHsts();
             }
 
-            //app.UseHttpsRedirection();
-            app.UseMvc();
-
             app.UseCors(cors =>
             {
                 cors.AllowAnyHeader();
                 cors.AllowAnyOrigin();
                 cors.AllowAnyMethod();
             });
+
+            //app.UseHttpsRedirection();
+            app.UseMvc();
         }
     }
 }
