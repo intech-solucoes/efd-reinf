@@ -1,0 +1,15 @@
+﻿{
+    "UK": {
+        "MensagemBase": "Já existe um registro com o campo {0} cadastrado.",
+        "Itens": [
+            {
+                "Key": "EFD_USUARIO_UK01",
+                "Value": "E-mail"
+            },
+            {
+                "Key": "EFD_USUARIO_UK02",
+                "Value": "CPF"
+            }
+        ]
+    }
+}

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Intech.Lib.Data.Erros;
 using Intech.Lib.Web.JWT;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -39,6 +40,8 @@ namespace Intech.EfdReinf.API
                     jsonOptions.SerializerSettings.ContractResolver = new DefaultContractResolver();
                     jsonOptions.SerializerSettings.DateFormatString = "dd/MM/yyyy";
                 });
+
+            services.AddMemoryCache();
 
             var signingConfigurations = new SigningConfigurations();
             services.AddSingleton(signingConfigurations);
@@ -81,6 +84,8 @@ namespace Intech.EfdReinf.API
                     .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
                     .RequireAuthenticatedUser().Build());
             });
+
+            ErrosBanco.Popular();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

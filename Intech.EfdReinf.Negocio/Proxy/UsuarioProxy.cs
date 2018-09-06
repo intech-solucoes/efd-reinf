@@ -1,10 +1,13 @@
 using Intech.EfdReinf.Dados.DAO;
 using Intech.EfdReinf.Entidades;
+using Intech.Lib.Data.Erros;
 using Intech.Lib.Dominios;
 using Intech.Lib.Util.Email;
 using Intech.Lib.Util.Seguranca;
+using Intech.Lib.Util.Validacoes;
 using Intech.Lib.Web;
 using System;
+using System.Data.SqlClient;
 
 namespace Intech.EfdReinf.Negocio.Proxy
 {
@@ -50,12 +53,29 @@ namespace Intech.EfdReinf.Negocio.Proxy
 
         public override long Inserir(UsuarioEntidade usuario)
         {
+            if (!Validador.ValidarCPF(usuario.COD_CPF))
+                throw new Exception("CPF inválido.");
+
+            if (usuario.PWD_USUARIO.Length < 6)
+                throw new Exception("A senha deve possuir no mínimo 6 caracteres.");
+
             usuario.PWD_USUARIO = Criptografia.Encriptar(usuario.PWD_USUARIO);
             usuario.COD_CPF = usuario.COD_CPF.LimparMascara();
             usuario.COD_TELEFONE_CEL = usuario.COD_TELEFONE_CEL.LimparMascara();
             usuario.COD_TELEFONE_FIXO = usuario.COD_TELEFONE_FIXO.LimparMascara();
 
-            return base.Inserir(usuario);
+            try
+            {
+                return base.Inserir(usuario);
+            }
+            catch(SqlException ex)
+            {
+                throw new Exception(ErrosBanco.Traduzir(ex.Message, ex.Number));
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public decimal InserirNovoUsuario(UsuarioEntidade usuario)
