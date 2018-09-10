@@ -45,6 +45,10 @@ html, body {
     }
 }
 
+.hidden {
+    visibility: hidden;
+}
+
 .modal {
     position: fixed;
     top: 0;
@@ -59,10 +63,9 @@ html, body {
         position: relative;
         margin: 50px auto 0;
         padding: 20px;
-        width: 700px;
+        width: 900px;
         background: #ffffff;
         color: #000000;
-        text-align: center;
     }
 }
 

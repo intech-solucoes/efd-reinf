@@ -1,9 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
-import { Login, Cadastro } from "./pages";
-
-console.log(process.env);
+import { Login, Cadastro, SelecionarContribuinte } from "./pages";
 
 export default class MasterPageLogin extends React.Component {
 	render() {
@@ -17,6 +15,7 @@ export default class MasterPageLogin extends React.Component {
 					<div>
 						<Route exact path="/" component={Login} />
 						<Route path="/cadastro" component={Cadastro} />
+						<Route path="/selecionarContribuinte" component={SelecionarContribuinte} />
 					</div>
 				</Router>
                 <br/>

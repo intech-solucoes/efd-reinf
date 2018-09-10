@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
-import Botao from "../components/Botao";
-import CampoTexto from "../components/CampoTexto";
+import Botao from "../../components/Botao";
+import CampoTexto from "../../components/CampoTexto";
 
 import { UsuarioService } from "@intechprev/efdreinf-service";
 

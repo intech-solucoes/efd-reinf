@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
-import Botao from "../components/Botao";
-import CampoTexto from "../components/CampoTexto";
+import Botao from "../../components/Botao";
+import CampoTexto from "../../components/CampoTexto";
 
-import packageJson from '../../package.json';
+import packageJson from '../../../package.json';
 
 import { UsuarioService } from "@intechprev/efdreinf-service";
 
@@ -37,6 +37,7 @@ export default class Login extends Component {
 			try {
 				var resultado = await UsuarioService.Login(this.state.email, this.state.senha);
 				localStorage.setItem("token", resultado.data.AccessToken);
+				this.props.history.push("/selecionarContribuinte");
 			} catch(erro) {
 				if(erro.response) {
 					await this.adicionarErro(erro.response.data);
