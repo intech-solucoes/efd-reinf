@@ -51,7 +51,7 @@ export default class Cadastro extends Component {
                     await this.adicionarErro(erro);
                 }
             }
-        } 
+        }
     }
 
     limparErros = async () => {
@@ -104,7 +104,7 @@ export default class Cadastro extends Component {
                 
 				{this.state.erros.length > 0 &&
                     <div className="alert alert-danger" role="alert" 
-                         dangerouslySetInnerHTML={{__html: this.state.erros.join("<br/>") }}>
+                        dangerouslySetInnerHTML={{__html: this.state.erros.join("<br/>") }}>
 					</div>
                 }
                 

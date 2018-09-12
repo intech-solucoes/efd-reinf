@@ -9,7 +9,7 @@
     
     "situacaoPJ": "Indicativo da Situação da Pessoa Jurídica: 0 - Situação Normal; 1 - Extinção; 2 - Fusão; 3 - Cisão; 4 - Incorporação. Validação: Preenchimento obrigatório apenas para Pessoa Jurídica.",
     "enteFederativoResponsavel": "Informar se o Órgão Público é o Ente Federativo Responsável - EFR ou se é uma unidade administrativa autônoma vinculada a um EFR. Validação: Essa informação é validada no cadastro do CNPJ na RFB.",
-    "CnpjEFR": "CNPJ do Ente Federativo Responsável - EFR Validação: Preenchimento obrigatório e exclusivo se EFR = Não. Informação validada no cadastro do CNPJ da RFB.",
+    "cnpjEFR": "CNPJ do Ente Federativo Responsável - EFR Validação: Preenchimento obrigatório e exclusivo se EFR = Não. Informação validada no cadastro do CNPJ da RFB.",
     
     "nomeContato": "Nome do contato no contribuinte. Pessoa responsável por ser o contato do contribuinte com a Receita Federal do Brasil relativamente à EFD-Reinf",
     "cpfContato": "Preencher com o número do CPF do contato.",

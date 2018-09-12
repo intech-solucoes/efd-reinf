@@ -24,7 +24,7 @@ export default class SelecionarContribuinte extends Component {
 
                 {this.state.contribuintes.map((contribuinte, index) => {
                     return (
-                        <div className="row">
+                        <div key={index} className="row">
                             <div className="col">
 
                             </div>

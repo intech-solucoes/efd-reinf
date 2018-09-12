@@ -66,11 +66,11 @@ export default class Login extends Component {
 				<br/>
 
 				<CampoTexto contexto={this}  ref={ (input) => this.listaCampos[0] = input }
-							label={"E-mail"} valor={this.state.email} nome={"email"} tipo={"email"} 
+							placeholder={"E-mail"} valor={this.state.email} nome={"email"} tipo={"email"} 
 							obrigatorio={true} />
 
 				<CampoTexto contexto={this} ref={ (input) => this.listaCampos[1] = input }
-							label={"Senha"} valor={this.state.senha} nome={"senha"} tipo={"password"} 
+							placeholder={"Senha"} valor={this.state.senha} nome={"senha"} tipo={"password"} 
 							obrigatorio={true} />
 
 				<div className="form-group">
