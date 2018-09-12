@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { handleFieldChange } from "@intechprev/react-lib";
 import { validarEmail } from "@intechprev/react-lib";
+import { BotaoAjuda } from "../components";
 
 var InputMask = require('react-input-mask');
 
@@ -28,10 +29,23 @@ export default class CampoTexto extends Component {
 
 	render() {
 		return (
-			<div className="form-group">
-				<InputMask mask={this.props.mascara} name={this.props.nome} value={this.props.valor} className="form-control"
-						   type={this.props.tipo} placeholder={this.props.label}
-						   onChange={(e) => handleFieldChange(this.props.contexto, e)} />
+			<div className="form-group row">
+				
+				{this.props.label &&
+					<div className="col-lg-5 col-md-12 text-lg-right col-form-label">
+						<b><label htmlFor={this.props.nome}>{this.props.label}</label></b>
+					</div>
+				}
+
+				<div className="col">
+					<InputMask mask={this.props.mascara} name={this.props.nome} value={this.props.valor} className="form-control"
+							   type={this.props.tipo} placeholder={this.props.placeholder} id={this.props.nome}
+							   onChange={(e) => handleFieldChange(this.props.contexto, e)} />
+				</div>
+
+				{this.props.botaoAjuda && 
+					<BotaoAjuda textoModal={this.props.botaoAjuda} titulo={this.props.label} />
+				}
 			</div>
 		);
 	}
