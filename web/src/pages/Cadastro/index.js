@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import Botao from "../../components/Botao";
-import CampoTexto from "../../components/CampoTexto";
+import { CampoTexto } from "../../components";
 
 import { UsuarioService } from "@intechprev/efdreinf-service";
 
@@ -75,31 +75,31 @@ export default class Cadastro extends Component {
 				<br/>
 
                 <CampoTexto contexto={this} ref={ (input) => this.listaCampos[0] = input }
-                            label={"Nome"} valor={this.state.nome} nome={"nome"} tipo={"text"} 
+                            placeholder={"Nome"} valor={this.state.nome} nome={"nome"} tipo={"text"} 
                             obrigatorio={true} />
 
                 <CampoTexto contexto={this} ref={ (input) => this.listaCampos[1] = input }
-                            label={"E-mail"} valor={this.state.email} nome={"email"} tipo={"email"}
+                            placeholder={"E-mail"} valor={this.state.email} nome={"email"} tipo={"email"}
                             obrigatorio={true} />
 
                 <CampoTexto contexto={this} ref={ (input) => this.listaCampos[2] = input } 
-                            label={"CPF"} valor={this.state.cpf} nome={"cpf"} tipo={"text"} mascara="999.999.999-99" 
+                            placeholder={"CPF"} valor={this.state.cpf} nome={"cpf"} tipo={"text"} mascara="999.999.999-99" 
                             obrigatorio={true} />
 
                 <CampoTexto contexto={this} ref={ (input) => this.listaCampos[3] = input }
-                            label={"Telefone Fixo"} valor={this.state.telefoneFixo} nome={"telefoneFixo"} tipo={"text"} 
+                            placeholder={"Telefone Fixo"} valor={this.state.telefoneFixo} nome={"telefoneFixo"} tipo={"text"} 
                             obrigatorio={true} mascara="(99) 9999-9999" />
 
                 <CampoTexto contexto={this} ref={ (input) => this.listaCampos[4] = input }
-                            label={"Telefone Celular"} valor={this.state.telefoneCelular} nome={"telefoneCelular"} tipo={"text"} 
+                            placeholder={"Telefone Celular"} valor={this.state.telefoneCelular} nome={"telefoneCelular"} tipo={"text"} 
                             obrigatorio={true} mascara="(99) 99999-9999" />
 
                 <CampoTexto contexto={this} ref={ (input) => this.listaCampos[5] = input }
-                            label={"Senha"} valor={this.state.senha} nome={"senha"} tipo={"password"} 
+                            placeholder={"Senha"} valor={this.state.senha} nome={"senha"} tipo={"password"} 
                             obrigatorio={true} />
 
                 <CampoTexto contexto={this} ref={ (input) => this.listaCampos[6] = input }
-                            label={"Confirmar Senha"} valor={this.state.senhaConfirma} nome={"senhaConfirma"} tipo={"password"} 
+                            placeholder={"Confirmar Senha"} valor={this.state.senhaConfirma} nome={"senhaConfirma"} tipo={"password"} 
                             obrigatorio={true} />
                 
 				{this.state.erros.length > 0 &&
