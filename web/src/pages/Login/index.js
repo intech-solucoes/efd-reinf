@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
-import Botao from "../../components/Botao";
-import CampoTexto from "../../components/CampoTexto";
+import { Botao, CampoTexto } from "../../components";
 
 import packageJson from '../../../package.json';
 
