@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿#region Usings
 using Intech.EfdReinf.Entidades;
 using Intech.EfdReinf.Negocio.Proxy;
 using Intech.Lib.Dominios;
-using Intech.Lib.Util.Seguranca;
 using Intech.Lib.Web;
 using Intech.Lib.Web.JWT;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic; 
+#endregion
 
 namespace Intech.EfdReinf.API.Controllers
 {

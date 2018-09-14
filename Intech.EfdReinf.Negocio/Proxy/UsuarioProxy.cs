@@ -53,19 +53,31 @@ namespace Intech.EfdReinf.Negocio.Proxy
 
         public override long Inserir(UsuarioEntidade usuario)
         {
-            if (!Validador.ValidarCPF(usuario.COD_CPF))
-                throw new Exception("CPF inválido.");
-
-            if (usuario.PWD_USUARIO.Length < 6)
-                throw new Exception("A senha deve possuir no mínimo 6 caracteres.");
-
-            usuario.PWD_USUARIO = Criptografia.Encriptar(usuario.PWD_USUARIO);
-            usuario.COD_CPF = usuario.COD_CPF.LimparMascara();
-            usuario.COD_TELEFONE_CEL = usuario.COD_TELEFONE_CEL.LimparMascara();
-            usuario.COD_TELEFONE_FIXO = usuario.COD_TELEFONE_FIXO.LimparMascara();
-
             try
             {
+                // Valida CPF
+                if (!Validador.ValidarCPF(usuario.COD_CPF))
+                    throw new Exception("CPF inválido.");
+
+                // Limpa máscaras
+                usuario.COD_CPF = usuario.COD_CPF.LimparMascara();
+                usuario.COD_TELEFONE_CEL = usuario.COD_TELEFONE_CEL.LimparMascara();
+                usuario.COD_TELEFONE_FIXO = usuario.COD_TELEFONE_FIXO.LimparMascara();
+
+                // Valida telefones
+                if (usuario.COD_TELEFONE_CEL.Length < 11)
+                    throw new Exception("Telefone Celular inválido");
+
+                if(usuario.COD_TELEFONE_FIXO.Length < 10)
+                    throw new Exception("Telefone Fixo inválido");
+
+                // Valida tamanho da senha
+                if (usuario.PWD_USUARIO.Length < 6)
+                    throw new Exception("A senha deve possuir no mínimo 6 caracteres.");
+
+                // Encripta a senha
+                usuario.PWD_USUARIO = Criptografia.Encriptar(usuario.PWD_USUARIO);
+
                 return base.Inserir(usuario);
             }
             catch(SqlException ex)
@@ -80,14 +92,16 @@ namespace Intech.EfdReinf.Negocio.Proxy
 
         public decimal InserirNovoUsuario(UsuarioEntidade usuario)
         {
+            if (usuario.PWD_USUARIO.Length < 6)
+                throw new Exception("A senha deve conter no mínimo 6 caracteres.");
+
             usuario.DTA_CRIACAO = DateTime.Now;
             usuario.IND_BLOQUEADO = DMN_SN.NAO;
             usuario.IND_ATIVO = DMN_SN.SIM;
             usuario.IND_ADMINISTRADOR = DMN_SN.NAO;
             usuario.IND_EMAIL_VERIFICADO = DMN_SN.NAO;
             usuario.NUM_TENTATIVA = 0;
-
-            // Todo: gerar token
+            
             usuario.TXT_TOKEN = Guid.NewGuid().ToString();
 
             decimal oidUsuario = Inserir(usuario);
