@@ -75,11 +75,11 @@ export default class Cadastro extends Component {
 				<br/>
 
                 <CampoTexto contexto={this} ref={ (input) => this.listaCampos[0] = input }
-                            placeholder={"Nome"} valor={this.state.nome} nome={"nome"} tipo={"text"} 
+                            placeholder={"Nome"} valor={this.state.nome} nome={"nome"} tipo={"text"} max={60}
                             obrigatorio={true} />
 
                 <CampoTexto contexto={this} ref={ (input) => this.listaCampos[1] = input }
-                            placeholder={"E-mail"} valor={this.state.email} nome={"email"} tipo={"email"}
+                            placeholder={"E-mail"} valor={this.state.email} nome={"email"} tipo={"email"} max={60}
                             obrigatorio={true} />
 
                 <CampoTexto contexto={this} ref={ (input) => this.listaCampos[2] = input } 
@@ -102,15 +102,15 @@ export default class Cadastro extends Component {
                             placeholder={"Confirmar Senha"} valor={this.state.senhaConfirma} nome={"senhaConfirma"} tipo={"password"} 
                             obrigatorio={true} />
                 
+                            <div className="form-group">
+                                <Botao titulo="Entrar" clicar={this.criar} tipo={"primary"} block={true} usaLoading={true} />
+                            </div>
+                
 				{this.state.erros.length > 0 &&
                     <div className="alert alert-danger" role="alert" 
                         dangerouslySetInnerHTML={{__html: this.state.erros.join("<br/>") }}>
 					</div>
                 }
-                
-				<div className="form-group">
-					<Botao titulo="Entrar" clicar={this.criar} tipo={"primary"} block={true} />
-				</div>
 			</div>
         );
     }

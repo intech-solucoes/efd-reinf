@@ -65,8 +65,8 @@ export default class Login extends Component {
                 <h4>Bem-Vindo ao Intech EFD-Reinf</h4>
 				<br/>
 
-				<CampoTexto contexto={this}  ref={ (input) => this.listaCampos[0] = input }
-							placeholder={"E-mail"} valor={this.state.email} nome={"email"} tipo={"email"} 
+				<CampoTexto contexto={this} ref={ (input) => this.listaCampos[0] = input }
+							placeholder={"E-mail"} valor={this.state.email} nome={"email"} tipo={"email"}
 							obrigatorio={true} />
 
 				<CampoTexto contexto={this} ref={ (input) => this.listaCampos[1] = input }
