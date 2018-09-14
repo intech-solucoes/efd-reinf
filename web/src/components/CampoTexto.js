@@ -18,8 +18,11 @@ export default class CampoTexto extends Component {
 		this.possuiErros = false;
 		this.erros = [];
 
-		if(this.props.obrigatorio && this.props.valor === "")
-			this.erros.push(`Campo "${this.props.label}" obrigatório.`);
+		if(this.props.obrigatorio)
+		{
+			if(this.props.valor === "")
+				this.erros.push(`Campo "${this.props.label || this.props.placeholder}" obrigatório.`);
+		}
 
 		else if(this.props.tipo === "email" && validarEmail(this.props.valor))
 			this.erros.push("E-mail inválido.");
@@ -38,7 +41,7 @@ export default class CampoTexto extends Component {
 				}
 
 				<div className="col">
-					<InputMask mask={this.props.mascara} name={this.props.nome} value={this.props.valor} className="form-control"
+					<InputMask mask={this.props.mascara} name={this.props.nome} value={this.props.valor} maxlength={this.props.max} className="form-control"
 							   type={this.props.tipo} placeholder={this.props.placeholder} id={this.props.nome}
 							   onChange={(e) => handleFieldChange(this.props.contexto, e)} />
 				</div>
