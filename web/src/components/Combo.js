@@ -34,11 +34,12 @@ export default class Combo extends Component {
 				}
 				<div className="col">
 					<select id={this.props.nome} name={this.props.nome} className="form-control">
-						{this.props.opcoes.map((opcao, index) => {
-							return (
-								<option key={index} value={opcao.valor}>{opcao.nome}</option>
-							)
-						})
+						{
+							this.props.opcoes.map((opcao, index) => {
+								return (
+									<option key={index} value={opcao.valor}>{opcao.nome}</option>
+								)
+							})
 						}
                     </select>
 				</div>
