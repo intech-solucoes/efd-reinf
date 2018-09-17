@@ -1,6 +1,10 @@
 import { BaseService } from "@intechprev/react-lib";
 
 class UsuarioService extends BaseService {
+    VerificarLogin() {
+        return this.CriarRequisicao("GET", `/usuario`);
+    }
+
     Login(Email, Senha) {
         return this.CriarRequisicao("POST", `/usuario/login`, { Email, Senha });
     }

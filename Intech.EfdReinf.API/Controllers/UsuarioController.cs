@@ -4,6 +4,7 @@ using Intech.EfdReinf.Negocio.Proxy;
 using Intech.Lib.Dominios;
 using Intech.Lib.Web;
 using Intech.Lib.Web.JWT;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic; 
@@ -15,6 +16,20 @@ namespace Intech.EfdReinf.API.Controllers
     [ApiController]
     public class UsuarioController : Controller
     {
+        [HttpGet]
+        [Authorize("Bearer")]
+        public IActionResult Get()
+        {
+            try
+            {
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpGet("buscarPorOid/{oid}")]
         public IActionResult BuscarPorOid(decimal oid)
         {

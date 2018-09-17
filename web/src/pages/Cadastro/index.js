@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import Botao from "../../components/Botao";
-import { CampoTexto } from "../../components";
+import CampoTexto from "../../components/CampoTexto";
 
 import { UsuarioService } from "@intechprev/efdreinf-service";
 
@@ -102,9 +102,9 @@ export default class Cadastro extends Component {
                             placeholder={"Confirmar Senha"} valor={this.state.senhaConfirma} nome={"senhaConfirma"} tipo={"password"} 
                             obrigatorio={true} />
                 
-                            <div className="form-group">
-                                <Botao titulo="Entrar" clicar={this.criar} tipo={"primary"} block={true} usaLoading={true} />
-                            </div>
+                <div className="form-group">
+                    <Botao titulo="Entrar" clicar={this.criar} tipo={"primary"} block={true} usaLoading={true} />
+                </div>
                 
 				{this.state.erros.length > 0 &&
                     <div className="alert alert-danger" role="alert" 
