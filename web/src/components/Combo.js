@@ -1,16 +1,28 @@
 import React, { Component } from "react";
-import { handleFieldChange } from "@intechprev/react-lib";
 import BotaoAjuda from "../components/BotaoAjuda";
 
 export default class Combo extends Component {
-    constructor(props) {
-        super(props);
 
-    }
+	constructor(props) {
+		super(props);
 
-    componentDidMount() {
+		this.erros = [];
+		this.possuiErros = false;
+	}
 
-    }
+	componentDidMount() {
+
+	}
+
+	validar = () => {
+		this.possuiErros = false;
+		this.erros = [];
+
+		if(this.props.obrigatorio && this.props.valor === "")
+			this.erros.push(`Campo "${this.props.label}" obrigatório.`);
+
+		this.possuiErros = this.erros.length > 0;
+	}
 
     render() {
         return (
@@ -22,12 +34,22 @@ export default class Combo extends Component {
 				}
 				<div className="col">
 					<select id={this.props.nome} name={this.props.nome} className="form-control">
-                        <option value={this.props.valor}>{this.props.opcao}</option>
+						{this.props.opcoes.map((opcao, index) => {
+							return (
+								<option key={index} value={opcao.valor}>{opcao.nome}</option>
+							)
+						})
+						}
                     </select>
 				</div>
 
 				{this.props.botaoAjuda && 
 					<BotaoAjuda textoModal={this.props.botaoAjuda} titulo={this.props.label} />
+				}
+
+				{this.props.label && !this.props.botaoAjuda &&
+					<div className="col-1">
+					</div>
 				}
 			</div>
         )

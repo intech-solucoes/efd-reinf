@@ -1,6 +1,7 @@
 ﻿#region Usings
 using Intech.EfdReinf.Entidades;
 using Intech.EfdReinf.Negocio.Proxy;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System; 
 #endregion
@@ -25,6 +26,7 @@ namespace Intech.EfdReinf.API.Controllers
         }
 
         [HttpPost]
+        [Authorize("Bearer")]
         public IActionResult Criar([FromBody] ContribuinteEntidade contribuinte)
         {
             try

@@ -103,7 +103,7 @@ export default class Cadastro extends Component {
                             obrigatorio={true} />
                 
                 <div className="form-group">
-                    <Botao titulo="Entrar" clicar={this.criar} tipo={"primary"} block={true} usaLoading={true} />
+                    <Botao titulo="Incluir Usuário" clicar={this.criar} tipo={"primary"} block={true} usaLoading={true} />
                 </div>
                 
 				{this.state.erros.length > 0 &&
