@@ -26,14 +26,15 @@ export default class NovoContribuinte extends Component {
             isencaoMulta: "",
             situacaoPJ: "",
             enteFederativoResponsavel: "",
-            cnpjERF: "",
+            cnpjEfr: "",
             nomeContato: "",
             cpfContato: "",
             telefoneFixoContato: "",
             telefoneCelularContato: "",
             emailContato: "",
 
-            erros: [],
+            cnpjEfrObrigatorio: false,
+            erros: []
         }
         
         // Este objeto armazena as opções dos combos do formulário. Deverá ser apagado quando houver uma rota para TBG_DOMINIO.
@@ -154,8 +155,11 @@ export default class NovoContribuinte extends Component {
             try {
                 await ContribuinteService.Criar(this.state.razaoSocial, this.state.tipoInscricao, this.state.cnpj, this.state.inicioValidade, 
                       this.state.terminoValidade, this.state.classificacaoTributaria, this.state.obrigatoriedadeECD, this.state.desoneracaoFolhaCPRB, 
-                      this.state.isencaoMulta, this.state.situacaoPJ, this.state.enteFederativoResponsavel, this.state.cnpjERF, this.state.nomeContato, 
+                      this.state.isencaoMulta, this.state.situacaoPJ, this.state.enteFederativoResponsavel, this.state.cnpjEfr, this.state.nomeContato, 
                       this.state.cpfContato, this.state.telefoneFixoContato, this.state.telefoneCelularContato, this.state.emailContato, this.state.emailContato);
+                    
+                alert("Contribuinte criado com sucesso! Enviando e-mail...");
+                // this.enviarEmail();
             } catch(err) {
 				if(err.response) {
 					await this.adicionarErro(err.response.data);
@@ -181,6 +185,10 @@ export default class NovoContribuinte extends Component {
                 await this.adicionarErro(campo.erros);
             }
         }
+        
+        // Validação dos campos de telefone: os campos não são obrigatórios, mas ao menos um deve ser fornecido.
+        if(this.state.telefoneCelularContato === "" && this.state.telefoneFixoContato === "")
+            await this.adicionarErro("Pelo menos um telefone do contato deve ser fornecido");
 
         // Validações por comprimento da string.
         this.validarTamanho("CPF do Contato", this.state.cpfContato, 14);
@@ -208,10 +216,9 @@ export default class NovoContribuinte extends Component {
     validarTamanho = (campo, valor, comprimento) => {
         valor = valor.split("_").join("");
 
-        if(valor.length < comprimento && valor.length !== 0) {
-            console.log("IF");
+        if(valor.length < comprimento && valor.length !== 0) 
             this.adicionarErro(`Campo ${campo} inválido!`);
-        }
+        
     }
 
     /**
@@ -242,11 +249,30 @@ export default class NovoContribuinte extends Component {
 
     /**
      * @param {string} dataString Data a ser convertida para Date().
-     * @description Método responsável por converter a data recebida (no formato 'dd/mm/aaaa') para date (Objeto).
+     * @description Método responsável por converter a data recebida (no formato 'dd/mm/aaaa') para Date (Objeto).
      */
     converteData = (dataString) => {
         var dataPartes = dataString.split("/");
         return new Date(dataPartes[2], dataPartes[1] - 1, dataPartes[0]);
+    }
+
+    enviarEmail = async () => { 
+        // var tituloEmail = "[EFD-Reinf] - Novo Contribuinte";
+        // var corpoEmail = `EFD-Reinf: Um novo contribuinte foi cadastrado pelo usuário [nome do usuário logado]: ${this.state.nomeContato}.`;
+
+    }
+
+    /**
+     * @description Método que altera o state de obrigatoriedade do campo cnpjEfr, cujo a regra é: caso o combo 'Ente Federativo Responsável' possua o valor 
+     * 'S', cnpjEfr não deve ser obrigatório; caso possua o valor 'N', cnpjEfr deve ser obrigatório.
+     */
+    handleEfrChange = async () => {
+
+        if(this.state.enteFederativoResponsavel !== 'N')
+            await this.setState({ cnpjEfrObrigatorio: false })
+        
+        else
+            await this.setState({ cnpjEfrObrigatorio: true });
     }
 
     render() {
@@ -258,7 +284,8 @@ export default class NovoContribuinte extends Component {
                         <br/>
 
                         <Combo contexto={this} label={"Tipo de inscrição"} ref={ (input) => this.listaCampos[0] = input } 
-                               nome="tipoInscricao" valor={this.state.tipoInscricao} opcoes={this.opcoes.tipoInscricao} />
+                               nome="tipoInscricao" valor={this.state.tipoInscricao} obrigatorio={true} 
+                               opcoes={this.opcoes.tipoInscricao} />
 
                         <CampoTexto contexto={this} ref={ (input) => this.listaCampos[1] = input }
                                     label={"Razão social"} nome={"razaoSocial"} tipo={"text"} max={115}
@@ -298,18 +325,19 @@ export default class NovoContribuinte extends Component {
                                nome="situacaoPJ" valor={this.state.situacaoPJ} obrigatorio={true}
                                opcoes={this.opcoes.situacaoPJ} botaoAjuda={textosAjuda.situacaoPJ} />
 
-                        <Combo contexto={this} label={"Ente Federativo Responsável"} ref={ (input) => this.listaCampos[10] = input } 
+                        <Combo contexto={this} label={"Ente Federativo Responsável (EFR)"} ref={ (input) => this.listaCampos[10] = input } 
                                nome="enteFederativoResponsavel" valor={this.state.enteFederativoResponsavel} obrigatorio={true}
-                               opcoes={this.opcoes.enteFederativoResponsavel} botaoAjuda={textosAjuda.enteFederativoResponsavel} />
+                               opcoes={this.opcoes.enteFederativoResponsavel} botaoAjuda={textosAjuda.enteFederativoResponsavel} 
+                               onChange={this.handleEfrChange} />
 
                         <CampoTexto contexto={this} ref={ (input) => this.listaCampos[11] = input } 
-                                    placeholder={"CNPJ ERF"} valor={this.state.cnpjERF} label={"CNPJ ERF"} 
-                                    nome={"cnpjERF"} tipo={"text"} obrigatorio={true} mascara={"99.999.999/9999-99"} 
-                                    botaoAjuda={textosAjuda.cnpjERF} />
+                                    placeholder={"CNPJ EFR"} valor={this.state.cnpjEfr} label={"CNPJ EFR"} 
+                                    nome={"cnpjEfr"} tipo={"text"} obrigatorio={this.state.cnpjEfrObrigatorio} 
+                                    mascara={"99.999.999/9999-99"} botaoAjuda={textosAjuda.cnpjEfr} />
 
                         <CampoTexto contexto={this} ref={ (input) => this.listaCampos[12] = input }
                                     label={"Nome do Contato"} nome={"nomeContato"} tipo={"text"} 
-                                    placeholder={"Nome do Contato"} valor={this.state.nomeContato} 
+                                    placeholder={"Nome do Contato"} obrigatorio={true} valor={this.state.nomeContato} 
                                     terminoValidadeobrigatorio={false} botaoAjuda={textosAjuda.nomeContato} />
 
                         <CampoTexto contexto={this} ref={ (input) => this.listaCampos[13] = input } placeholder={"CPF do Contato"}
@@ -346,7 +374,7 @@ export default class NovoContribuinte extends Component {
                                 }
 
                                 <br />
-                                <Botao titulo={"Alterar dados do Contribuinte"} tipo={"primary"} clicar={this.novo}
+                                <Botao titulo={"Incluir Novo Contribuinte"} tipo={"primary"} clicar={this.novo}
                                     block={true} usaLoading={true} />
 
                             </div>

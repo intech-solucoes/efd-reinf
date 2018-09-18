@@ -25,6 +25,14 @@ export default class Combo extends Component {
 		this.possuiErros = this.erros.length > 0;
 	}
 
+	onChange = async (e) => {
+		await handleFieldChange(this.props.contexto, e);
+		
+		if(this.props.onChange) {
+			this.props.onChange(e);
+		}
+	}
+
     render() {
         return (
 			<div className="form-group row">
@@ -35,7 +43,7 @@ export default class Combo extends Component {
 					</div>
 				}
 				<div className="col">
-					<select id={this.props.nome} name={this.props.nome} className="form-control" onChange={(e) => handleFieldChange(this.props.contexto, e)}>
+					<select id={this.props.nome} name={this.props.nome} className="form-control" onChange={this.onChange}>
 						<option value="">Selecione uma opção</option>
 						{
 							this.props.opcoes.map((opcao, index) => {
