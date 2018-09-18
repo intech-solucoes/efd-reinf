@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { CampoTexto, Combo, Botao } from '../../components';
 
+import { ContribuinteService } from "@intechprev/efdreinf-service";
 import { validarEmail } from "@intechprev/react-lib";
 import DataInvalida from '../../utils/Data';
 
@@ -35,16 +36,99 @@ export default class NovoContribuinte extends Component {
             erros: [],
         }
         
-        this.opcoesCT = [
-            {
-                nome: "Teste",
-                valor: 1
-            },
-            {
-                nome: "Teste2",
-                valor: 2
-            }
-        ]
+        // Este objeto armazena as opções dos combos do formulário. Deverá ser apagado quando houver uma rota para TBG_DOMINIO.
+        this.opcoes = {
+            tipoInscricao: [
+                {
+                    valor:'1',
+                    nome: "PESSOA JURIDICA"
+                },
+                {
+                    valor: '2',
+                    nome: "PESSOA FISICA"
+                }
+            ],
+            classificacaoTributaria: [
+                {
+                    valor: '01',
+                    nome: "SIMPLES NAC. C/TRIBUTAÇÃO PREVID. SUBSTITUÍDA"
+                },
+                {
+                    valor: '02',
+                    nome: "SIMPLES NAC. C/TRIBUTAÇÃO PREVID. NÃO SUBSTITUÍDA"
+                },
+                {
+                    valor: '03',
+                    nome: "SIMPLES NAC. C/TRIBUTAÇÃO PREVID SUBSTITUÍDA/NÃO"
+                },
+                {
+                    valor: '04',
+                    nome: "MEI - MICRO EMPREENDEDOR INDIVIDUAL"
+                },
+                {
+                    valor: '05',
+                    nome: "AGROINDÚSTRIA"
+                }
+            ],
+            obrigatoriedadeECD: [
+                {
+                    valor: '0',
+                    nome: "EMPRESA NAO OBRIGADA"
+                },
+                {
+                    valor: '1',
+                    nome: "EMPRESA OBRIGADA À ECD"
+                }
+            ],
+            desoneracaoFolhaCPRB: [
+                {
+                    valor: '0',
+                    nome: "NÃO APLICÁVEL"
+                },
+                {
+                    valor: '1',
+                    nome: "EMPRESA ENQUADRADA NOS TERMOS DA LEI 12.546/2011"
+                }
+            ],
+            isencaoMulta: [
+                {
+                    valor: '0',
+                    nome: "SEM ACORDO"
+                },
+                {
+                    valor: '1',
+                    nome: "COM ACORDO"
+                }
+            ],
+            situacaoPJ: [
+                {
+                    valor: '0',
+                    nome: "NORMAL"
+                },
+                {
+                    valor: '1',
+                    nome: "EXTINÇÃO"
+                },
+                {
+                    valor: '2',
+                    nome: "FUSÃO"
+                },
+                {
+                    valor: '3',
+                    nome: "CISÃO"
+                },
+            ],
+            enteFederativoResponsavel: [
+                {
+                    valor: 'S',
+                    nome: "É EFR"
+                },
+                {
+                    valor: 'N',
+                    nome: "NÃO É EFR"
+                }
+            ]
+        }
     }
 
     limparErros = async () => {
@@ -62,15 +146,25 @@ export default class NovoContribuinte extends Component {
     }
 
     novo = async () => {
-
+        console.log(this.state);
         await this.validarFormulario();
 
-        var dados = {}
         if(this.state.erros.length === 0) {
-            dados = this.state;
             // Criar contribuinte.
+            try {
+                await ContribuinteService.Criar(this.state.razaoSocial, this.state.tipoInscricao, this.state.cnpj, this.state.inicioValidade, 
+                      this.state.terminoValidade, this.state.classificacaoTributaria, this.state.obrigatoriedadeECD, this.state.desoneracaoFolhaCPRB, 
+                      this.state.isencaoMulta, this.state.situacaoPJ, this.state.enteFederativoResponsavel, this.state.cnpjERF, this.state.nomeContato, 
+                      this.state.cpfContato, this.state.telefoneFixoContato, this.state.telefoneCelularContato, this.state.emailContato, this.state.emailContato);
+            } catch(err) {
+				if(err.response) {
+					await this.adicionarErro(err.response.data);
+				} else {
+					await this.adicionarErro(err);
+				}
+            }
         } else {
-            // Exibir erros da API no vetor.
+            // Mostra os erros no state 'erros'.
         }
 
     }
@@ -163,8 +257,8 @@ export default class NovoContribuinte extends Component {
                         <h4>Novo Contribuinte</h4>
                         <br/>
 
-                        <Combo label={"Tipo de inscrição"} ref={ (input) => this.listaCampos[0] = input } 
-                               nome="tipoInscricao" opcoes={this.opcoesCT} />
+                        <Combo contexto={this} label={"Tipo de inscrição"} ref={ (input) => this.listaCampos[0] = input } 
+                               nome="tipoInscricao" valor={this.state.tipoInscricao} opcoes={this.opcoes.tipoInscricao} />
 
                         <CampoTexto contexto={this} ref={ (input) => this.listaCampos[1] = input }
                                     label={"Razão social"} nome={"razaoSocial"} tipo={"text"} max={115}
@@ -184,23 +278,29 @@ export default class NovoContribuinte extends Component {
                                     placeholder={"Término Validade"} valor={this.state.terminoValidade}
                                     obrigatorio={false} mascara={"99/99/9999"} botaoAjuda={textosAjuda.terminoValidade} />
 
-                        <Combo label={"Classificação Tributária"} ref={ (input) => this.listaCampos[5] = input } 
-                               nome="classificacaoTributaria" opcoes={this.opcoesCT} botaoAjuda={textosAjuda.classificacaoTributaria} />
+                        <Combo contexto={this} label={"Classificação Tributária"} ref={ (input) => this.listaCampos[5] = input } 
+                               nome="classificacaoTributaria" valor={this.state.classificacaoTributaria} obrigatorio={true}
+                               opcoes={this.opcoes.classificacaoTributaria} botaoAjuda={textosAjuda.classificacaoTributaria}  />
 
-                        <Combo label={"Obrigatoriedade ECD"} ref={ (input) => this.listaCampos[6] = input } 
-                               nome="obrigatoriedadeECD" opcoes={this.opcoesCT} botaoAjuda={textosAjuda.obrigatoriedadeECD} />
+                        <Combo contexto={this} label={"Obrigatoriedade ECD"} ref={ (input) => this.listaCampos[6] = input } 
+                               nome="obrigatoriedadeECD" valor={this.state.obrigatoriedadeECD} obrigatorio={true}
+                               opcoes={this.opcoes.obrigatoriedadeECD} botaoAjuda={textosAjuda.obrigatoriedadeECD} />
 
-                        <Combo label={"Desoneração Folha CPRB"} ref={ (input) => this.listaCampos[7] = input } 
-                               nome="desoneracaoFolhaCPRB" opcoes={this.opcoesCT} botaoAjuda={textosAjuda.desoneracaoFolhaCPRB} />
+                        <Combo contexto={this} label={"Desoneração Folha CPRB"} ref={ (input) => this.listaCampos[7] = input } 
+                               nome="desoneracaoFolhaCPRB" valor={this.state.desoneracaoFolhaCPRB} obrigatorio={true} 
+                               opcoes={this.opcoes.desoneracaoFolhaCPRB} botaoAjuda={textosAjuda.desoneracaoFolhaCPRB} />
 
-                        <Combo label={"Isenção Multa"} ref={ (input) => this.listaCampos[8] = input } 
-                               nome="isencaoMulta" opcoes={this.opcoesCT} botaoAjuda={textosAjuda.isencaoMulta} />
+                        <Combo contexto={this} label={"Isenção Multa"} ref={ (input) => this.listaCampos[8] = input } 
+                               nome="isencaoMulta" valor={this.state.isencaoMulta} obrigatorio={true}
+                               opcoes={this.opcoes.isencaoMulta} botaoAjuda={textosAjuda.isencaoMulta} />
 
-                        <Combo label={"Situação PJ"} ref={ (input) => this.listaCampos[9] = input } 
-                               nome="situacaoPJ" opcoes={this.opcoesCT} botaoAjuda={textosAjuda.situacaoPJ} />
+                        <Combo contexto={this} label={"Situação PJ"} ref={ (input) => this.listaCampos[9] = input } 
+                               nome="situacaoPJ" valor={this.state.situacaoPJ} obrigatorio={true}
+                               opcoes={this.opcoes.situacaoPJ} botaoAjuda={textosAjuda.situacaoPJ} />
 
-                        <Combo label={"Ente Federativo Responsável"} ref={ (input) => this.listaCampos[10] = input } 
-                               nome="enteFederativoResponsavel" opcoes={this.opcoesCT} botaoAjuda={textosAjuda.enteFederativoResponsavel} />
+                        <Combo contexto={this} label={"Ente Federativo Responsável"} ref={ (input) => this.listaCampos[10] = input } 
+                               nome="enteFederativoResponsavel" valor={this.state.enteFederativoResponsavel} obrigatorio={true}
+                               opcoes={this.opcoes.enteFederativoResponsavel} botaoAjuda={textosAjuda.enteFederativoResponsavel} />
 
                         <CampoTexto contexto={this} ref={ (input) => this.listaCampos[11] = input } 
                                     placeholder={"CNPJ ERF"} valor={this.state.cnpjERF} label={"CNPJ ERF"} 

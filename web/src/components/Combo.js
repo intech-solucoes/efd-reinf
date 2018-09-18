@@ -1,5 +1,7 @@
 import React, { Component } from "react";
-import BotaoAjuda from "../components/BotaoAjuda";
+import { BotaoAjuda } from "../components";
+
+import { handleFieldChange } from "@intechprev/react-lib";
 
 export default class Combo extends Component {
 
@@ -10,16 +12,15 @@ export default class Combo extends Component {
 		this.possuiErros = false;
 	}
 
-	componentDidMount() {
-
-	}
-
 	validar = () => {
 		this.possuiErros = false;
 		this.erros = [];
 
-		if(this.props.obrigatorio && this.props.valor === "")
-			this.erros.push(`Campo "${this.props.label}" obrigatório.`);
+		if(this.props.obrigatorio)
+		{
+			if(this.props.valor === "")
+				this.erros.push(`Campo "${this.props.label}" obrigatório.`);
+		}
 
 		this.possuiErros = this.erros.length > 0;
 	}
@@ -30,10 +31,12 @@ export default class Combo extends Component {
 				{this.props.label && 
 					<div className="col-lg-5 col-md-12 text-lg-right col-form-label">
 						<b><label htmlFor={this.props.nome}>{this.props.label}</label></b>
+						{this.props.obrigatorio && " *"}
 					</div>
 				}
 				<div className="col">
-					<select id={this.props.nome} name={this.props.nome} className="form-control">
+					<select id={this.props.nome} name={this.props.nome} className="form-control" onChange={(e) => handleFieldChange(this.props.contexto, e)}>
+						<option value="">Selecione uma opção</option>
 						{
 							this.props.opcoes.map((opcao, index) => {
 								return (
