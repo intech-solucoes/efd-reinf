@@ -43,7 +43,7 @@ export default class Combo extends Component {
 					</div>
 				}
 				<div className="col">
-					<select id={this.props.nome} name={this.props.nome} className="form-control" onChange={this.onChange}>
+					<select id={this.props.nome} name={this.props.nome} className="form-control" onChange={this.onChange} defaultValue={this.props.padrao}>
 						<option value="">Selecione uma opção</option>
 						{
 							this.props.opcoes.map((opcao, index) => {

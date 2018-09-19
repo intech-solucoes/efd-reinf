@@ -43,10 +43,6 @@ export default class NovoContribuinte extends Component {
                 {
                     valor:'1',
                     nome: "PESSOA JURIDICA"
-                },
-                {
-                    valor: '2',
-                    nome: "PESSOA FISICA"
                 }
             ],
             classificacaoTributaria: [
@@ -143,7 +139,7 @@ export default class NovoContribuinte extends Component {
         this.erros.push(mensagem);
         await this.setState({
             erros: this.erros
-        })
+        });
     }
 
     novo = async () => {
@@ -284,7 +280,7 @@ export default class NovoContribuinte extends Component {
                         <br/>
 
                         <Combo contexto={this} label={"Tipo de inscrição"} ref={ (input) => this.listaCampos[0] = input } 
-                               nome="tipoInscricao" valor={this.state.tipoInscricao} obrigatorio={true} 
+                               nome="tipoInscricao" valor={this.state.tipoInscricao} obrigatorio={true} padrao={"1"}
                                opcoes={this.opcoes.tipoInscricao} />
 
                         <CampoTexto contexto={this} ref={ (input) => this.listaCampos[1] = input }
