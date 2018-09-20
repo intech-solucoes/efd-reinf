@@ -9,6 +9,10 @@ class UsuarioService extends BaseService {
             DTA_FIM_VALIDADE, IND_CLASSIF_TRIBUT, IND_OBRIGADA_ECD, IND_DESONERACAO_CPRB, IND_ISENCAO_MULTA, IND_SITUACAO_PJ, IND_EFR, COD_CNPJ_EFR, 
             NOM_CONTATO, COD_CPF_CONTATO, COD_FONE_FIXO_CONTATO, COD_FONE_CELULAR_CONTATO, TXT_EMAIL_CONTATO });
     }
+
+    Listar() {
+        return this.CriarRequisicao("GET", "/contribuinte");
+    }
 }
 
 export default new UsuarioService();

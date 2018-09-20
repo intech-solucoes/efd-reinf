@@ -13,6 +13,7 @@ namespace Intech.EfdReinf.API.Controllers
     public class ContribuinteController : BaseController
     {
         [HttpGet]
+        [Authorize("Bearer")]
         public IActionResult Listar()
         {
             try

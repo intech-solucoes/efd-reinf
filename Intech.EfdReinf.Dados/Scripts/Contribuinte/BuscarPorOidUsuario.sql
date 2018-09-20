@@ -1,8 +1,9 @@
 ﻿/*Config
+    RetornaLista
     Retorno
         -ContribuinteEntidade
     Parametros
-        -OID_CONTRIBUINTE:decimal
+        -OID_USUARIO:decimal
 */
 
 SELECT *

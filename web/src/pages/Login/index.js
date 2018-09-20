@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
-import { Botao, CampoTexto } from "../../components";
+import { Botao, CampoTexto, Dialog } from "../../components";
 
 import packageJson from '../../../package.json';
 
@@ -19,6 +19,8 @@ export default class Login extends Component {
 			senha: "",
 			erros: []
 		};
+
+        this.dialog = React.createRef();
 	}
 
 	entrar = async () => {
@@ -39,7 +41,10 @@ export default class Login extends Component {
 				this.props.history.push("/selecionarContribuinte");
 			} catch(erro) {
 				if(erro.response) {
-					await this.adicionarErro(erro.response.data);
+					if(erro.response.data === "IND_EMAIL_VERIFICADO")
+						this.dialog.current.toggle();
+					else
+						await this.adicionarErro(erro.response.data);
 				} else {
 					await this.adicionarErro(erro);
 				}
@@ -55,7 +60,19 @@ export default class Login extends Component {
     adicionarErro = async (mensagem) => {
         this.erros.push(mensagem);
         await this.setState({ erros: this.erros });
-    }
+	}
+	
+	confirmarReenvio = async () => {
+		try {
+			var resultado = await UsuarioService.ReenviarConfirmacao(this.state.email, this.state.senha);
+		} catch(erro) {
+			if(erro.response) {
+				await this.adicionarErro(erro.response.data);
+			} else {
+				await this.adicionarErro(erro);
+			}
+		}
+	}
 
 	render() {
 		return (
@@ -97,6 +114,9 @@ export default class Login extends Component {
                 <div className="form-group text-center">
                     Versão {packageJson.version}
                 </div>
+
+				<Dialog ref={this.dialog} confirmar={this.confirmarReenvio}
+						textoConfirmar={"Enviar"} mensagem={"E-mail não confirmado. Deseja enviar novamente a confirmação?"} />
 			</div>
 		);
 	}

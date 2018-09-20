@@ -7,7 +7,7 @@ import {
 export default function GetRotas() {
     return [
         {
-            titulo: "Home",
+            titulo: "Página Inicial",
             icone: "fas fa-home",
             caminho: "/",
             componente: () => <Home />,

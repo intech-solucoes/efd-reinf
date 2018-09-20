@@ -9,8 +9,16 @@ class UsuarioService extends BaseService {
         return this.CriarRequisicao("POST", `/usuario/login`, { Email, Senha });
     }
 
+    ReenviarConfirmacao(Email, Senha) {
+        return this.CriarRequisicao("POST", `/usuario/reenviarConfirmacao`, { Email, Senha });
+    }
+
     Criar(TXT_EMAIL, PWD_USUARIO, NOM_USUARIO, COD_CPF, COD_TELEFONE_FIXO, COD_TELEFONE_CEL) {
         return this.CriarRequisicao("POST", `/usuario/criar`, { TXT_EMAIL, PWD_USUARIO, NOM_USUARIO, COD_CPF, COD_TELEFONE_FIXO, COD_TELEFONE_CEL });
+    }
+
+    RecuperarSenha(Email) {
+        return this.CriarRequisicao("POST", `/usuario/recuperarSenha`, { Email });
     }
 }
 

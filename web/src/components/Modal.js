@@ -20,7 +20,7 @@ export default class Modal extends Component {
                 <div className={"modal"}>
                     <div className="modal-inner">
                         {this.props.children}<br/>
-                        <button className={"btn btn-primary"} onClick={() => this.toggle()}>Fechar</button>
+                        <button className={"btn btn-light"} onClick={() => this.toggle()}>Fechar</button>
                     </div>
                 </div>
             );
