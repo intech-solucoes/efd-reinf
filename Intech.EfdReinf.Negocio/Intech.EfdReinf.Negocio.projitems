@@ -9,9 +9,9 @@
     <Import_RootNamespace>Intech.EfdReinf.Negocio</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Proxy\BaseController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Proxy\ContribuinteProxy.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Proxy\UsuarioContribuinteProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Proxy\UsuarioProxy.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="$(MSBuildThisFileDirectory)Dominios\" />
   </ItemGroup>
 </Project>

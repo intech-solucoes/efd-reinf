@@ -9,6 +9,8 @@
     <Import_RootNamespace>Intech.EfdReinf.Entidades</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)ContribuinteEntidade.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UsuarioContribuinteEntidade.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UsuarioEntidade.cs" />
   </ItemGroup>
 </Project>
