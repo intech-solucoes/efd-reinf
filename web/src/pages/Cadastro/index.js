@@ -51,7 +51,7 @@ export default class Cadastro extends Component {
                     await this.adicionarErro(erro);
                 }
             }
-        } 
+        }
     }
 
     limparErros = async () => {
@@ -75,42 +75,42 @@ export default class Cadastro extends Component {
 				<br/>
 
                 <CampoTexto contexto={this} ref={ (input) => this.listaCampos[0] = input }
-                            label={"Nome"} valor={this.state.nome} nome={"nome"} tipo={"text"} 
+                            placeholder={"Nome"} valor={this.state.nome} nome={"nome"} tipo={"text"} max={60}
                             obrigatorio={true} />
 
                 <CampoTexto contexto={this} ref={ (input) => this.listaCampos[1] = input }
-                            label={"E-mail"} valor={this.state.email} nome={"email"} tipo={"email"}
+                            placeholder={"E-mail"} valor={this.state.email} nome={"email"} tipo={"email"} max={60}
                             obrigatorio={true} />
 
                 <CampoTexto contexto={this} ref={ (input) => this.listaCampos[2] = input } 
-                            label={"CPF"} valor={this.state.cpf} nome={"cpf"} tipo={"text"} mascara="999.999.999-99" 
+                            placeholder={"CPF"} valor={this.state.cpf} nome={"cpf"} tipo={"text"} mascara="999.999.999-99" 
                             obrigatorio={true} />
 
                 <CampoTexto contexto={this} ref={ (input) => this.listaCampos[3] = input }
-                            label={"Telefone Fixo"} valor={this.state.telefoneFixo} nome={"telefoneFixo"} tipo={"text"} 
+                            placeholder={"Telefone Fixo"} valor={this.state.telefoneFixo} nome={"telefoneFixo"} tipo={"text"} 
                             obrigatorio={true} mascara="(99) 9999-9999" />
 
                 <CampoTexto contexto={this} ref={ (input) => this.listaCampos[4] = input }
-                            label={"Telefone Celular"} valor={this.state.telefoneCelular} nome={"telefoneCelular"} tipo={"text"} 
+                            placeholder={"Telefone Celular"} valor={this.state.telefoneCelular} nome={"telefoneCelular"} tipo={"text"} 
                             obrigatorio={true} mascara="(99) 99999-9999" />
 
                 <CampoTexto contexto={this} ref={ (input) => this.listaCampos[5] = input }
-                            label={"Senha"} valor={this.state.senha} nome={"senha"} tipo={"password"} 
+                            placeholder={"Senha"} valor={this.state.senha} nome={"senha"} tipo={"password"} 
                             obrigatorio={true} />
 
                 <CampoTexto contexto={this} ref={ (input) => this.listaCampos[6] = input }
-                            label={"Confirmar Senha"} valor={this.state.senhaConfirma} nome={"senhaConfirma"} tipo={"password"} 
+                            placeholder={"Confirmar Senha"} valor={this.state.senhaConfirma} nome={"senhaConfirma"} tipo={"password"} 
                             obrigatorio={true} />
+                
+                <div className="form-group">
+                    <Botao titulo="Incluir Usuário" clicar={this.criar} tipo={"primary"} block={true} usaLoading={true} />
+                </div>
                 
 				{this.state.erros.length > 0 &&
                     <div className="alert alert-danger" role="alert" 
-                         dangerouslySetInnerHTML={{__html: this.state.erros.join("<br/>") }}>
+                        dangerouslySetInnerHTML={{__html: this.state.erros.join("<br/>") }}>
 					</div>
                 }
-                
-				<div className="form-group">
-					<Botao titulo="Entrar" clicar={this.criar} tipo={"primary"} block={true} />
-				</div>
 			</div>
         );
     }

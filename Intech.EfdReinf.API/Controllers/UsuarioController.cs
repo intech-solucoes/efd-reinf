@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿#region Usings
 using Intech.EfdReinf.Entidades;
 using Intech.EfdReinf.Negocio.Proxy;
 using Intech.Lib.Dominios;
-using Intech.Lib.Util.Seguranca;
 using Intech.Lib.Web;
 using Intech.Lib.Web.JWT;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic; 
+#endregion
 
 namespace Intech.EfdReinf.API.Controllers
 {
@@ -17,6 +16,20 @@ namespace Intech.EfdReinf.API.Controllers
     [ApiController]
     public class UsuarioController : Controller
     {
+        [HttpGet]
+        [Authorize("Bearer")]
+        public IActionResult Get()
+        {
+            try
+            {
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpGet("buscarPorOid/{oid}")]
         public IActionResult BuscarPorOid(decimal oid)
         {
@@ -79,6 +92,24 @@ namespace Intech.EfdReinf.API.Controllers
             }
         }
 
+        [HttpPost("reenviarConfirmacao")]
+        public ActionResult ReenviarConfirmacao([FromBody] UsuarioLogin dados)
+        {
+            try
+            {
+                var proxyUsuario = new UsuarioProxy();
+                var usuario = proxyUsuario.BuscarPorEmail(dados.Email);
+
+                proxyUsuario.EnviarEmailConfirmacao(usuario);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpGet("confirmarEmail/{token}")]
         public ActionResult ConfirmarEmail(string token)
         {
@@ -101,6 +132,20 @@ namespace Intech.EfdReinf.API.Controllers
                     Content = $"E-mail confirmado com sucesso! Clique <a href=\"{config.PublicacaoPortal}\">aqui</a> para ir para o Portal.",
                     ContentType = "text/html",
                 };
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("recuperarSenha")]
+        public ActionResult RecuperarSenha([FromBody] UsuarioLogin dados)
+        {
+            try
+            {
+                new UsuarioProxy().RecuperarSenha(dados.Email);
+                return Ok();
             }
             catch (Exception ex)
             {

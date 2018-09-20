@@ -1,0 +1,19 @@
+{
+    "inicioValidade": "Preencher com a data de início da validade das informações prestadas no evento. Validação: Deve ser uma data válida, igual ou posterior à data inicial de implantação da EFD-Reinf",
+    "terminoValidade": "Preencher com a data de término da validade das informações, se houver. Validação: Se informado, deve ser um período igual ou posterior a Data de Início Validade",
+    "classificacaoTributaria": "Preencher com o código correspondente à classificação tributária do contribuinte, conforme tabela 8 do anexo I do layout da EFD-REINF. Validação: Os códigos [21] \"Pessoa Física, exceto Segurado Especial\" e [22] \"Segurado Especial\" somente podem ser utilizados se o \"Tipo de Inscrição\" for igual a \"PESSOA FÍSICA\". Para os demais códigos, o \"Tipo de Inscrição\" deve ser igual a \"PESSOA JURÍDICA.\"",
+    
+    "obrigatoriedadeECD": "Indicativo da obrigatoriedade do contribuinte em fazer a sua escrituração contábil na ECD (Escrituração Contábil Digital).",
+    "desoneracaoFolhaCPRB": "Indicativo de desoneração da folha pela CPRB",
+    "isencaoMulta": "Indicativo da existência de acordo internacional para isenção de multa: Validação: Só pode ser igual a \"Com Acordo\" se a classificação tributária for igual a \"Missão Diplomática ou Repartição Consular de carreira estrangeira\".",
+    
+    "situacaoPJ": "Indicativo da Situação da Pessoa Jurídica: 0 - Situação Normal; 1 - Extinção; 2 - Fusão; 3 - Cisão; 4 - Incorporação. Validação: Preenchimento obrigatório apenas para Pessoa Jurídica.",
+    "enteFederativoResponsavel": "Informar se o Órgão Público é o Ente Federativo Responsável - EFR ou se é uma unidade administrativa autônoma vinculada a um EFR. Validação: Essa informação é validada no cadastro do CNPJ na RFB.",
+    "cnpjEFR": "CNPJ do Ente Federativo Responsável - EFR Validação: Preenchimento obrigatório e exclusivo se EFR = Não. Informação validada no cadastro do CNPJ da RFB.",
+    
+    "nomeContato": "Nome do contato no contribuinte. Pessoa responsável por ser o contato do contribuinte com a Receita Federal do Brasil relativamente à EFD-Reinf",
+    "cpfContato": "Preencher com o número do CPF do contato.",
+    "telefoneFixoContato": "Informar o número do telefone, com DDD. Validação: O preenchimento é obrigatório se o campo Telefone Celular não for preenchido.",
+    "telefoneCelularContato": "Telefone celular, com DDD Validação: O preenchimento é obrigatório se o campo Telefone Fixo não for preenchido.",
+    "emailContato": "Endereço eletrônico Validação: O e-mail deve possuir o caractere \"@\" e este não pode estar no início e/ou no final do endereço informado. Deve possuir no mínimo um caractere \".\" depois do @ e não pode estar no final do endereço informado."
+}

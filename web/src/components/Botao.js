@@ -30,6 +30,8 @@ export default class Botao extends Component {
                 {!this.state.carregando && 
                     this.props.titulo}
 
+                {this.props.children}
+
                 {this.state.carregando &&
                     <i className="fas fa-spinner fa-pulse"></i>}
             </button>
