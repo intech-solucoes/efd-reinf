@@ -1,10 +1,6 @@
 import { BaseService } from "@intechprev/react-lib";
 
 class UsuarioService extends BaseService {
-    VerificarLogin() {
-        return this.CriarRequisicao("GET", `/usuario`);
-    }
-
     Login(Email, Senha) {
         return this.CriarRequisicao("POST", `/usuario/login`, { Email, Senha });
     }
@@ -19,6 +15,18 @@ class UsuarioService extends BaseService {
 
     RecuperarSenha(Email) {
         return this.CriarRequisicao("POST", `/usuario/recuperarSenha`, { Email });
+    }
+
+    Buscar() {
+        return this.CriarRequisicao("GET", `/usuario`);
+    }
+
+    Atualizar(usuario) {
+        return this.CriarRequisicao("PUT", "/usuario", usuario);
+    }
+
+    AlterarSenha(senhaAtual, senhaNova) {
+        return this.CriarRequisicao("PUT", "/usuario/alterarSenha", { senhaAtual, senhaNova });
     }
 }
 

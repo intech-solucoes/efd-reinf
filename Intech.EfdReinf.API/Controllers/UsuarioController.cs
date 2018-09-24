@@ -14,21 +14,9 @@ namespace Intech.EfdReinf.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsuarioController : Controller
+    public class UsuarioController : BaseController
     {
-        [HttpGet]
-        [Authorize("Bearer")]
-        public IActionResult Get()
-        {
-            try
-            {
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
+        #region Rotas Publicas
 
         [HttpGet("buscarPorOid/{oid}")]
         public IActionResult BuscarPorOid(decimal oid)
@@ -152,11 +140,67 @@ namespace Intech.EfdReinf.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        #endregion
+
+        #region Rotas Privadas
+        
+        [HttpGet]
+        [Authorize("Bearer")]
+        public IActionResult Buscar()
+        {
+            try
+            {
+                return Json(new UsuarioProxy().BuscarPorChave(OidUsuario));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut]
+        [Authorize("Bearer")]
+        public IActionResult Editar([FromBody] UsuarioEntidade usuario)
+        {
+            try
+            {
+                new UsuarioProxy().Atualizar(usuario);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("alterarSenha")]
+        [Authorize("Bearer")]
+        public IActionResult AlterarSenha([FromBody] SenhaLogin senhas)
+        {
+            try
+            {
+                new UsuarioProxy().AlterarSenha(EmailUsuario, senhas.SenhaAtual, senhas.SenhaNova);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        #endregion
     }
 
     public class UsuarioLogin
     {
         public string Email { get; set; }
         public string Senha { get; set; }
+    }
+
+    public class SenhaLogin
+    {
+        public string SenhaAtual { get; set; }
+        public string SenhaNova { get; set; }
     }
 }
