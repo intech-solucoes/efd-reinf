@@ -4,6 +4,7 @@ import CampoTexto from "./CampoTexto";
 import Combo from "./Combo";
 import Modal from "./Modal";
 import Dialog from "./Dialog";
+import Checkbox from "./Checkbox";
 
 export {
     Botao,
@@ -11,5 +12,6 @@ export {
     CampoTexto,
     Combo,
     Modal,
-    Dialog
+    Dialog,
+    Checkbox
 };
