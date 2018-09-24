@@ -1,3 +1,4 @@
+#region Usings
 using Intech.EfdReinf.Dados.DAO;
 using Intech.EfdReinf.Entidades;
 using Intech.Lib.Data.Erros;
@@ -7,12 +8,19 @@ using Intech.Lib.Util.Seguranca;
 using Intech.Lib.Util.Validacoes;
 using Intech.Lib.Web;
 using System;
-using System.Data.SqlClient;
+using System.Data.SqlClient; 
+#endregion
 
 namespace Intech.EfdReinf.Negocio.Proxy
 {
     public class UsuarioProxy : UsuarioDAO
     {
+        /// <summary>
+        /// Realiza login do usuário.
+        /// </summary>
+        /// <param name="email">E-mail do usuário a ser logado</param>
+        /// <param name="senhaSemCriptografia">Senha do usuário</param>
+        /// <returns></returns>
         public UsuarioEntidade Login(string email, string senhaSemCriptografia)
         {
             var usuario = BuscarPorEmail(email);
@@ -53,10 +61,19 @@ namespace Intech.EfdReinf.Negocio.Proxy
             return usuario;
         }
 
+        /// <summary>
+        /// Insere um novo usuário.
+        /// </summary>
+        /// <param name="usuario">Usuário a ser incluído.</param>
+        /// <returns></returns>
         public override long Inserir(UsuarioEntidade usuario)
         {
             try
             {
+                // Valida e-mail
+                if (!Validador.ValidarEmail(usuario.TXT_EMAIL))
+                    throw new Exception("E-mail inválido.");
+
                 // Valida CPF
                 if (!Validador.ValidarCPF(usuario.COD_CPF))
                     throw new Exception("CPF inválido.");
@@ -92,6 +109,11 @@ namespace Intech.EfdReinf.Negocio.Proxy
             }
         }
 
+        /// <summary>
+        /// Inclui um novo usuário. Rotina mais utilizada pela tela de cadastro de novo usuário.
+        /// </summary>
+        /// <param name="usuario">Usuário a ser cadastrado</param>
+        /// <returns>Retorna o OID do novo usuário</returns>
         public decimal InserirNovoUsuario(UsuarioEntidade usuario)
         {
             if (usuario.PWD_USUARIO.Length < 6)
@@ -113,6 +135,10 @@ namespace Intech.EfdReinf.Negocio.Proxy
             return oidUsuario;
         }
 
+        /// <summary>
+        /// Envia novo e-mail de confirmação de cadastro do usuário.
+        /// </summary>
+        /// <param name="usuario">Usuário a ser enviado o e-mail</param>
         public void EnviarEmailConfirmacao(UsuarioEntidade usuario)
         {
             // Envia e-mail com nova senha de acesso
@@ -123,7 +149,12 @@ namespace Intech.EfdReinf.Negocio.Proxy
 
             EnvioEmail.EnviarMailKit(config.Email, usuario.TXT_EMAIL, $"EFD-Reinf - Confirmação de Cadastro", textoEmail);
         }
-
+        
+        /// <summary>
+        /// Utilizado para gerar uma nova senha aleatória de 6 dígitos.
+        /// No fim da atualização, envia um e-mail para o usuário com a nova senha gerada.
+        /// </summary>
+        /// <param name="email">E-mail do usuário</param>
         public void RecuperarSenha(string email)
         {
             var usuario = BuscarPorEmail(email);
@@ -148,6 +179,66 @@ namespace Intech.EfdReinf.Negocio.Proxy
                 $"A sua nova senha é {novaSenha}";
 
             EnvioEmail.EnviarMailKit(config.Email, usuario.TXT_EMAIL, $"EFD-Reinf - Recuperação de Senha", textoEmail);
+        }
+
+        /// <summary>
+        /// Troca a senha do usuário.
+        /// </summary>
+        /// <param name="email">E-mail do usuário a ser trocada a senha</param>
+        /// <param name="senhaAtual">Senha atual do usuário</param>
+        /// <param name="novaSenha">Nova senha do usuário</param>
+        public void AlterarSenha(string email, string senhaAtual, string novaSenha)
+        {
+            var usuario = BuscarPorEmail(email);
+            var senhaAntigaEncriptada = Criptografia.Encriptar(senhaAtual);
+
+            if (usuario.PWD_USUARIO != senhaAntigaEncriptada)
+                throw new Exception("A senha atual deve ser igual à senha cadastrada para o usuário logado.");
+
+            usuario.PWD_USUARIO = Criptografia.Encriptar(novaSenha);
+
+            Atualizar(usuario);
+        }
+
+        /// <summary>
+        /// Atualiza os dados do usuário.
+        /// </summary>
+        /// <param name="usuario">Usuário a ser atualizado</param>
+        /// <returns></returns>
+        public override bool Atualizar(UsuarioEntidade usuario)
+        {
+            try
+            {
+                // Valida e-mail
+                if (!Validador.ValidarEmail(usuario.TXT_EMAIL))
+                    throw new Exception("E-mail inválido.");
+
+                // Valida CPF
+                if (!Validador.ValidarCPF(usuario.COD_CPF))
+                    throw new Exception("CPF inválido.");
+
+                // Limpa máscaras
+                usuario.COD_CPF = usuario.COD_CPF.LimparMascara();
+                usuario.COD_TELEFONE_CEL = usuario.COD_TELEFONE_CEL.LimparMascara();
+                usuario.COD_TELEFONE_FIXO = usuario.COD_TELEFONE_FIXO.LimparMascara();
+
+                // Valida telefones
+                if (usuario.COD_TELEFONE_CEL.Length < 11)
+                    throw new Exception("Telefone Celular inválido");
+
+                if (usuario.COD_TELEFONE_FIXO.Length < 10)
+                    throw new Exception("Telefone Fixo inválido");
+
+                return base.Atualizar(usuario);
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception(ErrosBanco.Traduzir(ex.Message, ex.Number));
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

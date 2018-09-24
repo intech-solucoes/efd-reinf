@@ -15,7 +15,7 @@ export default class NovoContribuinte extends Component {
         this.erros = [];
 
         this.state = {
-            tipoInscricao: "",
+            tipoInscricao: "1",
             razaoSocial: "",
             cnpj: "",
             inicioValidade: "",
@@ -223,80 +223,80 @@ export default class NovoContribuinte extends Component {
 
                         <Combo contexto={this} label={"Tipo de inscrição"} ref={ (input) => this.listaCampos[0] = input } 
                                nome="tipoInscricao" valor={this.state.tipoInscricao} obrigatorio={true} padrao={"1"}
-                               opcoes={this.opcoes.tipoInscricao} desabilitado={true} />
+                               opcoes={this.opcoes.tipoInscricao} desabilitado={true} col="col-lg-5" />
 
                         <CampoTexto contexto={this} ref={ (input) => this.listaCampos[1] = input }
                                     label={"Razão social"} nome={"razaoSocial"} tipo={"text"} max={115}
-                                    placeholder={"Razão Social"} valor={this.state.razaoSocial} obrigatorio={true} />
+                                    placeholder={"Razão Social"} valor={this.state.razaoSocial} obrigatorio={true} col="col-lg-5" />
 
                         <CampoTexto contexto={this} ref={ (input) => this.listaCampos[2] = input }
                                     label={"CNPJ"} nome={"cnpj"} tipo={"text"} placeholder={"CNPJ"}
-                                    obrigatorio={true} valor={this.state.cnpj} mascara={"99.999.999/9999-99"} />
+                                    obrigatorio={true} valor={this.state.cnpj} mascara={"99.999.999/9999-99"} col="col-lg-5" />
 
                         <CampoTexto contexto={this} ref={ (input) => this.listaCampos[3] = input }
                                     label={"Início Validade"} nome={"inicioValidade"} tipo={"text"} 
                                     placeholder={"Início Validade"} valor={this.state.inicioValidade} 
-                                    obrigatorio={true} mascara={"99/99/9999"} botaoAjuda={textosAjuda.inicioValidade} />
+                                    obrigatorio={true} mascara={"99/99/9999"} botaoAjuda={textosAjuda.inicioValidade} col="col-lg-5" />
 
                         <CampoTexto contexto={this} ref={ (input) => this.listaCampos[4] = input }
                                     label={"Término Validade"} nome={"terminoValidade"} tipo={"text"} 
                                     placeholder={"Término Validade"} valor={this.state.terminoValidade}
-                                    obrigatorio={false} mascara={"99/99/9999"} botaoAjuda={textosAjuda.terminoValidade} />
+                                    obrigatorio={false} mascara={"99/99/9999"} botaoAjuda={textosAjuda.terminoValidade} col="col-lg-5" />
 
                         <Combo contexto={this} label={"Classificação Tributária"} ref={ (input) => this.listaCampos[5] = input } 
                                nome="classificacaoTributaria" valor={this.state.classificacaoTributaria} obrigatorio={true}
-                               opcoes={this.opcoes.classificacaoTributaria} botaoAjuda={textosAjuda.classificacaoTributaria}  />
+                               opcoes={this.opcoes.classificacaoTributaria} botaoAjuda={textosAjuda.classificacaoTributaria} col="col-lg-5"  />
 
                         <Combo contexto={this} label={"Obrigatoriedade ECD"} ref={ (input) => this.listaCampos[6] = input } 
                                nome="obrigatoriedadeECD" valor={this.state.obrigatoriedadeECD} obrigatorio={true}
-                               opcoes={this.opcoes.obrigatoriedadeECD} botaoAjuda={textosAjuda.obrigatoriedadeECD} />
+                               opcoes={this.opcoes.obrigatoriedadeECD} botaoAjuda={textosAjuda.obrigatoriedadeECD} col="col-lg-5" />
 
                         <Combo contexto={this} label={"Desoneração Folha CPRB"} ref={ (input) => this.listaCampos[7] = input } 
                                nome="desoneracaoFolhaCPRB" valor={this.state.desoneracaoFolhaCPRB} obrigatorio={true} 
-                               opcoes={this.opcoes.desoneracaoFolhaCPRB} botaoAjuda={textosAjuda.desoneracaoFolhaCPRB} />
+                               opcoes={this.opcoes.desoneracaoFolhaCPRB} botaoAjuda={textosAjuda.desoneracaoFolhaCPRB} col="col-lg-5" />
 
                         <Combo contexto={this} label={"Isenção Multa"} ref={ (input) => this.listaCampos[8] = input } 
                                nome="isencaoMulta" valor={this.state.isencaoMulta} obrigatorio={true}
-                               opcoes={this.opcoes.isencaoMulta} botaoAjuda={textosAjuda.isencaoMulta} />
+                               opcoes={this.opcoes.isencaoMulta} botaoAjuda={textosAjuda.isencaoMulta} col="col-lg-5" />
 
                         <Combo contexto={this} label={"Situação PJ"} ref={ (input) => this.listaCampos[9] = input } 
                                nome="situacaoPJ" valor={this.state.situacaoPJ} obrigatorio={true}
-                               opcoes={this.opcoes.situacaoPJ} botaoAjuda={textosAjuda.situacaoPJ} />
+                               opcoes={this.opcoes.situacaoPJ} botaoAjuda={textosAjuda.situacaoPJ} col="col-lg-5" />
 
                         <Combo contexto={this} label={"Ente Federativo Responsável (EFR)"} ref={ (input) => this.listaCampos[10] = input } 
                                nome="enteFederativoResponsavel" valor={this.state.enteFederativoResponsavel} obrigatorio={true}
                                opcoes={this.opcoes.enteFederativoResponsavel} botaoAjuda={textosAjuda.enteFederativoResponsavel} 
-                               onChange={this.handleEfrChange} />
+                               onChange={this.handleEfrChange} col="col-lg-5" />
 
                         <CampoTexto contexto={this} ref={ (input) => this.listaCampos[11] = input } 
                                     placeholder={"CNPJ EFR"} valor={this.state.cnpjEfr} label={"CNPJ EFR"} 
                                     nome={"cnpjEfr"} tipo={"text"} obrigatorio={this.state.cnpjEfrObrigatorio} 
-                                    mascara={"99.999.999/9999-99"} botaoAjuda={textosAjuda.cnpjEfr} />
+                                    mascara={"99.999.999/9999-99"} botaoAjuda={textosAjuda.cnpjEfr} col="col-lg-5" />
 
                         <CampoTexto contexto={this} ref={ (input) => this.listaCampos[12] = input }
                                     label={"Nome do Contato"} nome={"nomeContato"} tipo={"text"} 
                                     placeholder={"Nome do Contato"} obrigatorio={true} valor={this.state.nomeContato} 
-                                    terminoValidadeobrigatorio={false} botaoAjuda={textosAjuda.nomeContato} />
+                                    terminoValidadeobrigatorio={false} botaoAjuda={textosAjuda.nomeContato} col="col-lg-5" />
 
                         <CampoTexto contexto={this} ref={ (input) => this.listaCampos[13] = input } placeholder={"CPF do Contato"}
                                     label={"CPF do Contato"} nome={"cpfContato"} tipo={"text"} 
                                     valor={this.state.cpfContato} obrigatorio={true} 
-                                    mascara={"999.999.999-99"} botaoAjuda={textosAjuda.cpfContato} />
+                                    mascara={"999.999.999-99"} botaoAjuda={textosAjuda.cpfContato} col="col-lg-5" />
 
                         <CampoTexto contexto={this} ref={ (input) => this.listaCampos[14] = input }
                                     label={"Telefone Fixo do Contato"} nome={"telefoneFixoContato"} tipo={"text"} 
                                     placeholder={"Telefone Fixo do Contato"} valor={this.state.telefoneFixoContato} obrigatorio={false} 
-                                    mascara={"(99) 9999-9999"} botaoAjuda={textosAjuda.telefoneFixoContato} />
+                                    mascara={"(99) 9999-9999"} botaoAjuda={textosAjuda.telefoneFixoContato} col="col-lg-5" />
 
                         <CampoTexto contexto={this} ref={ (input) => this.listaCampos[15] = input }
                                     label={"Telefone Celular do Contato"} nome={"telefoneCelularContato"} tipo={"text"} 
                                     placeholder={"Telefone Celular do Contato"} valor={this.state.telefoneCelularContato} obrigatorio={false} 
-                                    mascara={"(99) 99999-9999"} botaoAjuda={textosAjuda.telefoneCelularContato} />
+                                    mascara={"(99) 99999-9999"} botaoAjuda={textosAjuda.telefoneCelularContato} col="col-lg-5" />
 
                         <CampoTexto contexto={this} ref={ (input) => this.listaCampos[16] = input }
                                     label={"E-mail do Contato"} nome={"emailContato"} tipo={"text"} 
                                     placeholder={"E-mail do Contato"} valor={this.state.emailContato} 
-                                    obrigatorio={false} botaoAjuda={textosAjuda.emailContato} />
+                                    obrigatorio={false} botaoAjuda={textosAjuda.emailContato} col="col-lg-5" />
                     </div>
                 </div>
 

@@ -4,6 +4,9 @@ import CampoTexto from "./CampoTexto";
 import Combo from "./Combo";
 import Modal from "./Modal";
 import Dialog from "./Dialog";
+import Box from './Box';
+import Col from './Col';
+import Row from './Row';
 import Checkbox from "./Checkbox";
 
 export {
@@ -13,5 +16,8 @@ export {
     Combo,
     Modal,
     Dialog,
-    Checkbox
+    Checkbox,
+    Box,
+    Col,
+    Row
 };

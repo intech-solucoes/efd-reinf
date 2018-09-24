@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
-import { UsuarioService } from "@intechprev/efdreinf-service";
+import { VersaoService } from "@intechprev/efdreinf-service";
 
 import GetRotas from './Rotas';
 
@@ -11,7 +11,7 @@ export default class MasterPage extends React.Component {
 
     componentWillMount() {
         if(localStorage.getItem("token")) {
-            UsuarioService.VerificarLogin()
+            VersaoService.ValidarToken()
                 .then(() => {})
                 .catch((err) => {
                     if(err.message.indexOf("401") > -1)

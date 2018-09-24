@@ -8,13 +8,37 @@ using Intech.Lib.Util.Validacoes;
 using Intech.Lib.Web;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient; 
+using System.Data.SqlClient;
+using System.Linq;
 #endregion
 
 namespace Intech.EfdReinf.Negocio.Proxy
 {
     public class ContribuinteProxy : ContribuinteDAO
     {
+        /// <summary>
+        /// Busca todos os contribuintes do usuário.
+        /// Aplica máscara do CNPJ ao retornar.
+        /// </summary>
+        /// <param name="OID_USUARIO">OID do usuário.</param>
+        /// <returns></returns>
+        public override IEnumerable<ContribuinteEntidade> BuscarPorOidUsuario(decimal OID_USUARIO)
+        {
+            var listaContribuintes = base.BuscarPorOidUsuario(OID_USUARIO).ToList();
+
+            listaContribuintes.ForEach(contribuinte =>
+            {
+                var cpfCnpjComMascara =
+                    contribuinte.IND_TIPO_INSCRICAO == DMN_TIPO_INSCRICAO_EFD.PESSOA_JURIDICA ?
+                    contribuinte.COD_CNPJ_CPF.AplicarMascara(Mascaras.CNPJ) :
+                    contribuinte.COD_CNPJ_CPF.AplicarMascara(Mascaras.CPF);
+
+                contribuinte.COD_CNPJ_CPF = cpfCnpjComMascara;
+            });
+
+            return listaContribuintes;
+        }
+
         public decimal Inserir(ContribuinteEntidade contribuinte, decimal oidUsuario)
         {
             // Validações pessoa jurídica
@@ -81,19 +105,7 @@ namespace Intech.EfdReinf.Negocio.Proxy
 
             var textoEmail = $"EFD-Reinf: Um novo contribuinte foi cadastrado pelo usuário {usuario.NOM_USUARIO}: {contribuinte.NOM_RAZAO_SOCIAL}.";
 
-            //var listaDestinatarios = new List<string>
-            //{
-            //    "gustavo@intech.com.br",
-            //    "cleber@intech.com.br",
-            //    "augusto@intech.com.br"
-            //};
-
-            var listaDestinatarios = new List<string>
-            {
-                "roniely@intech.com.br"
-            };
-
-            EnvioEmail.EnviarMailKit(config.Email, listaDestinatarios, $"[EFD-Reinf] - Novo Contribuinte", textoEmail);
+            EnvioEmail.EnviarMailKit(config.Email, config.EmailsCadastroContribuintes, $"[EFD-Reinf] - Novo Contribuinte", textoEmail);
 
             return oidContribuinte;
         }
