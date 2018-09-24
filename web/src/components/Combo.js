@@ -34,10 +34,15 @@ export default class Combo extends Component {
 	}
 
     render() {
+		var col = "col-lg-2";
+
+		if(this.props.col)
+			col = this.props.col;
+
         return (
 			<div className="form-group row">
 				{this.props.label && 
-					<div className="col-lg-5 col-md-12 text-lg-right col-form-label">
+					<div className={col + " col-md-12 text-lg-right col-form-label"}>
 						<b><label htmlFor={this.props.nome}>{this.props.label}</label></b>
 						{this.props.obrigatorio && " *"}
 					</div>

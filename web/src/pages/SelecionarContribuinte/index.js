@@ -64,7 +64,7 @@ export default class SelecionarContribuinte extends Component {
 
                 {this.state.contribuintes.map((contribuinte, index) => {
                     return (
-                        <div key={index} className="row box" onClick={() => this.selecionar(contribuinte.OID_CONTRIBUINTE)}>
+                        <div key={index} className="row contrib-card" onClick={() => this.selecionar(contribuinte.OID_CONTRIBUINTE)}>
                             <div className="col">
 
                                 {contribuinte.NOM_RAZAO_SOCIAL}

@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { CampoTexto, Botao, Modal } from '../../components';
+import { CampoTexto, Botao, Box, Row, Col } from '../../components';
 
-import { validarEmail } from "@intechprev/react-lib";
-import ListaContribuintes from './ListaContribuintes';
+import { UsuarioService, ContribuinteService } from "@intechprev/efdreinf-service";
+
+import "./index.css";
 
 export default class MinhaConta extends Component {
 
@@ -13,32 +14,22 @@ export default class MinhaConta extends Component {
         this.erros = [];
 
         this.state = {
-            email: "",
-            nome: "",
-            cpf: "",
-            telefoneFixo: "",
-            telefoneCelular: "",
-
-            contribuintes: [
-                {
-                    nome: "INTECH SOLUÇÕES EM TECNOLOGIA",
-                    cnpj: "12.123.456/0001-45"
-                },
-                {
-                    nome: "FUNDAÇÃO XPTO DE PREVIDÊNCIA",
-                    cnpj: "23.985.943/0001-94"
-                },
-            ],
-            desvincularVisivel: false,
+            usuario: {},
+            listaContribuintes: [],
             erros: []
         }
-
-        this.modal = React.createRef();
     }
 
-    componentDidMount() {
-        // Busca dados do usuário
-        // Busca lista de contribuintes
+    async componentDidMount() {
+        var result = await UsuarioService.Buscar();
+        await this.setState({
+            usuario: result.data
+        });
+
+        result = await ContribuinteService.Listar();
+        await this.setState({
+            listaContribuintes: result.data
+        });
     }
 
     limparErros = async () => {
@@ -56,85 +47,82 @@ export default class MinhaConta extends Component {
     }
 
     alterarDados = async () => { 
-        console.log(this.state);
-        
-        this.validarFormulario();
-    }
-
-    validarFormulario = async () => {
-        // Validações de campos obrigatórios.
         await this.limparErros();
 
         for(var i = 0; i < this.listaCampos.length; i++) {
             var campo = this.listaCampos[i];
             campo.validar();
 
-            if(campo.possuiErros) {
+            if(campo.possuiErros)
                 await this.adicionarErro(campo.erros);
-            }
         }
 
-        // Validação do campo de e-mail, caso esteja preenchido.
-        if(this.state.email.length > 0) {
-            if(validarEmail(this.state.email))
-                await this.adicionarErro("Campo e-mail inválido!");
+        if(this.state.erros.length === 0) {
+            try {
+                await UsuarioService.Atualizar(this.state.usuario);
+                alert("Dados atualizados com sucesso!");
+            } catch(err) {
+                if(err.response)
+                    await this.adicionarErro(err.response.data);
+                else
+                    await this.adicionarErro(err);
+            }
         }
     }
 
-    render() { 
-        return ( 
-
-            <div className="row">
-                <div className="col">
+    render() {
+        return (
+            <div>
+                <Box>
                     <CampoTexto contexto={this} ref={ (input) => this.listaCampos[0] = input }
-                                label={"E-mail"} nome={"email"} tipo={"text"} valor={this.state.email}
-                                placeholder={"E-mail"} />
+                                label={"E-mail"} nome={"TXT_EMAIL"} tipo={"email"} placeholder={"E-mail"}
+                                valor={this.state.usuario.TXT_EMAIL} desabilitado={true} parent={"usuario"} />
 
                     <CampoTexto contexto={this} ref={ (input) => this.listaCampos[1] = input }
-                                label={"Nome"} nome={"nome"} tipo={"text"} placeholder={"Nome"}
-                                valor={this.state.nome} obrigatorio={true} />
+                                label={"Nome"} nome={"NOM_USUARIO"} tipo={"text"} placeholder={"Nome"}
+                                valor={this.state.usuario.NOM_USUARIO} obrigatorio={true} parent={"usuario"} />
                                 
                     <CampoTexto contexto={this} ref={ (input) => this.listaCampos[2] = input }
                                 label={"CPF"} nome={"cpf"} tipo={"text"} placeholder={"CPF"}
-                                valor={this.state.cpf} obrigatorio={true} mascara={"999.999.999-99"} />
+                                valor={this.state.usuario.COD_CPF} obrigatorio={true} mascara={"999.999.999-99"} parent={"usuario"} />
                     
                     <CampoTexto contexto={this} ref={ (input) => this.listaCampos[3] = input }
                                 label={"Telefone Fixo"} nome={"telefoneFixo"} tipo={"text"} placeholder={"Telefone Fixo"}
-                                valor={this.state.telefoneFixo} obrigatorio={true} mascara={"(99) 9999-9999"} />
+                                valor={this.state.usuario.COD_TELEFONE_FIXO} obrigatorio={true} mascara={"(99) 9999-9999"} parent={"usuario"} />
                     
                     <CampoTexto contexto={this} ref={ (input) => this.listaCampos[4] = input }
                                 label={"Telefone Celular"} nome={"telefoneCelular"} tipo={"text"} placeholder={"Telefone Celular"}
-                                valor={this.state.telefoneCelular} obrigatorio={true} mascara={"(99) 99999-9999"} />
-                    
-                    <br />
+                                valor={this.state.usuario.COD_TELEFONE_CEL} obrigatorio={true} mascara={"(99) 99999-9999"} parent={"usuario"} />
 
-                    <div className="row">
-                        <div className="col">
-                            <div align="center">
-                                <div className="col-5">
-
-                                    {this.state.erros.length > 0 &&
-                                        <div className="alert alert-danger" role="alert" 
-                                            dangerouslySetInnerHTML={{__html: this.state.erros.join("<br/>") }}>
-                                        </div>
-                                    }
-
-                                    <br />
-                                    <Botao titulo={"Alterar Dados"} tipo={"primary"} clicar={this.alterarDados}
-                                           block={true} usaLoading={true} />
-                                    <br />
-
-                                    <a href="/alterarSenha">Alterar Senha</a>
+                    <Row>
+                        <Col>
+                            {this.state.erros.length > 0 &&
+                                <div className="alert alert-danger" role="alert" 
+                                    dangerouslySetInnerHTML={{__html: this.state.erros.join("<br/>") }}>
                                 </div>
+                            }
+                            
+                            <Botao titulo={"Salvar"} tipo={"primary"} clicar={this.alterarDados}
+                                usaLoading={true} />
+                            
+                            <a href="/alterarSenha" className="btn btn-light ml-3">Alterar Senha</a>
+                        </Col>
+                    </Row>
+                </Box>
+
+                <Box titulo={"Contribuintes Vinculados"}>
+                    {this.state.listaContribuintes.map((contribuinte, index) => (
+
+                        <div className="media" key={index}>
+                            <div className="media-body">
+                                <h5 className="mt-0 text-primary">{contribuinte.NOM_RAZAO_SOCIAL}</h5>
+                                {contribuinte.COD_CNPJ_CPF}
                             </div>
                         </div>
-                    </div>
-                    <br />
-                    
-                    <ListaContribuintes />
-                </div>
+                        
+                    ))}
+                </Box>
             </div>
         );
     }
-
 }

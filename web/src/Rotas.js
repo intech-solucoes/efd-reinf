@@ -10,7 +10,7 @@ export default function GetRotas() {
             titulo: "Página Inicial",
             icone: "fas fa-home",
             caminho: "/",
-            componente: () => <Home />,
+            componente: (routeProps) => <Home routeProps={routeProps} />,
             mostrarMenu: true,
             exact: true
         },
@@ -18,25 +18,25 @@ export default function GetRotas() {
             titulo: "Minha Conta",
             icone: "fas fa-user",
             caminho: "/minhaConta",
-            componente: () => <MinhaConta />,
+            componente: (routeProps) => <MinhaConta routeProps={routeProps} />,
             mostrarMenu: true,
-            exact: false
+            exact: true
         },
         {
             titulo: "Alterar Senha",
             icone: "",
             caminho: "/alterarSenha",
-            componente: () => <AlterarSenha />,
+            componente: (routeProps) => <AlterarSenha routeProps={routeProps} />,
             mostrarMenu: false,
-            exact: false
+            exact: true
         },
         {
             titulo: "Geração XML",
             icone: "fas fa-table",
             caminho: "/geracaoXml",
-            componente: () => <GeracaoXml />,
+            componente: (routeProps) => <GeracaoXml routeProps={routeProps} />,
             mostrarMenu: true,
-            exact: false
+            exact: true
         }
     ]
 }

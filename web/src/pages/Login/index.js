@@ -64,7 +64,7 @@ export default class Login extends Component {
 	
 	confirmarReenvio = async () => {
 		try {
-			var resultado = await UsuarioService.ReenviarConfirmacao(this.state.email, this.state.senha);
+			await UsuarioService.ReenviarConfirmacao(this.state.email, this.state.senha);
 		} catch(erro) {
 			if(erro.response) {
 				await this.adicionarErro(erro.response.data);

@@ -31,11 +31,16 @@ export default class CampoTexto extends Component {
 	}
 
 	render() {
+		var col = "col-lg-2";
+
+		if(this.props.col)
+			col = this.props.col;
+
 		return (
 			<div className="form-group row">
 				
 				{this.props.label &&
-					<div className="col-lg-5 col-md-12 text-lg-right col-form-label">
+					<div className={col + " col-md-12 text-lg-right col-form-label"}>
 						<b><label htmlFor={this.props.nome}>
 							{this.props.label}
 							{this.props.obrigatorio && " *"}
@@ -45,8 +50,8 @@ export default class CampoTexto extends Component {
 
 				<div className="col">
 					<InputMask mask={this.props.mascara} name={this.props.nome} value={this.props.valor} maxLength={this.props.max} className="form-control"
-							   type={this.props.tipo} placeholder={this.props.placeholder} id={this.props.nome}
-							   onChange={(e) => handleFieldChange(this.props.contexto, e)} />
+							   type={this.props.tipo} placeholder={this.props.placeholder} id={this.props.nome} disabled={this.props.desabilitado}
+							   onChange={(e) => handleFieldChange(this.props.contexto, e, this.props.parent)} />
 				</div>
 
 				{this.props.botaoAjuda && 
