@@ -3,7 +3,6 @@ import { CampoTexto, Combo, Botao } from '../../components';
 
 import { ContribuinteService } from "@intechprev/efdreinf-service";
 import { validarEmail } from "@intechprev/react-lib";
-import DataInvalida from '../../utils/Data';
 
 const textosAjuda = require('../../Textos');
 

@@ -12,6 +12,15 @@ export default class Combo extends Component {
 		this.possuiErros = false;
 	}
 
+	async componentDidMount() {
+		var nome = this.props.nome;
+
+		// Atualiza o state do combo para o valor padrão selecionado via props.
+		await this.props.contexto.setState({
+			[nome]: this.props.padrao
+		});
+	}
+
 	validar = () => {
 		this.possuiErros = false;
 		this.erros = [];
