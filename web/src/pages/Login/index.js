@@ -100,7 +100,7 @@ export default class Login extends Component {
                 }
 
 				<div className="form-group row">
-					<a className="col-sm-6" href="/esqueciSenha">Esqueci Minha Senha</a>
+					<Link className="col-sm-6" to="/esqueciSenha">Esqueci Minha Senha</Link>
 					<Link className="col-sm-6 text-right" to="/cadastro">Cadastre-se</Link>
 				</div>
 				<br/>
