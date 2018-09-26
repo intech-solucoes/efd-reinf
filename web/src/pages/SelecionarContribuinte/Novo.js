@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { CampoTexto, Combo, Botao } from '../../components';
 
 import { ContribuinteService } from "@intechprev/efdreinf-service";
-import { validarEmail } from "@intechprev/react-lib";
 
 const textosAjuda = require('../../Textos');
 
@@ -40,8 +39,12 @@ export default class NovoContribuinte extends Component {
         this.opcoes = {
             tipoInscricao: [
                 {
-                    valor:'1',
-                    nome: "PESSOA JURIDICA"
+                    valor: '1',
+                    nome: "PESSOA JURíDICA"
+                },
+                {
+                    valor: '2',
+                    nome: "PESSOA FÍSICA"
                 }
             ],
             classificacaoTributaria: [
@@ -62,8 +65,28 @@ export default class NovoContribuinte extends Component {
                     nome: "MEI - MICRO EMPREENDEDOR INDIVIDUAL"
                 },
                 {
-                    valor: '05',
+                    valor: '06',
                     nome: "AGROINDÚSTRIA"
+                },
+                {
+                    valor: '07',
+                    nome: "PRODUTOR RURAL PESSOA JURÍDICA"
+                },
+                {
+                    valor: '08',
+                    nome: "CONSÓRCIO SIMPLIFICADO DE PRODUTORES RURAIS"
+                },
+                {
+                    valor: '09',
+                    nome: "ÓRGÃO GESTOR DE MÃO DE OBRA"
+                },
+                {
+                    valor: '10',
+                    nome: "ENTIDADE SINDICAL - LEI 12.023/2009"
+                },
+                {
+                    valor: '11',
+                    nome: "ASSOC. DESPORT. QUE MANTÉM CLUBE DE FUTEBOL PROF."
                 }
             ],
             obrigatoriedadeECD: [
@@ -113,6 +136,10 @@ export default class NovoContribuinte extends Component {
                     valor: '3',
                     nome: "CISÃO"
                 },
+                {
+                    valor: '4',
+                    nome: "INCORPORAÇÃO"
+                }
             ],
             enteFederativoResponsavel: [
                 {
@@ -142,14 +169,26 @@ export default class NovoContribuinte extends Component {
     }
 
     novo = async () => {
-
+        await this.limparErros();
+        
         for(var i = 0; i < this.listaCampos.length; i++) {
             var campo = this.listaCampos[i];
-            campo.validar();
+
+            // Não deve ser feita a validação do campo CNPJ EFR, esta é feita logo abaixo pois possui uma mensagem de erro específica.
+            if(campo.props.nome !== 'cnpjEfr')
+                campo.validar();
 
             if(campo.possuiErros)
                 await this.adicionarErro(campo.erros);
         }
+
+        // Validação dos campos de telefone: ao menos um telefone do contato deve ser fornecido.
+        if(!this.state.telefoneCelularContato && !this.state.telefoneFixoContato)
+            await this.adicionarErro("Pelo menos um telefone do contato deve ser fornecido");
+
+        // Validação do CNPJ EFR: este campo é obrigatório apenas se o campo Ente Federativo Responsável (EFR) tiver o valor 'N'.
+        if(this.state.enteFederativoResponsavel === 'N' && !this.state.cnpjEfr)
+            await this.adicionarErro("CNPJ do Ente Federativo Responsável - EFR é obrigatório e exclusivo se EFR = Não. Informação validada no cadastro do CNPJ da RFB.");
 
         if(this.state.erros.length === 0) {
             // Criar contribuinte.
@@ -158,8 +197,10 @@ export default class NovoContribuinte extends Component {
                       this.state.terminoValidade, this.state.classificacaoTributaria, this.state.obrigatoriedadeECD, this.state.desoneracaoFolhaCPRB, 
                       this.state.isencaoMulta, this.state.situacaoPJ, this.state.enteFederativoResponsavel, this.state.cnpjEfr, this.state.nomeContato, 
                       this.state.cpfContato, this.state.telefoneFixoContato, this.state.telefoneCelularContato, this.state.emailContato, this.state.emailContato);
-                    
-                alert("Contribuinte criado com sucesso!");
+
+                alert("Contribuinte inserido com sucesso! Aguarde confirmação da Intech para iniciar a utilização do Intech EFD-Reinf!");
+                window.location.reload();
+                
             } catch(err) {
 				if(err.response) {
 					await this.adicionarErro(err.response.data);
@@ -167,36 +208,6 @@ export default class NovoContribuinte extends Component {
 					await this.adicionarErro(err);
 				}
             }
-        } else {
-            // Mostra os erros no state 'erros'.
-        }
-
-    }
-
-    validarFormulario = async () => {
-        // Validações de campos obrigatórios.
-        await this.limparErros();
-
-        for(var i = 0; i < this.listaCampos.length; i++) {
-            var campo = this.listaCampos[i];
-            campo.validar();
-
-            if(campo.possuiErros) {
-                await this.adicionarErro(campo.erros);
-            }
-        }
-        
-        // Validação dos campos de telefone: os campos não são obrigatórios, mas ao menos um deve ser fornecido.
-        if(this.state.telefoneCelularContato === "" && this.state.telefoneFixoContato === "")
-            await this.adicionarErro("Pelo menos um telefone do contato deve ser fornecido");
-
-        // Validação dos campos de data.
-        await this.validarDatas();
-
-        // Validação do campo de e-mail, caso esteja preenchido.
-        if(this.state.emailContato.length > 0) {
-            if(validarEmail(this.state.emailContato))
-                await this.adicionarErro("Campo e-mail inválido!");
         }
 
     }
