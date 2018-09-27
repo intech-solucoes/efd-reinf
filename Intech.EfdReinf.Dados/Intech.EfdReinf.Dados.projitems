@@ -10,11 +10,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="$(MSBuildThisFileDirectory)Scripts\Contribuinte\entidade.json" />
+    <Content Include="$(MSBuildThisFileDirectory)Scripts\Dominio\entidade.json" />
     <Content Include="$(MSBuildThisFileDirectory)Scripts\UsuarioContribuinte\entidade.json" />
     <Content Include="$(MSBuildThisFileDirectory)Scripts\Usuario\entidade.json" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)DAO\ContribuinteDAO.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DAO\DominioDAO.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DAO\UsuarioContribuinteDAO.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DAO\UsuarioDAO.cs" />
   </ItemGroup>
@@ -22,6 +24,7 @@
     <None Include="$(MSBuildThisFileDirectory)Scripts\Contribuinte\BuscarPorCpfCnpj.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\Contribuinte\BuscarPorCpfCnpjOidUsuario.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\Contribuinte\BuscarPorOidUsuario.sql" />
+    <None Include="$(MSBuildThisFileDirectory)Scripts\Dominio\BuscarPorCodigo.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\Usuario\BuscarPorEmail.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\Usuario\BuscarPorToken.sql" />
   </ItemGroup>
