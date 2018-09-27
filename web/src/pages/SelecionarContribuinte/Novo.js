@@ -87,6 +87,41 @@ export default class NovoContribuinte extends Component {
                 {
                     valor: '11',
                     nome: "ASSOC. DESPORT. QUE MANTÉM CLUBE DE FUTEBOL PROF."
+                },
+                {
+                    valor: '13',
+                    nome: "BANCO, CAIXA ECONÔMICA, SOC.CRÉDITO, FINANC. INV."
+                },
+                {
+                    valor: '14',
+                    nome: "SINDICATOS EM GERAL, EXCETO CÓDIGO [10]"
+                },
+                {
+                    valor: '21',
+                    nome: "PESSOA FÍSICA, EXCETO SEGURADO ESPECIAL"
+                },
+                {
+                    valor: '22',
+                    nome: "SEGURADO ESPECIAL"
+                },
+                {
+                    valor: '60',
+                    nome: "MISSÃO DIPLOMÁTICA / REPARTIÇÃO CONSULAR"
+                },
+                {
+                    valor: '70',
+                    nome: "EMPRESA DE QUE TRATA O DECRETO 5.436/2005"
+                },
+                {
+                    valor: '80',
+                    nome: "ENTIDADE IMUNE OU ISENTA"
+                },                {
+                    valor: '85',
+                    nome: "ENTE FEDERATIVO, ÓRGÃOS UNIÃO, AUTARQ. FUND."
+                },
+                {
+                    valor: '99',
+                    nome: "PESSOAS JURÍDICAS EM GERAL"
                 }
             ],
             obrigatoriedadeECD: [
@@ -143,11 +178,11 @@ export default class NovoContribuinte extends Component {
             ],
             enteFederativoResponsavel: [
                 {
-                    valor: 'S',
+                    valor: 'SIM',
                     nome: "É EFR"
                 },
                 {
-                    valor: 'N',
+                    valor: 'NAO',
                     nome: "NÃO É EFR"
                 }
             ]
@@ -174,7 +209,7 @@ export default class NovoContribuinte extends Component {
         for(var i = 0; i < this.listaCampos.length; i++) {
             var campo = this.listaCampos[i];
 
-            // Não deve ser feita a validação do campo CNPJ EFR, esta é feita logo abaixo pois possui uma mensagem de erro específica.
+            // Não deve ser feita a validação do campo CNPJ EFR, esta é feita na API e mostra uma mensagem de erro específica.
             if(campo.props.nome !== 'cnpjEfr')
                 campo.validar();
 
@@ -185,10 +220,6 @@ export default class NovoContribuinte extends Component {
         // Validação dos campos de telefone: ao menos um telefone do contato deve ser fornecido.
         if(!this.state.telefoneCelularContato && !this.state.telefoneFixoContato)
             await this.adicionarErro("Pelo menos um telefone do contato deve ser fornecido");
-
-        // Validação do CNPJ EFR: este campo é obrigatório apenas se o campo Ente Federativo Responsável (EFR) tiver o valor 'N'.
-        if(this.state.enteFederativoResponsavel === 'N' && !this.state.cnpjEfr)
-            await this.adicionarErro("CNPJ do Ente Federativo Responsável - EFR é obrigatório e exclusivo se EFR = Não. Informação validada no cadastro do CNPJ da RFB.");
 
         if(this.state.erros.length === 0) {
             // Criar contribuinte.
@@ -214,10 +245,10 @@ export default class NovoContribuinte extends Component {
 
     /**
      * @description Método que altera o state de obrigatoriedade do campo cnpjEfr, cujo a regra é: caso o combo 'Ente Federativo Responsável' possua o valor 
-     * 'S', cnpjEfr não deve ser obrigatório; caso possua o valor 'N', cnpjEfr deve ser obrigatório.
+     * 'S', cnpjEfr não deve ser obrigatório; caso possua o valor 'NAO', cnpjEfr deve ser obrigatório.
      */
     handleEfrChange = async () => {
-        if(this.state.enteFederativoResponsavel !== 'N')
+        if(this.state.enteFederativoResponsavel !== 'NAO')
             await this.setState({ cnpjEfrObrigatorio: false });
         else
             await this.setState({ cnpjEfrObrigatorio: true });
