@@ -9,6 +9,10 @@
             {
                 "Key": "EFD_USUARIO_UK02",
                 "Value": "CPF"
+            },
+            {
+                "Key": "EFD_CONTRIBUINTE_UK02",
+                "Value": "Razão Social"
             }
         ]
     }

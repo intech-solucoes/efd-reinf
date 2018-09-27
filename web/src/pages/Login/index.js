@@ -81,17 +81,19 @@ export default class Login extends Component {
                 <h4>Bem-Vindo ao Intech EFD-Reinf</h4>
 				<br/>
 
-				<CampoTexto contexto={this} ref={ (input) => this.listaCampos[0] = input }
-							placeholder={"E-mail"} valor={this.state.email} nome={"email"} tipo={"email"}
-							obrigatorio={true} />
+				<form>
+					<CampoTexto contexto={this} ref={ (input) => this.listaCampos[0] = input }
+								placeholder={"E-mail"} valor={this.state.email} nome={"email"} tipo={"email"}
+								obrigatorio={true} />
 
-				<CampoTexto contexto={this} ref={ (input) => this.listaCampos[1] = input }
-							placeholder={"Senha"} valor={this.state.senha} nome={"senha"} tipo={"password"} 
-							obrigatorio={true} />
+					<CampoTexto contexto={this} ref={ (input) => this.listaCampos[1] = input }
+								placeholder={"Senha"} valor={this.state.senha} nome={"senha"} tipo={"password"} 
+								obrigatorio={true} />
 
-				<div className="form-group">
-					<Botao titulo="Entrar" clicar={this.entrar} tipo={"primary"} block={true} usaLoading={true} />
-				</div>
+					<div className="form-group">
+						<Botao titulo="Entrar" clicar={this.entrar} tipo={"primary"} block={true} usaLoading={true} submit={true} />
+					</div>
+				</form>
 
 				{this.state.erros.length > 0 &&
                     <div className="alert alert-danger" role="alert" 
