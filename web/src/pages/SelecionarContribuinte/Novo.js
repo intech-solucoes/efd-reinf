@@ -32,6 +32,8 @@ export default class NovoContribuinte extends Component {
             emailContato: "",
 
             cnpjEfrObrigatorio: false,
+            tamanhoMinimoTelefoneFixo: 0,
+            tamanhoMinimoTelefoneCelular: 0,
             erros: []
         }
         
@@ -40,7 +42,7 @@ export default class NovoContribuinte extends Component {
             tipoInscricao: [
                 {
                     valor: '1',
-                    nome: "PESSOA JURíDICA"
+                    nome: "PESSOA JURÍDICA"
                 },
                 {
                     valor: '2',
@@ -178,11 +180,11 @@ export default class NovoContribuinte extends Component {
             ],
             enteFederativoResponsavel: [
                 {
-                    valor: 'SIM',
+                    valor: 'S',
                     nome: "É EFR"
                 },
                 {
-                    valor: 'NAO',
+                    valor: 'N',
                     nome: "NÃO É EFR"
                 }
             ]
@@ -204,8 +206,18 @@ export default class NovoContribuinte extends Component {
     }
 
     novo = async () => {
+        // Validação dos campos de telefone: ao menos um telefone do contato deve ser fornecido, e estes não devem estar inválidos.
+        await this.setState({ tamanhoMinimoTelefoneCelular: 0, tamanhoMinimoTelefoneFixo: 0 });
+
+        if(this.state.telefoneFixoContato && !this.state.telefoneCelularContato)
+            await this.setState({ tamanhoMinimoTelefoneFixo: 14 });
+        else if(this.state.telefoneCelularContato && !this.state.telefoneFixoContato)
+            await this.setState({ tamanhoMinimoTelefoneCelular: 15 });
+        else if(this.state.telefoneCelularContato && this.state.telefoneFixoContato)
+            await this.setState({ tamanhoMinimoTelefoneFixo: 14, tamanhoMinimoTelefoneCelular: 15 });
+
+        // Validações de todos os campos pelo método 'validar' de cada componente.            
         await this.limparErros();
-        
         for(var i = 0; i < this.listaCampos.length; i++) {
             var campo = this.listaCampos[i];
 
@@ -216,9 +228,8 @@ export default class NovoContribuinte extends Component {
             if(campo.possuiErros)
                 await this.adicionarErro(campo.erros);
         }
-
-        // Validação dos campos de telefone: ao menos um telefone do contato deve ser fornecido.
-        if(!this.state.telefoneCelularContato && !this.state.telefoneFixoContato)
+        
+        if(!this.state.telefoneFixoContato && !this.state.telefoneCelularContato)
             await this.adicionarErro("Pelo menos um telefone do contato deve ser fornecido");
 
         if(this.state.erros.length === 0) {
@@ -245,10 +256,10 @@ export default class NovoContribuinte extends Component {
 
     /**
      * @description Método que altera o state de obrigatoriedade do campo cnpjEfr, cujo a regra é: caso o combo 'Ente Federativo Responsável' possua o valor 
-     * 'S', cnpjEfr não deve ser obrigatório; caso possua o valor 'NAO', cnpjEfr deve ser obrigatório.
+     * 'S', cnpjEfr não deve ser obrigatório; caso possua o valor 'N', cnpjEfr deve ser obrigatório.
      */
     handleEfrChange = async () => {
-        if(this.state.enteFederativoResponsavel !== 'NAO')
+        if(this.state.enteFederativoResponsavel !== 'N')
             await this.setState({ cnpjEfrObrigatorio: false });
         else
             await this.setState({ cnpjEfrObrigatorio: true });
@@ -327,12 +338,12 @@ export default class NovoContribuinte extends Component {
                         <CampoTexto contexto={this} ref={ (input) => this.listaCampos[14] = input }
                                     label={"Telefone Fixo do Contato"} nome={"telefoneFixoContato"} tipo={"text"} 
                                     placeholder={"Telefone Fixo do Contato"} valor={this.state.telefoneFixoContato} obrigatorio={false} 
-                                    mascara={"(99) 9999-9999"} botaoAjuda={textosAjuda.telefoneFixoContato} col="col-lg-5" />
+                                    mascara={"(99) 9999-9999"} botaoAjuda={textosAjuda.telefoneFixoContato} col="col-lg-5" min={this.state.tamanhoMinimoTelefoneFixo} />
 
                         <CampoTexto contexto={this} ref={ (input) => this.listaCampos[15] = input }
                                     label={"Telefone Celular do Contato"} nome={"telefoneCelularContato"} tipo={"text"} 
                                     placeholder={"Telefone Celular do Contato"} valor={this.state.telefoneCelularContato} obrigatorio={false} 
-                                    mascara={"(99) 99999-9999"} botaoAjuda={textosAjuda.telefoneCelularContato} col="col-lg-5" />
+                                    mascara={"(99) 99999-9999"} botaoAjuda={textosAjuda.telefoneCelularContato} col="col-lg-5" min={this.state.tamanhoMinimoTelefoneCelular} />
 
                         <CampoTexto contexto={this} ref={ (input) => this.listaCampos[16] = input }
                                     label={"E-mail do Contato"} nome={"emailContato"} tipo={"text"} 
