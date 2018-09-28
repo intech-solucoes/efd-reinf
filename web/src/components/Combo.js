@@ -12,6 +12,10 @@ export default class Combo extends Component {
 		this.possuiErros = false;
 	}
 
+	static defaultProps = {
+		padrao: ""
+	}
+
 	async componentDidMount() {
 		var nome = this.props.nome;
 
