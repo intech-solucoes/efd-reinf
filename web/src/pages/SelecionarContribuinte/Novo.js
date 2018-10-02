@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { CampoTexto, Combo, Botao } from '../../components';
 
-import { ContribuinteService } from "@intechprev/efdreinf-service";
+import { ContribuinteService, DominioService } from "@intechprev/efdreinf-service";
 
 const textosAjuda = require('../../Textos');
 
@@ -13,6 +13,7 @@ export default class NovoContribuinte extends Component {
         this.erros = [];
 
         this.state = {
+            // States dos valores dos campos do formulário:
             tipoInscricao: "1",
             razaoSocial: "",
             cnpj: "",
@@ -31,164 +32,37 @@ export default class NovoContribuinte extends Component {
             telefoneCelularContato: "",
             emailContato: "",
 
+            // States dos valores dos combos: 
+            combos: {
+                tipoInscricao: [],
+                classificacaoTributaria: [],
+                obrigatoriedadeECD: [],
+                desoneracaoFolhaCPRB: [],
+                isencaoMulta: [],
+                situacaoPJ: [],
+                enteFederativoResponsavel: []
+            },
+
+            // States de validação:
             cnpjEfrObrigatorio: false,
             tamanhoMinimoTelefoneFixo: 0,
             tamanhoMinimoTelefoneCelular: 0,
             erros: []
         }
         
-        // Este objeto armazena as opções dos combos do formulário. Deverá ser apagado quando houver uma rota para TBG_DOMINIO.
-        this.opcoes = {
-            tipoInscricao: [
-                {
-                    valor: '1',
-                    nome: "PESSOA JURÍDICA"
-                },
-                {
-                    valor: '2',
-                    nome: "PESSOA FÍSICA"
-                }
-            ],
-            classificacaoTributaria: [
-                {
-                    valor: '01',
-                    nome: "SIMPLES NAC. C/TRIBUTAÇÃO PREVID. SUBSTITUÍDA"
-                },
-                {
-                    valor: '02',
-                    nome: "SIMPLES NAC. C/TRIBUTAÇÃO PREVID. NÃO SUBSTITUÍDA"
-                },
-                {
-                    valor: '03',
-                    nome: "SIMPLES NAC. C/TRIBUTAÇÃO PREVID SUBSTITUÍDA/NÃO"
-                },
-                {
-                    valor: '04',
-                    nome: "MEI - MICRO EMPREENDEDOR INDIVIDUAL"
-                },
-                {
-                    valor: '06',
-                    nome: "AGROINDÚSTRIA"
-                },
-                {
-                    valor: '07',
-                    nome: "PRODUTOR RURAL PESSOA JURÍDICA"
-                },
-                {
-                    valor: '08',
-                    nome: "CONSÓRCIO SIMPLIFICADO DE PRODUTORES RURAIS"
-                },
-                {
-                    valor: '09',
-                    nome: "ÓRGÃO GESTOR DE MÃO DE OBRA"
-                },
-                {
-                    valor: '10',
-                    nome: "ENTIDADE SINDICAL - LEI 12.023/2009"
-                },
-                {
-                    valor: '11',
-                    nome: "ASSOC. DESPORT. QUE MANTÉM CLUBE DE FUTEBOL PROF."
-                },
-                {
-                    valor: '13',
-                    nome: "BANCO, CAIXA ECONÔMICA, SOC.CRÉDITO, FINANC. INV."
-                },
-                {
-                    valor: '14',
-                    nome: "SINDICATOS EM GERAL, EXCETO CÓDIGO [10]"
-                },
-                {
-                    valor: '21',
-                    nome: "PESSOA FÍSICA, EXCETO SEGURADO ESPECIAL"
-                },
-                {
-                    valor: '22',
-                    nome: "SEGURADO ESPECIAL"
-                },
-                {
-                    valor: '60',
-                    nome: "MISSÃO DIPLOMÁTICA / REPARTIÇÃO CONSULAR"
-                },
-                {
-                    valor: '70',
-                    nome: "EMPRESA DE QUE TRATA O DECRETO 5.436/2005"
-                },
-                {
-                    valor: '80',
-                    nome: "ENTIDADE IMUNE OU ISENTA"
-                },                {
-                    valor: '85',
-                    nome: "ENTE FEDERATIVO, ÓRGÃOS UNIÃO, AUTARQ. FUND."
-                },
-                {
-                    valor: '99',
-                    nome: "PESSOAS JURÍDICAS EM GERAL"
-                }
-            ],
-            obrigatoriedadeECD: [
-                {
-                    valor: '0',
-                    nome: "EMPRESA NAO OBRIGADA"
-                },
-                {
-                    valor: '1',
-                    nome: "EMPRESA OBRIGADA À ECD"
-                }
-            ],
-            desoneracaoFolhaCPRB: [
-                {
-                    valor: '0',
-                    nome: "NÃO APLICÁVEL"
-                },
-                {
-                    valor: '1',
-                    nome: "EMPRESA ENQUADRADA NOS TERMOS DA LEI 12.546/2011"
-                }
-            ],
-            isencaoMulta: [
-                {
-                    valor: '0',
-                    nome: "SEM ACORDO"
-                },
-                {
-                    valor: '1',
-                    nome: "COM ACORDO"
-                }
-            ],
-            situacaoPJ: [
-                {
-                    valor: '0',
-                    nome: "NORMAL"
-                },
-                {
-                    valor: '1',
-                    nome: "EXTINÇÃO"
-                },
-                {
-                    valor: '2',
-                    nome: "FUSÃO"
-                },
-                {
-                    valor: '3',
-                    nome: "CISÃO"
-                },
-                {
-                    valor: '4',
-                    nome: "INCORPORAÇÃO"
-                }
-            ],
-            enteFederativoResponsavel: [
-                {
-                    valor: 'S',
-                    nome: "É EFR"
-                },
-                {
-                    valor: 'N',
-                    nome: "NÃO É EFR"
-                }
-            ]
-        }
+        this.combos = this.state.combos;
+    }
+
+    componentDidMount = async () => {
+        this.combos.tipoInscricao = await DominioService.BuscarPorCodigo("DMN_TIPO_INSCRICAO_EFD");
+        this.combos.classificacaoTributaria = await DominioService.BuscarPorCodigo("DMN_CLASSIF_TRIBUT");
+        this.combos.obrigatoriedadeECD = await DominioService.BuscarPorCodigo("DMN_OBRIGADO_EFD");
+        this.combos.desoneracaoFolhaCPRB = await DominioService.BuscarPorCodigo("DMN_DESONERACAO_EFD");
+        this.combos.isencaoMulta = await DominioService.BuscarPorCodigo("DMN_ISENC_MULTA_EFD");
+        this.combos.situacaoPJ = await DominioService.BuscarPorCodigo("DMN_SITUACAO_PJ");
+        this.combos.enteFederativoResponsavel = await DominioService.BuscarPorCodigo("DMN_EFR_EFD");
+        
+        await this.setState({ combos: this.combos });
     }
 
     limparErros = async () => {
@@ -275,7 +149,7 @@ export default class NovoContribuinte extends Component {
 
                         <Combo contexto={this} label={"Tipo de inscrição"} ref={ (input) => this.listaCampos[0] = input } 
                                nome="tipoInscricao" valor={this.state.tipoInscricao} obrigatorio={true} padrao={"1"}
-                               opcoes={this.opcoes.tipoInscricao} desabilitado={true} col="col-lg-5" />
+                               opcoes={this.state.combos.tipoInscricao.data} desabilitado={true} col="col-lg-5" />
 
                         <CampoTexto contexto={this} ref={ (input) => this.listaCampos[1] = input }
                                     label={"Razão social"} nome={"razaoSocial"} tipo={"text"} max={115}
@@ -297,27 +171,27 @@ export default class NovoContribuinte extends Component {
 
                         <Combo contexto={this} label={"Classificação Tributária"} ref={ (input) => this.listaCampos[5] = input } 
                                nome="classificacaoTributaria" valor={this.state.classificacaoTributaria} obrigatorio={true}
-                               opcoes={this.opcoes.classificacaoTributaria} botaoAjuda={textosAjuda.classificacaoTributaria} col="col-lg-5"  />
+                               opcoes={this.state.combos.classificacaoTributaria.data} botaoAjuda={textosAjuda.classificacaoTributaria} col="col-lg-5"  />
 
                         <Combo contexto={this} label={"Obrigatoriedade ECD"} ref={ (input) => this.listaCampos[6] = input } 
                                nome="obrigatoriedadeECD" valor={this.state.obrigatoriedadeECD} obrigatorio={true}
-                               opcoes={this.opcoes.obrigatoriedadeECD} botaoAjuda={textosAjuda.obrigatoriedadeECD} col="col-lg-5" />
+                               opcoes={this.state.combos.obrigatoriedadeECD.data} botaoAjuda={textosAjuda.obrigatoriedadeECD} col="col-lg-5" />
 
                         <Combo contexto={this} label={"Desoneração Folha CPRB"} ref={ (input) => this.listaCampos[7] = input } 
                                nome="desoneracaoFolhaCPRB" valor={this.state.desoneracaoFolhaCPRB} obrigatorio={true} 
-                               opcoes={this.opcoes.desoneracaoFolhaCPRB} botaoAjuda={textosAjuda.desoneracaoFolhaCPRB} col="col-lg-5" />
+                               opcoes={this.state.combos.desoneracaoFolhaCPRB.data} botaoAjuda={textosAjuda.desoneracaoFolhaCPRB} col="col-lg-5" />
 
                         <Combo contexto={this} label={"Isenção Multa"} ref={ (input) => this.listaCampos[8] = input } 
                                nome="isencaoMulta" valor={this.state.isencaoMulta} obrigatorio={true}
-                               opcoes={this.opcoes.isencaoMulta} botaoAjuda={textosAjuda.isencaoMulta} col="col-lg-5" />
+                               opcoes={this.state.combos.isencaoMulta.data} botaoAjuda={textosAjuda.isencaoMulta} col="col-lg-5" />
 
                         <Combo contexto={this} label={"Situação PJ"} ref={ (input) => this.listaCampos[9] = input } 
                                nome="situacaoPJ" valor={this.state.situacaoPJ} obrigatorio={true}
-                               opcoes={this.opcoes.situacaoPJ} botaoAjuda={textosAjuda.situacaoPJ} col="col-lg-5" />
+                               opcoes={this.state.combos.situacaoPJ.data} botaoAjuda={textosAjuda.situacaoPJ} col="col-lg-5" />
 
                         <Combo contexto={this} label={"Ente Federativo Responsável (EFR)"} ref={ (input) => this.listaCampos[10] = input } 
                                nome="enteFederativoResponsavel" valor={this.state.enteFederativoResponsavel} obrigatorio={true}
-                               opcoes={this.opcoes.enteFederativoResponsavel} botaoAjuda={textosAjuda.enteFederativoResponsavel} 
+                               opcoes={this.state.combos.enteFederativoResponsavel.data} botaoAjuda={textosAjuda.enteFederativoResponsavel} 
                                onChange={this.handleEfrChange} col="col-lg-5" />
 
                         <CampoTexto contexto={this} ref={ (input) => this.listaCampos[11] = input } 
