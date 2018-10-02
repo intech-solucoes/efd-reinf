@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
-import { Botao, CampoTexto, Dialog } from "../../components";
+import { Botao, CampoTexto, Dialog, PainelErros } from "../../components";
 
 import packageJson from '../../../package.json';
 
@@ -95,11 +95,7 @@ export default class Login extends Component {
 					</div>
 				</form>
 
-				{this.state.erros.length > 0 &&
-                    <div className="alert alert-danger" role="alert" 
-                         dangerouslySetInnerHTML={{__html: this.state.erros.join("<br/>") }}>
-					</div>
-                }
+                <PainelErros erros={this.state.erros} />
 
 				<div className="form-group row">
 					<Link className="col-sm-6" to="/esqueciSenha">Esqueci Minha Senha</Link>

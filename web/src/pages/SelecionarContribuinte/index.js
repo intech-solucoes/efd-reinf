@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import NovoContribuinte from "./Novo";
-import { Modal, Col, Row } from "../../components";
+import { Modal, Col, Row, PainelErros } from "../../components";
 
 import "./index.css";
 
@@ -69,9 +69,7 @@ export default class SelecionarContribuinte extends Component {
                                 <div className="contrib-card" onClick={() => this.selecionar(contribuinte.OID_CONTRIBUINTE)}>
                                     <Row>
                                         <Col>
-
                                             {contribuinte.NOM_RAZAO_SOCIAL}
-
                                         </Col>
 
                                         <Col tamanho={"2"} className={"text-right"}>
@@ -91,10 +89,7 @@ export default class SelecionarContribuinte extends Component {
                 <br/>
 				<br/>
 
-                {this.state.erros.length > 0 &&
-                    <div className="alert alert-danger" role="alert" 
-                        dangerouslySetInnerHTML={{__html: this.state.erros.join("<br/>") }}>
-                    </div>}
+                <PainelErros erros={this.state.erros} />
                 
                 <div className="row">
                     <div className="col">

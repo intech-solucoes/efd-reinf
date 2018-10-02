@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
-import { CampoTexto, Botao, Box } from '../../components';
+import { CampoTexto, Botao, Box, PainelErros } from '../../components';
 
 import { UsuarioService } from "@intechprev/efdreinf-service";
 
@@ -91,11 +91,7 @@ export default class AlterarSenha extends Component {
                 <div className="row">
                     <div className="col">
 
-                        {this.state.erros.length > 0 &&
-                            <div className="alert alert-danger" role="alert" 
-                                dangerouslySetInnerHTML={{__html: this.state.erros.join("<br/>") }}>
-                            </div>
-                        }
+                        <PainelErros erros={this.state.erros} />
 
                         <Botao titulo={"Alterar Senha"} tipo={"primary"} clicar={this.alterarSenha} usaLoading={true} />
                         

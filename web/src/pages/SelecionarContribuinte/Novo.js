@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { CampoTexto, Combo, Botao } from '../../components';
+import { CampoTexto, Combo, Botao, PainelErros } from '../../components';
 
 import { ContribuinteService, DominioService } from "@intechprev/efdreinf-service";
 
@@ -231,11 +231,7 @@ export default class NovoContribuinte extends Component {
                         <div align="center">
                             <div className="col-5">
 
-                                {this.state.erros.length > 0 &&
-                                    <div className="alert alert-danger" role="alert" 
-                                        dangerouslySetInnerHTML={{__html: this.state.erros.join("<br/>") }}>
-                                    </div>
-                                }
+                                <PainelErros erros={this.state.erros} />
 
                                 <br />
                                 <Botao titulo={"Incluir Novo Contribuinte"} tipo={"primary"} clicar={this.novo}

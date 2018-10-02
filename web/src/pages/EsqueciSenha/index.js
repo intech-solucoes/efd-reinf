@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 
-import Botao from "../../components/Botao";
-import CampoTexto from "../../components/CampoTexto";
+import { Botao, CampoTexto, PainelErros } from "../../components";
 
 import { UsuarioService } from "@intechprev/efdreinf-service";
 
@@ -74,13 +73,8 @@ export default class EsqueciSenha extends Component {
                 <div className="form-group">
                     <Botao titulo="Enviar" clicar={this.recuperarSenha} tipo={"primary"} block={true} usaLoading={true} />
                 </div>
-                
-				{this.state.erros.length > 0 &&
-                    <div className="alert alert-danger" role="alert" 
-                        dangerouslySetInnerHTML={{__html: this.state.erros.join("<br/>") }}>
-					</div>
-                }
 
+                <PainelErros erros={this.state.erros} />
             </div>
         )
     }
