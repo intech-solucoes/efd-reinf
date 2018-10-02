@@ -11,6 +11,7 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Proxy\BaseController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Proxy\ContribuinteProxy.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Proxy\DominioProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Proxy\UsuarioContribuinteProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Proxy\UsuarioProxy.cs" />
   </ItemGroup>

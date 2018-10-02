@@ -12,6 +12,20 @@ export default class Combo extends Component {
 		this.possuiErros = false;
 	}
 
+	static defaultProps = {
+		padrao: "",
+		opcoes: []
+	}
+
+	async componentDidMount() {
+		var nome = this.props.nome;
+
+		// Atualiza o state do combo para o valor padrão selecionado via props.
+		await this.props.contexto.setState({
+			[nome]: this.props.padrao
+		});
+	}
+
 	validar = () => {
 		this.possuiErros = false;
 		this.erros = [];
@@ -29,7 +43,7 @@ export default class Combo extends Component {
 		await handleFieldChange(this.props.contexto, e);
 		
 		if(this.props.onChange) {
-			this.props.onChange(e);
+			await this.props.onChange(e);
 		}
 	}
 
@@ -48,12 +62,12 @@ export default class Combo extends Component {
 					</div>
 				}
 				<div className="col">
-					<select id={this.props.nome} name={this.props.nome} className="form-control" onChange={this.onChange} defaultValue={this.props.padrao} disabled={this.props.desabilitado}>
+					<select id={this.props.nome} name={this.props.nome} className="form-control" onChange={this.onChange} value={this.props.valor} disabled={this.props.desabilitado}>
 						<option value="">Selecione uma opção</option>
 						{
 							this.props.opcoes.map((opcao, index) => {
 								return (
-									<option key={index} value={opcao.valor}>{opcao.nome}</option>
+									<option key={index} value={opcao.SIG_DOMINIO}>{opcao.NOM_DOMINIO}</option>
 								)
 							})
 						}

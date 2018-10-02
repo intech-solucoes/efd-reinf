@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
-import { Botao, CampoTexto, Dialog } from "../../components";
+import { Botao, CampoTexto, Dialog, PainelErros } from "../../components";
 
 import packageJson from '../../../package.json';
 
@@ -81,26 +81,24 @@ export default class Login extends Component {
                 <h4>Bem-Vindo ao Intech EFD-Reinf</h4>
 				<br/>
 
-				<CampoTexto contexto={this} ref={ (input) => this.listaCampos[0] = input }
-							placeholder={"E-mail"} valor={this.state.email} nome={"email"} tipo={"email"}
-							obrigatorio={true} />
+				<form>
+					<CampoTexto contexto={this} ref={ (input) => this.listaCampos[0] = input }
+								placeholder={"E-mail"} valor={this.state.email} nome={"email"} tipo={"email"}
+								obrigatorio={true} />
 
-				<CampoTexto contexto={this} ref={ (input) => this.listaCampos[1] = input }
-							placeholder={"Senha"} valor={this.state.senha} nome={"senha"} tipo={"password"} 
-							obrigatorio={true} />
+					<CampoTexto contexto={this} ref={ (input) => this.listaCampos[1] = input }
+								placeholder={"Senha"} valor={this.state.senha} nome={"senha"} tipo={"password"} 
+								obrigatorio={true} />
 
-				<div className="form-group">
-					<Botao titulo="Entrar" clicar={this.entrar} tipo={"primary"} block={true} usaLoading={true} />
-				</div>
-
-				{this.state.erros.length > 0 &&
-                    <div className="alert alert-danger" role="alert" 
-                         dangerouslySetInnerHTML={{__html: this.state.erros.join("<br/>") }}>
+					<div className="form-group">
+						<Botao titulo="Entrar" clicar={this.entrar} tipo={"primary"} block={true} usaLoading={true} submit={true} />
 					</div>
-                }
+				</form>
+
+                <PainelErros erros={this.state.erros} />
 
 				<div className="form-group row">
-					<a className="col-sm-6" href="/esqueciSenha">Esqueci Minha Senha</a>
+					<Link className="col-sm-6" to="/esqueciSenha">Esqueci Minha Senha</Link>
 					<Link className="col-sm-6 text-right" to="/cadastro">Cadastre-se</Link>
 				</div>
 				<br/>

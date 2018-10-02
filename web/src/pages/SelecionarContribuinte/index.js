@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import NovoContribuinte from "./Novo";
-import Modal from "../../components/Modal";
+import { Modal, Col, Row, PainelErros } from "../../components";
 
 import "./index.css";
 
@@ -64,17 +64,21 @@ export default class SelecionarContribuinte extends Component {
 
                 {this.state.contribuintes.map((contribuinte, index) => {
                     return (
-                        <div key={index} className="row contrib-card" onClick={() => this.selecionar(contribuinte.OID_CONTRIBUINTE)}>
-                            <div className="col">
+                        <Row key={index}>
+                            <Col>
+                                <div className="contrib-card" onClick={() => this.selecionar(contribuinte.OID_CONTRIBUINTE)}>
+                                    <Row>
+                                        <Col>
+                                            {contribuinte.NOM_RAZAO_SOCIAL}
+                                        </Col>
 
-                                {contribuinte.NOM_RAZAO_SOCIAL}
-
-                            </div>
-
-                            <div className="col-1">
-                                <i className="fas fa-angle-right"></i>
-                            </div>
-                        </div>
+                                        <Col tamanho={"2"} className={"text-right"}>
+                                            <i className="fas fa-angle-right"></i>
+                                        </Col>
+                                    </Row>
+                                </div>
+                            </Col>
+                        </Row>
                     );
                 })}
 
@@ -85,10 +89,7 @@ export default class SelecionarContribuinte extends Component {
                 <br/>
 				<br/>
 
-                {this.state.erros.length > 0 &&
-                    <div className="alert alert-danger" role="alert" 
-                        dangerouslySetInnerHTML={{__html: this.state.erros.join("<br/>") }}>
-                    </div>}
+                <PainelErros erros={this.state.erros} />
                 
                 <div className="row">
                     <div className="col">

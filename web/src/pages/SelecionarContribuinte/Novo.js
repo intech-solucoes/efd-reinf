@@ -1,9 +1,7 @@
 import React, { Component } from "react";
-import { CampoTexto, Combo, Botao } from '../../components';
+import { CampoTexto, Combo, Botao, PainelErros } from '../../components';
 
-import { ContribuinteService } from "@intechprev/efdreinf-service";
-import { validarEmail } from "@intechprev/react-lib";
-import DataInvalida from '../../utils/Data';
+import { ContribuinteService, DominioService } from "@intechprev/efdreinf-service";
 
 const textosAjuda = require('../../Textos');
 
@@ -15,6 +13,7 @@ export default class NovoContribuinte extends Component {
         this.erros = [];
 
         this.state = {
+            // States dos valores dos campos do formulário:
             tipoInscricao: "1",
             razaoSocial: "",
             cnpj: "",
@@ -33,99 +32,37 @@ export default class NovoContribuinte extends Component {
             telefoneCelularContato: "",
             emailContato: "",
 
+            // States dos valores dos combos: 
+            combos: {
+                tipoInscricao: [],
+                classificacaoTributaria: [],
+                obrigatoriedadeECD: [],
+                desoneracaoFolhaCPRB: [],
+                isencaoMulta: [],
+                situacaoPJ: [],
+                enteFederativoResponsavel: []
+            },
+
+            // States de validação:
             cnpjEfrObrigatorio: false,
+            tamanhoMinimoTelefoneFixo: 0,
+            tamanhoMinimoTelefoneCelular: 0,
             erros: []
         }
         
-        // Este objeto armazena as opções dos combos do formulário. Deverá ser apagado quando houver uma rota para TBG_DOMINIO.
-        this.opcoes = {
-            tipoInscricao: [
-                {
-                    valor:'1',
-                    nome: "PESSOA JURIDICA"
-                }
-            ],
-            classificacaoTributaria: [
-                {
-                    valor: '01',
-                    nome: "SIMPLES NAC. C/TRIBUTAÇÃO PREVID. SUBSTITUÍDA"
-                },
-                {
-                    valor: '02',
-                    nome: "SIMPLES NAC. C/TRIBUTAÇÃO PREVID. NÃO SUBSTITUÍDA"
-                },
-                {
-                    valor: '03',
-                    nome: "SIMPLES NAC. C/TRIBUTAÇÃO PREVID SUBSTITUÍDA/NÃO"
-                },
-                {
-                    valor: '04',
-                    nome: "MEI - MICRO EMPREENDEDOR INDIVIDUAL"
-                },
-                {
-                    valor: '05',
-                    nome: "AGROINDÚSTRIA"
-                }
-            ],
-            obrigatoriedadeECD: [
-                {
-                    valor: '0',
-                    nome: "EMPRESA NAO OBRIGADA"
-                },
-                {
-                    valor: '1',
-                    nome: "EMPRESA OBRIGADA À ECD"
-                }
-            ],
-            desoneracaoFolhaCPRB: [
-                {
-                    valor: '0',
-                    nome: "NÃO APLICÁVEL"
-                },
-                {
-                    valor: '1',
-                    nome: "EMPRESA ENQUADRADA NOS TERMOS DA LEI 12.546/2011"
-                }
-            ],
-            isencaoMulta: [
-                {
-                    valor: '0',
-                    nome: "SEM ACORDO"
-                },
-                {
-                    valor: '1',
-                    nome: "COM ACORDO"
-                }
-            ],
-            situacaoPJ: [
-                {
-                    valor: '0',
-                    nome: "NORMAL"
-                },
-                {
-                    valor: '1',
-                    nome: "EXTINÇÃO"
-                },
-                {
-                    valor: '2',
-                    nome: "FUSÃO"
-                },
-                {
-                    valor: '3',
-                    nome: "CISÃO"
-                },
-            ],
-            enteFederativoResponsavel: [
-                {
-                    valor: 'S',
-                    nome: "É EFR"
-                },
-                {
-                    valor: 'N',
-                    nome: "NÃO É EFR"
-                }
-            ]
-        }
+        this.combos = this.state.combos;
+    }
+
+    componentDidMount = async () => {
+        this.combos.tipoInscricao = await DominioService.BuscarPorCodigo("DMN_TIPO_INSCRICAO_EFD");
+        this.combos.classificacaoTributaria = await DominioService.BuscarPorCodigo("DMN_CLASSIF_TRIBUT");
+        this.combos.obrigatoriedadeECD = await DominioService.BuscarPorCodigo("DMN_OBRIGADO_EFD");
+        this.combos.desoneracaoFolhaCPRB = await DominioService.BuscarPorCodigo("DMN_DESONERACAO_EFD");
+        this.combos.isencaoMulta = await DominioService.BuscarPorCodigo("DMN_ISENC_MULTA_EFD");
+        this.combos.situacaoPJ = await DominioService.BuscarPorCodigo("DMN_SITUACAO_PJ");
+        this.combos.enteFederativoResponsavel = await DominioService.BuscarPorCodigo("DMN_EFR_EFD");
+        
+        await this.setState({ combos: this.combos });
     }
 
     limparErros = async () => {
@@ -143,14 +80,31 @@ export default class NovoContribuinte extends Component {
     }
 
     novo = async () => {
+        // Validação dos campos de telefone: ao menos um telefone do contato deve ser fornecido, e estes não devem estar inválidos.
+        await this.setState({ tamanhoMinimoTelefoneCelular: 0, tamanhoMinimoTelefoneFixo: 0 });
 
+        if(this.state.telefoneFixoContato && !this.state.telefoneCelularContato)
+            await this.setState({ tamanhoMinimoTelefoneFixo: 14 });
+        else if(this.state.telefoneCelularContato && !this.state.telefoneFixoContato)
+            await this.setState({ tamanhoMinimoTelefoneCelular: 15 });
+        else if(this.state.telefoneCelularContato && this.state.telefoneFixoContato)
+            await this.setState({ tamanhoMinimoTelefoneFixo: 14, tamanhoMinimoTelefoneCelular: 15 });
+
+        // Validações de todos os campos pelo método 'validar' de cada componente.            
+        await this.limparErros();
         for(var i = 0; i < this.listaCampos.length; i++) {
             var campo = this.listaCampos[i];
-            campo.validar();
+
+            // Não deve ser feita a validação do campo CNPJ EFR, esta é feita na API e mostra uma mensagem de erro específica.
+            if(campo.props.nome !== 'cnpjEfr')
+                campo.validar();
 
             if(campo.possuiErros)
                 await this.adicionarErro(campo.erros);
         }
+        
+        if(!this.state.telefoneFixoContato && !this.state.telefoneCelularContato)
+            await this.adicionarErro("Pelo menos um telefone do contato deve ser fornecido");
 
         if(this.state.erros.length === 0) {
             // Criar contribuinte.
@@ -159,8 +113,10 @@ export default class NovoContribuinte extends Component {
                       this.state.terminoValidade, this.state.classificacaoTributaria, this.state.obrigatoriedadeECD, this.state.desoneracaoFolhaCPRB, 
                       this.state.isencaoMulta, this.state.situacaoPJ, this.state.enteFederativoResponsavel, this.state.cnpjEfr, this.state.nomeContato, 
                       this.state.cpfContato, this.state.telefoneFixoContato, this.state.telefoneCelularContato, this.state.emailContato, this.state.emailContato);
-                    
-                alert("Contribuinte criado com sucesso!");
+
+                alert("Contribuinte inserido com sucesso! Aguarde confirmação da Intech para iniciar a utilização do Intech EFD-Reinf!");
+                window.location.reload();
+                
             } catch(err) {
 				if(err.response) {
 					await this.adicionarErro(err.response.data);
@@ -168,36 +124,6 @@ export default class NovoContribuinte extends Component {
 					await this.adicionarErro(err);
 				}
             }
-        } else {
-            // Mostra os erros no state 'erros'.
-        }
-
-    }
-
-    validarFormulario = async () => {
-        // Validações de campos obrigatórios.
-        await this.limparErros();
-
-        for(var i = 0; i < this.listaCampos.length; i++) {
-            var campo = this.listaCampos[i];
-            campo.validar();
-
-            if(campo.possuiErros) {
-                await this.adicionarErro(campo.erros);
-            }
-        }
-        
-        // Validação dos campos de telefone: os campos não são obrigatórios, mas ao menos um deve ser fornecido.
-        if(this.state.telefoneCelularContato === "" && this.state.telefoneFixoContato === "")
-            await this.adicionarErro("Pelo menos um telefone do contato deve ser fornecido");
-
-        // Validação dos campos de data.
-        await this.validarDatas();
-
-        // Validação do campo de e-mail, caso esteja preenchido.
-        if(this.state.emailContato.length > 0) {
-            if(validarEmail(this.state.emailContato))
-                await this.adicionarErro("Campo e-mail inválido!");
         }
 
     }
@@ -223,7 +149,7 @@ export default class NovoContribuinte extends Component {
 
                         <Combo contexto={this} label={"Tipo de inscrição"} ref={ (input) => this.listaCampos[0] = input } 
                                nome="tipoInscricao" valor={this.state.tipoInscricao} obrigatorio={true} padrao={"1"}
-                               opcoes={this.opcoes.tipoInscricao} desabilitado={true} col="col-lg-5" />
+                               opcoes={this.state.combos.tipoInscricao.data} desabilitado={true} col="col-lg-5" />
 
                         <CampoTexto contexto={this} ref={ (input) => this.listaCampos[1] = input }
                                     label={"Razão social"} nome={"razaoSocial"} tipo={"text"} max={115}
@@ -245,27 +171,27 @@ export default class NovoContribuinte extends Component {
 
                         <Combo contexto={this} label={"Classificação Tributária"} ref={ (input) => this.listaCampos[5] = input } 
                                nome="classificacaoTributaria" valor={this.state.classificacaoTributaria} obrigatorio={true}
-                               opcoes={this.opcoes.classificacaoTributaria} botaoAjuda={textosAjuda.classificacaoTributaria} col="col-lg-5"  />
+                               opcoes={this.state.combos.classificacaoTributaria.data} botaoAjuda={textosAjuda.classificacaoTributaria} col="col-lg-5"  />
 
                         <Combo contexto={this} label={"Obrigatoriedade ECD"} ref={ (input) => this.listaCampos[6] = input } 
                                nome="obrigatoriedadeECD" valor={this.state.obrigatoriedadeECD} obrigatorio={true}
-                               opcoes={this.opcoes.obrigatoriedadeECD} botaoAjuda={textosAjuda.obrigatoriedadeECD} col="col-lg-5" />
+                               opcoes={this.state.combos.obrigatoriedadeECD.data} botaoAjuda={textosAjuda.obrigatoriedadeECD} col="col-lg-5" />
 
                         <Combo contexto={this} label={"Desoneração Folha CPRB"} ref={ (input) => this.listaCampos[7] = input } 
                                nome="desoneracaoFolhaCPRB" valor={this.state.desoneracaoFolhaCPRB} obrigatorio={true} 
-                               opcoes={this.opcoes.desoneracaoFolhaCPRB} botaoAjuda={textosAjuda.desoneracaoFolhaCPRB} col="col-lg-5" />
+                               opcoes={this.state.combos.desoneracaoFolhaCPRB.data} botaoAjuda={textosAjuda.desoneracaoFolhaCPRB} col="col-lg-5" />
 
                         <Combo contexto={this} label={"Isenção Multa"} ref={ (input) => this.listaCampos[8] = input } 
                                nome="isencaoMulta" valor={this.state.isencaoMulta} obrigatorio={true}
-                               opcoes={this.opcoes.isencaoMulta} botaoAjuda={textosAjuda.isencaoMulta} col="col-lg-5" />
+                               opcoes={this.state.combos.isencaoMulta.data} botaoAjuda={textosAjuda.isencaoMulta} col="col-lg-5" />
 
                         <Combo contexto={this} label={"Situação PJ"} ref={ (input) => this.listaCampos[9] = input } 
                                nome="situacaoPJ" valor={this.state.situacaoPJ} obrigatorio={true}
-                               opcoes={this.opcoes.situacaoPJ} botaoAjuda={textosAjuda.situacaoPJ} col="col-lg-5" />
+                               opcoes={this.state.combos.situacaoPJ.data} botaoAjuda={textosAjuda.situacaoPJ} col="col-lg-5" />
 
                         <Combo contexto={this} label={"Ente Federativo Responsável (EFR)"} ref={ (input) => this.listaCampos[10] = input } 
                                nome="enteFederativoResponsavel" valor={this.state.enteFederativoResponsavel} obrigatorio={true}
-                               opcoes={this.opcoes.enteFederativoResponsavel} botaoAjuda={textosAjuda.enteFederativoResponsavel} 
+                               opcoes={this.state.combos.enteFederativoResponsavel.data} botaoAjuda={textosAjuda.enteFederativoResponsavel} 
                                onChange={this.handleEfrChange} col="col-lg-5" />
 
                         <CampoTexto contexto={this} ref={ (input) => this.listaCampos[11] = input } 
@@ -286,12 +212,12 @@ export default class NovoContribuinte extends Component {
                         <CampoTexto contexto={this} ref={ (input) => this.listaCampos[14] = input }
                                     label={"Telefone Fixo do Contato"} nome={"telefoneFixoContato"} tipo={"text"} 
                                     placeholder={"Telefone Fixo do Contato"} valor={this.state.telefoneFixoContato} obrigatorio={false} 
-                                    mascara={"(99) 9999-9999"} botaoAjuda={textosAjuda.telefoneFixoContato} col="col-lg-5" />
+                                    mascara={"(99) 9999-9999"} botaoAjuda={textosAjuda.telefoneFixoContato} col="col-lg-5" min={this.state.tamanhoMinimoTelefoneFixo} />
 
                         <CampoTexto contexto={this} ref={ (input) => this.listaCampos[15] = input }
                                     label={"Telefone Celular do Contato"} nome={"telefoneCelularContato"} tipo={"text"} 
                                     placeholder={"Telefone Celular do Contato"} valor={this.state.telefoneCelularContato} obrigatorio={false} 
-                                    mascara={"(99) 99999-9999"} botaoAjuda={textosAjuda.telefoneCelularContato} col="col-lg-5" />
+                                    mascara={"(99) 99999-9999"} botaoAjuda={textosAjuda.telefoneCelularContato} col="col-lg-5" min={this.state.tamanhoMinimoTelefoneCelular} />
 
                         <CampoTexto contexto={this} ref={ (input) => this.listaCampos[16] = input }
                                     label={"E-mail do Contato"} nome={"emailContato"} tipo={"text"} 
@@ -305,11 +231,7 @@ export default class NovoContribuinte extends Component {
                         <div align="center">
                             <div className="col-5">
 
-                                {this.state.erros.length > 0 &&
-                                    <div className="alert alert-danger" role="alert" 
-                                        dangerouslySetInnerHTML={{__html: this.state.erros.join("<br/>") }}>
-                                    </div>
-                                }
+                                <PainelErros erros={this.state.erros} />
 
                                 <br />
                                 <Botao titulo={"Incluir Novo Contribuinte"} tipo={"primary"} clicar={this.novo}

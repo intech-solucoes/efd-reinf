@@ -7,6 +7,8 @@ import Dialog from "./Dialog";
 import Box from './Box';
 import Col from './Col';
 import Row from './Row';
+import Checkbox from "./Checkbox";
+import PainelErros from "./PainelErros";
 
 export {
     Botao,
@@ -15,7 +17,9 @@ export {
     Combo,
     Modal,
     Dialog,
+    Checkbox,
     Box,
     Col,
-    Row
+    Row,
+    PainelErros
 };
