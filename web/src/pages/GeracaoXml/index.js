@@ -41,19 +41,21 @@ export default class GeracaoXml extends Component {
             checkboxR2098Desabilitado: false,
             checkboxR2099Desabilitado: false,
 
-            tipoOperacaoVisivel: false,
-            ambienteEnvioVisivel: false,
-            contribuinteVisivel: false,
-            usuarioResponsavelVisivel: false,
-            periodoVisivel: false,
-            referenciaVisivel: false,
-            contratacaoServicosVisivel: false,
-            prestacaoServicosVisivel: false,
-            associacaoDesportivaVisivel: false,
-            repasseAssociacaoDesportivaVisivel: false,
-            producaoRuralVisivel: false,
-            pagamentosDiversosVisivel: false,
-            competenciaVisivel: false,
+            visibilidade: {
+                tipoOperacao: false,
+                ambienteEnvio: false,
+                contribuinte: false,
+                usuarioResponsavel: false,
+                periodo: false,
+                referencia: false,
+                contratacaoServicos: false,
+                prestacaoServicos: false,
+                associacaoDesportiva: false,
+                repasseAssociacaoDesportiva: false,
+                producaoRural: false,
+                pagamentosDiversos: false,
+                competencia: false,
+            },
 
             // States validação:
             erros: [],
@@ -76,6 +78,8 @@ export default class GeracaoXml extends Component {
                 }
             ]
         }
+
+        this.visibilidade = this.state.visibilidade;
     }
 
     limparErros = async () => {
@@ -99,11 +103,11 @@ export default class GeracaoXml extends Component {
         // Criar condicional para não validar campos não visíveis.
         for(var i = 0; i < this.listaCampos.length; i++) {
             var campo = this.listaCampos[i];
-            //campo.validar();
+            // campo.validar();
 
-            if(campo.possuiErros) {
-                await this.adicionarErro(campo.erros);
-            }
+            // if(campo.possuiErros) {
+            //     await this.adicionarErro(campo.erros);
+            // }
         }
     }
 
@@ -123,96 +127,52 @@ export default class GeracaoXml extends Component {
     onChangeR1000 = async (checkbox) => {
         this.onChange(checkbox);
 
-        this.handleTipoOperacao();
-        this.handleContribuinte();
-        this.handleUsuarioResponsavel();
-        this.handleAmbienteEnvio();
+        this.handleVisibilidade("tipoOperacao");
+        this.handleVisibilidade("contribuinte");
+        this.handleVisibilidade("usuarioResponsavel");
+        this.handleVisibilidade("ambienteEnvio");
     }
 
     onChangeR1070 = async (checkbox) => {
         this.onChange(checkbox);
 
-        this.handleAmbienteEnvio();
+        this.handleVisibilidade("ambienteEnvio");
     }
 
     onChangeR2010 = async (checkbox) => {
         this.onChange(checkbox);
 
-        this.handleTipoOperacao();
-        this.handleAmbienteEnvio();
-        this.handlePeriodo();
+        this.handleVisibilidade("tipoOperacao");
+        this.handleVisibilidade("ambienteEnvio");
+        this.handleVisibilidade("periodo");
     }
 
     onChangeR2098 = async (checkbox) => {
         this.onChange(checkbox);
 
-        this.handleAmbienteEnvio();
-        this.handleReferencia();
+        this.handleVisibilidade("ambienteEnvio");
+        this.handleVisibilidade("referencia");
     }
 
     onChangeR2099 = async (checkbox) => {
         this.onChange(checkbox);
 
-        this.handleAmbienteEnvio();
-        this.handleReferencia();
-        this.handleContratacaoServicos();
-        this.handlePrestacaoServicos();
-        this.handleAssociacaoDesportiva();
-        this.handleRepasseAssociacaoDesportiva();
-        this.handleProducaoRural();
-        this.handleCompetencia();
+        this.handleVisibilidade("ambienteEnvio");
+        this.handleVisibilidade("referencia");
+        this.handleVisibilidade("contratacaoServicos");
+        this.handleVisibilidade("prestacaoServicos");
+        this.handleVisibilidade("associacaoDesportiva");
+        this.handleVisibilidade("repasseAssociacaoDesportiva");
+        this.handleVisibilidade("producaoRural");
+        this.handleVisibilidade("competencia");
     }
 
-    handleTipoOperacao = async () => {
-        await this.setState({ tipoOperacao: "", tipoOperacaoVisivel: !this.state.tipoOperacaoVisivel });
-    }
-    
-    handleAmbienteEnvio = async () => {
-        await this.setState({ ambienteEnvio: "", ambienteEnvioVisivel: !this.state.ambienteEnvioVisivel });
-    }
-
-    handleContribuinte = async () => { 
-        await this.setState({ contribuinte: "", contribuinteVisivel: !this.state.contribuinteVisivel });
-    }
-
-    handleUsuarioResponsavel = async () => { 
-        await this.setState({ usuarioResponsavel: "", usuarioResponsavelVisivel: !this.state.usuarioResponsavelVisivel });
-    }
-
-    handlePeriodo = async () => { 
-        await this.setState({ periodoInicial: "", periodoFinal: "", periodoVisivel: !this.state.periodoVisivel });
-    }
-
-    handleReferencia = async () => { 
-        await this.setState({ referenciaAno: "", referenciaMes: "", referenciaVisivel: !this.state.referenciaVisivel });
-    }
-
-    handleContratacaoServicos = async () => { 
-        await this.setState({ contratacaoServicos: "", contratacaoServicosVisivel: !this.state.contratacaoServicosVisivel });
-    }
-
-    handlePrestacaoServicos = async () => { 
-        await this.setState({ prestacaoServicos: "", prestacaoServicosVisivel: !this.state.prestacaoServicosVisivel });
-    }
-
-    handleAssociacaoDesportiva = async () => { 
-        await this.setState({ associacaoDesportiva: "", associacaoDesportivaVisivel: !this.state.associacaoDesportivaVisivel });
-    }
-
-    handleRepasseAssociacaoDesportiva = async () => { 
-        await this.setState({ repasseAssociacaoDesportiva: "", repasseAssociacaoDesportivaVisivel: !this.state.repasseAssociacaoDesportivaVisivel });
-    }
-
-    handleProducaoRural = async () => { 
-        await this.setState({ producaoRural: "", producaoRuralVisivel: !this.state.producaoRuralVisivel });
-    }
-
-    handlePagamentosDiversos = async () => { 
-        await this.setState({ pagamentosDiversos: "", pagamentosDiversosVisivel: !this.state.pagamentosDiversosVisivel });
-    }
-
-    handleCompetencia = async () => { 
-        await this.setState({ competenciaAno: "", competenciaMes: "", competenciaVisivel: !this.state.competenciaVisivel });
+    handleVisibilidade = async (campo) => {
+        this.visibilidade[campo] = !this.state.visibilidade[campo];
+        await this.setState({ 
+            [campo]: "",
+            visibilidade: this.visibilidade
+        });
     }
 
     render() {
@@ -239,32 +199,32 @@ export default class GeracaoXml extends Component {
 
                 {opcaoSelecionada &&
                     <Box>
-                        {this.state.tipoOperacaoVisivel &&
+                        {this.state.visibilidade.tipoOperacao &&
                             <Combo contexto={this} label={"Tipo de operação"} ref={ (input) => this.listaCampos[5] = input } 
-                                   nome="tipoOperacao" valor={this.state.tipoOperacao} obrigatorio={true} padrao={""}
-                                   opcoes={[{nome: "Operação 1", valor: 1}]} />
+                                   nome="tipoOperacao" valor={this.state.tipoOperacao} obrigatorio={true} 
+                                   opcoes={[{nome: "Operação 1", valor: 1}, {nome: "Operação 2", valor: 2}]} />
                         }
                         
-                        {this.state.ambienteEnvioVisivel && 
+                        {this.state.visibilidade.ambienteEnvio && 
                             <Combo contexto={this} label={"Ambiente para envio"} ref={ (input) => this.listaCampos[6] = input } 
                                    nome="ambienteEnvio" valor={this.state.ambienteEnvio} obrigatorio={true}
                                    opcoes={[{nome: "Ambiente 1", valor: 1}]} />
                         }
 
-                        {this.state.contribuinteVisivel &&
+                        {this.state.visibilidade.contribuinte &&
                             <CampoTexto contexto={this} ref={ (input) => this.listaCampos[7] = input }
                                         label={"Contribuinte"} nome={"contribuinte"} tipo={"text"} 
                                         placeholder={"Contribuinte"} valor={this.state.contribuinte}
                                         obrigatorio={true} />
                         }
 
-                        {this.state.usuarioResponsavelVisivel &&
+                        {this.state.visibilidade.usuarioResponsavel &&
                             <Combo contexto={this} label={"Usuário Responsável"} ref={ (input) => this.listaCampos[8] = input } 
                                    nome="usuarioResponsavel" valor={this.state.usuarioResponsavel} obrigatorio={true}
                                    opcoes={[{nome: "Usuário 1", valor: 1}]} />
                         }
 
-                        {this.state.periodoVisivel &&
+                        {this.state.visibilidade.periodo &&
                             <Row>
                                 <Col>
                                     <div className="form-group row">
@@ -292,7 +252,7 @@ export default class GeracaoXml extends Component {
                             </Row>
                         }
 
-                        {this.state.referenciaVisivel &&
+                        {this.state.visibilidade.referencia &&
                             <Row>
                                 <Col>
                                     <div className="form-group row">
@@ -320,49 +280,49 @@ export default class GeracaoXml extends Component {
                             </Row>
                         }
 
-                        {this.state.contratacaoServicosVisivel &&
+                        {this.state.visibilidade.contratacaoServicos &&
                             <Combo contexto={this} ref={ (input) => this.listaCampos[9] = input } 
                                     label={"Contratou serviços sujeitos à retenção de contribuição previdenciária?"}
                                     nome="contratacaoServicos" valor={this.state.contratacaoServicos} obrigatorio={true}
                                     opcoes={[{nome: "Opção 1", valor: 1}]} />
                         }
 
-                        {this.state.prestacaoServicosVisivel &&
+                        {this.state.visibilidade.prestacaoServicos &&
                             <Combo contexto={this} ref={ (input) => this.listaCampos[10] = input } 
                                     label={"Prestou serviços sujeitos à retenção de contribuição previdenciária?"} 
                                     nome="prestacaoServicos" valor={this.state.prestacaoServicos} obrigatorio={true}
                                     opcoes={[{nome: "Opção 1", valor: 1}]} />
                         }
 
-                        {this.state.associacaoDesportivaVisivel &&
+                        {this.state.visibilidade.associacaoDesportiva &&
                             <Combo contexto={this} ref={ (input) => this.listaCampos[11] = input } 
                                     label={"A associação desportiva que mantém equipe de futebol profissional, possui informações sobre recursos recebidos?"}
                                     nome="associacaoDesportiva" valor={this.state.associacaoDesportiva} obrigatorio={true}
                                     opcoes={[{nome: "Opção 1", valor: 1}]} />
                         }
 
-                        {this.state.repasseAssociacaoDesportivaVisivel &&
+                        {this.state.visibilidade.repasseAssociacaoDesportiva &&
                             <Combo contexto={this} ref={ (input) => this.listaCampos[12] = input } 
                                     label={"Possui informações sobre repasses efetuados à associação desportiva que mantém equipe de futebol profissional?"}
                                     nome="repasseAssociacaoDesportiva" valor={this.state.repasseAssociacaoDesportiva} obrigatorio={true}
                                     opcoes={[{nome: "Opção 1", valor: 1}]} />
                         }
 
-                        {this.state.producaoRural && 
+                        {this.state.visibilidade.producaoRural && 
                             <Combo contexto={this} ref={ (input) => this.listaCampos[13] = input } 
                                     label={"O produtor rural PJ/Agroindústria possui informações de comercialização de produção?"} 
                                     nome="producaoRural" valor={this.state.producaoRural} obrigatorio={true}
                                     opcoes={[{nome: "Opção 1", valor: 1}]} />
                         }
 
-                        {this.state.pagamentosDiversosVisivel &&
+                        {this.state.visibilidade.pagamentosDiversos &&
                             <Combo contexto={this} ref={ (input) => this.listaCampos[14] = input } 
                                     label={"Possui informações de pagamentos diversos no período de apuração?"}
                                     nome="pagamentosDiversos" valor={this.state.pagamentosDiversos} obrigatorio={true}
                                     opcoes={[{nome: "Opção 1", valor: 1}]} />                                                                                                                                                                                                    
                         }
 
-                        {this.state.competenciaVisivel && 
+                        {this.state.visibilidade.competencia && 
                             <Row>
                                 <Col>
                                     <div className="form-group row">
