@@ -9,14 +9,20 @@
     <Import_RootNamespace>Intech.EfdReinf.Dados</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)Scripts\ArquivoUpload\entidade.json" />
     <Content Include="$(MSBuildThisFileDirectory)Scripts\Contribuinte\entidade.json" />
     <Content Include="$(MSBuildThisFileDirectory)Scripts\Dominio\entidade.json" />
+    <Content Include="$(MSBuildThisFileDirectory)Scripts\ImportacaoCritica\entidade.json" />
+    <Content Include="$(MSBuildThisFileDirectory)Scripts\R2010\entidade.json" />
     <Content Include="$(MSBuildThisFileDirectory)Scripts\UsuarioContribuinte\entidade.json" />
     <Content Include="$(MSBuildThisFileDirectory)Scripts\Usuario\entidade.json" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)DAO\ArquivoUploadDAO.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DAO\ContribuinteDAO.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DAO\DominioDAO.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DAO\ImportacaoCriticaDAO.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DAO\R2010DAO.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DAO\UsuarioContribuinteDAO.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DAO\UsuarioDAO.cs" />
   </ItemGroup>
