@@ -14,16 +14,19 @@ namespace Intech.EfdReinf.API.Controllers
     public class ImportacaoController : BaseController
     {
         private List<ImportacaoCriticaEntidade> _listImportacaoCritica;
-        private List<R2010Entidade> _listR2010;
-        private decimal _oidArquivoUpload;
-        private decimal _oidContribuinte;
+        private List<R1070Entidade> _listR1070;
+        private List<R2010Entidade> _listR2010;        
+        private decimal _oidArquivoUpload = 0;
+        private decimal _oidContribuinte = 0;
+        private int _quantidadeLinhas = 0;
         private int _numLinha = 0;
         private CultureInfo _culturePtBR = new CultureInfo("pt-BR");
         private ArquivoUploadProxy _proxyArquivoUpload = new ArquivoUploadProxy();
         private ImportacaoCriticaProxy _proxyImportacaoCritica = new ImportacaoCriticaProxy();
 
-        [HttpPost("importarCsv2010/{oidArquivoUpload}/{oidContribuinte}")]
-        public ActionResult ImportarCsv2010(decimal oidArquivoUpload, decimal oidContribuinte)
+
+        [HttpPost("importarCsv/{oidArquivoUpload}/{oidContribuinte}")]
+        public ActionResult ImportarCsv(decimal oidArquivoUpload, decimal oidContribuinte)
         {
             try
             {
@@ -42,29 +45,25 @@ namespace Intech.EfdReinf.API.Controllers
                     throw new Exception("O arquivo já foi processado.");
 
                 var linhas = System.IO.File.ReadAllLines(rowArquivoUpload.NOM_ARQUIVO_LOCAL, Encoding.Default);
-                int quantidadeLinhas = linhas.Length - 1;
+                _quantidadeLinhas = linhas.Length - 1;
 
-                if (quantidadeLinhas == 0)
+                if (_quantidadeLinhas == 0)
                     throw new Exception("O arquivo está em branco.");
 
                 _listImportacaoCritica = new List<ImportacaoCriticaEntidade>();
-                _listR2010 = new List<R2010Entidade>();
 
-                //Lendo e validando as linhas do arquivo.
-                for (int i = 0; i <= quantidadeLinhas; i++)
+                string indRegistro = linhas[1].Split(';')[0];
+
+                //Chamando o Layout correspondente ao arquivo
+                switch (indRegistro)
                 {
-                    _numLinha = i;
-
-                    if (string.IsNullOrEmpty(linhas[_numLinha].Replace(";", string.Empty)))
-                        continue;
-
-                    if (_numLinha == 0)
-                    {
-                        ValidarLayoutCabecalho(linhas[0]);
-                        continue;
-                    }
-
-                    _listR2010.Add(LerLinha(linhas[_numLinha]));
+                    case DMN_REGISTRO_EFD.R_1070:
+                        break;
+                    case DMN_REGISTRO_EFD.R_2010:
+                        ImportarCsv2010(linhas);
+                        break;
+                    default:
+                        break;
                 }
 
                 //Gravando as críticas na tabela EFD_IMPORTACAO_CRITICA.
@@ -72,9 +71,6 @@ namespace Intech.EfdReinf.API.Controllers
 
                 if (_listImportacaoCritica.Count <= 0)
                 {
-                    //Gravando as linhas do arquivo na tabela EFD_R2010.
-                    GravarR2010();
-
                     //Atualizando o status do arquivo na tabela EFD_ARQUIVO_UPLOAD.
                     AtualizarArquivoUpload(rowArquivoUpload);
                 }
@@ -85,16 +81,164 @@ namespace Intech.EfdReinf.API.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        #region Arquivo R-1070
+
+        private void ImportarCsv1070(string[] linhas)
+        {
+            try
+            {
+                _listR1070 = new List<R1070Entidade>();
+
+                //Lendo e validando as linhas do arquivo.
+                for (int i = 0; i <= _quantidadeLinhas; i++)
+                {
+                    _numLinha = i;
+
+                    if (string.IsNullOrEmpty(linhas[_numLinha].Replace(";", string.Empty)))
+                        continue;
+
+                    if (_numLinha == 0)
+                    {
+                        ValidarLayoutCabecalhoR1070(linhas[0]);
+                        continue;
+                    }
+
+                    _listR1070.Add(LerLinhaR1070(linhas[_numLinha]));
+                }                
+
+                if (_listImportacaoCritica.Count <= 0)
+                {
+                    //Gravando as linhas do arquivo na tabela EFD_R1070.
+                    GravarR1070();
+                }
+            }
+            catch (Exception ex)
+            {
+                BadRequest(ex.Message);
+            }
+        }
+
+        private void ValidarLayoutCabecalhoR1070(string linha)
+        {
+            var colunas = linha.Split(';');
+
+            try
+            {
+                if (colunas.Length != 14 ||
+                    colunas[0] != "IndRegistro" ||
+                    colunas[1] != "TpProc" ||
+                    colunas[2] != "NrProc" ||
+                    colunas[3] != "IniValid" ||
+                    colunas[4] != "FimValid" ||
+                    colunas[5] != "IndAutoria" ||
+                    colunas[6] != "CodSusp" ||
+                    colunas[7] != "IndSusp" ||
+                    colunas[8] != "DtDecisao" ||
+                    colunas[9] != "IndDeposito" ||
+                    colunas[10] != "UfVara" ||
+                    colunas[11] != "CodMunic" ||
+                    colunas[12] != "IdVara" ||
+                    colunas[13] != "IndOperacao")
+                    throw new Exception("Layout do cabeçalho incorreto. Favor corrigir para realizar a importação.");
+            }
+            catch (Exception ex)
+            {
+                InserirNaListaDeCriticas(ex.Message);
+            }
+        }
+
+        private R1070Entidade LerLinhaR1070(string linha)
+        {
+            R1070Entidade linhaImportacao = new R1070Entidade();
+            var colunas = linha.Split(';');
+
+            try
+            {
+                ValidarLayoutDaLinha(colunas, 14);
+
+                linhaImportacao.OID_CONTRIBUINTE = _oidContribuinte;
+                linhaImportacao.IND_TIPO_PROCESSO = ValidarString("'TpProc'", colunas[1], 1, true);
+                linhaImportacao.NUM_PROCESSO = ValidarString("'NrProc'", colunas[2], 21, true);
+                linhaImportacao.DTA_INICIO_VALIDADE = ValidarDateTime("'IniValid'", colunas[3], true);
+                linhaImportacao.DTA_FIM_VALIDADE = ValidarDateTime("'FimValid'", colunas[4], true);
+                linhaImportacao.IND_AUTORIA_JUDICIAL = ValidarString("'IndAutoria'", colunas[5], 1, true);
+                linhaImportacao.COD_SUSPENSAO = ValidarString("'CodSusp'", colunas[6], 14, false);
+                linhaImportacao.IND_SUSPENSAO = ValidarString("'IndSusp'", colunas[7], 2, false);
+                linhaImportacao.DTA_DECISAO = ValidarDateTime("'DtDecisao'", colunas[8], false);
+                linhaImportacao.IND_DEPOSITO_JUDICIAL = ValidarString("'IndDeposito'", colunas[9], 1, false);
+                linhaImportacao.COD_UF_VARA = ValidarString("'UfVara'", colunas[10], 2, false);
+                linhaImportacao.COD_MUNICIPIO_VARA = ValidarString("'CodMunic'", colunas[11], 7, false);
+                linhaImportacao.COD_IDENTIFICACAO_VARA = ValidarString("'IdVara'", colunas[12], 2, false);
+                linhaImportacao.IND_OPERACAO_REGISTRO = ValidarString("'IndOperacao'", colunas[13], 3, true);
+                linhaImportacao.IND_SITUACAO_PROCESSAMENTO = DMN_SITUACAO_PROCESSAMENTO.IMPORTADO;                
+            }
+            catch (Exception ex)
+            {
+                InserirNaListaDeCriticas(ex.Message);
+            }
+
+            return linhaImportacao;
+        }
+
+        private void GravarR1070()
+        {
+            R1070Proxy proxyR1070 = new R1070Proxy();
+
+            foreach (var item in _listR1070)
+            {
+                decimal oidR1070 = proxyR1070.Inserir(item);
+            }
+        }
+
+        #endregion
+
+        #region Arquivo R-2010
+
+        private void  ImportarCsv2010(string[] linhas)
+        {
+            try
+            {                 
+                _listR2010 = new List<R2010Entidade>();
+
+                //Lendo e validando as linhas do arquivo.
+                for (int i = 0; i <= _quantidadeLinhas; i++)
+                {
+                    _numLinha = i;
+
+                    if (string.IsNullOrEmpty(linhas[_numLinha].Replace(";", string.Empty)))
+                        continue;
+
+                    if (_numLinha == 0)
+                    {
+                        ValidarLayoutCabecalhoR2010(linhas[0]);
+                        continue;
+                    }
+
+                    _listR2010.Add(LerLinhaR2010(linhas[_numLinha]));
+                }
+
+                if (_listImportacaoCritica.Count <= 0)
+                {
+                    //Gravando as linhas do arquivo na tabela EFD_R2010.
+                    GravarR2010();
+                }
+            }
+            catch (Exception ex)
+            {
+                BadRequest(ex.Message);
+            }
         }       
 
-        private R2010Entidade LerLinha(string linha)
+        private R2010Entidade LerLinhaR2010(string linha)
         {
             R2010Entidade linhaImportacao = new R2010Entidade();
             var colunas = linha.Split(';');
 
             try
             {
-                ValidarLayoutDaLinha(colunas);
+                ValidarLayoutDaLinha(colunas, 37);
 
                 linhaImportacao.OID_CONTRIBUINTE = _oidContribuinte;
                 linhaImportacao.DTA_APURACAO = ValidarDateTime("'DataApuracao'", colunas[1], true);
@@ -143,54 +287,7 @@ namespace Intech.EfdReinf.API.Controllers
             return linhaImportacao;
         }
 
-        private static void ValidarLayoutDaLinha(string[] colunas)
-        {
-            if (colunas.Length != 37)
-                throw new Exception("Layout da linha incorreto. Favor corrigir para realizar a importação.");
-        }
-
-        private string ValidarString(string nomeDoCampo, string stringParaValidar, decimal tamanhoMaximo, bool ehObrigatorio)
-        {
-            if (ehObrigatorio && string.IsNullOrEmpty(stringParaValidar))
-                throw new Exception(string.Format("O campo {0} não foi informado.", nomeDoCampo));
-
-            if(stringParaValidar.Length > tamanhoMaximo)
-                throw new Exception(string.Format("O campo {0} excede o tamanho máximo do banco de dados.", nomeDoCampo));
-
-            stringParaValidar = string.IsNullOrEmpty(stringParaValidar) ? null : stringParaValidar;
-
-            return stringParaValidar;
-        }
-
-        private decimal ValidarDecimal(string nomeDoCampo, string decimalParaValidar, decimal tamanhoMaximo, bool ehObrigatorio)
-        {
-            decimal retorno = 0;
-            
-            if (ehObrigatorio && string.IsNullOrEmpty(decimalParaValidar))
-                throw new Exception(string.Format("O campo {0} não foi informado.", nomeDoCampo));
-
-            decimalParaValidar = string.IsNullOrEmpty(decimalParaValidar) ? "0" : decimalParaValidar;
-
-            if (!decimal.TryParse(decimalParaValidar, out retorno) || decimalParaValidar.Replace(".", string.Empty).Length > tamanhoMaximo)
-                throw new Exception(string.Format("O campo {0} é inválido.", nomeDoCampo));
-
-            return retorno;
-        }
-
-        private DateTime ValidarDateTime(string nomeDoCampo, string dataParaValidar, bool ehObrigatorio)
-        {
-            DateTime retorno = new DateTime();
-
-            if (ehObrigatorio && string.IsNullOrEmpty(dataParaValidar))
-                throw new Exception(string.Format("O campo {0} não foi informado.", nomeDoCampo));
-            
-            if (!DateTime.TryParse(dataParaValidar.Trim(), _culturePtBR, DateTimeStyles.None, out retorno))
-                throw new Exception(string.Format("O campo {0} é inválido.", nomeDoCampo));
-
-            return retorno;
-        }
-
-        private void ValidarLayoutCabecalho(string linha)
+        private void ValidarLayoutCabecalhoR2010(string linha)
         {
             var colunas = linha.Split(';');
 
@@ -242,6 +339,67 @@ namespace Intech.EfdReinf.API.Controllers
             }
         }
 
+        private void GravarR2010()
+        {
+            R2010Proxy proxyR2010 = new R2010Proxy();
+
+            foreach (var item in _listR2010)
+            {
+                decimal oidR2010 = proxyR2010.Inserir(item);
+            }
+        }
+
+        #endregion
+
+        #region Métodos Auxiliares
+
+        private static void ValidarLayoutDaLinha(string[] colunas, int quantidadeDeColunas)
+        {
+            if (colunas.Length != quantidadeDeColunas)
+                throw new Exception("Layout da linha incorreto. Favor corrigir para realizar a importação.");
+        }
+
+        private string ValidarString(string nomeDoCampo, string stringParaValidar, decimal tamanhoMaximo, bool ehObrigatorio)
+        {
+            if (ehObrigatorio && string.IsNullOrEmpty(stringParaValidar))
+                throw new Exception(string.Format("O campo {0} não foi informado.", nomeDoCampo));
+
+            if(stringParaValidar.Length > tamanhoMaximo)
+                throw new Exception(string.Format("O campo {0} excede o tamanho máximo do banco de dados.", nomeDoCampo));
+
+            stringParaValidar = string.IsNullOrEmpty(stringParaValidar) ? null : stringParaValidar;
+
+            return stringParaValidar;
+        }
+
+        private decimal ValidarDecimal(string nomeDoCampo, string decimalParaValidar, decimal tamanhoMaximo, bool ehObrigatorio)
+        {
+            decimal retorno = 0;
+            
+            if (ehObrigatorio && string.IsNullOrEmpty(decimalParaValidar))
+                throw new Exception(string.Format("O campo {0} não foi informado.", nomeDoCampo));
+
+            decimalParaValidar = string.IsNullOrEmpty(decimalParaValidar) ? "0" : decimalParaValidar;
+
+            if (!decimal.TryParse(decimalParaValidar, out retorno) || decimalParaValidar.Replace(".", string.Empty).Length > tamanhoMaximo)
+                throw new Exception(string.Format("O campo {0} é inválido.", nomeDoCampo));
+
+            return retorno;
+        }
+
+        private DateTime ValidarDateTime(string nomeDoCampo, string dataParaValidar, bool ehObrigatorio)
+        {
+            DateTime retorno = new DateTime();
+
+            if (ehObrigatorio && string.IsNullOrEmpty(dataParaValidar))
+                throw new Exception(string.Format("O campo {0} não foi informado.", nomeDoCampo));
+            
+            if (!DateTime.TryParse(dataParaValidar.Trim(), _culturePtBR, DateTimeStyles.None, out retorno))
+                throw new Exception(string.Format("O campo {0} é inválido.", nomeDoCampo));
+
+            return retorno;
+        }        
+
         private void InserirNaListaDeCriticas(string desCritica)
         {
             ImportacaoCriticaEntidade importacaoCriticaEntidade = new ImportacaoCriticaEntidade();
@@ -259,17 +417,7 @@ namespace Intech.EfdReinf.API.Controllers
             {
                 _proxyImportacaoCritica.Inserir(item);
             }
-        }
-
-        private void GravarR2010()
-        {
-            R2010Proxy proxyR2010 = new R2010Proxy();
-
-            foreach (var item in _listR2010)
-            {
-                decimal oidR2010 = proxyR2010.Inserir(item);
-            }
-        }
+        }        
 
         private void AtualizarArquivoUpload(ArquivoUploadEntidade rowArquivoUpload)
         {
@@ -279,5 +427,7 @@ namespace Intech.EfdReinf.API.Controllers
                 _proxyArquivoUpload.Atualizar(rowArquivoUpload);
             }
         }
+
+        #endregion
     }
 }

@@ -13,6 +13,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ContribuinteEntidade.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DominioEntidade.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ImportacaoCriticaEntidade.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)R1070Entidade.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)R2010Entidade.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UsuarioContribuinteEntidade.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UsuarioEntidade.cs" />
