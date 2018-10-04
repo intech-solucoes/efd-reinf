@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="$(MSBuildThisFileDirectory)Scripts\ArquivoUpload\entidade.json" />
+    <Content Include="$(MSBuildThisFileDirectory)Scripts\ContribuinteEnvio\entidade.json" />
     <Content Include="$(MSBuildThisFileDirectory)Scripts\Contribuinte\entidade.json" />
     <Content Include="$(MSBuildThisFileDirectory)Scripts\Dominio\entidade.json" />
     <Content Include="$(MSBuildThisFileDirectory)Scripts\ImportacaoCritica\entidade.json" />
@@ -21,6 +22,7 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)DAO\ArquivoUploadDAO.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DAO\ContribuinteDAO.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DAO\ContribuinteEnvioDAO.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DAO\DominioDAO.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DAO\ImportacaoCriticaDAO.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DAO\R1070DAO.cs" />
@@ -34,6 +36,7 @@
     <None Include="$(MSBuildThisFileDirectory)Scripts\Contribuinte\BuscarPorCpfCnpjOidUsuario.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\Contribuinte\BuscarPorOidUsuario.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\Dominio\BuscarPorCodigo.sql" />
+    <None Include="$(MSBuildThisFileDirectory)Scripts\UsuarioContribuinte\BuscarPorOidUsuarioOidContribuinte.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\Usuario\BuscarPorEmail.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\Usuario\BuscarPorToken.sql" />
   </ItemGroup>

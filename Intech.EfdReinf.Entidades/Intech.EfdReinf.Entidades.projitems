@@ -9,8 +9,10 @@
     <Import_RootNamespace>Intech.EfdReinf.Entidades</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)ArquivosXml\XmlR1000.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ArquivoUploadEntidade.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ContribuinteEntidade.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ContribuinteEnvioEntidade.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DominioEntidade.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ImportacaoCriticaEntidade.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)R1070Entidade.cs" />

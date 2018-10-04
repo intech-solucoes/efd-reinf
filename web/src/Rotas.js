@@ -20,7 +20,7 @@ export default function GetRotas() {
             caminho: "/minhaConta",
             componente: (routeProps) => <MinhaConta routeProps={routeProps} />,
             mostrarMenu: true,
-            exact: true
+            exact: false
         },
         {
             titulo: "Alterar Senha",
@@ -28,7 +28,7 @@ export default function GetRotas() {
             caminho: "/alterarSenha",
             componente: (routeProps) => <AlterarSenha routeProps={routeProps} />,
             mostrarMenu: false,
-            exact: true
+            exact: false
         },
         {
             titulo: "Geração XML",
@@ -36,7 +36,7 @@ export default function GetRotas() {
             caminho: "/geracaoXml",
             componente: (routeProps) => <GeracaoXml routeProps={routeProps} />,
             mostrarMenu: true,
-            exact: true
+            exact: false
         }
     ]
 }

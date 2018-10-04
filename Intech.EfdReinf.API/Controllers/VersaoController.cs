@@ -6,6 +6,7 @@ using System.Reflection;
 namespace Intech.EfdReinf.API.Controllers
 {
     [Route("api/")]
+    [ApiController]
     public class VersaoController : Controller
     {
         [HttpGet]

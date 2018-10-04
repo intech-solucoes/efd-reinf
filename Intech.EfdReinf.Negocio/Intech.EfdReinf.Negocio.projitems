@@ -9,8 +9,10 @@
     <Import_RootNamespace>Intech.EfdReinf.Negocio</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)GeradorXml.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Proxy\ArquivoUploadProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Proxy\BaseController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Proxy\ContribuinteEnvioProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Proxy\ContribuinteProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Proxy\DominioProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Proxy\ImportacaoCriticaProxy.cs" />

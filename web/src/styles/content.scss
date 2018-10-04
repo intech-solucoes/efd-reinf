@@ -5,11 +5,24 @@
         background: #FFF;
         border-bottom: none !important;
         border-top: 0;
-        padding: 20px 10px 10px;
+        padding: 10px;
         box-shadow: 0 1px 1px -1px rgba(0, 0, 0, 0.34), 0 0 6px 0 rgba(0, 0, 0, 0.14);
 
         h2 {
             font-size: 24px;
+            margin-top: 13px;
+        }
+
+        .user-icon {
+            font-size: 14pt;
+
+            .icon {
+                width: 40px;
+                border: 1px solid #CCC;
+                border-radius: 20px;
+                padding: 5px;
+                margin-top: 5px;
+            }
         }
     }
 }
