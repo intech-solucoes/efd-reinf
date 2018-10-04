@@ -91,11 +91,11 @@ export default class SelecionarContribuinte extends Component {
 
                 <PainelErros erros={this.state.erros} />
                 
-                <div className="row">
-                    <div className="col">
+                <Row>
+                    <Col>
                         <button className="btn btn-primary btn-block" onClick={() => this.modal.current.toggle()}>Novo Contribuinte</button>
-                    </div>
-                </div>
+                    </Col>
+                </Row>
                 
                 <Modal ref={this.modal}>
                     <NovoContribuinte />
