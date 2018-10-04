@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {
-    Home, MinhaConta, AlterarSenha, GeracaoXml
+    Home, MinhaConta, AlterarSenha, GeracaoXml, ImportacaoArquivos
 } from "./pages";
 
 export default function GetRotas() {
@@ -35,6 +35,14 @@ export default function GetRotas() {
             icone: "fas fa-table",
             caminho: "/geracaoXml",
             componente: (routeProps) => <GeracaoXml routeProps={routeProps} />,
+            mostrarMenu: true,
+            exact: false
+        },
+        {
+            titulo: "Importação de Arquivos",
+            icone: "fas fa-file-import",
+            caminho: "/importacaoArquivos",
+            componente: (routeProps) => <ImportacaoArquivos routeProps={routeProps} />,
             mostrarMenu: true,
             exact: false
         }
