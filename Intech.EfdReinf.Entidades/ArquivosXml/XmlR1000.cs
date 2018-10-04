@@ -85,6 +85,8 @@ namespace Intech.EfdReinf.Entidades.ArquivosXml
         [XmlElement] public string indAcordoIsenMulta { get; set; }
         [XmlElement] public string indSitPJ { get; set; }
         [XmlElement] public contato contato { get; set; }
+        [XmlElement] public softHouse softHouse { get; set; }
+        [XmlElement] public infoEFR infoEFR { get; set; }
     }
 
     [Serializable]
@@ -94,5 +96,21 @@ namespace Intech.EfdReinf.Entidades.ArquivosXml
         [XmlElement] public string cpfCtt { get; set; }
         [XmlElement] public string foneFixo { get; set; }
         [XmlElement] public string email { get; set; }
+    }
+
+    [Serializable]
+    public class softHouse
+    {
+        [XmlElement] public string cnpjSoftHouse { get; set; }
+        [XmlElement] public string nmRazao { get; set; }
+        [XmlElement] public string nmCont { get; set; }
+        [XmlElement] public string telefone { get; set; }
+        [XmlElement] public string email { get; set; }
+    }
+
+    public class infoEFR
+    {
+        [XmlElement] public string ideEFD { get; set; }
+        [XmlElement] public string cnpjEFD { get; set; }
     }
 }

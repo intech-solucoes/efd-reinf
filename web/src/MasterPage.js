@@ -52,11 +52,17 @@ export default class MasterPage extends React.Component {
 	render() {
         var Title = () => {
             var rota = window.location.pathname;
+            console.log(process.env.PUBLIC_URL);
+            console.log(rota);
+            var titulo = "";
+
             for(var i = 0; i < rotas.length; i++) {
-                if(rota === rotas[i].caminho) {
-                    return(<h2>{rotas[i].titulo}</h2>);
+                if(rota === process.env.PUBLIC_URL + rotas[i].caminho) {
+                    titulo = <h2>{rotas[i].titulo}</h2>;
                 }
             }
+
+            return titulo;
         };
 
 		return (

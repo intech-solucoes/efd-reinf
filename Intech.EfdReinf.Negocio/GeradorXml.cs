@@ -107,6 +107,19 @@ namespace Intech.EfdReinf.Negocio
                                                 cpfCtt = contribuinte.COD_CPF_CONTATO,
                                                 foneFixo = contribuinte.COD_FONE_FIXO_CONTATO,
                                                 email = contribuinte.TXT_EMAIL_CONTATO
+                                            },
+                                            softHouse = new softHouse
+                                            {
+                                                cnpjSoftHouse = "07669168000133",
+                                                nmRazao = "INTECH SOLUÇÕES EM TECNOLOGIA DA INFORMAÇÃO LTDA",
+                                                nmCont = "GUSTAVO HENRIQUE PERSIANO DE ALMEIDA",
+                                                telefone = "6135332400",
+                                                email = "gustavo@intech.com.br"
+                                            },
+                                            infoEFR = new infoEFR
+                                            {
+                                                ideEFD = contribuinte.IND_EFR,
+                                                cnpjEFD = contribuinte.COD_CNPJ_EFR
                                             }
                                         }
                                     }
