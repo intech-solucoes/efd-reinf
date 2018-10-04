@@ -27,6 +27,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)DAO\UsuarioDAO.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)Scripts\ImportacaoCritica\ExcluirPorOidArquivoUpload.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\Contribuinte\BuscarPorCpfCnpj.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\Contribuinte\BuscarPorCpfCnpjOidUsuario.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\Contribuinte\BuscarPorOidUsuario.sql" />
