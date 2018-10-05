@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from "react-router-dom";
 import { CampoTexto, Botao, Box, Row, Col } from '../../components';
 
 import { UsuarioService, ContribuinteService } from "@intechprev/efdreinf-service";
@@ -105,8 +106,7 @@ export default class MinhaConta extends Component {
                             <Botao titulo={"Salvar"} tipo={"primary"} clicar={this.alterarDados}
                                 usaLoading={true} />
                             
-                            <Botao titulo={"Alterar Senha"} tipo={"light ml-3"} clicar={() => document.location = "/alterarSenha"} />
-                            {/* <a href="/alterarSenha" className="btn btn-light ml-3">Alterar Senha</a> */}
+                            <Link to="/alterarSenha" className={"btn btn-light ml-3"}>Alterar Senha</Link>
                         </Col>
                     </Row>
                 </Box>
