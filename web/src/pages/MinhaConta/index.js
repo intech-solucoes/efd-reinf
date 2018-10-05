@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from "react-router-dom";
 import { CampoTexto, Botao, Box, Row, Col } from '../../components';
 
 import { UsuarioService, ContribuinteService } from "@intechprev/efdreinf-service";
@@ -83,15 +84,15 @@ export default class MinhaConta extends Component {
                                 valor={this.state.usuario.NOM_USUARIO} obrigatorio={true} parent={"usuario"} />
                                 
                     <CampoTexto contexto={this} ref={ (input) => this.listaCampos[2] = input }
-                                label={"CPF"} nome={"cpf"} tipo={"text"} placeholder={"CPF"}
+                                label={"CPF"} nome={"COD_CPF"} tipo={"text"} placeholder={"CPF"}
                                 valor={this.state.usuario.COD_CPF} obrigatorio={true} mascara={"999.999.999-99"} parent={"usuario"} />
                     
                     <CampoTexto contexto={this} ref={ (input) => this.listaCampos[3] = input }
-                                label={"Telefone Fixo"} nome={"telefoneFixo"} tipo={"text"} placeholder={"Telefone Fixo"}
+                                label={"Telefone Fixo"} nome={"COD_TELEFONE_FIXO"} tipo={"text"} placeholder={"Telefone Fixo"}
                                 valor={this.state.usuario.COD_TELEFONE_FIXO} obrigatorio={true} mascara={"(99) 9999-9999"} parent={"usuario"} />
                     
                     <CampoTexto contexto={this} ref={ (input) => this.listaCampos[4] = input }
-                                label={"Telefone Celular"} nome={"telefoneCelular"} tipo={"text"} placeholder={"Telefone Celular"}
+                                label={"Telefone Celular"} nome={"COD_TELEFONE_CEL"} tipo={"text"} placeholder={"Telefone Celular"}
                                 valor={this.state.usuario.COD_TELEFONE_CEL} obrigatorio={true} mascara={"(99) 99999-9999"} parent={"usuario"} />
 
                     <Row>
@@ -105,7 +106,7 @@ export default class MinhaConta extends Component {
                             <Botao titulo={"Salvar"} tipo={"primary"} clicar={this.alterarDados}
                                 usaLoading={true} />
                             
-                            <a href="/alterarSenha" className="btn btn-light ml-3">Alterar Senha</a>
+                            <Link to="/alterarSenha" className={"btn btn-light ml-3"}>Alterar Senha</Link>
                         </Col>
                     </Row>
                 </Box>

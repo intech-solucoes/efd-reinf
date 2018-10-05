@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { CampoTexto, Combo, Botao, PainelErros } from '../../components';
+import { CampoTexto, Combo, Botao, PainelErros, Row, Col } from '../../components';
 
 import { ContribuinteService, DominioService } from "@intechprev/efdreinf-service";
 
@@ -142,8 +142,8 @@ export default class NovoContribuinte extends Component {
     render() {
         return (
             <div>
-                <div className="row">
-                    <div className="col">
+                <Row>
+                    <Col>
                         <h4>Novo Contribuinte</h4>
                         <br/>
 
@@ -223,13 +223,13 @@ export default class NovoContribuinte extends Component {
                                     label={"E-mail do Contato"} nome={"emailContato"} tipo={"text"} 
                                     placeholder={"E-mail do Contato"} valor={this.state.emailContato} 
                                     obrigatorio={false} botaoAjuda={textosAjuda.emailContato} col="col-lg-5" />
-                    </div>
-                </div>
+                    </Col>
+                </Row>
 
-                <div className="row">
-                    <div className="col">
+                <Row>
+                    <Col>
                         <div align="center">
-                            <div className="col-5">
+                            <Col tamanho="5">
 
                                 <PainelErros erros={this.state.erros} />
 
@@ -237,10 +237,10 @@ export default class NovoContribuinte extends Component {
                                 <Botao titulo={"Incluir Novo Contribuinte"} tipo={"primary"} clicar={this.novo}
                                     block={true} usaLoading={true} />
 
-                            </div>
+                            </Col>
                         </div>
-                    </div>
-                </div>
+                    </Col>
+                </Row>
             </div>
         );
     }

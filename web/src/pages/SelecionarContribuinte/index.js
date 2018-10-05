@@ -4,7 +4,7 @@ import { Modal, Col, Row, PainelErros } from "../../components";
 
 import "./index.css";
 
-import { ContribuinteService } from "@intechprev/efdreinf-service";
+import { ContribuinteService, UsuarioService } from "@intechprev/efdreinf-service";
 
 export default class SelecionarContribuinte extends Component {
 
@@ -50,9 +50,15 @@ export default class SelecionarContribuinte extends Component {
         });
     }
 
-    selecionar = async (oid) => {
-        await localStorage.setItem("contribuinte", oid);
-        document.location = "/";
+    selecionar = async (contribuinte) => {
+        await localStorage.setItem("contribuinte", contribuinte.OID_CONTRIBUINTE);
+        await localStorage.setItem("nomeContribuinte", contribuinte.NOM_RAZAO_SOCIAL);
+
+        var result = await UsuarioService.Buscar();
+        await localStorage.setItem("nomeUsuario", result.data.NOM_USUARIO);
+
+        this.props.history.push("/");
+        document.location.reload();
     }
 
     render() {
@@ -66,7 +72,7 @@ export default class SelecionarContribuinte extends Component {
                     return (
                         <Row key={index}>
                             <Col>
-                                <div className="contrib-card" onClick={() => this.selecionar(contribuinte.OID_CONTRIBUINTE)}>
+                                <div className="contrib-card" onClick={() => this.selecionar(contribuinte)}>
                                     <Row>
                                         <Col>
                                             {contribuinte.NOM_RAZAO_SOCIAL}
@@ -91,11 +97,11 @@ export default class SelecionarContribuinte extends Component {
 
                 <PainelErros erros={this.state.erros} />
                 
-                <div className="row">
-                    <div className="col">
+                <Row>
+                    <Col>
                         <button className="btn btn-primary btn-block" onClick={() => this.modal.current.toggle()}>Novo Contribuinte</button>
-                    </div>
-                </div>
+                    </Col>
+                </Row>
                 
                 <Modal ref={this.modal}>
                     <NovoContribuinte />
