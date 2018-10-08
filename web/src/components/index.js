@@ -9,6 +9,7 @@ import Col from './Col';
 import Row from './Row';
 import Checkbox from "./Checkbox";
 import PainelErros from "./PainelErros";
+import InputFile from "./InputFile";
 
 export {
     Botao,
@@ -21,5 +22,6 @@ export {
     Box,
     Col,
     Row,
-    PainelErros
+    PainelErros,
+    InputFile
 };
