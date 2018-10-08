@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Reinf xmlns="http://www.reinf.esocial.gov.br/schemas/envioLoteEventos/v1_03_02" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <loteEventos>
+        <evento id="{{id}}">
+            <Reinf xmlns="http://www.reinf.esocial.gov.br/schemas/evtInfoContribuinte/v1_03_02">
+                <evtInfoContri id="{{id}}">
+                    <ideEvento>
+                        <tpAmb>{{tipoAmbiente}}</tpAmb>
+                        <procEmi>1</procEmi>
+                        <verProc>{{versao}}</verProc>
+                    </ideEvento>
+                    <ideContri>
+                        <tpInsc>{{ind_tipo_inscricao}}</tpInsc>
+                        <nrInsc>{{cod_cnpj_cpf}}</nrInsc>
+                    </ideContri>
+                    <infoContri>
+                        <inclusao>
+                            <idePeriodo>
+                                <iniValid>{{dta_inicio_validade}}</iniValid>
+                                {{ if dta_fim_validade != null }}
+                                <fimValid>{{dta_fim_validade}}</fimValid>
+                                {{ end }}
+                            </idePeriodo>
+                            <infoCadastro>
+                                <classTrib>{{ind_classif_tribut}}</classTrib>
+                                <indEscrituracao>{{ind_obrigada_ecd}}</indEscrituracao>
+                                <indDesoneracao>{{ind_desoneracao_cprb}}</indDesoneracao>
+                                <indAcordoIsenMulta>{{ind_isencao_multa}}</indAcordoIsenMulta>
+                                <indSitPJ>{{ind_situacao_pj}}</indSitPJ>
+                                <contato>
+                                    <nmCtt>{{nom_contato}}</nmCtt>
+                                    <cpfCtt>{{cod_cpf_contato}}</cpfCtt>
+                                    <foneFixo>{{cod_fone_fixo_contato}}</foneFixo>
+                                    <email>{{txt_email_contato}}</email>
+                                </contato>
+                                <softHouse>
+                                    <cnpjSoftHouse>07669168000133</cnpjSoftHouse>
+                                    <nmRazao>INTECH SOLUÇÕES EM TECNOLOGIA DA INFORMAÇÃO LTDA</nmRazao>
+                                    <nmCont>GUSTAVO HENRIQUE PERSIANO DE ALMEIDA</nmCont>
+                                    <telefone>6135332400</telefone>
+                                    <email>gustavo@intech.com.br</email>
+                                </softHouse>
+                                <infoEFR>
+                                    <ideEFD>{{ind_efr}}</ideEFD>
+                                    <cnpjEFD>{{cod_cnpj_efr}}</cnpjEFD>
+                                </infoEFR>
+                            </infoCadastro>
+                        </inclusao>
+                    </infoContri>
+                </evtInfoContri>
+            </Reinf>
+        </evento>
+    </loteEventos>
+</Reinf>

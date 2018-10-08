@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Reinf xmlns="http://www.reinf.esocial.gov.br/schemas/envioLoteEventos/v1_03_02" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <loteEventos>
+        {{for evento in eventos}}
+        <evento id="{{evento.id}}">
+            <Reinf xmlns="http://www.reinf.esocial.gov.br/schemas/evtTomadorServicos/v1_03_02">
+                <evtServTom id="{{evento.id}}">
+                    <ideEvento>
+                        <indRetif>{{evento.retif}}</indRetif>
+                        <perApur>2018-08</perApur>
+                        <tpAmb>{{evento.tipoAmbiente}}</tpAmb>
+                        <procEmi>1</procEmi>
+                        <verProc>{{evento.versao}}</verProc>
+                    </ideEvento>
+                    <ideContri>
+                        <tpInsc>{{evento.ind_tipo_inscricao}}</tpInsc>
+                        <nrInsc>{{evento.cod_cnpj_cpf}}</nrInsc>
+                    </ideContri>
+                    <infoServTom>
+                        <ideEstabObra>
+                            <tpInscEstab>1</tpInscEstab>
+                            <nrInscEstab>00436923000190</nrInscEstab>
+                            <indObra>0</indObra>
+                            <idePrestServ>
+                                <cnpjPrestador>00022090000111</cnpjPrestador>
+                                <vlrTotalBruto>449886,00</vlrTotalBruto>
+                                <vlrTotalBaseRet>449886,00</vlrTotalBaseRet>
+                                <vlrTotalRetPrinc>26839,06</vlrTotalRetPrinc>
+                                <indCPRB>0</indCPRB>
+                                <nfs>
+                                    <serie>64690</serie>
+                                    <numDocto>345976978549410</numDocto>
+                                    <dtEmissaoNF>2018-08-01</dtEmissaoNF>
+                                    <vlrBruto>15066,00</vlrBruto>
+                                    <infoTpServ>
+                                        <tpServico>100000020</tpServico>
+                                        <vlrBaseRet>15066,00</vlrBaseRet>
+                                        <vlrRetencao>1657,26</vlrRetencao>
+                                    </infoTpServ>
+                                </nfs>
+                                <nfs>
+                                    <serie>07311</serie>
+                                    <numDocto>967482436746065</numDocto>
+                                    <dtEmissaoNF>2018-08-01</dtEmissaoNF>
+                                    <vlrBruto>218760,00</vlrBruto>
+                                    <infoTpServ>
+                                        <tpServico>100000020</tpServico>
+                                        <vlrBaseRet>218760,00</vlrBaseRet>
+                                        <vlrRetencao>9856,03</vlrRetencao>
+                                    </infoTpServ>
+                                </nfs>
+                                <nfs>
+                                    <serie>51664</serie>
+                                    <numDocto>654814420072749</numDocto>
+                                    <dtEmissaoNF>2018-08-01</dtEmissaoNF>
+                                    <vlrBruto>216060,00</vlrBruto>
+                                    <infoTpServ>
+                                        <tpServico>100000020</tpServico>
+                                        <vlrBaseRet>216060,00</vlrBaseRet>
+                                        <vlrRetencao>15325,77</vlrRetencao>
+                                    </infoTpServ>
+                                </nfs>
+                            </idePrestServ>
+                        </ideEstabObra>
+                    </infoServTom>
+                </evtServTom>
+            </Reinf>
+        </evento>
+        {{end}}
+    </loteEventos>
+</Reinf>
