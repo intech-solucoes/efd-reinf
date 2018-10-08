@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
-import { Row, Col, Box, Combo, Botao } from '../../components';
+import { Row, Col, Box, Combo, Botao, InputFile, PainelErros } from '../../components';
 
 export default class ImportacaoArquivos extends Component {
     constructor(props) {
         super(props);
 
         this.listaCampos = [];
-        
+        this.erros = [];
+
         this.state = {
             filtrarSituacao: "",
+            arquivo: "",
             arquivosImportacao: [
                 {
                     arquivoOriginal: "Envio2010.csv",
@@ -22,8 +24,37 @@ export default class ImportacaoArquivos extends Component {
                     status: "Processado",
                     usuario: "CLEBER"
                 }
-            ]
+            ],
+            erros: []
         }
+    }
+
+    async componentDidMount() {
+        console.log(this.listaCampos)
+    }
+
+    limparErros = async () => {
+        this.erros = [];
+        await this.setState({
+            erros: this.erros
+        });
+    }
+
+    adicionarErro = async (mensagem) => {
+        this.erros.push(mensagem);
+        await this.setState({
+            erros: this.erros
+        });
+    }
+
+    enviar = async () => {          
+        await this.limparErros();
+
+        var campo = this.listaCampos[0];
+        await campo.validar();
+        if(campo.possuiErros)
+            await this.adicionarErro(campo.erros);
+
     }
 
     render() {
@@ -49,18 +80,22 @@ export default class ImportacaoArquivos extends Component {
                 <Box titulo="Arquivo para Upload">
                     <Row>
                         <Col tamanho={"4"}>
-                            <div className="form-group">
-                                <input id="selecionar-documento" type="file"></input>
-                            </div>
+                            <InputFile contexto={this} ref={ (input) => this.listaCampos[0] = input } label={"Arquivo para upload"}
+                                       nome={"arquivo"} aceita={".csv"} obrigatorio={true} valor={this.state.arquivo} />
                         </Col>
                         <Col>
-                            <Botao tipo={"primary btn-sm"} titulo={"Enviar"} />
+                            <Botao tipo={"primary btn-sm"} titulo={"Enviar"} clicar={this.enviar}/>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col tamanho="5">
+                            <PainelErros erros={this.state.erros} />
                         </Col>
                     </Row>
                 </Box>
 
                 <Box titulo={"Arquivo para Importação"}>
-                    <Combo contexto={this} label={"Filtrar situação do arquivo"} ref={ (input) => this.listaCampos[0] = input } 
+                    <Combo contexto={this} label={"Filtrar situação do arquivo"} ref={ (input) => this.listaCampos[1] = input } 
                            nome="filtrarSituacao" valor={this.state.filtrarSituacao} obrigatorio={true} col={"col-lg-4"}
                            opcoes={[{NOM_DOMINIO: "Situação 1", SIG_DOMINIO: 1}]} />
                 
