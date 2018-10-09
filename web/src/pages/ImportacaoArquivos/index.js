@@ -79,8 +79,8 @@ export default class ImportacaoArquivos extends Component {
                     <h5>4. Caso ocorra erros durante a importação, no final do processo será impresso um relatório com os erros;</h5>
                     <br />
                     <h5>Links do Leiaute:</h5>
-                    <a href="layouts/LayoutR1070.xlsx" download="Layout.xlsx"><h5>-Leiaute Importação - Registro R-1070</h5></a>
-                    <a href="" download><h5>-Leiaute Importação - Registro R-2010</h5></a>
+                    <a href="layouts/LayoutImportacao-R1070 - Processos ADM-JUD.xlsx" download="LayoutImportacao-R1070 - Processos ADM-JUD.xlsx"><h5>-Leiaute Importação - Registro R-1070</h5></a>
+                    <a href="layouts/LayoutImportacao-R2010 - Retenção PREVIDENCIARIA.xlsx" download="LayoutImportacao-R2010 - Retenção PREVIDENCIARIA.xlsx"><h5>-Leiaute Importação - Registro R-2010</h5></a>
                     <br />
                     <h5>Manual de preenchimento:</h5>
                     <a href="" download><h5>-Manual de preenchimento - Registro R-1070.pdf</h5></a>
