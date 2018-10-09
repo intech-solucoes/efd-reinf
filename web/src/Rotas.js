@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {
-    Home, MinhaConta, AlterarSenha, GeracaoXml
+    Home, MinhaConta, AlterarSenha, GeracaoXml, EditarContribuinte
 } from "./pages";
 
 export default function GetRotas() {
@@ -35,6 +35,14 @@ export default function GetRotas() {
             icone: "fas fa-table",
             caminho: "/geracaoXml",
             componente: (routeProps) => <GeracaoXml routeProps={routeProps} />,
+            mostrarMenu: true,
+            exact: false
+        },
+        {
+            titulo: "Editar Contribuinte",
+            icone: "fas fa-user",
+            caminho: "/editarContribuinte",
+            componente: (routeProps) => <EditarContribuinte routeProps={routeProps} />,
             mostrarMenu: true,
             exact: false
         }
