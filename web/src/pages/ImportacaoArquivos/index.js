@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Row, Col, Box, Combo, Botao, InputFile, PainelErros } from '../../components';
+import { DominioService } from "@intechprev/efdreinf-service";
 
 export default class ImportacaoArquivos extends Component {
     constructor(props) {
@@ -10,6 +11,7 @@ export default class ImportacaoArquivos extends Component {
 
         this.state = {
             filtrarSituacao: "",
+            filtrarSituacaoCombo: [],
             arquivo: "",
             arquivosImportacao: [
                 {
@@ -30,7 +32,9 @@ export default class ImportacaoArquivos extends Component {
     }
 
     async componentDidMount() {
-        console.log(this.listaCampos)
+        var comboSituacao = await DominioService.BuscarPorCodigo("DMN_STATUS_IMPORTACAO");
+        await this.setState({ filtrarSituacaoCombo: comboSituacao });
+        
     }
 
     limparErros = async () => {
@@ -47,7 +51,7 @@ export default class ImportacaoArquivos extends Component {
         });
     }
 
-    enviar = async () => {          
+    enviar = async () => { 
         await this.limparErros();
 
         var campo = this.listaCampos[0];
@@ -55,6 +59,12 @@ export default class ImportacaoArquivos extends Component {
         if(campo.possuiErros)
             await this.adicionarErro(campo.erros);
 
+        // Rota para upload.
+    }
+
+    filtrarSituacao = async () => { 
+        var contribuinte = localStorage.getItem("contribuinte");
+        // Atualizar state arquivosImportação com os dados buscados na tabela EFD_ARQUIVO_UPLOAD filtrando pelo contribuinte logado e filtro selecionado.
     }
 
     render() {
@@ -69,12 +79,12 @@ export default class ImportacaoArquivos extends Component {
                     <h5>4. Caso ocorra erros durante a importação, no final do processo será impresso um relatório com os erros;</h5>
                     <br />
                     <h5>Links do Leiaute:</h5>
-                    <h5>-Leiaute Importação - <a href="">Registro R-1070</a></h5>
-                    <h5>-Leiaute Importação - <a href="">Registro R-2010</a></h5>
+                    <a href="layouts/LayoutR1070.xlsx" download="Layout.xlsx"><h5>-Leiaute Importação - Registro R-1070</h5></a>
+                    <a href="" download><h5>-Leiaute Importação - Registro R-2010</h5></a>
                     <br />
                     <h5>Manual de preenchimento:</h5>
-                    <h5>-Manual de preenchimento - Registro R-1070.pdf</h5>
-                    <h5>-Manual de preenchimento - Registro R-2010.pdf</h5>
+                    <a href="" download><h5>-Manual de preenchimento - Registro R-1070.pdf</h5></a>
+                    <a href="" download><h5>-Manual de preenchimento - Registro R-2010.pdf</h5></a>
                 </Box>
 
                 <Box titulo="Arquivo para Upload">
@@ -97,8 +107,8 @@ export default class ImportacaoArquivos extends Component {
                 <Box titulo={"Arquivo para Importação"}>
                     <Combo contexto={this} label={"Filtrar situação do arquivo"} ref={ (input) => this.listaCampos[1] = input } 
                            nome="filtrarSituacao" valor={this.state.filtrarSituacao} obrigatorio={true} col={"col-lg-4"}
-                           opcoes={[{NOM_DOMINIO: "Situação 1", SIG_DOMINIO: 1}]} />
-                
+                           opcoes={this.state.filtrarSituacaoCombo.data} onChange={this.filtrarSituacao} />
+
                     <table className="table table-striped">
                         <thead>
                             <tr>
