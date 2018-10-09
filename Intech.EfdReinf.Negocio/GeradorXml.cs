@@ -3,11 +3,13 @@ using ICSharpCode.SharpZipLib.Zip;
 using Intech.EfdReinf.Entidades;
 using Intech.EfdReinf.Negocio.Proxy;
 using Intech.Lib.Dominios;
+using Intech.Lib.Util.Date;
 using Intech.Lib.Util.Validacoes;
 using Scriban;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 #endregion
 
@@ -33,7 +35,7 @@ namespace Intech.EfdReinf.Negocio
             });
 
             // Monta nome do arquivo
-            var nomeArquivoZip = Guid.NewGuid().ToString() + ".intech";
+            var nomeArquivoZip = "XML_R1000_" + Guid.NewGuid().ToString() + ".intech";
             var arquivoUploadProxy = new ArquivoUploadProxy();
 
             var oidArquivoUpload = arquivoUploadProxy.Inserir(new ArquivoUploadEntidade
@@ -87,7 +89,7 @@ namespace Intech.EfdReinf.Negocio
                 cod_cnpj_efr = contribuinte.COD_CNPJ_EFR
             });
 
-            var caminhoArquivo = GerarArquivo(baseCaminhoArquivo, xmlR1000);
+            var caminhoArquivo = GerarArquivo("R1000_", baseCaminhoArquivo, xmlR1000);
 
             CompactarArquivo(caminhoArquivo, baseCaminhoArquivo, nomeArquivoZip);
         }
@@ -96,15 +98,107 @@ namespace Intech.EfdReinf.Negocio
 
         #region R-2010
 
+        public void GerarR2010(decimal oidUsuario, decimal oidContribuinte, string tipoOperacao, string tipoAmbiente, DateTime dtaInicial, DateTime dtaFinal, string baseCaminhoArquivo)
+        {
+            Intervalo intervaloDeDatas = new Intervalo(dtaFinal, dtaInicial);
 
+            if (intervaloDeDatas.Meses > 1)
+                throw new Exception("Período inválido.");
+
+            // Busca Contribuinte
+            var contribuinte = new ContribuinteProxy().BuscarPorChave(oidContribuinte);
+            var usuarioContribuinte = new UsuarioContribuinteProxy().BuscarPorOidUsuarioOidContribuinte(oidUsuario, oidContribuinte);
+
+            // Monta nome do arquivo
+            var nomeArquivoZip = "XML_R2010_" + Guid.NewGuid().ToString() + ".intech";
+            var arquivoUploadProxy = new ArquivoUploadProxy();
+
+            var oidArquivoUpload = arquivoUploadProxy.Inserir(new ArquivoUploadEntidade
+            {
+                DTA_UPLOAD = DateTime.Now,
+                IND_STATUS = DMN_STATUS_EFD_UPLOAD.NAO_PROCESSADO,
+                NOM_ARQUIVO_LOCAL = "Upload/" + nomeArquivoZip,
+                NOM_EXT_ARQUIVO = ".intech",
+                NOM_ARQUIVO_ORIGINAL = nomeArquivoZip,
+                NOM_DIRETORIO_LOCAL = "Upload",
+                OID_USUARIO_CONTRIBUINTE = usuarioContribuinte.OID_USUARIO_CONTRIBUINTE
+            });
+
+            IEnumerable<R2010Entidade> listRegistrosR2010;
+
+            switch (tipoOperacao)
+            {
+                case DMN_EFD_RETIFICADORA.ORIGINAL:
+                    listRegistrosR2010 = new R2010Proxy().BuscarPorOidContribuinteDtaInicioDtaFimIndSituacaoProcessamento(oidContribuinte, dtaInicial, dtaFinal, DMN_SITUACAO_PROCESSAMENTO.IMPORTADO);
+                    break;
+                case DMN_EFD_RETIFICADORA.RETIFICADORA:
+                    listRegistrosR2010 = new R2010Proxy().BuscarPorOidContribuinteMesEnvioAnoEnvio(oidContribuinte, dtaInicial.Month, dtaInicial.Year);
+                    break;
+                default:
+                    throw new Exception("Tipo de operação inválido.");
+            }
+
+            if (listRegistrosR2010.Count() == 0)
+                throw new Exception("Não existem registros para geração de arquivo XML.");
+
+            var eventos = from x in listRegistrosR2010
+                          group x by new { x.DTA_APURACAO.Month, x.DTA_APURACAO.Year, x.COD_CNPJ_PRESTADOR } into g
+                          select new
+                          {
+                              id = "ID" + oidArquivoUpload.ToString().PadLeft(18, '0'),
+                              ind_retificacao = g.First().IND_RETIFICACAO,
+                              dta_apuracao = string.Format("{0}-{1}", g.Key.Year, g.Key.Month),
+                              ind_ambiente_envio = tipoAmbiente,
+                              versao = Assembly.GetExecutingAssembly().GetName().Version.ToString(3),
+                              ind_tipo_inscricao = contribuinte.IND_TIPO_INSCRICAO,
+                              cod_cnpj_cpf = contribuinte.COD_CNPJ_CPF,
+                              cod_insc_estabelecimento = g.First().COD_INSC_ESTABELECIMENTO,
+                              cod_cnpj_cpf_obra = g.First().COD_CNPJ_CPF_OBRA,
+                              ind_obra = g.First().IND_OBRA,
+                              cod_cnpj_prestador = g.First().COD_CNPJ_PRESTADOR,
+                              val_total_bruto = g.First().VAL_TOTAL_BRUTO.ToString().Replace('.', ','),
+                              val_base_retencao = g.First().VAL_BASE_RETENCAO.ToString().Replace('.', ','),
+                              val_total_retencao = g.First().VAL_TOTAL_RETENCAO.ToString().Replace('.', ','),
+                              ind_cprb = g.First().IND_CPRB,
+                              notas_fiscais = from y in listRegistrosR2010
+                                              where y.DTA_APURACAO.Month == g.Key.Month &&
+                                                    y.DTA_APURACAO.Year == g.Key.Year &&
+                                                    y.COD_CNPJ_PRESTADOR == g.Key.COD_CNPJ_PRESTADOR
+                                              group y by new { y.NUM_DOCUMENTO_NF } into z
+                                              select new
+                                              {
+                                                  cod_serie_nf = z.First().COD_SERIE_NF,
+                                                  num_documento_nf = z.Key.NUM_DOCUMENTO_NF,
+                                                  dta_emissao_nf = z.First().DTA_EMISSAO_NF.ToString("yyyy-MM-dd"),
+                                                  val_bruto_nf = z.First().VAL_BRUTO_NF.ToString().Replace('.', ','),
+                                                  cod_tipo_servico = z.First().COD_TIPO_SERVICO,
+                                                  val_base_ret_servico = z.First().VAL_BASE_RET_SERVICO.ToString().Replace('.', ','),
+                                                  val_retencao_servico = z.First().VAL_RETENCAO_SERVICO.ToString().Replace('.', ',')
+                                              }
+
+                          };
+            
+
+            // Monta XML
+            var templateFile = Path.Combine(baseCaminhoArquivo, "../TemplatesXml", "R2010.liquid");
+            var template = Template.Parse(File.OpenText(templateFile).ReadToEnd());
+            var xmlR2010 = template.Render(new
+            {
+                eventos
+            });
+
+            var caminhoArquivo = GerarArquivo("R2010_", baseCaminhoArquivo, xmlR2010);
+
+            CompactarArquivo(caminhoArquivo, baseCaminhoArquivo, nomeArquivoZip);
+        }
 
         #endregion
 
         #region Métodos Auxiliares
 
-        private string GerarArquivo(string baseCaminhoArquivo, string conteudoArquivo)
+        private string GerarArquivo(string nomeInicioArquivo, string baseCaminhoArquivo, string conteudoArquivo)
         {
-            var nomeArquivo = "R1000_" + Guid.NewGuid().ToString() + ".xml";
+            var nomeArquivo = nomeInicioArquivo + Guid.NewGuid().ToString() + ".xml";
             var caminhoArquivo = Path.Combine(baseCaminhoArquivo, nomeArquivo);
 
             using (TextWriter writer = new StreamWriter(caminhoArquivo))
@@ -119,7 +213,7 @@ namespace Intech.EfdReinf.Negocio
             var zipStream = new ZipOutputStream(File.Create(caminho));
             zipStream.SetLevel(5);
 
-            adicionaArquivoAoZip(arquivo, zipStream);
+            AdicionaArquivoAoZip(arquivo, zipStream);
             File.Delete(arquivo);
 
             zipStream.Finish();
@@ -134,7 +228,7 @@ namespace Intech.EfdReinf.Negocio
 
             foreach (var arquivo in listaArquivos)
             {
-                adicionaArquivoAoZip(arquivo, zipStream);
+                AdicionaArquivoAoZip(arquivo, zipStream);
                 File.Delete(arquivo);
             }
 
@@ -142,7 +236,7 @@ namespace Intech.EfdReinf.Negocio
             zipStream.Close();
         }
 
-        private void adicionaArquivoAoZip(string arquivo, ZipOutputStream zipStream)
+        private void AdicionaArquivoAoZip(string arquivo, ZipOutputStream zipStream)
         {
             string caminhoRelativoArquivo = Path.GetFileName(arquivo);
 

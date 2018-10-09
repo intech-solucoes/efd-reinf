@@ -5,6 +5,7 @@ using System.Text;
 using Intech.EfdReinf.Entidades;
 using Intech.EfdReinf.Negocio.Proxy;
 using Intech.Lib.Dominios;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Intech.EfdReinf.API.Controllers
@@ -26,6 +27,7 @@ namespace Intech.EfdReinf.API.Controllers
 
 
         [HttpPost("importarCsv/{oidArquivoUpload}/{oidContribuinte}")]
+        [Authorize("Bearer")]
         public ActionResult ImportarCsv(decimal oidArquivoUpload, decimal oidContribuinte)
         {
             try
