@@ -36,6 +36,8 @@
     <None Include="$(MSBuildThisFileDirectory)Scripts\Contribuinte\BuscarPorCpfCnpjOidUsuario.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\Contribuinte\BuscarPorOidUsuario.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\Dominio\BuscarPorCodigo.sql" />
+    <None Include="$(MSBuildThisFileDirectory)Scripts\R2010\BuscarPorOidContribuinteDtaInicioDtaFimIndSituacaoProcessamento.sql" />
+    <None Include="$(MSBuildThisFileDirectory)Scripts\R2010\BuscarPorOidContribuinteMesEnvioAnoEnvio.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\UsuarioContribuinte\BuscarPorOidUsuarioOidContribuinte.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\Usuario\BuscarPorEmail.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\Usuario\BuscarPorToken.sql" />

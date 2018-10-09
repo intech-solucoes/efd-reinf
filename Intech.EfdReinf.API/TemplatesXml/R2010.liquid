@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Reinf xmlns="http://www.reinf.esocial.gov.br/schemas/envioLoteEventos/v1_03_02" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <loteEventos>
+    {{for evento in eventos}} <evento id="{{evento.id}}">
+      <Reinf xmlns="http://www.reinf.esocial.gov.br/schemas/evtTomadorServicos/v1_03_02">
+        <evtServTom id="{{evento.id}}">
+          <ideEvento>
+            <indRetif>{{evento.ind_retificacao}}</indRetif>
+            <perApur>{{evento.dta_apuracao}}</perApur>
+            <tpAmb>{{evento.ind_ambiente_envio}}</tpAmb>
+            <procEmi>1</procEmi>
+            <verProc>{{evento.versao}}</verProc>
+          </ideEvento>
+          <ideContri>
+            <tpInsc>{{evento.ind_tipo_inscricao}}</tpInsc>
+            <nrInsc>{{evento.cod_cnpj_cpf}}</nrInsc>
+          </ideContri>
+          <infoServTom>
+            <ideEstabObra>
+              <tpInscEstab>{{evento.cod_insc_estabelecimento}}</tpInscEstab>
+              <nrInscEstab>{{evento.cod_cnpj_cpf_obra}}</nrInscEstab>
+              <indObra>{{evento.ind_obra}}</indObra>
+              <idePrestServ>
+                <cnpjPrestador>{{evento.cod_cnpj_prestador}}</cnpjPrestador>
+                <vlrTotalBruto>{{evento.val_total_bruto}}</vlrTotalBruto>
+                <vlrTotalBaseRet>{{evento.val_base_retencao}}</vlrTotalBaseRet>
+                <vlrTotalRetPrinc>{{evento.val_total_retencao}}</vlrTotalRetPrinc>
+                <indCPRB>{{evento.ind_cprb}}</indCPRB>
+                {{for nota in evento.notas_fiscais}}<nfs>
+                  <serie>{{nota.cod_serie_nf}}</serie>
+                  <numDocto>{{nota.num_documento_nf}}</numDocto>
+                  <dtEmissaoNF>{{nota.dta_emissao_nf}}</dtEmissaoNF>
+                  <vlrBruto>{{nota.val_bruto_nf}}</vlrBruto>
+                  <infoTpServ>
+                    <tpServico>{{nota.cod_tipo_servico}}</tpServico>
+                    <vlrBaseRet>{{nota.val_base_ret_servico}}</vlrBaseRet>
+                    <vlrRetencao>{{nota.val_retencao_servico}}</vlrRetencao>
+                  </infoTpServ>
+                </nfs>{{end}}
+              </idePrestServ>
+            </ideEstabObra>
+          </infoServTom>
+        </evtServTom>
+      </Reinf>
+    </evento>{{end}}
+  </loteEventos>
+</Reinf>
