@@ -124,15 +124,16 @@ namespace Intech.EfdReinf.Negocio
                 OID_USUARIO_CONTRIBUINTE = usuarioContribuinte.OID_USUARIO_CONTRIBUINTE
             });
 
+            R2010Proxy proxy2010 = new R2010Proxy();
             IEnumerable<R2010Entidade> listRegistrosR2010;
 
             switch (tipoOperacao)
             {
                 case DMN_EFD_RETIFICADORA.ORIGINAL:
-                    listRegistrosR2010 = new R2010Proxy().BuscarPorOidContribuinteDtaInicioDtaFimIndSituacaoProcessamento(oidContribuinte, dtaInicial, dtaFinal, DMN_SITUACAO_PROCESSAMENTO.IMPORTADO);
+                    listRegistrosR2010 = proxy2010.BuscarPorOidContribuinteDtaInicioDtaFimIndSituacaoProcessamento(oidContribuinte, dtaInicial, dtaFinal, DMN_SITUACAO_PROCESSAMENTO.IMPORTADO);
                     break;
                 case DMN_EFD_RETIFICADORA.RETIFICADORA:
-                    listRegistrosR2010 = new R2010Proxy().BuscarPorOidContribuinteMesEnvioAnoEnvio(oidContribuinte, dtaInicial.Month, dtaInicial.Year);
+                    listRegistrosR2010 = proxy2010.BuscarPorOidContribuinteMesEnvioAnoEnvio(oidContribuinte, dtaInicial.Month, dtaInicial.Year);
                     break;
                 default:
                     throw new Exception("Tipo de operação inválido.");
@@ -146,7 +147,7 @@ namespace Intech.EfdReinf.Negocio
                           select new
                           {
                               id = "ID" + oidArquivoUpload.ToString().PadLeft(18, '0'),
-                              ind_retificacao = g.First().IND_RETIFICACAO,
+                              ind_retificacao = tipoOperacao,
                               dta_apuracao = string.Format("{0}-{1}", g.Key.Year, g.Key.Month),
                               ind_ambiente_envio = tipoAmbiente,
                               versao = Assembly.GetExecutingAssembly().GetName().Version.ToString(3),
@@ -177,7 +178,6 @@ namespace Intech.EfdReinf.Negocio
                                               }
 
                           };
-            
 
             // Monta XML
             var templateFile = Path.Combine(baseCaminhoArquivo, "../TemplatesXml", "R2010.liquid");
@@ -190,6 +190,15 @@ namespace Intech.EfdReinf.Negocio
             var caminhoArquivo = GerarArquivo("R2010_", baseCaminhoArquivo, xmlR2010);
 
             CompactarArquivo(caminhoArquivo, baseCaminhoArquivo, nomeArquivoZip);
+
+            foreach (var item in listRegistrosR2010)
+            {
+                item.IND_AMBIENTE_ENVIO = tipoAmbiente;
+                item.IND_RETIFICACAO = tipoOperacao;
+                item.IND_SITUACAO_PROCESSAMENTO = DMN_SITUACAO_PROCESSAMENTO.PROCESSADO;
+
+                proxy2010.Atualizar(item);
+            }
         }
 
         #endregion
