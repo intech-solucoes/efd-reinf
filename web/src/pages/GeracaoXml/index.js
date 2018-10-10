@@ -3,7 +3,9 @@ import { handleFieldChange } from '@intechprev/react-lib';
 import { Botao, CampoTexto, Combo, Checkbox, Box, Col, Row, PainelErros } from '../../components';
 import ArquivosGerados from './ArquivosGerados';
 
-import { DominioService } from '@intechprev/efdreinf-service';
+import { DominioService, GeracaoXmlService } from '@intechprev/efdreinf-service';
+
+var geracaoXmlService = new GeracaoXmlService();
 
 export default class GeracaoXml extends Component {
     constructor(props) {
@@ -106,7 +108,6 @@ export default class GeracaoXml extends Component {
         this.setState({ contribuinte: localStorage.getItem("nomeContribuinte") })
         this.combos.tipoOperacao = await DominioService.BuscarPorCodigo("DMN_OPER_REGISTRO");
         this.combos.ambienteEnvio = await DominioService.BuscarPorCodigo("DMN_TIPO_AMBIENTE_EFD");
-        // Contribuinte - buscar o contribuinte logado
         // Usuário responsável - buscar usuários vinculados ao contribuinte
         this.combos.dominioSimNao = await DominioService.BuscarPorCodigo("DMN_SN");
         this.carregaComboReferencia();
@@ -133,28 +134,61 @@ export default class GeracaoXml extends Component {
         for(var i = 0; i < this.listaCampos.length; i++) {
             var campo = this.listaCampos[i];
 
-            // if(campo !== null)
-            //     campo.validar();
+            if(campo !== null || campo !== undefined)
+                campo.validar();
 
-            // if(campo && campo.possuiErros)
-            //     await this.adicionarErro(campo.erros);
+            if(campo && campo.possuiErros)
+                await this.adicionarErro(campo.erros);
 
         }
 
+        if(this.state.r1000) {
+            if(this.state.erros.length === 0) {
+                try {
+                    await geracaoXmlService.GerarR1000(localStorage.getItem("contribuinte"), this.state.ambienteEnvio);
+                    alert("R-1000 Gerado com sucesso!");
+                } catch(err) {
+                    console.error(err);
+                }
+            }
+        }
+        
+        var contribuinte = localStorage.getItem("contribuinte");
         var periodoInicial = this.state.periodoInicial.split("-");
         var periodoFinal = this.state.periodoFinal.split("-");
 
         periodoInicial = new Date(periodoInicial[0], periodoInicial[1] - 1, periodoInicial[2]);
         periodoFinal = new Date(periodoFinal[0], periodoFinal[1] - 1, periodoFinal[2]);
         
-        if(periodoInicial.getMonth() !== periodoFinal.getMonth()) 
-            this.adicionarErro("As datas devem pertencer ao mesmo mês.");
+        var msParaDia = 0;
+        var diferencaDias = 0;
         
-        var msParaDia = 1000 * 60 * 60 * 24;    // Valor que representa um dia em milissegundos.
-        var diferencaDias = (periodoFinal - periodoInicial) / msParaDia;    // Divide-se por msParaDia pois a diferença entre duas datas resulta no valor em milissegundos.
+        if(this.state.r2010) {
+            msParaDia = 1000 * 60 * 60 * 24;    // Valor que representa um dia em milissegundos.
+            diferencaDias = (periodoFinal - periodoInicial) / msParaDia;    // Divide-se por msParaDia pois a diferença entre duas datas resulta no valor em milissegundos.
+            if(diferencaDias < 0)
+                this.adicionarErro("A data final deve ser superior à data inicial.");
+            
+            if(this.state.periodoInicial.length === 0 || this.state.periodoFinal.length === 0)
+                this.adicionarErro("Campo \"Período\" obrigatório");
 
-        if(diferencaDias < 0)
-            this.adicionarErro("A data final deve ser superior à data inicial.");
+            if(this.state.erros.length === 0) {
+                periodoInicial = this.state.periodoInicial.split("-");
+                periodoInicial = periodoInicial[2] + "." + periodoInicial[1] + "." + periodoInicial[0];
+                periodoFinal = this.state.periodoFinal.split("-");
+                periodoFinal = periodoFinal[2] + "." + periodoFinal[1] + "." + periodoFinal[0];
+                try {
+                    await geracaoXmlService.GerarR2010(contribuinte, this.state.tipoOperacao, this.state.ambienteEnvio, periodoInicial, periodoFinal);
+                    alert("R2010 Gerado com sucesso!");
+                } catch(err) {
+                    if(err.response)
+                        await this.adicionarErro(err.response.data);
+                    else
+                        await this.adicionarErro(err);
+                }
+            }
+        }
+
     }
 
     onChange = async (checkbox) => { 
@@ -173,6 +207,7 @@ export default class GeracaoXml extends Component {
     }
 
     onChangeR1000 = async (checkbox) => {
+        this.combos.tipoOperacao = await DominioService.BuscarPorCodigo("DMN_OPER_REGISTRO");
         this.onChange(checkbox);
 
         this.handleVisibilidade("tipoOperacao");
@@ -188,6 +223,7 @@ export default class GeracaoXml extends Component {
     }
 
     onChangeR2010 = async (checkbox) => {
+        this.combos.tipoOperacao = await DominioService.BuscarPorCodigo("DMN_EFD_RETIFICADORA");
         this.onChange(checkbox);
 
         this.handleVisibilidade("tipoOperacao");
@@ -200,6 +236,7 @@ export default class GeracaoXml extends Component {
 
         this.handleVisibilidade("ambienteEnvio");
         this.handleVisibilidade("referencia");
+        this.carregaReferencia("r2098");
     }
 
     onChangeR2099 = async (checkbox) => {
@@ -213,6 +250,8 @@ export default class GeracaoXml extends Component {
         this.handleVisibilidade("repasseAssociacaoDesportiva");
         this.handleVisibilidade("producaoRural");
         this.handleVisibilidade("competencia");
+
+        this.carregaReferencia("r2099");
     }
 
     handleVisibilidade = async (campo) => {
@@ -222,6 +261,16 @@ export default class GeracaoXml extends Component {
                 [campo]: "",
                 visibilidade: this.visibilidade
             });
+    }
+
+    carregaReferencia = async (campo) => {
+        if(campo === "r2098") {
+            console.log("Carregando combo com a referência da tabela de movimento");
+        }
+
+        else if (campo === "r2099") {
+            console.log("Carregando combo com a referência que não esteja na tabela de movimento");
+        }
     }
 
     carregaComboReferencia = async () => { 
@@ -299,7 +348,7 @@ export default class GeracaoXml extends Component {
                                         </div>
 
                                         <div className="col-3">
-                                            <input className="form-control" name="periodoInicial" ref={ (input) => this.listaCampos[4] = input } 
+                                            <input className="form-control" name="periodoInicial"
                                                    id="periodoInicial" type="date" value={this.state.periodoInicial} onChange={(e) => handleFieldChange(this, e)} />
                                         </div>
 
@@ -310,7 +359,7 @@ export default class GeracaoXml extends Component {
                                         </div>
 
                                         <div className="col-3">
-                                            <input className="form-control" name="periodoFinal" ref={ (input) => this.listaCampos[5] = input } 
+                                            <input className="form-control" name="periodoFinal"
                                                    id="periodoFinal" type="date" value={this.state.periodoFinal} onChange={(e) => handleFieldChange(this, e)} />
                                         </div>
                                     </div>
@@ -329,7 +378,7 @@ export default class GeracaoXml extends Component {
                                         </div>
 
                                         <div className="col-2">
-                                            <select className="form-control" id="referenciaAno" ref={ (input) => this.listaCampos[6] = input } name="referenciaAno" onChange={() => {}}>
+                                            <select className="form-control" id="referenciaAno" name="referenciaAno" defaultValue={this.state.referenciaAno} onChange={(e) => handleFieldChange(this, e)}>
                                                 <option value="">Selecione uma opção</option>
                                                 {
                                                     this.state.referenciaAno.map((ano, index) => { 
@@ -343,7 +392,7 @@ export default class GeracaoXml extends Component {
                                         </div>
 
                                         <div className="col-2">
-                                            <select className="form-control" id="referenciaMes" ref={ (input) => this.listaCampos[7] = input } name="referenciaMes" onChange={() => {}}>
+                                            <select className="form-control" id="referenciaMes" name="referenciaMes" defaultValue={this.state.referenciaMes} onChange={(e) => handleFieldChange(this, e)}>
                                                 <option value="">Selecione uma opção</option>
                                                 {
                                                     this.state.referenciaMes.map((mes, index) => { 
