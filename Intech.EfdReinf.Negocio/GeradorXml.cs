@@ -203,6 +203,70 @@ namespace Intech.EfdReinf.Negocio
 
         #endregion
 
+        #region R-2099
+
+        public void GerarR2099(decimal oidUsuario, R2099Entidade r2099, string baseCaminhoArquivo)
+        {
+            // Busca contribuinte
+            var contribuinte = new ContribuinteProxy().BuscarPorChave(r2099.OID_CONTRIBUINTE);
+            var usuarioContribuinte = new UsuarioContribuinteProxy().BuscarPorOidUsuarioOidContribuinte(oidUsuario, r2099.OID_CONTRIBUINTE);
+
+            r2099.IND_SITUACAO_PROCESSAMENTO = DMN_SITUACAO_PROCESSAMENTO.PROCESSADO;
+
+            // Cria novo ContribuinteEnvio
+            var R2099Proxy = new R2099Proxy();            
+            var oidR2099 = R2099Proxy.Inserir(r2099);
+
+            // Monta nome do arquivo
+            var nomeArquivoZip = "XML_R2099_" + Guid.NewGuid().ToString() + ".intech";
+            var arquivoUploadProxy = new ArquivoUploadProxy();
+
+            var oidArquivoUpload = arquivoUploadProxy.Inserir(new ArquivoUploadEntidade
+            {
+                DTA_UPLOAD = DateTime.Now,
+                IND_STATUS = DMN_STATUS_EFD_UPLOAD.NAO_PROCESSADO,
+                NOM_ARQUIVO_LOCAL = "Upload/" + nomeArquivoZip,
+                NOM_EXT_ARQUIVO = ".intech",
+                NOM_ARQUIVO_ORIGINAL = nomeArquivoZip,
+                NOM_DIRETORIO_LOCAL = "Upload",
+                OID_USUARIO_CONTRIBUINTE = usuarioContribuinte.OID_USUARIO_CONTRIBUINTE
+            });
+
+            var id = "ID" + oidR2099.ToString().PadLeft(18, '0');
+
+            R2099Proxy proxy2099 = new R2099Proxy();
+
+            // Monta XML
+            var templateFile = Path.Combine(baseCaminhoArquivo, "../TemplatesXml", "R2099.liquid");
+            var template = Template.Parse(File.OpenText(templateFile).ReadToEnd());
+            var xmlR2099 = template.Render(new
+            {
+                id,
+                dta_periodo_Apuracao = r2099.DTA_PERIODO_APURACAO,
+                ind_ambiente_envio = r2099.IND_AMBIENTE_ENVIO,
+                versao = Assembly.GetExecutingAssembly().GetName().Version.ToString(3),
+                ind_tipo_inscricao = contribuinte.IND_TIPO_INSCRICAO,
+                cod_cnpj_cpf = contribuinte.COD_CNPJ_CPF,
+                nom_contato = contribuinte.NOM_CONTATO,
+                cod_cpf_contato = contribuinte.COD_CPF_CONTATO,
+                cod_fone_celular_contato = contribuinte.COD_FONE_CELULAR_CONTATO,
+                txt_email_contato = contribuinte.TXT_EMAIL_CONTATO,
+                ind_contratacao_serv = r2099.IND_CONTRATACAO_SERV,
+                ind_prestacao_serv = r2099.IND_PRESTACAO_SERV,
+                ind_associacao_desportiva = r2099.IND_ASSOCIACAO_DESPORTIVA,
+                ind_repasse_assoc_desport = r2099.IND_REPASSE_ASSOC_DESPORT,
+                ind_producao_rural = r2099.IND_PRODUCAO_RURAL,
+                ind_desoneracao_cprb = contribuinte.IND_DESONERACAO_CPRB,
+                ind_pagamentos_diversos = r2099.IND_PAGAMENTOS_DIVERSOS
+            });
+
+            var caminhoArquivo = GerarArquivo("R2099_", baseCaminhoArquivo, xmlR2099);
+
+            CompactarArquivo(caminhoArquivo, baseCaminhoArquivo, nomeArquivoZip);
+        }
+
+        #endregion
+
         #region Métodos Auxiliares
 
         private string GerarArquivo(string nomeInicioArquivo, string baseCaminhoArquivo, string conteudoArquivo)

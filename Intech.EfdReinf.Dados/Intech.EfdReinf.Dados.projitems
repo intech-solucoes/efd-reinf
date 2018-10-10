@@ -16,6 +16,7 @@
     <Content Include="$(MSBuildThisFileDirectory)Scripts\ImportacaoCritica\entidade.json" />
     <Content Include="$(MSBuildThisFileDirectory)Scripts\R1070\entidade.json" />
     <Content Include="$(MSBuildThisFileDirectory)Scripts\R2010\entidade.json" />
+    <Content Include="$(MSBuildThisFileDirectory)Scripts\R2099\entidade.json" />
     <Content Include="$(MSBuildThisFileDirectory)Scripts\UsuarioContribuinte\entidade.json" />
     <Content Include="$(MSBuildThisFileDirectory)Scripts\Usuario\entidade.json" />
   </ItemGroup>
@@ -27,6 +28,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)DAO\ImportacaoCriticaDAO.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DAO\R1070DAO.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DAO\R2010DAO.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DAO\R2099DAO.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DAO\UsuarioContribuinteDAO.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DAO\UsuarioDAO.cs" />
   </ItemGroup>
@@ -38,6 +40,7 @@
     <None Include="$(MSBuildThisFileDirectory)Scripts\Dominio\BuscarPorCodigo.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\R2010\BuscarPorOidContribuinteDtaInicioDtaFimIndSituacaoProcessamento.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\R2010\BuscarPorOidContribuinteMesEnvioAnoEnvio.sql" />
+    <None Include="$(MSBuildThisFileDirectory)Scripts\R2099\BuscarPorOidContribuinteAnoMesIndSituacaoProcessamento.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\UsuarioContribuinte\BuscarPorOidUsuarioOidContribuinte.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\Usuario\BuscarPorEmail.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\Usuario\BuscarPorToken.sql" />

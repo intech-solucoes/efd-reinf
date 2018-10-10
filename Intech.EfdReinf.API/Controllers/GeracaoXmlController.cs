@@ -1,4 +1,5 @@
-﻿using Intech.EfdReinf.Negocio;
+﻿using Intech.EfdReinf.Entidades;
+using Intech.EfdReinf.Negocio;
 using Intech.EfdReinf.Negocio.Proxy;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -49,6 +50,25 @@ namespace Intech.EfdReinf.API.Controllers
                 string newPath = Path.Combine(webRootPath, _folderName);
 
                 new GeradorXml().GerarR2010(OidUsuario, oidContribuinte, tipoOperacao, tipoAmbiente, dtaInicial, dtaFinal, newPath);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("gerarR2099/{oidContribuinte}/{tipoAmbiente}/{ano}/{mes}/{indContratacaoServ}")]
+        [Authorize("Bearer")]
+        public ActionResult GerarR2099(R2099Entidade r2099)
+        {
+            try
+            {
+                string webRootPath = HostingEnvironment.ContentRootPath;
+                string newPath = Path.Combine(webRootPath, _folderName);
+
+                new GeradorXml().GerarR2099(OidUsuario, r2099, newPath);
 
                 return Ok();
             }

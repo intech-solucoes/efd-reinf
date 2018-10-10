@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Reinf xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.reinf.esocial.gov.br/schemas/envioLoteEventos/v1_03_02">
+  <loteEventos>
+    <evento id="ID1004369230000002018083110441300001">
+      <Reinf xmlns="http://www.reinf.esocial.gov.br/schemas/evtFechamento/v1_03_02">
+        <evtFechaEvPer id="{{id}}">
+          <ideEvento>
+            <perApur>{{dta_periodo_Apuracao}}</perApur>
+            <tpAmb>{{ind_ambiente_envio}}</tpAmb>
+            <procEmi>1</procEmi>
+            <verProc>{{versao}}</verProc>
+          </ideEvento>
+          <ideContri>
+            <tpInsc>{{ind_tipo_inscricao}}</tpInsc>
+            <nrInsc>{{cod_cnpj_cpf}}</nrInsc>
+          </ideContri>
+          <ideRespInf>
+            <nmResp>{{nom_contato}}</nmResp>
+            <cpfResp>{{cod_cpf_contato}}</cpfResp>
+            <telefone>{{cod_fone_celular_contato}}</telefone>
+            <email>{{txt_email_contato}}</email>
+          </ideRespInf>
+          <infoFech>
+            <evtServTm>{{ind_contratacao_serv}}</evtServTm>
+            <evtServPr>{{ind_prestacao_serv}}</evtServPr>
+            <evtAssDespRec>{{ind_associacao_desportiva}}</evtAssDespRec>
+            <evtAssDespRep>{{ind_repasse_assoc_desport}}</evtAssDespRep>
+            <evtComProd>{{ind_producao_rural}}</evtComProd>
+            <evtCPRB>{{ind_desoneracao_cprb}}</evtCPRB>
+            <evtPgtos>{{ind_pagamentos_diversos}}</evtPgtos>
+          </infoFech>
+        </evtFechaEvPer>        
+      </Reinf>
+    </evento>
+  </loteEventos>
+</Reinf>
