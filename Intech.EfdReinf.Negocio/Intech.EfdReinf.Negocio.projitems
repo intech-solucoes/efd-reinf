@@ -18,6 +18,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Proxy\ImportacaoCriticaProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Proxy\R1070Proxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Proxy\R2010Proxy.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Proxy\R2098Proxy.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Proxy\R2099Proxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Proxy\UsuarioContribuinteProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Proxy\UsuarioProxy.cs" />
   </ItemGroup>
