@@ -59,16 +59,16 @@ namespace Intech.EfdReinf.API.Controllers
             }
         }
 
-        [HttpGet("gerarR2099/{oidContribuinte}/{tipoAmbiente}/{ano}/{mes}/{indContratacaoServ}")]
+        [HttpGet("gerarR2098/{oidContribuinte}/{tipoAmbiente}/{ano}/{mes}")]
         [Authorize("Bearer")]
-        public ActionResult GerarR2099(R2099Entidade r2099)
+        public ActionResult GerarR2098(decimal oidContribuinte, string tipoAmbiente, int ano, int mes)
         {
             try
             {
                 string webRootPath = HostingEnvironment.ContentRootPath;
                 string newPath = Path.Combine(webRootPath, _folderName);
 
-                new GeradorXml().GerarR2099(OidUsuario, r2099, newPath);
+                new GeradorXml().GerarR2098(OidUsuario, oidContribuinte, tipoAmbiente, ano, mes, newPath);
 
                 return Ok();
             }
@@ -77,5 +77,24 @@ namespace Intech.EfdReinf.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("gerarR2099/{oidContribuinte}/{r2099}")]
+        [Authorize("Bearer")]
+        public ActionResult GerarR2099(decimal oidContribuinte, R2099Entidade r2099)
+        {
+            try
+            {
+                string webRootPath = HostingEnvironment.ContentRootPath;
+                string newPath = Path.Combine(webRootPath, _folderName);
+
+                new GeradorXml().GerarR2099(OidUsuario, oidContribuinte, r2099, newPath);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }        
     }
 }

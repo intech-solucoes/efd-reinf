@@ -205,11 +205,11 @@ namespace Intech.EfdReinf.Negocio
 
         #region R-2099
 
-        public void GerarR2099(decimal oidUsuario, R2099Entidade r2099, string baseCaminhoArquivo)
+        public void GerarR2099(decimal oidUsuario, decimal oidContribuinte, R2099Entidade r2099, string baseCaminhoArquivo)
         {
             // Busca contribuinte
-            var contribuinte = new ContribuinteProxy().BuscarPorChave(r2099.OID_CONTRIBUINTE);
-            var usuarioContribuinte = new UsuarioContribuinteProxy().BuscarPorOidUsuarioOidContribuinte(oidUsuario, r2099.OID_CONTRIBUINTE);
+            var contribuinte = new ContribuinteProxy().BuscarPorChave(oidContribuinte);
+            var usuarioContribuinte = new UsuarioContribuinteProxy().BuscarPorOidUsuarioOidContribuinte(oidUsuario, oidContribuinte);
 
             r2099.IND_SITUACAO_PROCESSAMENTO = DMN_SITUACAO_PROCESSAMENTO.PROCESSADO;
 
@@ -234,15 +234,13 @@ namespace Intech.EfdReinf.Negocio
 
             var id = "ID" + oidR2099.ToString().PadLeft(18, '0');
 
-            R2099Proxy proxy2099 = new R2099Proxy();
-
             // Monta XML
             var templateFile = Path.Combine(baseCaminhoArquivo, "../TemplatesXml", "R2099.liquid");
             var template = Template.Parse(File.OpenText(templateFile).ReadToEnd());
             var xmlR2099 = template.Render(new
             {
                 id,
-                dta_periodo_Apuracao = r2099.DTA_PERIODO_APURACAO,
+                dta_periodo_Apuracao = r2099.DTA_PERIODO_APURACAO.ToString("yyyy-MM"),
                 ind_ambiente_envio = r2099.IND_AMBIENTE_ENVIO,
                 versao = Assembly.GetExecutingAssembly().GetName().Version.ToString(3),
                 ind_tipo_inscricao = contribuinte.IND_TIPO_INSCRICAO,
@@ -261,6 +259,66 @@ namespace Intech.EfdReinf.Negocio
             });
 
             var caminhoArquivo = GerarArquivo("R2099_", baseCaminhoArquivo, xmlR2099);
+
+            CompactarArquivo(caminhoArquivo, baseCaminhoArquivo, nomeArquivoZip);
+        }
+
+        #endregion
+
+        #region R-2098
+
+        public void GerarR2098(decimal oidUsuario, decimal oidContribuinte, string tipoAmbiente, int ano, int mes, string baseCaminhoArquivo)
+        {
+            // Busca contribuinte
+            var contribuinte = new ContribuinteProxy().BuscarPorChave(oidContribuinte);
+            var usuarioContribuinte = new UsuarioContribuinteProxy().BuscarPorOidUsuarioOidContribuinte(oidUsuario, oidContribuinte);
+            var dtaPeriodoApuracao = new DateTime(ano, mes, 1);
+
+            // Cria novo ContribuinteEnvio
+            var r2098Proxy = new R2098Proxy();
+
+            var oidR2098 = r2098Proxy.Inserir(new R2098Entidade
+            {
+                OID_CONTRIBUINTE = oidContribuinte,
+                OID_USUARIO_ENVIO = oidUsuario,
+                DTA_PERIODO_APURACAO = dtaPeriodoApuracao,
+                IND_AMBIENTE_ENVIO = tipoAmbiente,
+                NUM_RECIBO_ENVIO = null,
+                DTA_ENVIO = null,
+                IND_SITUACAO_PROCESSAMENTO_ = DMN_SITUACAO_PROCESSAMENTO.PROCESSADO
+            });
+
+            // Monta nome do arquivo
+            var nomeArquivoZip = "XML_R2098_" + Guid.NewGuid().ToString() + ".intech";
+            var arquivoUploadProxy = new ArquivoUploadProxy();
+
+            var oidArquivoUpload = arquivoUploadProxy.Inserir(new ArquivoUploadEntidade
+            {
+                DTA_UPLOAD = DateTime.Now,
+                IND_STATUS = DMN_STATUS_EFD_UPLOAD.NAO_PROCESSADO,
+                NOM_ARQUIVO_LOCAL = "Upload/" + nomeArquivoZip,
+                NOM_EXT_ARQUIVO = ".intech",
+                NOM_ARQUIVO_ORIGINAL = nomeArquivoZip,
+                NOM_DIRETORIO_LOCAL = "Upload",
+                OID_USUARIO_CONTRIBUINTE = usuarioContribuinte.OID_USUARIO_CONTRIBUINTE
+            });
+
+            var id = "ID" + oidR2098.ToString().PadLeft(18, '0');
+
+            // Monta XML
+            var templateFile = Path.Combine(baseCaminhoArquivo, "../TemplatesXml", "R2098.liquid");
+            var template = Template.Parse(File.OpenText(templateFile).ReadToEnd());
+            var xmlR2098 = template.Render(new
+            {
+                id,
+                dta_periodo_Apuracao = dtaPeriodoApuracao.ToString("yyyy-MM"),
+                ind_ambiente_envio = tipoAmbiente,
+                versao = Assembly.GetExecutingAssembly().GetName().Version.ToString(3),
+                ind_tipo_inscricao = contribuinte.IND_TIPO_INSCRICAO,
+                cod_cnpj_cpf = contribuinte.COD_CNPJ_CPF
+            });
+
+            var caminhoArquivo = GerarArquivo("R2098_", baseCaminhoArquivo, xmlR2098);
 
             CompactarArquivo(caminhoArquivo, baseCaminhoArquivo, nomeArquivoZip);
         }
