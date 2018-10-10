@@ -100,9 +100,11 @@ namespace Intech.EfdReinf.Negocio
 
         public void GerarR2010(decimal oidUsuario, decimal oidContribuinte, string tipoOperacao, string tipoAmbiente, DateTime dtaInicial, DateTime dtaFinal, string baseCaminhoArquivo)
         {
-            Intervalo intervaloDeDatas = new Intervalo(dtaFinal, dtaInicial);
+            var mesesEntreDatas = dtaInicial.MesesEntreDatas(dtaFinal, true);
 
-            if (intervaloDeDatas.Meses > 1)
+            //Intervalo intervaloDeDatas = new Intervalo(dtaFinal, dtaInicial, new CalculoAnosMesesDiasAlgoritmo2());
+
+            if (mesesEntreDatas > 1)
                 throw new Exception("Período inválido.");
 
             // Busca Contribuinte

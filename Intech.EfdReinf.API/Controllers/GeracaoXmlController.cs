@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Globalization;
 using System.IO;
 
 namespace Intech.EfdReinf.API.Controllers
@@ -42,14 +43,17 @@ namespace Intech.EfdReinf.API.Controllers
 
         [HttpGet("gerarR2010/{oidContribuinte}/{tipoOperacao}/{tipoAmbiente}/{dtaInicial}/{dtaFinal}")]
         [Authorize("Bearer")]
-        public ActionResult GerarR2010(decimal oidContribuinte, string tipoOperacao, string tipoAmbiente, DateTime dtaInicial, DateTime dtaFinal)
+        public ActionResult GerarR2010(decimal oidContribuinte, string tipoOperacao, string tipoAmbiente, string dtaInicial, string dtaFinal)
         {
+            var dtaIni = DateTime.ParseExact(dtaInicial, "dd.MM.yyyy", new CultureInfo("pt-BR"));
+            var dtaFim = DateTime.ParseExact(dtaFinal, "dd.MM.yyyy", new CultureInfo("pt-BR"));
+
             try
             {                
                 string webRootPath = HostingEnvironment.ContentRootPath;
                 string newPath = Path.Combine(webRootPath, _folderName);
 
-                new GeradorXml().GerarR2010(OidUsuario, oidContribuinte, tipoOperacao, tipoAmbiente, dtaInicial, dtaFinal, newPath);
+                new GeradorXml().GerarR2010(OidUsuario, oidContribuinte, tipoOperacao, tipoAmbiente, dtaIni, dtaFim, newPath);
 
                 return Ok();
             }
