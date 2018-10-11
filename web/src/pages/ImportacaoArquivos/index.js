@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
+import axios from "axios";
 import { Row, Col, Box, Combo, Botao, InputFile, PainelErros } from '../../components';
 import { DominioService } from "@intechprev/efdreinf-service";
+
+const apiUrl = process.env.API_URL;
 
 export default class ImportacaoArquivos extends Component {
     constructor(props) {
@@ -51,6 +54,27 @@ export default class ImportacaoArquivos extends Component {
         });
     }
 
+    uploadFile = async (e) => {
+        const formData = new FormData()
+        var arquivoUpload = e.target.files[0];
+        var oidUsuarioContribuinte = localStorage.getItem("oidUsuarioContribuinte");
+        formData.append("File", arquivoUpload, arquivoUpload.name)
+
+        try { 
+            await axios.post(apiUrl + `/Upload/${oidUsuarioContribuinte}`, formData, {
+                headers: {'Content-Type': 'multipart/form-data'},
+                onUploadProgress: progressEvent => {
+                },
+            });
+            alert("Arquivo enviado com sucesso!");
+        } catch (err) {
+            if(err.response)
+                console.log(err.response);
+            else 
+                console.error(err);
+        }
+    }
+
     enviar = async () => { 
         await this.limparErros();
 
@@ -91,7 +115,7 @@ export default class ImportacaoArquivos extends Component {
                     <Row>
                         <Col tamanho={"4"}>
                             <InputFile contexto={this} ref={ (input) => this.listaCampos[0] = input } label={"Arquivo para upload"}
-                                       nome={"arquivo"} aceita={".csv"} obrigatorio={true} valor={this.state.arquivo} />
+                                       nome={"arquivo"} aceita={".csv"} obrigatorio={true} valor={this.state.arquivo} onChange={this.uploadFile} />
                         </Col>
                         <Col>
                             <Botao tipo={"primary btn-sm"} titulo={"Enviar"} clicar={this.enviar}/>
