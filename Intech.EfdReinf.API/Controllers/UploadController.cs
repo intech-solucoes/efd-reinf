@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
+﻿#region Usings
+using DevExpress.XtraReports.UI;
 using Intech.EfdReinf.Entidades;
 using Intech.EfdReinf.Negocio.Proxy;
 using Intech.Lib.Dominios;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.IO;
+using System.Net.Http.Headers; 
+#endregion
 
 namespace Intech.EfdReinf.API.Controllers
 {
@@ -22,6 +22,32 @@ namespace Intech.EfdReinf.API.Controllers
         public UploadController(IHostingEnvironment hostingEnvironment)
         {
             _hostingEnvironment = hostingEnvironment;
+        }
+
+        [HttpGet("{oidUsuarioContribuinte}")]
+        public IActionResult Buscar(decimal oidUsuarioContribuinte)
+        {
+            try
+            {
+                return Json(new ArquivoUploadProxy().BuscarPorOidUsuarioContribuinte(oidUsuarioContribuinte));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("{oidUsuarioContribuinte}/{status}")]
+        public IActionResult Buscar(decimal oidUsuarioContribuinte, string status)
+        {
+            try
+            {
+                return Json(new ArquivoUploadProxy().BuscarPorOidUsuarioContribuinteStatus(oidUsuarioContribuinte, status));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost("{oidUsuarioContribuinte}"), DisableRequestSizeLimit]
@@ -70,5 +96,36 @@ namespace Intech.EfdReinf.API.Controllers
                 return Json("Upload Failed: " + ex.Message);
             }
         }
+
+        [HttpDelete("{oidArquivoUpload}")]
+        public IActionResult Deletar(decimal oidArquivoUpload)
+        {
+            try
+            {
+                var proxy = new ArquivoUploadProxy();
+                var arquivoUpload = proxy.BuscarPorChave(oidArquivoUpload);
+                proxy.Deletar(arquivoUpload);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        //[HttpGet]
+        //public IActionResult Relatorio(decimal oidArquivoUpload)
+        //{
+        //    try
+        //    {
+        //        var relatorio = XtraReport.FromFile("Relatorios/RelatorioCriticasImportacao.repx");
+        //        relatorio.DataSource = 
+        //        return File();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
     }
 }
