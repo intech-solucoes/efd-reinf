@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import { handleFieldChange } from '@intechprev/react-lib'; 
-import { Botao, CampoTexto, Combo, Checkbox, Box, Col, Row } from '../../components';
+import { Botao, CampoTexto, Combo, Checkbox, Box, Col, Row, PainelErros } from '../../components';
 import ArquivosGerados from './ArquivosGerados';
+
+import { DominioService, GeracaoXmlService } from '@intechprev/efdreinf-service';
+
+var geracaoXmlService = new GeracaoXmlService();
 
 export default class GeracaoXml extends Component {
     constructor(props) {
@@ -61,6 +65,23 @@ export default class GeracaoXml extends Component {
             erros: [],
 
             // States de combos e tabela:
+            combos: {
+                tipoOperacao: [],
+                ambienteEnvio: [],
+                usuarioResponsavel: [],
+                referenciaAno: [],
+                referenciaMes: [],
+                contratacaoServicos: [],
+                prestacaoServicos: [],
+                associacaoDesportiva: [],
+                repasseAssociacaoDesportiva: [],
+                producaoRural: [],
+                pagamentosDiversos: [],
+                competenciaAno: [],
+                competenciaMes: [],
+                dominioSimNao: []
+            },
+
             arquivosGerados: [
                 {
                     registro: "R-1000",
@@ -80,6 +101,16 @@ export default class GeracaoXml extends Component {
         }
 
         this.visibilidade = this.state.visibilidade;
+        this.combos = this.state.combos;
+    }
+
+    componentDidMount = async () => {
+        this.setState({ contribuinte: localStorage.getItem("nomeContribuinte") })
+        this.combos.tipoOperacao = await DominioService.BuscarPorCodigo("DMN_OPER_REGISTRO");
+        this.combos.ambienteEnvio = await DominioService.BuscarPorCodigo("DMN_TIPO_AMBIENTE_EFD");
+        // Usuário responsável - buscar usuários vinculados ao contribuinte
+        this.combos.dominioSimNao = await DominioService.BuscarPorCodigo("DMN_SN");
+        this.carregaComboReferencia();
     }
 
     limparErros = async () => {
@@ -100,18 +131,69 @@ export default class GeracaoXml extends Component {
         // Validações de campos obrigatórios.
         await this.limparErros();
 
-        // Criar condicional para não validar campos não visíveis.
         for(var i = 0; i < this.listaCampos.length; i++) {
             var campo = this.listaCampos[i];
-            // campo.validar();
 
-            // if(campo.possuiErros) {
-            //     await this.adicionarErro(campo.erros);
-            // }
+            if(campo !== null || campo !== undefined)
+                campo.validar();
+
+            if(campo && campo.possuiErros)
+                await this.adicionarErro(campo.erros);
+
         }
+
+        if(this.state.r1000) {
+            if(this.state.erros.length === 0) {
+                try {
+                    await geracaoXmlService.GerarR1000(localStorage.getItem("contribuinte"), this.state.ambienteEnvio);
+                    alert("R-1000 Gerado com sucesso!");
+                } catch(err) {
+                    console.error(err);
+                }
+            }
+        }
+        
+        var contribuinte = localStorage.getItem("contribuinte");
+        var periodoInicial = this.state.periodoInicial.split("-");
+        var periodoFinal = this.state.periodoFinal.split("-");
+
+        periodoInicial = new Date(periodoInicial[0], periodoInicial[1] - 1, periodoInicial[2]);
+        periodoFinal = new Date(periodoFinal[0], periodoFinal[1] - 1, periodoFinal[2]);
+        
+        var msParaDia = 0;
+        var diferencaDias = 0;
+        
+        if(this.state.r2010) {
+            msParaDia = 1000 * 60 * 60 * 24;    // Valor que representa um dia em milissegundos.
+            diferencaDias = (periodoFinal - periodoInicial) / msParaDia;    // Divide-se por msParaDia pois a diferença entre duas datas resulta no valor em milissegundos.
+            if(diferencaDias < 0)
+                this.adicionarErro("A data final deve ser superior à data inicial.");
+            
+            if(this.state.periodoInicial.length === 0 || this.state.periodoFinal.length === 0)
+                this.adicionarErro("Campo \"Período\" obrigatório");
+
+            if(this.state.erros.length === 0) {
+                periodoInicial = this.state.periodoInicial.split("-");
+                periodoInicial = periodoInicial[2] + "." + periodoInicial[1] + "." + periodoInicial[0];
+                periodoFinal = this.state.periodoFinal.split("-");
+                periodoFinal = periodoFinal[2] + "." + periodoFinal[1] + "." + periodoFinal[0];
+                try {
+                    await geracaoXmlService.GerarR2010(contribuinte, this.state.tipoOperacao, this.state.ambienteEnvio, periodoInicial, periodoFinal);
+                    alert("R2010 Gerado com sucesso!");
+                } catch(err) {
+                    if(err.response)
+                        await this.adicionarErro(err.response.data);
+                    else
+                        await this.adicionarErro(err);
+                }
+            }
+        }
+
     }
 
     onChange = async (checkbox) => { 
+        await this.limparErros();
+
         if(checkbox !== 'r1000')
             await this.setState({ r1000: false, checkboxR1000Desabilitado: !this.state.checkboxR1000Desabilitado });
         if(checkbox !== 'r1070')
@@ -125,6 +207,7 @@ export default class GeracaoXml extends Component {
     }
 
     onChangeR1000 = async (checkbox) => {
+        this.combos.tipoOperacao = await DominioService.BuscarPorCodigo("DMN_OPER_REGISTRO");
         this.onChange(checkbox);
 
         this.handleVisibilidade("tipoOperacao");
@@ -140,6 +223,7 @@ export default class GeracaoXml extends Component {
     }
 
     onChangeR2010 = async (checkbox) => {
+        this.combos.tipoOperacao = await DominioService.BuscarPorCodigo("DMN_EFD_RETIFICADORA");
         this.onChange(checkbox);
 
         this.handleVisibilidade("tipoOperacao");
@@ -152,6 +236,7 @@ export default class GeracaoXml extends Component {
 
         this.handleVisibilidade("ambienteEnvio");
         this.handleVisibilidade("referencia");
+        this.carregaReferencia("r2098");
     }
 
     onChangeR2099 = async (checkbox) => {
@@ -165,14 +250,42 @@ export default class GeracaoXml extends Component {
         this.handleVisibilidade("repasseAssociacaoDesportiva");
         this.handleVisibilidade("producaoRural");
         this.handleVisibilidade("competencia");
+
+        this.carregaReferencia("r2099");
     }
 
     handleVisibilidade = async (campo) => {
         this.visibilidade[campo] = !this.state.visibilidade[campo];
-        await this.setState({ 
-            [campo]: "",
-            visibilidade: this.visibilidade
-        });
+        if(campo !== "contribuinte")
+            await this.setState({ 
+                [campo]: "",
+                visibilidade: this.visibilidade
+            });
+    }
+
+    carregaReferencia = async (campo) => {
+        if(campo === "r2098") {
+            console.log("Carregando combo com a referência da tabela de movimento");
+        }
+
+        else if (campo === "r2099") {
+            console.log("Carregando combo com a referência que não esteja na tabela de movimento");
+        }
+    }
+
+    carregaComboReferencia = async () => { 
+        var dataAtual = new Date();
+        var mesesAnteriores = [];
+        var anosAnteriores = [];
+        // não implementado.
+        for(var i = 1; i < dataAtual.getMonth() + 1; i++) {
+            mesesAnteriores.push(i);
+        }
+        for(i = 1970; i <= dataAtual.getFullYear(); i++) {
+            anosAnteriores.push(i);
+        }
+        
+        await this.setState({ referenciaAno: anosAnteriores, referenciaMes: mesesAnteriores });
     }
 
     render() {
@@ -181,47 +294,47 @@ export default class GeracaoXml extends Component {
         return (
             <div>
                 <Box titulo={"Tipo de Registro"}>
-                    <Checkbox contexto={this} ref={ (input) => this.listaCampos[0] = input } nome={"r1000"} onChange={() => this.onChangeR1000('r1000')}
+                    <Checkbox contexto={this} nome={"r1000"} onChange={() => this.onChangeR1000('r1000')}
                               valor={this.state.r1000} desabilitado={this.state.checkboxR1000Desabilitado} label={"R-1000 - Informações do Contribuinte"} />
 
-                    <Checkbox contexto={this} ref={ (input) => this.listaCampos[1] = input } nome={"r1070"} onChange={() => this.onChangeR1070('r1070')}
+                    <Checkbox contexto={this} nome={"r1070"} onChange={() => this.onChangeR1070('r1070')}
                               valor={this.state.r1070} desabilitado={this.state.checkboxR1070Desabilitado} label={"R-1070 - Tabela de Processos Administrativos/Judiciais"} />
 
-                    <Checkbox contexto={this} ref={ (input) => this.listaCampos[2] = input } nome={"r2010"} onChange={() => this.onChangeR2010('r2010')}
+                    <Checkbox contexto={this} nome={"r2010"} onChange={() => this.onChangeR2010('r2010')}
                               valor={this.state.r2010} desabilitado={this.state.checkboxR2010Desabilitado} label={"R-2010 - Retenção Contribuição Previdenciária - Serviços Tomados"} />
                                 
-                    <Checkbox contexto={this} ref={ (input) => this.listaCampos[3] = input } nome={"r2098"} onChange={() => this.onChangeR2098('r2098')}
+                    <Checkbox contexto={this} nome={"r2098"} onChange={() => this.onChangeR2098('r2098')}
                               valor={this.state.r2098} desabilitado={this.state.checkboxR2098Desabilitado} label={"R-2098 - Reabertura dos Eventos Periódicos"} />
 
-                    <Checkbox contexto={this} ref={ (input) => this.listaCampos[4] = input } nome={"r2099"} onChange={() => this.onChangeR2099('r2099')}
+                    <Checkbox contexto={this} nome={"r2099"} onChange={() => this.onChangeR2099('r2099')}
                               valor={this.state.r2099} desabilitado={this.state.checkboxR2099Desabilitado} label={"R-2099 - Fechamento de Eventos Periódicos"} />
                 </Box>
 
                 {opcaoSelecionada &&
                     <Box>
                         {this.state.visibilidade.tipoOperacao &&
-                            <Combo contexto={this} label={"Tipo de operação"} ref={ (input) => this.listaCampos[5] = input } 
+                            <Combo contexto={this} label={"Tipo de operação"} ref={ (input) => this.listaCampos[0] = input } 
                                    nome="tipoOperacao" valor={this.state.tipoOperacao} obrigatorio={true} 
-                                   opcoes={[{nome: "Operação 1", valor: 1}, {nome: "Operação 2", valor: 2}]} />
+                                   opcoes={this.state.combos.tipoOperacao.data} />
                         }
-                        
+
                         {this.state.visibilidade.ambienteEnvio && 
-                            <Combo contexto={this} label={"Ambiente para envio"} ref={ (input) => this.listaCampos[6] = input } 
+                            <Combo contexto={this} label={"Ambiente para envio"} ref={ (input) => this.listaCampos[1] = input } 
                                    nome="ambienteEnvio" valor={this.state.ambienteEnvio} obrigatorio={true}
-                                   opcoes={[{nome: "Ambiente 1", valor: 1}]} />
+                                   opcoes={this.state.combos.ambienteEnvio.data} />
                         }
 
                         {this.state.visibilidade.contribuinte &&
-                            <CampoTexto contexto={this} ref={ (input) => this.listaCampos[7] = input }
+                            <CampoTexto contexto={this} ref={ (input) => this.listaCampos[2] = input }
                                         label={"Contribuinte"} nome={"contribuinte"} tipo={"text"} 
                                         placeholder={"Contribuinte"} valor={this.state.contribuinte}
-                                        obrigatorio={true} />
+                                        obrigatorio={true} desabilitado={true} />
                         }
 
                         {this.state.visibilidade.usuarioResponsavel &&
-                            <Combo contexto={this} label={"Usuário Responsável"} ref={ (input) => this.listaCampos[8] = input } 
+                            <Combo contexto={this} label={"Usuário Responsável"} ref={ (input) => this.listaCampos[3] = input } 
                                    nome="usuarioResponsavel" valor={this.state.usuarioResponsavel} obrigatorio={true}
-                                   opcoes={[{nome: "Usuário 1", valor: 1}]} />
+                                   opcoes={[{NOM_DOMINIO: "Usuário 1", SIG_DOMINIO: 1}]} />
                         }
 
                         {this.state.visibilidade.periodo &&
@@ -235,7 +348,8 @@ export default class GeracaoXml extends Component {
                                         </div>
 
                                         <div className="col-3">
-                                            <input className="form-control" name="periodoInicial" id="periodoInicial" type="date" value={this.state.periodoInicial} onChange={(e) => handleFieldChange(this.context, e)} />
+                                            <input className="form-control" name="periodoInicial"
+                                                   id="periodoInicial" type="date" value={this.state.periodoInicial} onChange={(e) => handleFieldChange(this, e)} />
                                         </div>
 
                                         <div className="col-form-label">
@@ -245,7 +359,8 @@ export default class GeracaoXml extends Component {
                                         </div>
 
                                         <div className="col-3">
-                                            <input className="form-control" name="periodoFinal" id="periodoFinal" type="date" value={this.state.periodoFinal} onChange={(e) => handleFieldChange(this.context, e)} />
+                                            <input className="form-control" name="periodoFinal"
+                                                   id="periodoFinal" type="date" value={this.state.periodoFinal} onChange={(e) => handleFieldChange(this, e)} />
                                         </div>
                                     </div>
                                 </Col>
@@ -263,16 +378,29 @@ export default class GeracaoXml extends Component {
                                         </div>
 
                                         <div className="col-2">
-                                            <select className="form-control" id="referenciaAno" name="referenciaAno" defaultValue={this.state.referenciaAno} onChange={(e) => handleFieldChange(this.context, e)}>
+                                            <select className="form-control" id="referenciaAno" name="referenciaAno" defaultValue={this.state.referenciaAno} onChange={(e) => handleFieldChange(this, e)}>
                                                 <option value="">Selecione uma opção</option>
-                                                <option value="1">AAAA</option>
+                                                {
+                                                    this.state.referenciaAno.map((ano, index) => { 
+                                                        return (
+                                                            <option key={index} value={ano}>{ano}</option>
+                                                        );
+                                                    })
+                                                }
+
                                             </select>
                                         </div>
 
                                         <div className="col-2">
-                                            <select className="form-control" id="referenciaMes" name="referenciaMes" defaultValue={this.state.referenciaMes} onChange={(e) => handleFieldChange(this.context, e)}>
+                                            <select className="form-control" id="referenciaMes" name="referenciaMes" defaultValue={this.state.referenciaMes} onChange={(e) => handleFieldChange(this, e)}>
                                                 <option value="">Selecione uma opção</option>
-                                                <option value="1">MM</option>
+                                                {
+                                                    this.state.referenciaMes.map((mes, index) => { 
+                                                        return (
+                                                            <option key={index} value={mes}>{mes}</option>
+                                                        );
+                                                    })
+                                                }
                                             </select>
                                         </div>
                                     </div>
@@ -281,45 +409,45 @@ export default class GeracaoXml extends Component {
                         }
 
                         {this.state.visibilidade.contratacaoServicos &&
-                            <Combo contexto={this} ref={ (input) => this.listaCampos[9] = input } 
+                            <Combo contexto={this} ref={ (input) => this.listaCampos[8] = input } 
                                     label={"Contratou serviços sujeitos à retenção de contribuição previdenciária?"}
                                     nome="contratacaoServicos" valor={this.state.contratacaoServicos} obrigatorio={true}
-                                    opcoes={[{nome: "Opção 1", valor: 1}]} />
+                                    opcoes={this.state.combos.dominioSimNao.data} />
                         }
 
                         {this.state.visibilidade.prestacaoServicos &&
-                            <Combo contexto={this} ref={ (input) => this.listaCampos[10] = input } 
+                            <Combo contexto={this} ref={ (input) => this.listaCampos[9] = input } 
                                     label={"Prestou serviços sujeitos à retenção de contribuição previdenciária?"} 
                                     nome="prestacaoServicos" valor={this.state.prestacaoServicos} obrigatorio={true}
-                                    opcoes={[{nome: "Opção 1", valor: 1}]} />
+                                    opcoes={this.state.combos.dominioSimNao.data} />
                         }
 
                         {this.state.visibilidade.associacaoDesportiva &&
-                            <Combo contexto={this} ref={ (input) => this.listaCampos[11] = input } 
+                            <Combo contexto={this} ref={ (input) => this.listaCampos[10] = input } 
                                     label={"A associação desportiva que mantém equipe de futebol profissional, possui informações sobre recursos recebidos?"}
                                     nome="associacaoDesportiva" valor={this.state.associacaoDesportiva} obrigatorio={true}
-                                    opcoes={[{nome: "Opção 1", valor: 1}]} />
+                                    opcoes={this.state.combos.dominioSimNao.data} />
                         }
 
                         {this.state.visibilidade.repasseAssociacaoDesportiva &&
-                            <Combo contexto={this} ref={ (input) => this.listaCampos[12] = input } 
+                            <Combo contexto={this} ref={ (input) => this.listaCampos[11] = input } 
                                     label={"Possui informações sobre repasses efetuados à associação desportiva que mantém equipe de futebol profissional?"}
                                     nome="repasseAssociacaoDesportiva" valor={this.state.repasseAssociacaoDesportiva} obrigatorio={true}
-                                    opcoes={[{nome: "Opção 1", valor: 1}]} />
+                                    opcoes={this.state.combos.dominioSimNao.data} />
                         }
 
                         {this.state.visibilidade.producaoRural && 
-                            <Combo contexto={this} ref={ (input) => this.listaCampos[13] = input } 
+                            <Combo contexto={this} ref={ (input) => this.listaCampos[12] = input } 
                                     label={"O produtor rural PJ/Agroindústria possui informações de comercialização de produção?"} 
                                     nome="producaoRural" valor={this.state.producaoRural} obrigatorio={true}
-                                    opcoes={[{nome: "Opção 1", valor: 1}]} />
+                                    opcoes={this.state.combos.dominioSimNao.data} />
                         }
 
                         {this.state.visibilidade.pagamentosDiversos &&
-                            <Combo contexto={this} ref={ (input) => this.listaCampos[14] = input } 
+                            <Combo contexto={this} ref={ (input) => this.listaCampos[13] = input } 
                                     label={"Possui informações de pagamentos diversos no período de apuração?"}
                                     nome="pagamentosDiversos" valor={this.state.pagamentosDiversos} obrigatorio={true}
-                                    opcoes={[{nome: "Opção 1", valor: 1}]} />                                                                                                                                                                                                    
+                                    opcoes={this.state.combos.dominioSimNao.data} />                                                                                                                                                                                                    
                         }
 
                         {this.state.visibilidade.competencia && 
@@ -333,12 +461,12 @@ export default class GeracaoXml extends Component {
                                         </div>
 
                                         <div className="col-2">
-                                            <select className="form-control" id="competenciaAno" name="competencia">
+                                            <select className="form-control" ref={ (input) => this.listaCampos[14] = input } id="competenciaAno" name="competencia">
                                                 <option>AAAA</option>
                                             </select>
                                         </div>
                                         <div className="col-2">
-                                            <select className="form-control" id="competenciaMes" name="competencia">
+                                            <select className="form-control" ref={ (input) => this.listaCampos[15] = input } id="competenciaMes" name="competencia">
                                                 <option>MM</option>
                                             </select>
                                         </div>
@@ -346,6 +474,8 @@ export default class GeracaoXml extends Component {
                                 </Col>
                             </Row>
                         }
+
+                        <PainelErros erros={this.state.erros} />
 
                         <Botao titulo={"Gerar"} tipo={"primary"} clicar={this.gerar} usaLoading={true} />
                     </Box>

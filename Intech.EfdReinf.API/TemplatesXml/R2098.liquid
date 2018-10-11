@@ -1,0 +1,21 @@
+﻿<Reinf xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.reinf.esocial.gov.br/schemas/envioLoteEventos/v1_03_02">
+  <loteEventos>
+    <evento id="{{id}}">
+      <Reinf xmlns="http://www.reinf.esocial.gov.br/schemas/evtReabreEvPer/v1_03_02">
+        <evtReabreEvPer id="{{id}}">
+          <ideEvento>
+            <perApur>{{dta_periodo_Apuracao}}</perApur>
+            <tpAmb>{{ind_ambiente_envio}}</tpAmb>
+            <procEmi>1</procEmi>
+            <verProc>{{versao}}</verProc>
+          </ideEvento>
+          <ideContri>
+            <tpInsc>{{ind_tipo_inscricao}}</tpInsc>
+            <nrInsc>{{cod_cnpj_cpf}}</nrInsc>
+          </ideContri>
+          <id></id>
+        </evtReabreEvPer>
+      </Reinf>
+    </evento>
+  </loteEventos>
+</Reinf>

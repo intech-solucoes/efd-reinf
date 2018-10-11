@@ -34,7 +34,7 @@ export default class InputFile extends Component {
         return (
             <div className="form-group">
                 <input name={this.props.nome} id={this.props.nome} type="file" accept={this.props.aceita} 
-                       onChange={this.onChange} />
+                       onChange={this.onChange} value={this.props.valor} />
             </div>
         )
     }
