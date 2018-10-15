@@ -118,14 +118,14 @@ namespace Intech.EfdReinf.API.Controllers
             }
         }
 
-        [HttpGet("relatorio")]
+        [HttpGet("relatorio/{oidArquivoUpload}")]
         public IActionResult Relatorio(decimal oidArquivoUpload)
         {
             try
             {
                 var parametros = new List<KeyValuePair<string, object>>
                 {
-                    new KeyValuePair<string, object>("OID_ARQUIVO_UPLOAD", 1)
+                    new KeyValuePair<string, object>("OID_ARQUIVO_UPLOAD", oidArquivoUpload)
                 };
 
                 var relatorio = GeradorRelatorio.Gerar("RelatorioCriticasImportacao", HostingEnvironment.ContentRootPath, parametros);
