@@ -315,26 +315,26 @@ export default class GeracaoXml extends Component {
                         {this.state.visibilidade.tipoOperacao &&
                             <Combo contexto={this} label={"Tipo de operação"} ref={ (input) => this.listaCampos[0] = input } 
                                    nome="tipoOperacao" valor={this.state.tipoOperacao} obrigatorio={true} 
-                                   opcoes={this.state.combos.tipoOperacao.data} />
+                                   opcoes={this.state.combos.tipoOperacao.data} textoVazio="Selecione uma opção" />
                         }
 
                         {this.state.visibilidade.ambienteEnvio && 
                             <Combo contexto={this} label={"Ambiente para envio"} ref={ (input) => this.listaCampos[1] = input } 
                                    nome="ambienteEnvio" valor={this.state.ambienteEnvio} obrigatorio={true}
-                                   opcoes={this.state.combos.ambienteEnvio.data} />
+                                   opcoes={this.state.combos.ambienteEnvio.data} textoVazio="Selecione uma opção" />
                         }
 
                         {this.state.visibilidade.contribuinte &&
                             <CampoTexto contexto={this} ref={ (input) => this.listaCampos[2] = input }
                                         label={"Contribuinte"} nome={"contribuinte"} tipo={"text"} 
                                         placeholder={"Contribuinte"} valor={this.state.contribuinte}
-                                        obrigatorio={true} desabilitado={true} />
+                                        obrigatorio={true} desabilitado={true} textoVazio="Selecione uma opção" />
                         }
 
                         {this.state.visibilidade.usuarioResponsavel &&
                             <Combo contexto={this} label={"Usuário Responsável"} ref={ (input) => this.listaCampos[3] = input } 
                                    nome="usuarioResponsavel" valor={this.state.usuarioResponsavel} obrigatorio={true}
-                                   opcoes={[{NOM_DOMINIO: "Usuário 1", SIG_DOMINIO: 1}]} />
+                                   opcoes={[{NOM_DOMINIO: "Usuário 1", SIG_DOMINIO: 1}]} textoVazio="Selecione uma opção" />
                         }
 
                         {this.state.visibilidade.periodo &&
@@ -412,42 +412,42 @@ export default class GeracaoXml extends Component {
                             <Combo contexto={this} ref={ (input) => this.listaCampos[8] = input } 
                                     label={"Contratou serviços sujeitos à retenção de contribuição previdenciária?"}
                                     nome="contratacaoServicos" valor={this.state.contratacaoServicos} obrigatorio={true}
-                                    opcoes={this.state.combos.dominioSimNao.data} />
+                                    opcoes={this.state.combos.dominioSimNao.data} textoVazio="Selecione uma opção" />
                         }
 
                         {this.state.visibilidade.prestacaoServicos &&
                             <Combo contexto={this} ref={ (input) => this.listaCampos[9] = input } 
                                     label={"Prestou serviços sujeitos à retenção de contribuição previdenciária?"} 
                                     nome="prestacaoServicos" valor={this.state.prestacaoServicos} obrigatorio={true}
-                                    opcoes={this.state.combos.dominioSimNao.data} />
+                                    opcoes={this.state.combos.dominioSimNao.data} textoVazio="Selecione uma opção" />
                         }
 
                         {this.state.visibilidade.associacaoDesportiva &&
                             <Combo contexto={this} ref={ (input) => this.listaCampos[10] = input } 
                                     label={"A associação desportiva que mantém equipe de futebol profissional, possui informações sobre recursos recebidos?"}
                                     nome="associacaoDesportiva" valor={this.state.associacaoDesportiva} obrigatorio={true}
-                                    opcoes={this.state.combos.dominioSimNao.data} />
+                                    opcoes={this.state.combos.dominioSimNao.data} textoVazio="Selecione uma opção" />
                         }
 
                         {this.state.visibilidade.repasseAssociacaoDesportiva &&
                             <Combo contexto={this} ref={ (input) => this.listaCampos[11] = input } 
                                     label={"Possui informações sobre repasses efetuados à associação desportiva que mantém equipe de futebol profissional?"}
                                     nome="repasseAssociacaoDesportiva" valor={this.state.repasseAssociacaoDesportiva} obrigatorio={true}
-                                    opcoes={this.state.combos.dominioSimNao.data} />
+                                    opcoes={this.state.combos.dominioSimNao.data} textoVazio="Selecione uma opção" />
                         }
 
                         {this.state.visibilidade.producaoRural && 
                             <Combo contexto={this} ref={ (input) => this.listaCampos[12] = input } 
                                     label={"O produtor rural PJ/Agroindústria possui informações de comercialização de produção?"} 
                                     nome="producaoRural" valor={this.state.producaoRural} obrigatorio={true}
-                                    opcoes={this.state.combos.dominioSimNao.data} />
+                                    opcoes={this.state.combos.dominioSimNao.data} textoVazio="Selecione uma opção" />
                         }
 
                         {this.state.visibilidade.pagamentosDiversos &&
                             <Combo contexto={this} ref={ (input) => this.listaCampos[13] = input } 
                                     label={"Possui informações de pagamentos diversos no período de apuração?"}
                                     nome="pagamentosDiversos" valor={this.state.pagamentosDiversos} obrigatorio={true}
-                                    opcoes={this.state.combos.dominioSimNao.data} />                                                                                                                                                                                                    
+                                    opcoes={this.state.combos.dominioSimNao.data} textoVazio="Selecione uma opção" />                                                                                                                                                                                                    
                         }
 
                         {this.state.visibilidade.competencia && 

@@ -63,7 +63,9 @@ export default class Combo extends Component {
 				}
 				<div className="col">
 					<select id={this.props.nome} name={this.props.nome} className="form-control" onChange={this.onChange} value={this.props.valor} disabled={this.props.desabilitado}>
-						<option value="">Selecione uma opção</option>
+						{this.props.textoVazio &&
+							<option value="">{this.props.textoVazio}</option>
+						}
 						{
 							this.props.opcoes.map((opcao, index) => {
 								return (
