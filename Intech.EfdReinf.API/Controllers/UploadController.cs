@@ -1,14 +1,19 @@
 ﻿#region Usings
+using DevExpress.DataAccess.Sql;
 using DevExpress.XtraReports.UI;
 using Intech.EfdReinf.Entidades;
 using Intech.EfdReinf.Negocio.Proxy;
 using Intech.Lib.Dominios;
+using Intech.Lib.Util.Relatorios;
+using Intech.Lib.Web;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.CodeDom.Compiler;
+using System.Collections.Generic;
 using System.IO;
-using System.Net.Http.Headers; 
+using System.Net.Http.Headers;
 #endregion
 
 namespace Intech.EfdReinf.API.Controllers
@@ -17,11 +22,11 @@ namespace Intech.EfdReinf.API.Controllers
     [ApiController]
     public class UploadController : BaseController
     {
-        private IHostingEnvironment _hostingEnvironment;
+        private IHostingEnvironment HostingEnvironment;
 
         public UploadController(IHostingEnvironment hostingEnvironment)
         {
-            _hostingEnvironment = hostingEnvironment;
+            HostingEnvironment = hostingEnvironment;
         }
 
         [HttpGet("{oidUsuarioContribuinte}")]
@@ -56,7 +61,7 @@ namespace Intech.EfdReinf.API.Controllers
             try
             {
                 string folderName = "Upload";
-                string webRootPath = _hostingEnvironment.ContentRootPath;
+                string webRootPath = HostingEnvironment.ContentRootPath;
                 string newPath = Path.Combine(webRootPath, folderName);
 
                 if (!Directory.Exists(newPath))
@@ -113,19 +118,24 @@ namespace Intech.EfdReinf.API.Controllers
             }
         }
 
-        //[HttpGet]
-        //public IActionResult Relatorio(decimal oidArquivoUpload)
-        //{
-        //    try
-        //    {
-        //        var relatorio = XtraReport.FromFile("Relatorios/RelatorioCriticasImportacao.repx");
-        //        relatorio.DataSource = 
-        //        return File();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-        //}
+        [HttpGet("relatorio")]
+        public IActionResult Relatorio(decimal oidArquivoUpload)
+        {
+            try
+            {
+                var parametros = new List<KeyValuePair<string, object>>
+                {
+                    new KeyValuePair<string, object>("OID_ARQUIVO_UPLOAD", 1)
+                };
+
+                var relatorio = GeradorRelatorio.Gerar("RelatorioCriticasImportacao", HostingEnvironment.ContentRootPath, parametros);
+
+                return File(relatorio, "application/pdf");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
