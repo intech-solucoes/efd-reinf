@@ -1,3 +1,10 @@
 ﻿{
-  "nomeTabela": "EFD_ARQUIVO_UPLOAD"
+    "nomeTabela": "EFD_ARQUIVO_UPLOAD",
+    "colunasExtras": [
+        {
+            "nome": "NOM_USUARIO",
+            "tipo": "string",
+            "aceitaNulo": false
+        }
+    ]
 }
