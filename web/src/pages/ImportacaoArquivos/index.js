@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from "axios";
 import { Row, Col, Box, Combo, Botao, InputFile, PainelErros } from '../../components';
-import { DominioService } from "@intechprev/efdreinf-service";
+import { DominioService, UploadService } from "@intechprev/efdreinf-service";
 
 const apiUrl = process.env.API_URL;
 
@@ -13,31 +13,20 @@ export default class ImportacaoArquivos extends Component {
         this.erros = [];
 
         this.state = {
-            filtrarSituacao: "",
+            situacao: "",
             filtrarSituacaoCombo: [],
             arquivo: "",
-            arquivosImportacao: [
-                {
-                    arquivoOriginal: "Envio2010.csv",
-                    dataUpload: "29/09/2018 17:31:41",
-                    status: "Não Processado",
-                    usuario: "CLEBER"
-                },
-                {
-                    arquivoOriginal: "Envio1118.csv",
-                    dataUpload: "02/10/2018 09:12:03",
-                    status: "Processado",
-                    usuario: "CLEBER"
-                }
-            ],
+            formData: "",
+            arquivosImportacao: [],
+            visibilidadeInput: true,
             erros: []
         }
     }
 
     async componentDidMount() {
         var comboSituacao = await DominioService.BuscarPorCodigo("DMN_STATUS_IMPORTACAO");
-        await this.setState({ filtrarSituacaoCombo: comboSituacao });
-        
+        this.setState({ filtrarSituacaoCombo: comboSituacao, });
+        this.buscarArquivosImportados();
     }
 
     limparErros = async () => {
@@ -54,25 +43,24 @@ export default class ImportacaoArquivos extends Component {
         });
     }
 
+    buscarArquivosImportados = async () => {
+        var oidUsuarioContribuinte = localStorage.getItem("oidUsuarioContribuinte");
+        try { 
+            var arquivosImportacao = await UploadService.BuscarPorOidUsuarioContribuinteStatus(oidUsuarioContribuinte, this.state.situacao);
+            await this.setState({ arquivosImportacao: arquivosImportacao.data });
+        } catch(err) {
+            console.error(err);
+        }
+    }
+
     uploadFile = async (e) => {
         const formData = new FormData()
         var arquivoUpload = e.target.files[0];
-        var oidUsuarioContribuinte = localStorage.getItem("oidUsuarioContribuinte");
-        formData.append("File", arquivoUpload, arquivoUpload.name)
-
-        try { 
-            await axios.post(apiUrl + `/Upload/${oidUsuarioContribuinte}`, formData, {
-                headers: {'Content-Type': 'multipart/form-data'},
-                onUploadProgress: progressEvent => {
-                },
-            });
-            alert("Arquivo enviado com sucesso!");
-        } catch (err) {
-            if(err.response)
-                console.log(err.response);
-            else 
-                console.error(err);
-        }
+        formData.append("File", arquivoUpload, arquivoUpload.name);
+        await this.setState({ 
+            formData: formData,
+            arquivo: arquivoUpload.name
+        });
     }
 
     enviar = async () => { 
@@ -84,11 +72,41 @@ export default class ImportacaoArquivos extends Component {
             await this.adicionarErro(campo.erros);
 
         // Rota para upload.
+        var oidUsuarioContribuinte = localStorage.getItem("oidUsuarioContribuinte");
+        if(this.state.erros.length === 0) {
+            try { 
+                await axios.post(apiUrl + `/Upload/${oidUsuarioContribuinte}`, this.state.formData, {
+                    headers: {'Content-Type': 'multipart/form-data'},
+                    onUploadProgress: progressEvent => {
+                    },
+                });
+                alert("Arquivo enviado com sucesso!");
+                await this.setState({ visibilidadeInput: false });
+            } catch (err) {
+                if(err.response)
+                    this.adicionarErro(err.response);
+                else 
+                    console.error(err);
+            }
+        }
     }
 
     filtrarSituacao = async () => { 
-        var contribuinte = localStorage.getItem("contribuinte");
+        var oidUsuarioContribuinte = localStorage.getItem("oidUsuarioContribuinte");
+        var arquivosImportacao = await UploadService.BuscarPorOidUsuarioContribuinteStatus(oidUsuarioContribuinte, this.state.situacao);
+        await this.setState({ arquivosImportacao: arquivosImportacao.data });
+
         // Atualizar state arquivosImportação com os dados buscados na tabela EFD_ARQUIVO_UPLOAD filtrando pelo contribuinte logado e filtro selecionado.
+    }
+
+    deletar = async (oidArquivoUpload) => {
+        try {
+            await UploadService.Deletar(oidArquivoUpload);
+            alert("Registro excluído com sucesso!");
+            this.buscarArquivosImportados();
+        } catch(err) {
+            console.error(err);
+        }
     }
 
     render() {
@@ -114,11 +132,18 @@ export default class ImportacaoArquivos extends Component {
                 <Box titulo="Arquivo para Upload">
                     <Row>
                         <Col tamanho={"4"}>
-                            <InputFile contexto={this} ref={ (input) => this.listaCampos[0] = input } label={"Arquivo para upload"}
-                                       nome={"arquivo"} aceita={".csv"} obrigatorio={true} valor={this.state.arquivo} onChange={this.uploadFile} />
-                        </Col>
-                        <Col>
-                            <Botao tipo={"primary btn-sm"} titulo={"Enviar"} clicar={this.enviar}/>
+                            {this.state.visibilidadeInput && 
+                                <div>
+                                    <InputFile contexto={this} ref={ (input) => this.listaCampos[0] = input } label={"Arquivo para upload"}
+                                            nome={"arquivo"} aceita={".csv"} obrigatorio={true} valor={this.state.arquivo} onChange={this.uploadFile} />
+                                    <Col>
+                                        <Botao tipo={"primary btn-sm"} titulo={"Enviar"} clicar={this.enviar}/>
+                                    </Col>
+                                </div>
+                            }
+                            {!this.state.visibilidadeInput && 
+                                <Botao titulo={"Enviar outro arquivo"} tipo={"primary"} clicar={async () => await this.setState({ visibilidadeInput: true })} />
+                            }
                         </Col>
                     </Row>
                     <Row>
@@ -130,8 +155,8 @@ export default class ImportacaoArquivos extends Component {
 
                 <Box titulo={"Arquivo para Importação"}>
                     <Combo contexto={this} label={"Filtrar situação do arquivo"} ref={ (input) => this.listaCampos[1] = input } 
-                           nome="filtrarSituacao" valor={this.state.filtrarSituacao} obrigatorio={true} col={"col-lg-4"}
-                           opcoes={this.state.filtrarSituacaoCombo.data} onChange={this.filtrarSituacao} />
+                           nome="situacao" valor={this.state.situacao} obrigatorio={true} col={"col-lg-4"}
+                           opcoes={this.state.filtrarSituacaoCombo.data} textoVazio={"Todos"} onChange={this.filtrarSituacao} />
 
                     <table className="table table-striped">
                         <thead>
@@ -156,10 +181,10 @@ export default class ImportacaoArquivos extends Component {
                                                     <i className="fas fa-angle-right"></i>
                                                 </Botao>
                                             </td>
-                                            <td>{arquivo.arquivoOriginal}</td>
-                                            <td>{arquivo.dataUpload}</td>
-                                            <td>{arquivo.status}</td>
-                                            <td>{arquivo.usuario}</td>
+                                            <td>{arquivo.NOM_ARQUIVO_ORIGINAL}</td>
+                                            <td>{arquivo.DTA_UPLOAD}</td>
+                                            <td>{arquivo.IND_STATUS}</td>
+                                            <td>{arquivo.NOM_USUARIO}</td>
                                             <td>
                                                 <Botao tipo={"light btn-sm"} clicar={() => console.log("Sem ação definida")}>
                                                     <i className="fas fa-clipboard"></i>
