@@ -10,7 +10,7 @@ class Upload extends BaseService {
     }
 
     Relatorio(oidArquivoUpload) {
-        return this.CriarRequisicao("GET", `/upload/${oidArquivoUpload}`);
+        return this.CriarRequisicao("GET", `/upload/relatorio/${oidArquivoUpload}`);
     }
 
     Deletar(oidArquivoUpload) {
