@@ -35,7 +35,11 @@ namespace Intech.EfdReinf.Negocio.Proxy
 
                 contribuinte.COD_CNPJ_CPF = cpfCnpjComMascara;
                 contribuinte.Usuarios = new UsuarioContribuinteProxy().BuscarPorOidUsuario(OID_USUARIO).ToList();
-                contribuinte.OID_USUARIO_CONTRIBUINTE = contribuinte.Usuarios.First(x => x.OID_USUARIO == OID_USUARIO).OID_USUARIO_CONTRIBUINTE;
+                contribuinte.OID_USUARIO_CONTRIBUINTE = contribuinte
+                    .Usuarios
+                    .First(x => x.OID_USUARIO == OID_USUARIO && 
+                    x.OID_CONTRIBUINTE == contribuinte.OID_CONTRIBUINTE)
+                    .OID_USUARIO_CONTRIBUINTE;
             });
 
             return listaContribuintes;

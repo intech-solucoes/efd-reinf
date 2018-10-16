@@ -24,6 +24,7 @@ export default class ImportacaoArquivos extends Component {
     }
 
     async componentDidMount() {
+        window.scrollTo(0, 0);
         var comboSituacao = await DominioService.BuscarPorCodigo("DMN_STATUS_IMPORTACAO");
         this.setState({ filtrarSituacaoCombo: comboSituacao, });
         this.buscarArquivosImportados();
@@ -66,10 +67,8 @@ export default class ImportacaoArquivos extends Component {
     enviar = async () => { 
         await this.limparErros();
 
-        var campo = this.listaCampos[0];
-        await campo.validar();
-        if(campo.possuiErros)
-            await this.adicionarErro(campo.erros);
+        if(!this.state.formData)
+            await this.adicionarErro("Campo \"Arquivo para Upload\" obrigatório.");
 
         // Rota para upload.
         var oidUsuarioContribuinte = localStorage.getItem("oidUsuarioContribuinte");
@@ -87,7 +86,7 @@ export default class ImportacaoArquivos extends Component {
                 if(err.response)
                     this.adicionarErro(err.response);
                 else 
-                    console.error(err);
+                    this.adicionarErro(err);
             }
         }
     }
@@ -157,6 +156,7 @@ export default class ImportacaoArquivos extends Component {
                             }
                         </Col>
                     </Row>
+                    <br />
                     <Row>
                         <Col tamanho="5">
                             <PainelErros erros={this.state.erros} />
@@ -165,57 +165,55 @@ export default class ImportacaoArquivos extends Component {
                 </Box>
 
                 <Box titulo={"Arquivo para Importação"}>
+
+                    <Combo contexto={this} label={"Filtrar situação do arquivo"} ref={ (input) => this.listaCampos[1] = input } 
+                        nome="situacao" valor={this.state.situacao} col={"col-lg-6"} comboCol={"col-lg-4"}
+                        opcoes={this.state.filtrarSituacaoCombo.data} textoVazio={"Todos"} onChange={this.filtrarSituacao} />
+
                     {this.state.arquivosImportacao.length > 0 &&
-                        <div>
-
-                            <Combo contexto={this} label={"Filtrar situação do arquivo"} ref={ (input) => this.listaCampos[1] = input } 
-                                nome="situacao" valor={this.state.situacao} obrigatorio={true} col={"col-lg-4"}
-                                opcoes={this.state.filtrarSituacaoCombo.data} textoVazio={"Todos"} onChange={this.filtrarSituacao} />
-
-                            <table className="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th>Arquivo Original</th>
-                                        <th>Data de Upload</th>
-                                        <th>Status</th>
-                                        <th>Usuário</th>
-                                        <th></th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {
-                                        this.state.arquivosImportacao.map((arquivo, index) => {
-                                            return (
-                                                <tr key={index}>
-                                                    <td>
-                                                        <Botao tipo={"light btn-sm"} clicar={() => console.log("Sem ação definida")}>
-                                                            <i className="fas fa-angle-right"></i>
-                                                            <i className="fas fa-angle-right"></i>
-                                                        </Botao>
-                                                    </td>
-                                                    <td>{arquivo.NOM_ARQUIVO_ORIGINAL}</td>
-                                                    <td>{arquivo.DTA_UPLOAD}</td>
-                                                    <td>{arquivo.IND_STATUS}</td>
-                                                    <td>{arquivo.NOM_USUARIO}</td>
-                                                    <td>
-                                                        <Botao tipo={"light btn-sm"} clicar={() => this.gerarRelatorio(arquivo.OID_ARQUIVO_UPLOAD)}>
-                                                            <i className="fas fa-clipboard"></i>
-                                                        </Botao>
-                                                    </td>
-                                                    <td>
-                                                        <Botao tipo={"light btn-sm"} clicar={() => this.deletar(arquivo.OID_ARQUIVO_UPLOAD)}>
-                                                            <i className="fas fa-trash-alt"></i>
-                                                        </Botao>
-                                                    </td>
-                                                </tr>
-                                            );
-                                        })
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
+                        <table className="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Arquivo Original</th>
+                                    <th>Data de Upload</th>
+                                    <th>Status</th>
+                                    <th>Usuário</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    this.state.arquivosImportacao.map((arquivo, index) => {
+                                        return (
+                                            <tr key={index}>
+                                                <td>
+                                                    <Botao tipo={"light btn-sm"} clicar={() => console.log("")}>
+                                                        <i className="fas fa-angle-right"></i>
+                                                        <i className="fas fa-angle-right"></i>
+                                                    </Botao>
+                                                </td>
+                                                <td>{arquivo.NOM_ARQUIVO_ORIGINAL}</td>
+                                                <td>{arquivo.DTA_UPLOAD}</td>
+                                                <td>{arquivo.IND_STATUS}</td>
+                                                <td>{arquivo.NOM_USUARIO}</td>
+                                                <td>
+                                                    <Botao tipo={"light btn-sm"} clicar={() => this.gerarRelatorio(arquivo.OID_ARQUIVO_UPLOAD)}>
+                                                        <i className="fas fa-clipboard"></i>
+                                                    </Botao>
+                                                </td>
+                                                <td>
+                                                    <Botao tipo={"light btn-sm"} clicar={() => this.deletar(arquivo.OID_ARQUIVO_UPLOAD)}>
+                                                        <i className="fas fa-trash-alt"></i>
+                                                    </Botao>
+                                                </td>
+                                            </tr>
+                                        );
+                                    })
+                                }
+                            </tbody>
+                        </table>
                     }
                     {this.state.arquivosImportacao.length === 0 && 
                         <h4>Não há arquivos importados</h4>
