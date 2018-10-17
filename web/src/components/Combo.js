@@ -48,22 +48,28 @@ export default class Combo extends Component {
 	}
 
     render() {
-		var col = "col-lg-2";
+		var labelCol = "col-lg-2";
+		var comboCol = "col";
 
-		if(this.props.col)
-			col = this.props.col;
+		if(this.props.labelCol)
+			labelCol = this.props.labelCol;
+
+		if(this.props.comboCol)
+			comboCol = this.props.comboCol;
 
         return (
 			<div className="form-group row">
 				{this.props.label && 
-					<div className={col + " col-md-12 text-lg-right col-form-label"}>
+					<div className={labelCol + " col-md-12 text-lg-right col-form-label"}>
 						<b><label htmlFor={this.props.nome}>{this.props.label}</label></b>
 						{this.props.obrigatorio && " *"}
 					</div>
 				}
-				<div className="col">
+				<div className={comboCol}>
 					<select id={this.props.nome} name={this.props.nome} className="form-control" onChange={this.onChange} value={this.props.valor} disabled={this.props.desabilitado}>
-						<option value="">Selecione uma opção</option>
+						{this.props.textoVazio &&
+							<option value="">{this.props.textoVazio}</option>
+						}
 						{
 							this.props.opcoes.map((opcao, index) => {
 								return (

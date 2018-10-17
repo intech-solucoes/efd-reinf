@@ -35,6 +35,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)DAO\UsuarioDAO.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)Scripts\ArquivoUpload\BuscarPorOidUsuarioContribuinte.sql" />
+    <None Include="$(MSBuildThisFileDirectory)Scripts\ArquivoUpload\BuscarPorOidUsuarioContribuinteStatus.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\ImportacaoCritica\ExcluirPorOidArquivoUpload.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\Contribuinte\BuscarPorCpfCnpj.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\Contribuinte\BuscarPorCpfCnpjOidUsuario.sql" />
@@ -43,6 +45,7 @@
     <None Include="$(MSBuildThisFileDirectory)Scripts\R2010\BuscarPorOidContribuinteDtaInicioDtaFimIndSituacaoProcessamento.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\R2010\BuscarPorOidContribuinteMesEnvioAnoEnvio.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\R2099\BuscarPorOidContribuinteAnoMesIndSituacaoProcessamento.sql" />
+    <None Include="$(MSBuildThisFileDirectory)Scripts\UsuarioContribuinte\BuscarPorOidUsuario.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\UsuarioContribuinte\BuscarPorOidUsuarioOidContribuinte.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\Usuario\BuscarPorEmail.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\Usuario\BuscarPorToken.sql" />

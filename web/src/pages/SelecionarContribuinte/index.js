@@ -53,6 +53,7 @@ export default class SelecionarContribuinte extends Component {
     selecionar = async (contribuinte) => {
         await localStorage.setItem("contribuinte", contribuinte.OID_CONTRIBUINTE);
         await localStorage.setItem("nomeContribuinte", contribuinte.NOM_RAZAO_SOCIAL);
+        await localStorage.setItem("oidUsuarioContribuinte", contribuinte.OID_USUARIO_CONTRIBUINTE);
 
         var result = await UsuarioService.Buscar();
         await localStorage.setItem("nomeUsuario", result.data.NOM_USUARIO);
