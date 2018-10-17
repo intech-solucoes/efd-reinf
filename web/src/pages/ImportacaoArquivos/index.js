@@ -108,7 +108,7 @@ export default class ImportacaoArquivos extends Component {
     }
 
     gerarRelatorio = async (oidArquivoUpload) => {
-        try { 
+        try {
             var relatorio = await UploadService.Relatorio(oidArquivoUpload);
             const url = window.URL.createObjectURL(new Blob([relatorio.data]));
             const link = document.createElement('a');
@@ -117,7 +117,7 @@ export default class ImportacaoArquivos extends Component {
             document.body.appendChild(link);
             link.click();
         } catch(err) {
-            console.error(err)
+            alert("Nenhum registro encontrado.");
         }
     }
 
