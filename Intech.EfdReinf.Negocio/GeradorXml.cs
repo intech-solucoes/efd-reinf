@@ -336,9 +336,7 @@ namespace Intech.EfdReinf.Negocio
             var usuarioContribuinte = new UsuarioContribuinteProxy().BuscarPorOidUsuarioOidContribuinte(oidUsuario, oidContribuinte);
             var dtaPeriodoApuracao = new DateTime(ano, mes, 1);
 
-            // Cria novo ContribuinteEnvio
             var r2098Proxy = new R2098Proxy();
-
             var oidR2098 = r2098Proxy.Inserir(new R2098Entidade
             {
                 OID_CONTRIBUINTE = oidContribuinte,
