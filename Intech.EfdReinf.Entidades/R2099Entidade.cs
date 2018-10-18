@@ -19,7 +19,7 @@ namespace Intech.EfdReinf.Entidades
 		public string IND_PRODUCAO_RURAL { get; set; }
 		public string IND_CPRB { get; set; }
 		public string IND_PAGAMENTOS_DIVERSOS { get; set; }
-		public string IND_COMPETENCIA_SEM_MOV { get; set; }
+		public DateTime? DTA_COMPETENCIA_SEM_MOV { get; set; }
 		public DateTime? DTA_ENVIO { get; set; }
 		public string NUM_RECIBO_ENVIO { get; set; }
 		public string IND_AMBIENTE_ENVIO { get; set; }

@@ -96,18 +96,76 @@ namespace Intech.EfdReinf.Negocio
 
         #endregion
 
+        //#region R-1070
+
+        //public void GerarR1070(decimal oidUsuario, decimal oidContribuinte, string tipoAmbiente, string baseCaminhoArquivo)
+        //{
+        //    // Busca contribuinte
+        //    var contribuinte = new ContribuinteProxy().BuscarPorChave(oidContribuinte);
+        //    var usuarioContribuinte = new UsuarioContribuinteProxy().BuscarPorOidUsuarioOidContribuinte(oidUsuario, oidContribuinte);
+
+        //    // Cria novo ContribuinteEnvio
+        //    var r1070Proxy = new R1070Proxy();
+
+        //    var oidR1070 = r1070Proxy.Inserir(new R1070Entidade
+        //    {
+        //        OID_CONTRIBUINTE = oidContribuinte,
+        //        OID_USUARIO_ENVIO = oidUsuario,
+        //        IND_TIPO_PROCESSO = 
+        //        DTA_PERIODO_APURACAO = dtaPeriodoApuracao,
+        //        IND_AMBIENTE_ENVIO = tipoAmbiente,
+        //        NUM_RECIBO_ENVIO = null,
+        //        DTA_ENVIO = null,
+        //        IND_SITUACAO_PROCESSAMENTO_ = DMN_SITUACAO_PROCESSAMENTO.PROCESSADO
+        //    });
+
+        //    // Monta nome do arquivo
+        //    var nomeArquivoZip = "XML_R1070_" + Guid.NewGuid().ToString() + ".intech";
+        //    var arquivoUploadProxy = new ArquivoUploadProxy();
+
+        //    var oidArquivoUpload = arquivoUploadProxy.Inserir(new ArquivoUploadEntidade
+        //    {
+        //        DTA_UPLOAD = DateTime.Now,
+        //        IND_STATUS = DMN_STATUS_EFD_UPLOAD.NAO_PROCESSADO,
+        //        NOM_ARQUIVO_LOCAL = "Upload/" + nomeArquivoZip,
+        //        NOM_EXT_ARQUIVO = ".intech",
+        //        NOM_ARQUIVO_ORIGINAL = nomeArquivoZip,
+        //        NOM_DIRETORIO_LOCAL = "Upload",
+        //        OID_USUARIO_CONTRIBUINTE = usuarioContribuinte.OID_USUARIO_CONTRIBUINTE
+        //    });
+
+        //    var id = "ID" + oidR1070.ToString().PadLeft(18, '0');
+
+        //    // Monta XML
+        //    var templateFile = Path.Combine(baseCaminhoArquivo, "../TemplatesXml", "R1070.liquid");
+        //    var template = Template.Parse(File.OpenText(templateFile).ReadToEnd());
+        //    var xmlR1070 = template.Render(new
+        //    {
+        //        id,
+        //        dta_periodo_Apuracao = dtaPeriodoApuracao.ToString("yyyy-MM"),
+        //        ind_ambiente_envio = tipoAmbiente,
+        //        versao = Assembly.GetExecutingAssembly().GetName().Version.ToString(3),
+        //        ind_tipo_inscricao = contribuinte.IND_TIPO_INSCRICAO,
+        //        cod_cnpj_cpf = contribuinte.COD_CNPJ_CPF
+        //    });
+
+        //    var caminhoArquivo = GerarArquivo("R1070_", baseCaminhoArquivo, xmlR1070);
+
+        //    CompactarArquivo(caminhoArquivo, baseCaminhoArquivo, nomeArquivoZip);
+        //}
+
+        //#endregion
+
         #region R-2010
 
         public void GerarR2010(decimal oidUsuario, decimal oidContribuinte, string tipoOperacao, string tipoAmbiente, DateTime dtaInicial, DateTime dtaFinal, string baseCaminhoArquivo)
-        {
-            var mesesEntreDatas = dtaInicial.MesesEntreDatas(dtaFinal, true);
-
-            //Intervalo intervaloDeDatas = new Intervalo(dtaFinal, dtaInicial, new CalculoAnosMesesDiasAlgoritmo2());
-
-            if (mesesEntreDatas > 1)
-                throw new Exception("Período inválido.");
-
-            // Busca Contribuinte
+        {
+            var mesesEntreDatas = dtaInicial.MesesEntreDatas(dtaFinal, true);
+
+            if (mesesEntreDatas > 1)
+                throw new Exception("Período inválido.");
+
+            // Busca Contribuinte
             var contribuinte = new ContribuinteProxy().BuscarPorChave(oidContribuinte);
             var usuarioContribuinte = new UsuarioContribuinteProxy().BuscarPorOidUsuarioOidContribuinte(oidUsuario, oidContribuinte);
 
@@ -216,7 +274,9 @@ namespace Intech.EfdReinf.Negocio
             r2099.IND_SITUACAO_PROCESSAMENTO = DMN_SITUACAO_PROCESSAMENTO.PROCESSADO;
 
             // Cria novo ContribuinteEnvio
-            var R2099Proxy = new R2099Proxy();            
+            var R2099Proxy = new R2099Proxy();
+            r2099.IND_CPRB = contribuinte.IND_DESONERACAO_CPRB;
+            r2099.OID_USUARIO_ENVIO = oidUsuario;
             var oidR2099 = R2099Proxy.Inserir(r2099);
 
             // Monta nome do arquivo
@@ -276,9 +336,7 @@ namespace Intech.EfdReinf.Negocio
             var usuarioContribuinte = new UsuarioContribuinteProxy().BuscarPorOidUsuarioOidContribuinte(oidUsuario, oidContribuinte);
             var dtaPeriodoApuracao = new DateTime(ano, mes, 1);
 
-            // Cria novo ContribuinteEnvio
             var r2098Proxy = new R2098Proxy();
-
             var oidR2098 = r2098Proxy.Inserir(new R2098Entidade
             {
                 OID_CONTRIBUINTE = oidContribuinte,
