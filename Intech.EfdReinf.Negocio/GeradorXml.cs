@@ -274,7 +274,9 @@ namespace Intech.EfdReinf.Negocio
             r2099.IND_SITUACAO_PROCESSAMENTO = DMN_SITUACAO_PROCESSAMENTO.PROCESSADO;
 
             // Cria novo ContribuinteEnvio
-            var R2099Proxy = new R2099Proxy();            
+            var R2099Proxy = new R2099Proxy();
+            r2099.IND_CPRB = contribuinte.IND_DESONERACAO_CPRB;
+            r2099.OID_USUARIO_ENVIO = oidUsuario;
             var oidR2099 = R2099Proxy.Inserir(r2099);
 
             // Monta nome do arquivo
