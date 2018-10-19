@@ -119,7 +119,6 @@ export default class GeracaoXml extends Component {
         this.combos.ambienteEnvio = await DominioService.BuscarPorCodigo("DMN_TIPO_AMBIENTE_EFD");
         // Usuário responsável - buscar usuários vinculados ao contribuinte
         this.combos.dominioSimNao = await DominioService.BuscarPorCodigo("DMN_SN");
-        this.carregaComboReferencia();
     }
 
     limparErros = async () => {

@@ -451,11 +451,4 @@ namespace Intech.EfdReinf.Negocio
 
         #endregion
     }
-}
-        {
-            var mesesEntreDatas = dtaInicial.MesesEntreDatas(dtaFinal, true);
-
-            if (mesesEntreDatas > 1)
-                throw new Exception("Período inválido.");
-
-            // Busca Contribuinte
+}
