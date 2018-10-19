@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Botao, CampoTexto, Combo, Checkbox, Box, Col, Row, PainelErros } from '../../components';
+import { handleFieldChange } from "@intechprev/react-lib";
 import ArquivosGerados from './ArquivosGerados';
 
 import { DominioService, GeracaoXmlService } from '@intechprev/efdreinf-service';
@@ -103,9 +104,6 @@ export default class GeracaoXml extends Component {
     }
     
     componentDidMount = async () => {
-        console.log(["referenciaAno", "referenciaMes"]);
-        console.log([this.state.referenciaAno, this.state.referenciaMes]);
-        console.log([{NOM_DOMINIO: "AAAA", SIG_DOMINIO: 1}, {NOM_DOMINIO: "MM", SIG_DOMINIO: 1}]);
         window.scrollTo(0, 0);
         var nomeContribuinte = localStorage.getItem("nomeContribuinte");
         this.setState({ contribuinte: nomeContribuinte });
@@ -146,53 +144,6 @@ export default class GeracaoXml extends Component {
             this.state.r1000 ? await this.validarR1000() : "";
             this.state.r2010 ? await this.validarR2010() : "";
             this.state.r2099 ? await this.validarR2099() : "";
-        }
-    }
-
-    validarR1000 = async () => { 
-        try {
-            await GeracaoXmlService.GerarR1000(localStorage.getItem("contribuinte"), this.state.ambienteEnvio);
-            alert("R-1000 Gerado com sucesso!");
-        } catch(err) {
-            console.error(err);
-        }
-    }
-
-    validarR2010 = async () => { 
-        var contribuinte = localStorage.getItem("contribuinte");
-        var dataInicial = this.state.dataInicial.split("-");
-        var dataFinal = this.state.dataFinal.split("-");
-
-        dataInicial = new Date(dataInicial[0], dataInicial[1] - 1, dataInicial[2]);
-        dataFinal = new Date(dataFinal[0], dataFinal[1] - 1, dataFinal[2]);
-        
-        var msParaDia = 0;
-        var diferencaDias = 0;
-        
-        if(this.state.r2010) {
-            msParaDia = 1000 * 60 * 60 * 24;    // Valor que representa um dia em milissegundos.
-            diferencaDias = (dataFinal - dataInicial) / msParaDia;    // Divide-se por msParaDia pois a diferença entre duas datas resulta no valor em milissegundos.
-            if(diferencaDias < 0)
-                this.adicionarErro("A data final deve ser superior à data inicial.");
-            
-            if(this.state.dataInicial.length === 0 || this.state.dataFinal.length === 0)    // Essa condicional será cortada caso a validação do componente funcione.
-                this.adicionarErro("Campo \"Período\" obrigatório");
-
-            if(this.state.erros.length === 0) {
-                dataInicial = this.state.dataInicial.split("-");
-                dataInicial = dataInicial[2] + "." + dataInicial[1] + "." + dataInicial[0];
-                dataFinal = this.state.dataFinal.split("-");
-                dataFinal = dataFinal[2] + "." + dataFinal[1] + "." + dataFinal[0];
-                try {
-                    await GeracaoXmlService.GerarR2010(contribuinte, this.state.tipoOperacao, this.state.ambienteEnvio, dataInicial, dataFinal);
-                    alert("R2010 Gerado com sucesso!");
-                } catch(err) {
-                    if(err.response)
-                        await this.adicionarErro(err.response.data);
-                    else
-                        await this.adicionarErro(err);
-                }
-            }
         }
     }
 
@@ -313,12 +264,24 @@ export default class GeracaoXml extends Component {
     }
     
     validarR2099 = async () => {
-        // WIP
-        var r2099 = {
+        var periodo = "01/" + this.state.referenciaMes + "/" + this.state.referenciaAno;
+        var competencia = "01/" + this.state.competenciaMes + "/" + this.state.competenciaAno;
 
+        var r2099 = {
+            OID_CONTRIBUINTE: this.oidContribuinte,
+            IND_AMBIENTE_ENVIO: this.state.ambienteEnvio,
+            DTA_PERIODO_APURACAO: periodo,
+            IND_CONTRATACAO_SERV: this.state.contratacaoServicos,
+            IND_PRESTACAO_SERV: this.state.prestacaoServicos,
+            IND_ASSOCIACAO_DESPORTIVA: this.state.associacaoDesportiva,
+            IND_REPASSE_ASSOC_DESPORT: this.state.associacaoDesportiva,
+            IND_PRODUCAO_RURAL: this.state.producaoRural,
+            IND_PAGAMENTOS_DIVERSOS: this.state.pagamentosDiversos,
+            DTA_COMPETENCIA_SEM_MOV: competencia
         }
         try { 
             await GeracaoXmlService.GerarR2099(this.oidContribuinte, r2099);
+            alert("R2099 Gerado com sucesso!");
         } catch(err) {
             console.error(err);
         }
@@ -376,7 +339,23 @@ export default class GeracaoXml extends Component {
                         {this.state.visibilidade.data &&
                             <Row>
                                 <Col>
-                                    <h5>Campos período</h5>
+                                    <div className="form-group row">
+                                        <div className="col-lg-2 col-md-12 text-lg-right col-form-label"> 
+                                            <b><label htmlFor="dataInicial"> 
+                                                Período * 
+                                            </label></b> 
+                                        </div> 
+                                        <div className="col-3"> 
+                                            <input className="form-control" name="dataInicial" id="dataInicial" type="date" value={this.state.dataInicial} 
+                                                onChange={(e) => handleFieldChange(this, e)} /> 
+                                        </div> 
+                                        <div className="col-form-label"> 
+                                            <b><label htmlFor="dataFinal"> a </label></b> 
+                                        </div> 
+                                        <div className="col-3"> <input className="form-control" name="dataFinal" id="dataFinal" type="date" 
+                                            value={(this.state.dataFinal)} onChange={(e) => handleFieldChange(this, e)} /> 
+                                        </div> 
+                                    </div> 
                                 </Col>
                             </Row>
                         }
@@ -384,9 +363,9 @@ export default class GeracaoXml extends Component {
                         {this.state.visibilidade.referencia &&
                             <Combo contexto={this} label={"Referência"} ref={ (input) => this.listaCampos[5] = input } 
                                    nome="referenciaAno" valor={this.state.referenciaAno} obrigatorio={true} comboCol="col-3"
-                                   opcoes={[{NOM_DOMINIO: "AAAA", SIG_DOMINIO: 1}]}  
+                                   opcoes={[{NOM_DOMINIO: "2018", SIG_DOMINIO: "2018"}]}  
                                    segundoCombo="referenciaMes" valorSegundoCombo={this.state.referenciaMes} 
-                                   opcoesSegundoCombo={[{NOM_DOMINIO: "MM", SIG_DOMINIO: 1}]} />
+                                   opcoesSegundoCombo={[{NOM_DOMINIO: "05", SIG_DOMINIO: "05"}, {NOM_DOMINIO: "06", SIG_DOMINIO: "06"}]} />
                         }
                         <br />
                         {this.state.visibilidade.contratacaoServicos &&
@@ -433,10 +412,10 @@ export default class GeracaoXml extends Component {
 
                         {this.state.visibilidade.competencia && 
                             <Combo contexto={this} label={"Competência a partir da qual não houve movimento, cuja situação perdura até a competência atual."} ref={ (input) => this.listaCampos[5] = input } 
-                                   nome="competenciaAno" valor={this.state.competenciaAno} obrigatorio={true} comboCol="col-3"
-                                   opcoes={[{NOM_DOMINIO: "AAAA", SIG_DOMINIO: 1}]} labelCol="col-lg-4"
+                                   nome="competenciaAno" valor={this.state.competenciaAno} comboCol="col-3"
+                                   opcoes={[{NOM_DOMINIO: "2018", SIG_DOMINIO: "2018"}]} labelCol="col-lg-4"
                                    segundoCombo="competenciaMes" valorSegundoCombo={this.state.competenciaMes} 
-                                   opcoesSegundoCombo={[{NOM_DOMINIO: "MM", SIG_DOMINIO: 1}]} />
+                                   opcoesSegundoCombo={[{NOM_DOMINIO: "05", SIG_DOMINIO: "05"}, {NOM_DOMINIO: "06", SIG_DOMINIO: "06"}]} />
                         }
 
                         <PainelErros erros={this.state.erros} />
