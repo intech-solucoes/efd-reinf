@@ -101,9 +101,9 @@ namespace Intech.EfdReinf.API.Controllers
             }
         }
 
-        [HttpGet("gerarR2099/{oidContribuinte}/{r2099}")]
+        [HttpPost("gerarR2099/{oidContribuinte}")]
         [Authorize("Bearer")]
-        public ActionResult GerarR2099(decimal oidContribuinte, R2099Entidade r2099)
+        public ActionResult GerarR2099(decimal oidContribuinte, [FromBody] R2099Entidade r2099)
         {
             try
             {
