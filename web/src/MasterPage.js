@@ -46,6 +46,7 @@ export default class MasterPage extends React.Component {
     logout() {
         localStorage.removeItem("token");
         localStorage.removeItem("contribuinte");
+        localStorage.removeItem("oidUsuarioContribuinte");
         document.location = "/";
     }
 

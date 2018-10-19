@@ -1,12 +1,20 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
-
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <Version>0.0.6</Version>
+    <Version>0.0.8</Version>
+    <AssemblyVersion>0.0.8.0</AssemblyVersion>
+    <FileVersion>0.0.8.0</FileVersion>
   </PropertyGroup>
-
+  <ItemGroup>
+    <None Remove="Relatorios\RelatorioCriticasImportacao.repx" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Relatorios\RelatorioCriticasImportacao.repx" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Dapper.Contrib" Version="1.50.5" />
+    <PackageReference Include="DevExpress.AspNetCore.Common" Version="18.1.6" />
+    <PackageReference Include="DevExpress.Reporting.Core" Version="18.1.6" />
     <PackageReference Include="MailKit" Version="2.0.6" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
@@ -14,21 +22,12 @@
     <PackageReference Include="Scriban" Version="1.2.7" />
     <PackageReference Include="SharpZipLib" Version="1.0.0" />
   </ItemGroup>
-
   <Import Project="..\..\lib\dotnet-lib\Intech.Lib.Dapper\Intech.Lib.Dapper.projitems" Label="Shared" />
-
   <Import Project="..\..\lib\dotnet-lib\Intech.Lib.Data\Intech.Lib.Data.projitems" Label="Shared" />
-
   <Import Project="..\..\lib\dotnet-lib\Intech.Lib.Util\Intech.Lib.Util.projitems" Label="Shared" />
-
   <Import Project="..\..\lib\dotnet-lib\Intech.Lib.Web\Intech.Lib.Web.projitems" Label="Shared" />
-
   <Import Project="..\Intech.EfdReinf.Negocio\Intech.EfdReinf.Negocio.projitems" Label="Shared" />
-
   <Import Project="..\Intech.EfdReinf.Entidades\Intech.EfdReinf.Entidades.projitems" Label="Shared" />
-
   <Import Project="..\Intech.EfdReinf.Dados\Intech.EfdReinf.Dados.projitems" Label="Shared" />
-
   <Import Project="..\..\lib\dotnet-lib\Intech.Lib.Dominios\Intech.Lib.Dominios.projitems" Label="Shared" />
-
 </Project>

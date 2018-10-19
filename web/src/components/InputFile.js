@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { handleFieldChange } from '@intechprev/react-lib';
 
 export default class InputFile extends Component { 
     constructor(props) {
@@ -23,8 +22,6 @@ export default class InputFile extends Component {
 	}
 
     onChange = async (e) => {
-		await handleFieldChange(this.props.contexto, e);
-		
 		if(this.props.onChange) {
 			await this.props.onChange(e);
 		}

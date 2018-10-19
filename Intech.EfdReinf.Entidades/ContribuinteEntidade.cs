@@ -28,6 +28,8 @@ namespace Intech.EfdReinf.Entidades
 		public string TXT_EMAIL_CONTATO { get; set; }
 		public string IND_APROVADO { get; set; }
 		public DateTime DTA_VALIDADE { get; set; }
+		public List<UsuarioContribuinteEntidade> Usuarios { get; set; }
+		public decimal? OID_USUARIO_CONTRIBUINTE { get; set; }
         
     }
 }

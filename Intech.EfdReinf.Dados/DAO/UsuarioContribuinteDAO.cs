@@ -13,6 +13,23 @@ namespace Intech.EfdReinf.Dados.DAO
     public abstract class UsuarioContribuinteDAO : BaseDAO<UsuarioContribuinteEntidade>
     {
         
+		public virtual IEnumerable<UsuarioContribuinteEntidade> BuscarPorOidUsuario(decimal OID_USUARIO)
+		{
+			try
+			{
+				if(AppSettings.IS_SQL_SERVER_PROVIDER)
+					return Conexao.Query<UsuarioContribuinteEntidade>("SELECT * FROM EFD_USUARIO_CONTRIBUINTE WHERE OID_USUARIO = @OID_USUARIO", new { OID_USUARIO });
+				else if(AppSettings.IS_ORACLE_PROVIDER)
+					return Conexao.Query<UsuarioContribuinteEntidade>("SELECT * FROM EFD_USUARIO_CONTRIBUINTE WHERE OID_USUARIO=:OID_USUARIO", new { OID_USUARIO });
+				else
+					throw new Exception("Provider não suportado!");
+			}
+			finally
+			{
+				Conexao.Close();
+			}
+		}
+
 		public virtual UsuarioContribuinteEntidade BuscarPorOidUsuarioOidContribuinte(decimal OID_USUARIO, decimal OID_CONTRIBUINTE)
 		{
 			try

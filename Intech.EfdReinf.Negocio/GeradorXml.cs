@@ -162,6 +162,8 @@ namespace Intech.EfdReinf.Negocio
         {
             var mesesEntreDatas = dtaInicial.MesesEntreDatas(dtaFinal, true);
 
+            //Intervalo intervaloDeDatas = new Intervalo(dtaFinal, dtaInicial, new CalculoAnosMesesDiasAlgoritmo2());
+
             if (mesesEntreDatas > 1)
                 throw new Exception("Período inválido.");
 
@@ -450,3 +452,10 @@ namespace Intech.EfdReinf.Negocio
         #endregion
     }
 }
+        {
+            var mesesEntreDatas = dtaInicial.MesesEntreDatas(dtaFinal, true);
+
+            if (mesesEntreDatas > 1)
+                throw new Exception("Período inválido.");
+
+            // Busca Contribuinte

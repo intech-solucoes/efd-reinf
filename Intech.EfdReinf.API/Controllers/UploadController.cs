@@ -1,15 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
+﻿#region Usings
+using DevExpress.DataAccess.Sql;
+using DevExpress.XtraReports.UI;
 using Intech.EfdReinf.Entidades;
 using Intech.EfdReinf.Negocio.Proxy;
 using Intech.Lib.Dominios;
+using Intech.Lib.Util.Relatorios;
+using Intech.Lib.Web;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.CodeDom.Compiler;
+using System.Collections.Generic;
+using System.IO;
+using System.Net.Http.Headers;
+#endregion
 
 namespace Intech.EfdReinf.API.Controllers
 {
@@ -17,11 +22,37 @@ namespace Intech.EfdReinf.API.Controllers
     [ApiController]
     public class UploadController : BaseController
     {
-        private IHostingEnvironment _hostingEnvironment;
+        private IHostingEnvironment HostingEnvironment;
 
         public UploadController(IHostingEnvironment hostingEnvironment)
         {
-            _hostingEnvironment = hostingEnvironment;
+            HostingEnvironment = hostingEnvironment;
+        }
+
+        [HttpGet("{oidUsuarioContribuinte}")]
+        public IActionResult Buscar(decimal oidUsuarioContribuinte)
+        {
+            try
+            {
+                return Json(new ArquivoUploadProxy().BuscarPorOidUsuarioContribuinte(oidUsuarioContribuinte));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("{oidUsuarioContribuinte}/{status}")]
+        public IActionResult Buscar(decimal oidUsuarioContribuinte, string status)
+        {
+            try
+            {
+                return Json(new ArquivoUploadProxy().BuscarPorOidUsuarioContribuinteStatus(oidUsuarioContribuinte, status));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost("{oidUsuarioContribuinte}"), DisableRequestSizeLimit]
@@ -30,7 +61,7 @@ namespace Intech.EfdReinf.API.Controllers
             try
             {
                 string folderName = "Upload";
-                string webRootPath = _hostingEnvironment.ContentRootPath;
+                string webRootPath = HostingEnvironment.ContentRootPath;
                 string newPath = Path.Combine(webRootPath, folderName);
 
                 if (!Directory.Exists(newPath))
@@ -68,6 +99,42 @@ namespace Intech.EfdReinf.API.Controllers
             catch (System.Exception ex)
             {
                 return Json("Upload Failed: " + ex.Message);
+            }
+        }
+
+        [HttpDelete("{oidArquivoUpload}")]
+        public IActionResult Deletar(decimal oidArquivoUpload)
+        {
+            try
+            {
+                var proxy = new ArquivoUploadProxy();
+                var arquivoUpload = proxy.BuscarPorChave(oidArquivoUpload);
+                proxy.Deletar(arquivoUpload);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("relatorio/{oidArquivoUpload}")]
+        public IActionResult Relatorio(decimal oidArquivoUpload)
+        {
+            try
+            {
+                var parametros = new List<KeyValuePair<string, object>>
+                {
+                    new KeyValuePair<string, object>("OID_ARQUIVO_UPLOAD", oidArquivoUpload)
+                };
+
+                var relatorio = GeradorRelatorio.Gerar("RelatorioCriticasImportacao", HostingEnvironment.ContentRootPath, parametros);
+
+                return File(relatorio, "application/pdf");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
     }
