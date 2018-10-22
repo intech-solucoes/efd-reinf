@@ -26,6 +26,20 @@ namespace Intech.EfdReinf.API.Controllers
             }
         }
 
+        [HttpGet("{oid}")]
+        [Authorize("Bearer")]
+        public IActionResult Buscar(decimal oid)
+        {
+            try
+            {
+                return Json(new ContribuinteProxy().BuscarPorChave(oid));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpPost]
         [Authorize("Bearer")]
         public IActionResult Criar([FromBody] ContribuinteEntidade contribuinte)

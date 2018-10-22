@@ -6,6 +6,7 @@ using Intech.EfdReinf.Negocio.Proxy;
 using Intech.Lib.Dominios;
 using Intech.Lib.Util.Relatorios;
 using Intech.Lib.Web;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -29,8 +30,23 @@ namespace Intech.EfdReinf.API.Controllers
             HostingEnvironment = hostingEnvironment;
         }
 
-        [HttpGet("{oidUsuarioContribuinte}")]
-        public IActionResult Buscar(decimal oidUsuarioContribuinte)
+        [HttpGet("{oidArquivoUpload}")]
+        [Authorize("Bearer")]
+        public IActionResult Buscar(decimal oidArquivoUpload)
+        {
+            try
+            {
+                return Json(new ArquivoUploadProxy().BuscarPorChave(oidArquivoUpload));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("porOidUsuarioContribuinte/{oidUsuarioContribuinte}")]
+        [Authorize("Bearer")]
+        public IActionResult BuscarPorOidUsuarioContribuinte(decimal oidUsuarioContribuinte)
         {
             try
             {
@@ -43,6 +59,7 @@ namespace Intech.EfdReinf.API.Controllers
         }
 
         [HttpGet("{oidUsuarioContribuinte}/{status}")]
+        [Authorize("Bearer")]
         public IActionResult Buscar(decimal oidUsuarioContribuinte, string status)
         {
             try
@@ -56,6 +73,7 @@ namespace Intech.EfdReinf.API.Controllers
         }
 
         [HttpPost("{oidUsuarioContribuinte}"), DisableRequestSizeLimit]
+        [Authorize("Bearer")]
         public IActionResult UploadFile(IFormFile file, decimal oidUsuarioContribuinte)
         {
             try
@@ -103,6 +121,7 @@ namespace Intech.EfdReinf.API.Controllers
         }
 
         [HttpDelete("{oidArquivoUpload}")]
+        [Authorize("Bearer")]
         public IActionResult Deletar(decimal oidArquivoUpload)
         {
             try
@@ -119,6 +138,7 @@ namespace Intech.EfdReinf.API.Controllers
         }
 
         [HttpGet("relatorio/{oidArquivoUpload}")]
+        [Authorize("Bearer")]
         public IActionResult Relatorio(decimal oidArquivoUpload)
         {
             try

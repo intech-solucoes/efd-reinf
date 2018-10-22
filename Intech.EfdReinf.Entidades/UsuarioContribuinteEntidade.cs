@@ -11,6 +11,8 @@ namespace Intech.EfdReinf.Entidades
 		public decimal OID_USUARIO_CONTRIBUINTE { get; set; }
 		public decimal OID_USUARIO { get; set; }
 		public decimal OID_CONTRIBUINTE { get; set; }
+		[Write(false)] public UsuarioEntidade Usuario { get; set; }
+		[Write(false)] public ContribuinteEntidade Contribuinte { get; set; }
         
     }
 }

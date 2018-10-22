@@ -1,3 +1,15 @@
 ﻿{
-  "nomeTabela": "EFD_R2010"
+    "nomeTabela": "EFD_R2010",
+    "colunasExtras": [
+        {
+            "nome": "DataGeracao",
+            "tipo": "DateTime",
+            "aceitaNulo": true
+        },
+        {
+            "nome": "Status",
+            "tipo": "string",
+            "aceitaNulo": true
+        }
+    ]
 }
