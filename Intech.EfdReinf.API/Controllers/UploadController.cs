@@ -58,7 +58,7 @@ namespace Intech.EfdReinf.API.Controllers
             }
         }
 
-        [HttpGet("{oidUsuarioContribuinte}/{status}")]
+        [HttpGet("porOidUsuarioContribuinte/{oidUsuarioContribuinte}/{status}")]
         [Authorize("Bearer")]
         public IActionResult Buscar(decimal oidUsuarioContribuinte, string status)
         {
