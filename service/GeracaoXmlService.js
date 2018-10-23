@@ -16,6 +16,10 @@ class GeracaoXmlService extends BaseService {
     GerarR2099(oidContribuinte, r2099) {
         return this.CriarRequisicao("POST", `/geracaoXml/gerarR2099/${oidContribuinte}`, r2099);
     }
+
+    BuscarArquivosGeradosPorOidContribuinte(oidContribuinte) {
+        return this.CriarRequisicao("GET", `/geracaoXml/arquivosGerados/${oidContribuinte}`);
+    }
 }
 
 export default new GeracaoXmlService();
