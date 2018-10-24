@@ -272,15 +272,7 @@ namespace Intech.EfdReinf.Negocio
             // Busca contribuinte
             var contribuinte = new ContribuinteProxy().BuscarPorChave(oidContribuinte);
             var usuarioContribuinte = new UsuarioContribuinteProxy().BuscarPorOidUsuarioOidContribuinte(oidUsuario, oidContribuinte);
-
-            r2099.IND_SITUACAO_PROCESSAMENTO = DMN_SITUACAO_PROCESSAMENTO.PROCESSADO;
-
-            // Cria novo ContribuinteEnvio
-            var R2099Proxy = new R2099Proxy();
-            r2099.IND_CPRB = contribuinte.IND_DESONERACAO_CPRB;
-            r2099.OID_USUARIO_ENVIO = oidUsuario;
-            var oidR2099 = R2099Proxy.Inserir(r2099);
-
+            
             // Monta nome do arquivo
             var nomeArquivoZip = "XML_R2099_" + Guid.NewGuid().ToString() + ".intech";
             var arquivoUploadProxy = new ArquivoUploadProxy();
@@ -295,6 +287,14 @@ namespace Intech.EfdReinf.Negocio
                 NOM_DIRETORIO_LOCAL = "Upload",
                 OID_USUARIO_CONTRIBUINTE = usuarioContribuinte.OID_USUARIO_CONTRIBUINTE
             });
+
+            // Cria novo registro na R2099
+            var R2099Proxy = new R2099Proxy();
+            r2099.IND_SITUACAO_PROCESSAMENTO = DMN_SITUACAO_PROCESSAMENTO.PROCESSADO;
+            r2099.IND_CPRB = contribuinte.IND_DESONERACAO_CPRB;
+            r2099.OID_USUARIO_ENVIO = oidUsuario;
+            r2099.OID_ARQUIVO_UPLOAD = oidArquivoUpload;
+            var oidR2099 = R2099Proxy.Inserir(r2099);
 
             var id = "ID" + oidR2099.ToString().PadLeft(18, '0');
 
