@@ -97,65 +97,85 @@ namespace Intech.EfdReinf.Negocio
 
         #endregion
 
-        //#region R-1070
+        #region R-1070
 
-        //public void GerarR1070(decimal oidUsuario, decimal oidContribuinte, string tipoAmbiente, string baseCaminhoArquivo)
-        //{
-        //    // Busca contribuinte
-        //    var contribuinte = new ContribuinteProxy().BuscarPorChave(oidContribuinte);
-        //    var usuarioContribuinte = new UsuarioContribuinteProxy().BuscarPorOidUsuarioOidContribuinte(oidUsuario, oidContribuinte);
+        public void GerarR1070(decimal oidUsuario, decimal oidContribuinte, string tipoAmbiente, string baseCaminhoArquivo)
+        {
+            // Busca contribuinte
+            var contribuinte = new ContribuinteProxy().BuscarPorChave(oidContribuinte);
+            var usuarioContribuinte = new UsuarioContribuinteProxy().BuscarPorOidUsuarioOidContribuinte(oidUsuario, oidContribuinte);
 
-        //    // Cria novo ContribuinteEnvio
-        //    var r1070Proxy = new R1070Proxy();
+            // Monta nome do arquivo
+            var nomeArquivoZip = "XML_R1070_" + Guid.NewGuid().ToString() + ".intech";
+            var arquivoUploadProxy = new ArquivoUploadProxy();
 
-        //    var oidR1070 = r1070Proxy.Inserir(new R1070Entidade
-        //    {
-        //        OID_CONTRIBUINTE = oidContribuinte,
-        //        OID_USUARIO_ENVIO = oidUsuario,
-        //        IND_TIPO_PROCESSO = 
-        //        DTA_PERIODO_APURACAO = dtaPeriodoApuracao,
-        //        IND_AMBIENTE_ENVIO = tipoAmbiente,
-        //        NUM_RECIBO_ENVIO = null,
-        //        DTA_ENVIO = null,
-        //        IND_SITUACAO_PROCESSAMENTO_ = DMN_SITUACAO_PROCESSAMENTO.PROCESSADO
-        //    });
+            var oidArquivoUpload = arquivoUploadProxy.Inserir(new ArquivoUploadEntidade
+            {
+                DTA_UPLOAD = DateTime.Now,
+                IND_STATUS = DMN_STATUS_EFD_UPLOAD.NAO_PROCESSADO,
+                NOM_ARQUIVO_LOCAL = "Upload/" + nomeArquivoZip,
+                NOM_EXT_ARQUIVO = ".intech",
+                NOM_ARQUIVO_ORIGINAL = nomeArquivoZip,
+                NOM_DIRETORIO_LOCAL = "Upload",
+                OID_USUARIO_CONTRIBUINTE = usuarioContribuinte.OID_USUARIO_CONTRIBUINTE
+            });
 
-        //    // Monta nome do arquivo
-        //    var nomeArquivoZip = "XML_R1070_" + Guid.NewGuid().ToString() + ".intech";
-        //    var arquivoUploadProxy = new ArquivoUploadProxy();
+            R1070Proxy proxyR1070 = new R1070Proxy();
+            IEnumerable<R1070Entidade> listRegistrosR1070;
 
-        //    var oidArquivoUpload = arquivoUploadProxy.Inserir(new ArquivoUploadEntidade
-        //    {
-        //        DTA_UPLOAD = DateTime.Now,
-        //        IND_STATUS = DMN_STATUS_EFD_UPLOAD.NAO_PROCESSADO,
-        //        NOM_ARQUIVO_LOCAL = "Upload/" + nomeArquivoZip,
-        //        NOM_EXT_ARQUIVO = ".intech",
-        //        NOM_ARQUIVO_ORIGINAL = nomeArquivoZip,
-        //        NOM_DIRETORIO_LOCAL = "Upload",
-        //        OID_USUARIO_CONTRIBUINTE = usuarioContribuinte.OID_USUARIO_CONTRIBUINTE
-        //    });
+            listRegistrosR1070 = proxyR1070.BuscarPorOidContribuinte(oidContribuinte);
 
-        //    var id = "ID" + oidR1070.ToString().PadLeft(18, '0');
+            var eventos = from x in listRegistrosR1070
+                          select new
+                          {
+                              id = "ID" + oidArquivoUpload.ToString().PadLeft(18, '0'),
+                              ind_ambiente_envio = tipoAmbiente,
+                              versao = Assembly.GetExecutingAssembly().GetName().Version.ToString(3),
+                              ind_tipo_inscricao = contribuinte.IND_TIPO_INSCRICAO,
+                              cod_cnpj_cpf = contribuinte.COD_CNPJ_CPF,
+                              abertura_tag_operacao = x.IND_OPERACAO_REGISTRO == DMN_OPERACAO_REGISTRO.INCLUSAO ? "<inclusao>" : x.IND_OPERACAO_REGISTRO == DMN_OPERACAO_REGISTRO.ALTERACAO ? "<alteracao>" : "<exclusao>",
+                              ind_tipo_processo = x.IND_TIPO_PROCESSO,
+                              num_processo = x.NUM_PROCESSO,
+                              dta_inicio_validade = x.DTA_INICIO_VALIDADE.ToString("yyyy-MM"),
+                              dta_fim_validade = x.DTA_FIM_VALIDADE == null ? string.Empty : Convert.ToDateTime(x.DTA_FIM_VALIDADE).ToString("yyyy-MM"),
+                              ind_autoria_judicial = x.IND_AUTORIA_JUDICIAL,
+                              cod_suspensao = x.COD_SUSPENSAO,
+                              ind_suspensao = x.IND_SUSPENSAO,
+                              dta_decisao = x.DTA_DECISAO == null ? string.Empty : Convert.ToDateTime(x.DTA_DECISAO).ToString("dd/MM/yyyy"),
+                              ind_deposito_judicial = x.IND_DEPOSITO_JUDICIAL,
+                              cod_uf_vara = x.COD_UF_VARA,
+                              cod_municipio_vara = x.COD_MUNICIPIO_VARA,
+                              cod_identificacao_vara = x.COD_IDENTIFICACAO_VARA,
+                              fechamento_tag_operacao = x.IND_OPERACAO_REGISTRO == DMN_OPERACAO_REGISTRO.INCLUSAO ? "</inclusao>" : x.IND_OPERACAO_REGISTRO == DMN_OPERACAO_REGISTRO.ALTERACAO ? "</alteracao>" : "</exclusao>"
+                          };
 
-        //    // Monta XML
-        //    var templateFile = Path.Combine(baseCaminhoArquivo, "../TemplatesXml", "R1070.liquid");
-        //    var template = Template.Parse(File.OpenText(templateFile).ReadToEnd());
-        //    var xmlR1070 = template.Render(new
-        //    {
-        //        id,
-        //        dta_periodo_Apuracao = dtaPeriodoApuracao.ToString("yyyy-MM"),
-        //        ind_ambiente_envio = tipoAmbiente,
-        //        versao = Assembly.GetExecutingAssembly().GetName().Version.ToString(3),
-        //        ind_tipo_inscricao = contribuinte.IND_TIPO_INSCRICAO,
-        //        cod_cnpj_cpf = contribuinte.COD_CNPJ_CPF
-        //    });
 
-        //    var caminhoArquivo = GerarArquivo("R1070_", baseCaminhoArquivo, xmlR1070);
+            // Monta XML
+            var templateFile = Path.Combine(baseCaminhoArquivo, "../TemplatesXml", "R1070.liquid");
+            var template = Template.Parse(File.OpenText(templateFile).ReadToEnd());
+            var xmlR1070 = template.Render(new
+            {
+                eventos
+            });
 
-        //    CompactarArquivo(caminhoArquivo, baseCaminhoArquivo, nomeArquivoZip);
-        //}
+            var caminhoArquivo = GerarArquivo("R1070_", baseCaminhoArquivo, xmlR1070);
 
-        //#endregion
+            CompactarArquivo(caminhoArquivo, baseCaminhoArquivo, nomeArquivoZip);
+
+            //Atualizando a tabela R1070
+            foreach (var rowR1070 in listRegistrosR1070)
+            {
+                rowR1070.OID_CONTRIBUINTE = oidContribuinte;
+                rowR1070.OID_USUARIO_ENVIO = oidUsuario;
+                rowR1070.IND_SITUACAO_PROCESSAMENTO = DMN_SITUACAO_PROCESSAMENTO.PROCESSADO;
+                rowR1070.IND_AMBIENTE_ENVIO = tipoAmbiente;
+                rowR1070.OID_ARQUIVO_UPLOAD = oidArquivoUpload;
+
+                proxyR1070.Atualizar(rowR1070);
+            }
+        }
+
+        #endregion
 
         #region R-2010
 

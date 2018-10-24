@@ -164,24 +164,24 @@ namespace Intech.EfdReinf.API.Controllers
             }
         }
 
-        //[HttpGet("gerarR1070/{oidContribuinte}/{tipoAmbiente}")]
-        //[Authorize("Bearer")]
-        //public ActionResult GerarR1070(decimal oidContribuinte, string tipoAmbiente)
-        //{
-        //    try
-        //    {
-        //        string webRootPath = HostingEnvironment.ContentRootPath;
-        //        string newPath = Path.Combine(webRootPath, _folderName);
+        [HttpGet("gerarR1070/{oidContribuinte}/{tipoAmbiente}")]
+        [Authorize("Bearer")]
+        public ActionResult GerarR1070(decimal oidContribuinte, string tipoAmbiente)
+        {
+            try
+            {
+                string webRootPath = HostingEnvironment.ContentRootPath;
+                string newPath = Path.Combine(webRootPath, _folderName);
 
-        //        new GeradorXml().GerarR1070(OidUsuario, oidContribuinte, tipoAmbiente, newPath);
+                new GeradorXml().GerarR1070(OidUsuario, oidContribuinte, tipoAmbiente, newPath);
 
-        //        return Ok();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-        //}
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         [HttpGet("gerarR2010/{oidContribuinte}/{tipoOperacao}/{tipoAmbiente}/{dtaInicial}/{dtaFinal}")]
         [Authorize("Bearer")]
