@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Reinf xmlns="http://www.reinf.esocial.gov.br/schemas/envioLoteEventos/v1_03_02" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<Reinf xmlns="http://www.reinf.esocial.gov.br/schemas/envioLoteEventos/v1_04_00" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <loteEventos>
     {{for evento in eventos}} <evento id="{{evento.id}}">
-      <Reinf xmlns="http://www.reinf.esocial.gov.br/schemas/evtTomadorServicos/v1_03_02">
+      <Reinf xmlns="http://www.reinf.esocial.gov.br/schemas/evtTomadorServicos/v1_04_00">
         <evtServTom id="{{evento.id}}">
           <ideEvento>
             <indRetif>{{evento.ind_retificacao}}</indRetif>

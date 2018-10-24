@@ -53,8 +53,8 @@ namespace Intech.EfdReinf.Entidades
 		public string NUM_RECIBO_ENVIO { get; set; }
 		public DateTime? DTA_ENVIO { get; set; }
 		public decimal OID_ARQUIVO_UPLOAD { get; set; }
-		[Write(false)] public DateTime? DataGeracao { get; set; }
-		[Write(false)] public string Status { get; set; }
+		public DateTime? DataGeracao { get; set; }
+		public string Status { get; set; }
         
     }
 }
