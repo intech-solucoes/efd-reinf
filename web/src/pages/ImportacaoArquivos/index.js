@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from "axios";
 import { Row, Col, Box, Combo, Botao, InputFile, PainelErros } from '../../components';
-import { DominioService, UploadService } from "@intechprev/efdreinf-service";
+import { DominioService, UploadService, ImportacaoCsvService } from "@intechprev/efdreinf-service";
 
 const apiUrl = process.env.API_URL;
 
@@ -44,10 +44,23 @@ export default class ImportacaoArquivos extends Component {
         });
     }
 
+    importarCsv = async (oidArquivoUpload) => {
+        try {
+            var oidContribuinte = localStorage.getItem("contribuinte");
+            await ImportacaoCsvService.ImportarCsv(oidArquivoUpload, oidContribuinte);
+            this.buscarArquivosImportados();
+        } catch(err) {
+            if(err.response) 
+                alert(err.response.data);
+            else
+                console.error(err);
+        }
+    }
+
     buscarArquivosImportados = async () => {
         var oidUsuarioContribuinte = localStorage.getItem("oidUsuarioContribuinte");
         try { 
-            var arquivosImportacao = await UploadService.BuscarPorOidUsuarioContribuinteStatus(oidUsuarioContribuinte, this.state.situacao);
+            var arquivosImportacao = await UploadService.BuscarPorOidUsuarioContribuinte(oidUsuarioContribuinte);
             await this.setState({ arquivosImportacao: arquivosImportacao.data });
         } catch(err) {
             console.error(err);
@@ -137,8 +150,8 @@ export default class ImportacaoArquivos extends Component {
                     <a href="layouts/LayoutImportacao-R2010 - Retenção PREVIDENCIARIA.xlsx" download="LayoutImportacao-R2010 - Retenção PREVIDENCIARIA.xlsx"><h5>-Leiaute Importação - Registro R-2010</h5></a>
                     <br />
                     <h5>Manual de preenchimento:</h5>
-                    <a href="" download><h5>-Manual de preenchimento - Registro R-1070.pdf</h5></a>
-                    <a href="" download><h5>-Manual de preenchimento - Registro R-2010.pdf</h5></a>
+                    <a href=""><h5>-Manual de preenchimento - Registro R-1070.pdf</h5></a>
+                    <a href=""><h5>-Manual de preenchimento - Registro R-2010.pdf</h5></a>
                 </Box>
 
                 <Box titulo="Arquivo para Upload">
@@ -189,7 +202,7 @@ export default class ImportacaoArquivos extends Component {
                                         return (
                                             <tr key={index}>
                                                 <td>
-                                                    <Botao tipo={"light btn-sm"} clicar={() => console.log("")}>
+                                                    <Botao tipo={"light btn-sm"} clicar={() => this.importarCsv(arquivo.OID_ARQUIVO_UPLOAD)}>
                                                         <i className="fas fa-angle-right"></i>
                                                         <i className="fas fa-angle-right"></i>
                                                     </Botao>
