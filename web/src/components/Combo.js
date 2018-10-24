@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BotaoAjuda } from "../components";
+import { BotaoAjuda, Row, Col } from "../components";
 
 import { handleFieldChange } from "@intechprev/react-lib";
 
@@ -14,7 +14,8 @@ export default class Combo extends Component {
 
 	static defaultProps = {
 		padrao: "",
-		opcoes: []
+		opcoes: [],
+		textoVazio: "Selecione uma opção"
 	}
 
 	async componentDidMount() {
@@ -32,7 +33,7 @@ export default class Combo extends Component {
 
 		if(this.props.obrigatorio)
 		{
-			if(this.props.valor === "")
+			if(this.props.valor === "" || this.props.valorSegundoCombo === "")
 				this.erros.push(`Campo "${this.props.label}" obrigatório.`);
 		}
 
@@ -58,14 +59,13 @@ export default class Combo extends Component {
 			comboCol = this.props.comboCol;
 
         return (
-			<div className="form-group row">
+			<Row className="form-group row">
 				{this.props.label && 
-					<div className={labelCol + " col-md-12 text-lg-right col-form-label"}>
-						<b><label htmlFor={this.props.nome}>{this.props.label}</label></b>
-						{this.props.obrigatorio && " *"}
-					</div>
+					<Col className={labelCol + " col-md-12 text-lg-right col-form-label"}>
+						<b><label htmlFor={this.props.nome}>{this.props.label}{this.props.obrigatorio && " *"}</label></b>
+					</Col>
 				}
-				<div className={comboCol}>
+				<Col className={comboCol}>
 					<select id={this.props.nome} name={this.props.nome} className="form-control" onChange={this.onChange} value={this.props.valor} disabled={this.props.desabilitado}>
 						{this.props.textoVazio &&
 							<option value="">{this.props.textoVazio}</option>
@@ -78,7 +78,24 @@ export default class Combo extends Component {
 							})
 						}
                     </select>
-				</div>
+				</Col>
+
+				{this.props.segundoCombo &&
+					<Col className={comboCol}>
+						<select id={this.props.segundoCombo} name={this.props.segundoCombo} className="form-control" onChange={async (e) => await handleFieldChange(this.props.contexto, e)} value={this.props.valorSegundoCombo} disabled={this.props.SegundoComboDesabilitado}>
+							{this.props.textoVazio &&
+								<option value="">{this.props.textoVazio}</option>
+							}
+							{
+								this.props.opcoesSegundoCombo.map((opcao, index) => {
+									return (
+										<option key={index} value={opcao.SIG_DOMINIO}>{opcao.NOM_DOMINIO}</option>
+									)
+								})
+							}
+						</select>
+					</Col>
+				}
 
 				{this.props.botaoAjuda && 
 					<BotaoAjuda textoModal={this.props.botaoAjuda} titulo={this.props.label} />
@@ -88,7 +105,7 @@ export default class Combo extends Component {
 					<div className="col-1">
 					</div>
 				}
-			</div>
+			</Row>
         )
     }
 
