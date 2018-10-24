@@ -406,9 +406,7 @@ export default class GeracaoXml extends Component {
                         {this.state.visibilidade.referencia &&
                             <Combo contexto={this} label={"Referência"} ref={ (input) => this.listaCampos[5] = input } 
                                    nome="referenciaAno" valor={this.state.referenciaAno} obrigatorio={true} comboCol="col-3"
-                                   opcoes={[{NOM_DOMINIO: "2018", SIG_DOMINIO: "2018"}]}  
-                                   segundoCombo="referenciaMes" valorSegundoCombo={this.state.referenciaMes} 
-                                   opcoesSegundoCombo={[{NOM_DOMINIO: "05", SIG_DOMINIO: "05"}, {NOM_DOMINIO: "06", SIG_DOMINIO: "06"}]} />
+                                   opcoes={[{NOM_DOMINIO: "2018", SIG_DOMINIO: "2018"}]} />
                         }
                         <br />
                         {this.state.visibilidade.contratacaoServicos &&
@@ -454,11 +452,18 @@ export default class GeracaoXml extends Component {
                         }
 
                         {this.state.visibilidade.competencia && 
-                            <Combo contexto={this} label={"Competência a partir da qual não houve movimento, cuja situação perdura até a competência atual."} ref={ (input) => this.listaCampos[5] = input } 
-                                   nome="competenciaAno" valor={this.state.competenciaAno} comboCol="col-3" onChange={() => this.carregaCompetenciaMes()}
-                                   opcoes={this.state.combos.competenciaAno} labelCol="col-lg-4"
-                                   segundoCombo="competenciaMes" valorSegundoCombo={this.state.competenciaMes} 
-                                   opcoesSegundoCombo={this.state.combos.competenciaMes} />
+                            <Row>
+                                <Col>
+                                    <Combo contexto={this} label={"Competência a partir da qual não houve movimento, cuja situação perdura até a competência atual."} ref={ (input) => this.listaCampos[5] = input } 
+                                        nome="competenciaAno" valor={this.state.competenciaAno} comboCol="col-3" onChange={() => this.carregaCompetenciaMes()}
+                                        opcoes={this.state.combos.competenciaAno} labelCol="col-lg-4" />
+                                </Col>
+                                <Col>
+                                    <Combo contexto={this}
+                                           nome="competenciaMes" valor={this.state.competenciaMes} comboCol="col-3"
+                                           opcoes={this.state.combos.competenciaMes} labelCol="col-lg-4" />
+                                </Col>
+                            </Row>
                         }
 
                         <PainelErros erros={this.state.erros} />

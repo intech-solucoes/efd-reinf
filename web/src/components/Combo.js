@@ -33,7 +33,7 @@ export default class Combo extends Component {
 
 		if(this.props.obrigatorio)
 		{
-			if(this.props.valor === "" || this.props.valorSegundoCombo === "")
+			if(this.props.valor === "")
 				this.erros.push(`Campo "${this.props.label}" obrigatório.`);
 		}
 
@@ -79,23 +79,6 @@ export default class Combo extends Component {
 						}
                     </select>
 				</Col>
-
-				{this.props.segundoCombo &&
-					<Col className={comboCol}>
-						<select id={this.props.segundoCombo} name={this.props.segundoCombo} className="form-control" onChange={async (e) => await handleFieldChange(this.props.contexto, e)} value={this.props.valorSegundoCombo} disabled={this.props.SegundoComboDesabilitado}>
-							{this.props.textoVazio &&
-								<option value="">{this.props.textoVazio}</option>
-							}
-							{
-								this.props.opcoesSegundoCombo.map((opcao, index) => {
-									return (
-										<option key={index} value={opcao.SIG_DOMINIO}>{opcao.NOM_DOMINIO}</option>
-									)
-								})
-							}
-						</select>
-					</Col>
-				}
 
 				{this.props.botaoAjuda && 
 					<BotaoAjuda textoModal={this.props.botaoAjuda} titulo={this.props.label} />
