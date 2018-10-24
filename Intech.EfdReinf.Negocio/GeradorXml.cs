@@ -336,19 +336,7 @@ namespace Intech.EfdReinf.Negocio
             // Busca contribuinte
             var contribuinte = new ContribuinteProxy().BuscarPorChave(oidContribuinte);
             var usuarioContribuinte = new UsuarioContribuinteProxy().BuscarPorOidUsuarioOidContribuinte(oidUsuario, oidContribuinte);
-            var dtaPeriodoApuracao = new DateTime(ano, mes, 1);
-
-            var r2098Proxy = new R2098Proxy();
-            var oidR2098 = r2098Proxy.Inserir(new R2098Entidade
-            {
-                OID_CONTRIBUINTE = oidContribuinte,
-                OID_USUARIO_ENVIO = oidUsuario,
-                DTA_PERIODO_APURACAO = dtaPeriodoApuracao,
-                IND_AMBIENTE_ENVIO = tipoAmbiente,
-                NUM_RECIBO_ENVIO = null,
-                DTA_ENVIO = null,
-                IND_SITUACAO_PROCESSAMENTO_ = DMN_SITUACAO_PROCESSAMENTO.PROCESSADO
-            });
+            var dtaPeriodoApuracao = new DateTime(ano, mes, 1);                       
 
             // Monta nome do arquivo
             var nomeArquivoZip = "XML_R2098_" + Guid.NewGuid().ToString() + ".intech";
@@ -363,6 +351,20 @@ namespace Intech.EfdReinf.Negocio
                 NOM_ARQUIVO_ORIGINAL = nomeArquivoZip,
                 NOM_DIRETORIO_LOCAL = "Upload",
                 OID_USUARIO_CONTRIBUINTE = usuarioContribuinte.OID_USUARIO_CONTRIBUINTE
+            });
+
+            //Inserinfo na R2098
+            var r2098Proxy = new R2098Proxy();
+            var oidR2098 = r2098Proxy.Inserir(new R2098Entidade
+            {
+                OID_CONTRIBUINTE = oidContribuinte,
+                OID_USUARIO_ENVIO = oidUsuario,
+                DTA_PERIODO_APURACAO = dtaPeriodoApuracao,
+                IND_AMBIENTE_ENVIO = tipoAmbiente,
+                NUM_RECIBO_ENVIO = null,
+                DTA_ENVIO = null,
+                IND_SITUACAO_PROCESSAMENTO_ = DMN_SITUACAO_PROCESSAMENTO.PROCESSADO,
+                OID_ARQUIVO_UPLOAD = oidArquivoUpload
             });
 
             var id = "ID" + oidR2098.ToString().PadLeft(18, '0');
