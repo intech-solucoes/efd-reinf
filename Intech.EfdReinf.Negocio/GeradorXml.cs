@@ -24,16 +24,7 @@ namespace Intech.EfdReinf.Negocio
             // Busca contribuinte
             var contribuinte = new ContribuinteProxy().BuscarPorChave(oidContribuinte);
             var usuarioContribuinte = new UsuarioContribuinteProxy().BuscarPorOidUsuarioOidContribuinte(oidUsuario, oidContribuinte);
-
-            // Cria novo ContribuinteEnvio
-            var contribuinteEnvioProxy = new ContribuinteEnvioProxy();
-            contribuinteEnvioProxy.Inserir(new ContribuinteEnvioEntidade
-            {
-                OID_CONTRIBUINTE = oidContribuinte,
-                OID_USUARIO_ENVIO = oidUsuario,
-                IND_TIPO_AMBIENTE = tipoAmbiente
-            });
-
+                       
             // Monta nome do arquivo
             var nomeArquivoZip = "XML_R1000_" + Guid.NewGuid().ToString() + ".intech";
             var arquivoUploadProxy = new ArquivoUploadProxy();
@@ -47,6 +38,16 @@ namespace Intech.EfdReinf.Negocio
                 NOM_ARQUIVO_ORIGINAL = nomeArquivoZip,
                 NOM_DIRETORIO_LOCAL = "Upload",
                 OID_USUARIO_CONTRIBUINTE = usuarioContribuinte.OID_USUARIO_CONTRIBUINTE
+            });
+
+            // Cria novo ContribuinteEnvio
+            var contribuinteEnvioProxy = new ContribuinteEnvioProxy();
+            contribuinteEnvioProxy.Inserir(new ContribuinteEnvioEntidade
+            {
+                OID_CONTRIBUINTE = oidContribuinte,
+                OID_USUARIO_ENVIO = oidUsuario,
+                IND_TIPO_AMBIENTE = tipoAmbiente,
+                OID_ARQUIVO_UPLOAD = oidArquivoUpload
             });
 
             var id = "ID" + oidArquivoUpload.ToString().PadLeft(18, '0');
