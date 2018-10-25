@@ -65,11 +65,15 @@ export default class Combo extends Component {
 						<b><label htmlFor={this.props.nome}>{this.props.label}{this.props.obrigatorio && " *"}</label></b>
 					</Col>
 				}
+
 				<Col className={comboCol}>
-					<select id={this.props.nome} name={this.props.nome} className="form-control" onChange={this.onChange} value={this.props.valor} disabled={this.props.desabilitado}>
+					<select id={this.props.nome} name={this.props.nome} className="form-control" onChange={this.onChange} 
+						    value={this.props.valor} disabled={this.props.desabilitado}>
+
 						{this.props.textoVazio &&
 							<option value="">{this.props.textoVazio}</option>
 						}
+
 						{
 							this.props.opcoes.map((opcao, index) => {
 								return (
@@ -77,6 +81,7 @@ export default class Combo extends Component {
 								)
 							})
 						}
+						
                     </select>
 				</Col>
 

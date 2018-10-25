@@ -151,9 +151,12 @@ export default class GeracaoXml extends Component {
         }
 
         if(this.state.erros.length === 0) {
-            this.state.r1000 ? await this.validarR1000() : "";
-            this.state.r2010 ? await this.validarR2010() : "";
-            this.state.r2099 ? await this.validarR2099() : "";
+            if(this.state.r1000)
+                await this.validarR1000();
+            if(this.state.r2010)
+                await this.validarR2010();
+            if(this.state.r2099)
+                await this.validarR2099();
         }
     }
 
