@@ -8,6 +8,7 @@ import MinhaConta from "./MinhaConta";
 import AlterarSenha from "./MinhaConta/AlterarSenha";
 import GeracaoXml from "./GeracaoXml";
 import ImportacaoArquivos from "./ImportacaoArquivos";
+import EditarContribuinte from "./EditarContribuinte";
 
 export {
     Login,
@@ -19,5 +20,6 @@ export {
     MinhaConta,
     AlterarSenha,
     GeracaoXml,
-    ImportacaoArquivos
+    ImportacaoArquivos,
+    EditarContribuinte
 }
