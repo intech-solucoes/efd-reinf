@@ -25,8 +25,8 @@ namespace Intech.EfdReinf.Entidades
 		public string IND_SITUACAO_PROCESSAMENTO { get; set; }
 		public string IND_PAGAMENTOS_DIVERSOS { get; set; }
 		public decimal OID_ARQUIVO_UPLOAD { get; set; }
-		public DateTime? DataGeracao { get; set; }
-		public string Status { get; set; }
+		[Write(false)] public DateTime? DTA_UPLOAD { get; set; }
+		[Write(false)] public string IND_STATUS { get; set; }
         
     }
 }
