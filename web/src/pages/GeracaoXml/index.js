@@ -134,7 +134,7 @@ export default class GeracaoXml extends Component {
     buscarArquivosGerados = async () => { 
         // Busca arquivos gerados pelo contribuinte logado.
         var arquivosGerados = await GeracaoXmlService.BuscarArquivosGeradosPorOidContribuinte(this.oidContribuinte);
-        this.setState({ arquivosGerados: arquivosGerados });
+        await this.setState({ arquivosGerados: arquivosGerados.data });
     }
     
     gerar = async () => { 
