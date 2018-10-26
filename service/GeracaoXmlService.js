@@ -5,6 +5,10 @@ class GeracaoXmlService extends BaseService {
         return this.CriarRequisicao("GET", `/geracaoXml/gerarR1000/${oidContribuinte}/${tipoAmbiente}`);
     }
 
+    GerarR1070(oidContribuinte, tipoAmbiente) {
+        return this.CriarRequisicao("GET", `/geracaoXml/gerarR1070/${oidContribuinte}/${tipoAmbiente}`);
+    }
+
     GerarR2010(oidContribuinte, tipoOperacao, tipoAmbiente, dtaInicial, dtaFinal) {
         return this.CriarRequisicao("GET", `/geracaoXml/gerarR2010/${oidContribuinte}/${tipoOperacao}/${tipoAmbiente}/${dtaInicial}/${dtaFinal}`);
     }

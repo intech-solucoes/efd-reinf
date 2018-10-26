@@ -153,8 +153,12 @@ export default class GeracaoXml extends Component {
         if(this.state.erros.length === 0) {
             if(this.state.r1000)
                 await this.validarR1000();
+            if(this.state.r1070)
+                await this.validarR1070();
             if(this.state.r2010)
                 await this.validarR2010();
+            if(this.state.r2098)
+                await this.validarR2098();
             if(this.state.r2099)
                 await this.validarR2099();
         }
@@ -269,11 +273,24 @@ export default class GeracaoXml extends Component {
 
     validarR1000 = async () => { 
         try {
-            await GeracaoXmlService.GerarR1000(localStorage.getItem("contribuinte"), this.state.ambienteEnvio);
+            await GeracaoXmlService.GerarR1000(this.oidContribuinte, this.state.ambienteEnvio);
             alert("R-1000 Gerado com sucesso!");
             this.buscarArquivosGerados();
         } catch(err) {
             console.error(err);
+        }
+    }
+
+    validarR1070 = async () => { 
+        try {
+            await GeracaoXmlService.GerarR1070(this.oidContribuinte, this.state.ambienteEnvio);
+            alert("R-1070 Gerado com sucesso!");
+            this.buscarArquivosGerados();
+        } catch(err) {
+            if(err.response)
+                console.log(err.response.data);
+            else
+                console.error(err);
         }
     }
 
@@ -308,6 +325,19 @@ export default class GeracaoXml extends Component {
         
     }
     
+    validarR2098 = async () => {
+        try {
+            await GeracaoXmlService.GerarR2098(this.oidContribuinte, this.state.ambienteEnvio, this.state.referenciaAno, this.state.referenciaMes);
+            alert("R-2098 Gerado com sucesso!");
+            this.buscarArquivosGerados();
+        } catch(err) {
+            if(err.response)
+                console.log(err.response.data);
+            else
+                console.error(err);
+        }
+    }
+
     validarR2099 = async () => {
         var periodo = "01/" + this.state.referenciaMes + "/" + this.state.referenciaAno;
         var competencia = "01/" + this.state.competenciaMes + "/" + this.state.competenciaAno;
@@ -360,26 +390,26 @@ export default class GeracaoXml extends Component {
                         {this.state.visibilidade.tipoOperacao &&
                             <Combo contexto={this} label={"Tipo de operação"} ref={ (input) => this.listaCampos[0] = input } 
                                    nome="tipoOperacao" valor={this.state.tipoOperacao} obrigatorio={true} 
-                                   opcoes={this.state.combos.tipoOperacao.data}  />
+                                   opcoes={this.state.combos.tipoOperacao.data} />
                         }
 
                         {this.state.visibilidade.ambienteEnvio && 
                             <Combo contexto={this} label={"Ambiente para envio"} ref={ (input) => this.listaCampos[1] = input } 
                                    nome="ambienteEnvio" valor={this.state.ambienteEnvio} obrigatorio={true}
-                                   opcoes={this.state.combos.ambienteEnvio.data}  />
+                                   opcoes={this.state.combos.ambienteEnvio.data} />
                         }
 
                         {this.state.visibilidade.contribuinte &&
                             <CampoTexto contexto={this} ref={ (input) => this.listaCampos[2] = input }
                                         label={"Contribuinte"} nome={"contribuinte"} tipo={"text"} 
                                         placeholder={"Contribuinte"} valor={this.state.contribuinte}
-                                        obrigatorio={true} desabilitado={true}  />
+                                        obrigatorio={true} desabilitado={true} />
                         }
 
                         {this.state.visibilidade.usuarioResponsavel &&
                             <Combo contexto={this} label={"Usuário Responsável"} ref={ (input) => this.listaCampos[3] = input } 
                                    nome="usuarioResponsavel" valor={this.state.usuarioResponsavel} obrigatorio={true}
-                                   opcoes={this.state.combos.usuarioResponsavel}  />
+                                   opcoes={this.state.combos.usuarioResponsavel} />
                         }
 
                         {this.state.visibilidade.data &&
@@ -407,48 +437,58 @@ export default class GeracaoXml extends Component {
                         }
 
                         {this.state.visibilidade.referencia &&
-                            <Combo contexto={this} label={"Referência"} ref={ (input) => this.listaCampos[5] = input } 
-                                   nome="referenciaAno" valor={this.state.referenciaAno} obrigatorio={true} comboCol="col-3"
-                                   opcoes={[{NOM_DOMINIO: "2018", SIG_DOMINIO: "2018"}]} />
+                            <Row>
+                                <Col>
+                                    <Combo contexto={this} label={"Referência"} ref={ (input) => this.listaCampos[5] = input } 
+                                           nome="referenciaAno" valor={this.state.referenciaAno} obrigatorio={true} comboCol="col-3"
+                                           opcoes={[{NOM_DOMINIO: "2018", SIG_DOMINIO: "2018"}]} />
+                                </Col>
+    
+                                <Col>
+                                    <Combo contexto={this} ref={ (input) => this.listaCampos[6] = input } 
+                                           nome="referenciaMes" valor={this.state.referenciaMes} obrigatorio={true} comboCol="col-3"
+                                           opcoes={[{NOM_DOMINIO: "6", SIG_DOMINIO: "6"}]} />
+                                </Col>
+                            </Row>
                         }
                         <br />
                         {this.state.visibilidade.contratacaoServicos &&
-                            <Combo contexto={this} ref={ (input) => this.listaCampos[6] = input } labelCol="col-lg-4"
+                            <Combo contexto={this} ref={ (input) => this.listaCampos[7] = input } labelCol="col-lg-4"
                                     label={"Contratou serviços sujeitos à retenção de contribuição previdenciária?"}
                                     nome="contratacaoServicos" valor={this.state.contratacaoServicos} obrigatorio={true}
                                     opcoes={this.state.combos.dominioSimNao.data} />
                         }
 
                         {this.state.visibilidade.prestacaoServicos &&
-                            <Combo contexto={this} ref={ (input) => this.listaCampos[7] = input } labelCol="col-lg-4"
+                            <Combo contexto={this} ref={ (input) => this.listaCampos[8] = input } labelCol="col-lg-4"
                                     label={"Prestou serviços sujeitos à retenção de contribuição previdenciária?"} 
                                     nome="prestacaoServicos" valor={this.state.prestacaoServicos} obrigatorio={true}
                                     opcoes={this.state.combos.dominioSimNao.data} />
                         }
 
                         {this.state.visibilidade.associacaoDesportiva &&
-                            <Combo contexto={this} ref={ (input) => this.listaCampos[8] = input } labelCol="col-lg-4"
+                            <Combo contexto={this} ref={ (input) => this.listaCampos[9] = input } labelCol="col-lg-4"
                                     label={"A associação desportiva que mantém equipe de futebol profissional, possui informações sobre recursos recebidos?"}
                                     nome="associacaoDesportiva" valor={this.state.associacaoDesportiva} obrigatorio={true}
                                     opcoes={this.state.combos.dominioSimNao.data} />
                         }
 
                         {this.state.visibilidade.repasseAssociacaoDesportiva &&
-                            <Combo contexto={this} ref={ (input) => this.listaCampos[9] = input } labelCol="col-lg-4"
+                            <Combo contexto={this} ref={ (input) => this.listaCampos[10] = input } labelCol="col-lg-4"
                                     label={"Possui informações sobre repasses efetuados à associação desportiva que mantém equipe de futebol profissional?"}
                                     nome="repasseAssociacaoDesportiva" valor={this.state.repasseAssociacaoDesportiva} obrigatorio={true}
                                     opcoes={this.state.combos.dominioSimNao.data} />
                         }
 
                         {this.state.visibilidade.producaoRural && 
-                            <Combo contexto={this} ref={ (input) => this.listaCampos[10] = input } labelCol="col-lg-4"
+                            <Combo contexto={this} ref={ (input) => this.listaCampos[11] = input } labelCol="col-lg-4"
                                     label={"O produtor rural PJ/Agroindústria possui informações de comercialização de produção?"} 
                                     nome="producaoRural" valor={this.state.producaoRural} obrigatorio={true}
                                     opcoes={this.state.combos.dominioSimNao.data} />
                         }
 
                         {this.state.visibilidade.pagamentosDiversos &&
-                            <Combo contexto={this} ref={ (input) => this.listaCampos[11] = input } labelCol="col-lg-4"
+                            <Combo contexto={this} ref={ (input) => this.listaCampos[12] = input } labelCol="col-lg-4"
                                    label={"Possui informações de pagamentos diversos no período de apuração?"}
                                    nome="pagamentosDiversos" valor={this.state.pagamentosDiversos} obrigatorio={true}
                                    opcoes={this.state.combos.dominioSimNao.data} /> 
