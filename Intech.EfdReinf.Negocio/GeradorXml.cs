@@ -19,7 +19,7 @@ namespace Intech.EfdReinf.Negocio
     {
         #region R-1000
 
-        public void GerarR1000(decimal oidUsuario, decimal oidContribuinte, string tipoAmbiente, string baseCaminhoArquivo)
+        public void GerarR1000(decimal oidUsuario, decimal oidContribuinte, string tipoOperacao, string tipoAmbiente, string baseCaminhoArquivo)
         {
             // Busca contribuinte
             var contribuinte = new ContribuinteProxy().BuscarPorChave(oidContribuinte);
@@ -72,6 +72,7 @@ namespace Intech.EfdReinf.Negocio
             {
                 id,
                 tipoAmbiente,
+                abertura_tag_operacao = tipoOperacao == DMN_OPERACAO_REGISTRO.INCLUSAO ? "<inclusao>" : tipoOperacao == DMN_OPERACAO_REGISTRO.ALTERACAO ? "<alteracao>" : "<exclusao>",
                 versao = Assembly.GetExecutingAssembly().GetName().Version.ToString(3),
                 ind_tipo_inscricao = contribuinte.IND_TIPO_INSCRICAO,
                 cod_cnpj_cpf = contribuinte.COD_CNPJ_CPF,
@@ -87,7 +88,8 @@ namespace Intech.EfdReinf.Negocio
                 cod_fone_fixo_contato = contribuinte.COD_FONE_FIXO_CONTATO,
                 txt_email_contato = contribuinte.TXT_EMAIL_CONTATO,
                 ind_efr = contribuinte.IND_EFR,
-                cod_cnpj_efr = contribuinte.COD_CNPJ_EFR
+                cod_cnpj_efr = contribuinte.COD_CNPJ_EFR,
+                fechamento_tag_operacao = tipoOperacao == DMN_OPERACAO_REGISTRO.INCLUSAO ? "</inclusao>" : tipoOperacao == DMN_OPERACAO_REGISTRO.ALTERACAO ? "</alteracao>" : "</exclusao>"
             });
 
             var caminhoArquivo = GerarArquivo("R1000_", baseCaminhoArquivo, xmlR1000);

@@ -145,16 +145,16 @@ namespace Intech.EfdReinf.API.Controllers
             }
         }
 
-        [HttpGet("gerarR1000/{oidContribuinte}/{tipoAmbiente}")]
+        [HttpGet("gerarR1000/{oidContribuinte}/{oidUsuario}/{tipoOperacao}/{tipoAmbiente}")]
         [Authorize("Bearer")]
-        public ActionResult GerarR1000(decimal oidContribuinte, string tipoAmbiente)
+        public ActionResult GerarR1000(decimal oidContribuinte, decimal oidUsuario, string tipoOperacao, string tipoAmbiente)
         {
             try
             {
                 string webRootPath = HostingEnvironment.ContentRootPath;
                 string newPath = Path.Combine(webRootPath, _folderName);
 
-                new GeradorXml().GerarR1000(OidUsuario, oidContribuinte, tipoAmbiente, newPath);
+                new GeradorXml().GerarR1000(oidUsuario, oidContribuinte, tipoOperacao, tipoAmbiente, newPath);
 
                 return Ok();
             }
