@@ -71,9 +71,9 @@ namespace Intech.EfdReinf.API.Controllers
                     listaArquivos.Add(new ArquivoGerado
                     {
                         Tipo = "R-1000",
-                        DataGeracao = item.DataGeracao.Value,
+                        DataGeracao = item.DTA_UPLOAD.Value,
                         Ambiente = item.IND_TIPO_AMBIENTE == DMN_TIPO_AMBIENTE_EFD.PRODUCAO ? "Produção" : "Pré-Produção",
-                        Status = item.Status == DMN_STATUS_EFD_UPLOAD.PROCESSADO ? "Processado" : "Gerado",
+                        Status = item.IND_STATUS == DMN_STATUS_EFD_UPLOAD.PROCESSADO ? "Processado" : "Gerado",
                         Usuario = new UsuarioProxy().BuscarPorChave(item.OID_USUARIO_ENVIO).NOM_USUARIO,
                         OidArquivoUpload = item.OID_ARQUIVO_UPLOAD
                     });
@@ -85,9 +85,9 @@ namespace Intech.EfdReinf.API.Controllers
                     listaArquivos.Add(new ArquivoGerado
                     {
                         Tipo = "R-1070",
-                        DataGeracao = item.DataGeracao.Value,
+                        DataGeracao = item.DTA_UPLOAD.Value,
                         Ambiente = item.IND_AMBIENTE_ENVIO == DMN_TIPO_AMBIENTE_EFD.PRODUCAO ? "Produção" : "Pré-Produção",
-                        Status = item.Status == DMN_STATUS_EFD_UPLOAD.PROCESSADO ? "Processado" : "Gerado",
+                        Status = item.IND_STATUS == DMN_STATUS_EFD_UPLOAD.PROCESSADO ? "Processado" : "Gerado",
                         Usuario = new UsuarioProxy().BuscarPorChave(item.OID_USUARIO_ENVIO).NOM_USUARIO,
                         OidArquivoUpload = item.OID_ARQUIVO_UPLOAD
                     });
@@ -99,9 +99,9 @@ namespace Intech.EfdReinf.API.Controllers
                     listaArquivos.Add(new ArquivoGerado
                     {
                         Tipo = "R-2010",
-                        DataGeracao = item.DataGeracao.Value,
+                        DataGeracao = item.DTA_UPLOAD.Value,
                         Ambiente = item.IND_AMBIENTE_ENVIO == DMN_TIPO_AMBIENTE_EFD.PRODUCAO ? "Produção" : "Pré-Produção",
-                        Status = item.Status == DMN_STATUS_EFD_UPLOAD.PROCESSADO ? "Processado" : "Gerado",
+                        Status = item.IND_STATUS == DMN_STATUS_EFD_UPLOAD.PROCESSADO ? "Processado" : "Gerado",
                         Usuario = new UsuarioProxy().BuscarPorChave(item.OID_USUARIO_ENVIO).NOM_USUARIO,
                         OidArquivoUpload = item.OID_ARQUIVO_UPLOAD
                     });
@@ -113,9 +113,9 @@ namespace Intech.EfdReinf.API.Controllers
                     listaArquivos.Add(new ArquivoGerado
                     {
                         Tipo = "R-2098",
-                        DataGeracao = item.DataGeracao.Value,
+                        DataGeracao = item.DTA_UPLOAD.Value,
                         Ambiente = item.IND_AMBIENTE_ENVIO == DMN_TIPO_AMBIENTE_EFD.PRODUCAO ? "Produção" : "Pré-Produção",
-                        Status = item.Status == DMN_STATUS_EFD_UPLOAD.PROCESSADO ? "Processado" : "Gerado",
+                        Status = item.IND_STATUS == DMN_STATUS_EFD_UPLOAD.PROCESSADO ? "Processado" : "Gerado",
                         Usuario = new UsuarioProxy().BuscarPorChave(item.OID_USUARIO_ENVIO).NOM_USUARIO,
                         OidArquivoUpload = item.OID_ARQUIVO_UPLOAD
                     });
@@ -127,9 +127,9 @@ namespace Intech.EfdReinf.API.Controllers
                     listaArquivos.Add(new ArquivoGerado
                     {
                         Tipo = "R-2099",
-                        DataGeracao = item.DataGeracao.Value,
+                        DataGeracao = item.DTA_UPLOAD.Value,
                         Ambiente = item.IND_AMBIENTE_ENVIO == DMN_TIPO_AMBIENTE_EFD.PRODUCAO ? "Produção" : "Pré-Produção",
-                        Status = item.Status == DMN_STATUS_EFD_UPLOAD.PROCESSADO ? "Processado" : "Gerado",
+                        Status = item.IND_STATUS == DMN_STATUS_EFD_UPLOAD.PROCESSADO ? "Processado" : "Gerado",
                         Usuario = new UsuarioProxy().BuscarPorChave(item.OID_USUARIO_ENVIO).NOM_USUARIO,
                         OidArquivoUpload = item.OID_ARQUIVO_UPLOAD
                     });
