@@ -37,14 +37,21 @@
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)Scripts\ArquivoUpload\BuscarPorOidUsuarioContribuinte.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\ArquivoUpload\BuscarPorOidUsuarioContribuinteStatus.sql" />
-    <None Include="$(MSBuildThisFileDirectory)Scripts\ImportacaoCritica\ExcluirPorOidArquivoUpload.sql" />
+    <None Include="$(MSBuildThisFileDirectory)Scripts\ContribuinteEnvio\BuscarPorOidContribuinte.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\Contribuinte\BuscarPorCpfCnpj.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\Contribuinte\BuscarPorCpfCnpjOidUsuario.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\Contribuinte\BuscarPorOidUsuario.sql" />
+    <None Include="$(MSBuildThisFileDirectory)Scripts\ImportacaoCritica\ExcluirPorOidArquivoUpload.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\Dominio\BuscarPorCodigo.sql" />
+    <None Include="$(MSBuildThisFileDirectory)Scripts\R1070\BuscarPorOidContribuinte.sql" />
+    <None Include="$(MSBuildThisFileDirectory)Scripts\R2010\BuscarDatasEnviados.sql" />
+    <None Include="$(MSBuildThisFileDirectory)Scripts\R2010\BuscarPorOidContribuinte.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\R2010\BuscarPorOidContribuinteDtaInicioDtaFimIndSituacaoProcessamento.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\R2010\BuscarPorOidContribuinteMesEnvioAnoEnvio.sql" />
+    <None Include="$(MSBuildThisFileDirectory)Scripts\R2098\BuscarPorOidContribuinte.sql" />
+    <None Include="$(MSBuildThisFileDirectory)Scripts\R2099\BuscarPorOidContribuinte.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\R2099\BuscarPorOidContribuinteAnoMesIndSituacaoProcessamento.sql" />
+    <None Include="$(MSBuildThisFileDirectory)Scripts\UsuarioContribuinte\BuscarPorOidContribuinte.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\UsuarioContribuinte\BuscarPorOidUsuario.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\UsuarioContribuinte\BuscarPorOidUsuarioOidContribuinte.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\Usuario\BuscarPorEmail.sql" />

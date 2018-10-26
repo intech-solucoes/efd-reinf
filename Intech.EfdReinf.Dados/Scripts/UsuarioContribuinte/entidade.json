@@ -1,3 +1,15 @@
 ﻿{
-    "nomeTabela": "EFD_USUARIO_CONTRIBUINTE"
+    "nomeTabela": "EFD_USUARIO_CONTRIBUINTE",
+    "colunasExtras": [
+        {
+            "nome": "Usuario",
+            "tipo": "UsuarioEntidade",
+            "aceitaNulo": false
+        },
+        {
+            "nome": "Contribuinte",
+            "tipo": "ContribuinteEntidade",
+            "aceitaNulo": false
+        }
+    ]
 }

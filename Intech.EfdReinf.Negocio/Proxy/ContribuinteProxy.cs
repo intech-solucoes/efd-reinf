@@ -16,6 +16,15 @@ namespace Intech.EfdReinf.Negocio.Proxy
 {
     public class ContribuinteProxy : ContribuinteDAO
     {
+        public override ContribuinteEntidade BuscarPorChave(object chave)
+        {
+            var contribuinte = base.BuscarPorChave(chave);
+
+            contribuinte.Usuarios = new UsuarioContribuinteProxy().BuscarPorOidContribuinte((decimal)chave).ToList();
+
+            return contribuinte;
+        }
+
         /// <summary>
         /// Busca todos os contribuintes do usuário.
         /// Aplica máscara do CNPJ ao retornar.

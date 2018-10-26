@@ -1,12 +1,16 @@
 import { BaseService } from "@intechprev/react-lib";
 
 class Upload extends BaseService {
-    BuscarPorOidUsuarioContribuinte(oidContribuinte) {
-        return this.CriarRequisicao("GET", `/upload/${oidContribuinte}`);
+    BuscarPorOidArquivoUpload(oidArquivoUpload) { 
+        return this.CriarRequisicao("GET", `/upload/${oidArquivoUpload}`);
     }
 
-    BuscarPorOidUsuarioContribuinteStatus(oidContribuinte, status) {
-        return this.CriarRequisicao("GET", `/upload/${oidContribuinte}/${status}`);
+    BuscarPorOidUsuarioContribuinte(OidUsuarioContribuinte) {
+        return this.CriarRequisicao("GET", `/upload/porOidUsuarioContribuinte/${OidUsuarioContribuinte}`);
+    }
+
+    BuscarPorOidUsuarioContribuinteStatus(oidUsuarioContribuinte, status) {
+        return this.CriarRequisicao("GET", `/upload/porOidUsuarioContribuinte/${oidUsuarioContribuinte}/${status}`);
     }
 
     Relatorio(oidArquivoUpload) {

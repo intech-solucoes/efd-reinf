@@ -3,7 +3,7 @@ import { Botao, CampoTexto, Combo, Checkbox, Box, Col, Row, PainelErros } from '
 import { handleFieldChange } from "@intechprev/react-lib";
 import ArquivosGerados from './ArquivosGerados';
 
-import { DominioService, GeracaoXmlService } from '@intechprev/efdreinf-service';
+import { DominioService, GeracaoXmlService, ContribuinteService } from '@intechprev/efdreinf-service';
 
 export default class GeracaoXml extends Component {
     constructor(props) {
@@ -80,37 +80,41 @@ export default class GeracaoXml extends Component {
                 dominioSimNao: []
             },
 
-            arquivosGerados: [
-                {
-                    registro: "R-1000",
-                    dataGeracao: "30/09/2018 17:21:46",
-                    ambiente: "Produção",
-                    status: "Gerado",
-                    usuario: "Cleber"
-                },
-                {
-                    registro: "R-2010",
-                    dataGeracao: "20/09/2018 09:56:03",
-                    ambiente: "Pré-Produção",
-                    status: "Enviado",
-                    usuario: "Cleber"
-                }
-            ]
+            arquivosGerados: []
         }
 
         this.oidContribuinte = localStorage.getItem("contribuinte");
         this.visibilidade = this.state.visibilidade;
         this.combos = this.state.combos;
+        this.dataAtual = new Date();
     }
     
     componentDidMount = async () => {
         window.scrollTo(0, 0);
-        var nomeContribuinte = localStorage.getItem("nomeContribuinte");
-        this.setState({ contribuinte: nomeContribuinte });
-        this.combos.tipoOperacao = await DominioService.BuscarPorCodigo("DMN_OPER_REGISTRO");
-        this.combos.ambienteEnvio = await DominioService.BuscarPorCodigo("DMN_TIPO_AMBIENTE_EFD");
-        // Usuário responsável - buscar usuários vinculados ao contribuinte
-        this.combos.dominioSimNao = await DominioService.BuscarPorCodigo("DMN_SN");
+        
+        try {
+            // Busca valores para preenchimento dos campos e combos.
+            var nomeContribuinte = localStorage.getItem("nomeContribuinte");
+            this.setState({ contribuinte: nomeContribuinte });
+            this.combos.tipoOperacao = await DominioService.BuscarPorCodigo("DMN_OPER_REGISTRO");
+            this.combos.ambienteEnvio = await DominioService.BuscarPorCodigo("DMN_TIPO_AMBIENTE_EFD");
+            this.combos.dominioSimNao = await DominioService.BuscarPorCodigo("DMN_SN");
+    
+            // Busca usuários vinculados ao contribuinte.
+            var usuarios = await ContribuinteService.BuscarUsuariosPorOidContribuinte(this.oidContribuinte);
+            usuarios = usuarios.data.Usuarios;
+            var usuariosResponsaveis = [];
+            var usuario = {};
+            for(var i = 0; i < usuarios.length; i++) {
+                usuario = {SIG_DOMINIO: usuarios[i].Usuario.OID_USUARIO, NOM_DOMINIO: usuarios[i].Usuario.NOM_USUARIO};
+                usuariosResponsaveis.push(usuario);
+            }
+            this.combos.usuarioResponsavel = usuariosResponsaveis;
+    
+            this.buscarArquivosGerados();
+        } catch(err) {
+            console.error(err);
+        }
     }
 
     limparErros = async () => {
@@ -127,6 +131,12 @@ export default class GeracaoXml extends Component {
         });
     }
 
+    buscarArquivosGerados = async () => { 
+        // Busca arquivos gerados pelo contribuinte logado.
+        var arquivosGerados = await GeracaoXmlService.BuscarArquivosGeradosPorOidContribuinte(this.oidContribuinte);
+        await this.setState({ arquivosGerados: arquivosGerados.data });
+    }
+    
     gerar = async () => { 
         // Validações de campos obrigatórios.
         await this.limparErros();
@@ -141,9 +151,12 @@ export default class GeracaoXml extends Component {
         }
 
         if(this.state.erros.length === 0) {
-            this.state.r1000 ? await this.validarR1000() : "";
-            this.state.r2010 ? await this.validarR2010() : "";
-            this.state.r2099 ? await this.validarR2099() : "";
+            if(this.state.r1000)
+                await this.validarR1000();
+            if(this.state.r2010)
+                await this.validarR2010();
+            if(this.state.r2099)
+                await this.validarR2099();
         }
     }
 
@@ -163,12 +176,12 @@ export default class GeracaoXml extends Component {
     }
 
     onChangeR1000 = async (checkbox) => {
-        this.combos.tipoOperacao = await DominioService.BuscarPorCodigo("DMN_OPER_REGISTRO");
         this.onChange(checkbox);
         this.handleVisibilidade("tipoOperacao");
         this.handleVisibilidade("contribuinte");
         this.handleVisibilidade("usuarioResponsavel");
         this.handleVisibilidade("ambienteEnvio");
+        this.combos.tipoOperacao = await DominioService.BuscarPorCodigo("DMN_OPER_REGISTRO");
     }
 
     onChangeR1070 = async (checkbox) => {
@@ -177,11 +190,11 @@ export default class GeracaoXml extends Component {
     }
 
     onChangeR2010 = async (checkbox) => {
-        this.combos.tipoOperacao = await DominioService.BuscarPorCodigo("DMN_EFD_RETIFICADORA");
         this.onChange(checkbox);
         this.handleVisibilidade("tipoOperacao");
         this.handleVisibilidade("ambienteEnvio");
         this.handleVisibilidade("data");
+        this.combos.tipoOperacao = await DominioService.BuscarPorCodigo("DMN_EFD_RETIFICADORA");
     }
 
     onChangeR2098 = async (checkbox) => {
@@ -191,7 +204,7 @@ export default class GeracaoXml extends Component {
         this.carregaReferenciaR2098();
     }
 
-    onChangeR2099 = async (checkbox) => {
+    onChangeR2099 = (checkbox) => {
         this.onChange(checkbox);
         this.handleVisibilidade("ambienteEnvio");
         this.handleVisibilidade("referencia");
@@ -203,12 +216,13 @@ export default class GeracaoXml extends Component {
         this.handleVisibilidade("pagamentosDiversos");
         this.handleVisibilidade("competencia");
         this.carregaReferenciaR2099();
+        this.carregaCompetenciaAno();
     }
 
     handleVisibilidade = async (campo) => {
         this.visibilidade[campo] = !this.state.visibilidade[campo];
         if(campo !== "contribuinte")
-            await this.setState({ 
+            this.setState({ 
                 [campo]: "",
                 visibilidade: this.visibilidade
             });
@@ -224,10 +238,40 @@ export default class GeracaoXml extends Component {
 
     }
 
+    carregaCompetenciaAno = async () => { 
+        var anoAtual = this.dataAtual.getFullYear();
+        var comboCompetenciaAno = [];
+        var ano = {};
+        for(var i = 2000; i <= anoAtual; i++) {
+            ano = {SIG_DOMINIO: i, NOM_DOMINIO: i};
+            comboCompetenciaAno.push(ano);
+        }
+        this.combos.competenciaAno = comboCompetenciaAno;
+    }
+    
+    carregaCompetenciaMes = async () => { 
+        var anoAtual = this.dataAtual.getFullYear().toString();
+        var mesAtual = this.dataAtual.getMonth() + 1;
+        var comboCompetenciaMes = [];
+        var mes = {};
+
+        var qtdeMeses = 12;
+        if(this.state.competenciaAno === anoAtual)
+            qtdeMeses = mesAtual;
+
+        for(var i = 1; i <= qtdeMeses; i++) {
+            mes = {SIG_DOMINIO: i, NOM_DOMINIO: i};
+            comboCompetenciaMes.push(mes);
+        }
+        
+        this.combos.competenciaMes = comboCompetenciaMes;
+    }
+
     validarR1000 = async () => { 
         try {
             await GeracaoXmlService.GerarR1000(localStorage.getItem("contribuinte"), this.state.ambienteEnvio);
             alert("R-1000 Gerado com sucesso!");
+            this.buscarArquivosGerados();
         } catch(err) {
             console.error(err);
         }
@@ -253,6 +297,7 @@ export default class GeracaoXml extends Component {
             try {
                 await GeracaoXmlService.GerarR2010(this.oidContribuinte, this.state.tipoOperacao, this.state.ambienteEnvio, dataInicial, dataFinal);
                 alert("R2010 Gerado com sucesso!");
+                this.buscarArquivosGerados();
             } catch(err) {
                 if(err.response)
                     await this.adicionarErro(err.response.data);
@@ -282,6 +327,7 @@ export default class GeracaoXml extends Component {
         try { 
             await GeracaoXmlService.GerarR2099(this.oidContribuinte, r2099);
             alert("R2099 Gerado com sucesso!");
+            this.buscarArquivosGerados();
         } catch(err) {
             console.error(err);
         }
@@ -333,7 +379,7 @@ export default class GeracaoXml extends Component {
                         {this.state.visibilidade.usuarioResponsavel &&
                             <Combo contexto={this} label={"Usuário Responsável"} ref={ (input) => this.listaCampos[3] = input } 
                                    nome="usuarioResponsavel" valor={this.state.usuarioResponsavel} obrigatorio={true}
-                                   opcoes={[{NOM_DOMINIO: "Usuário 1", SIG_DOMINIO: 1}]}  />
+                                   opcoes={this.state.combos.usuarioResponsavel}  />
                         }
 
                         {this.state.visibilidade.data &&
@@ -363,9 +409,7 @@ export default class GeracaoXml extends Component {
                         {this.state.visibilidade.referencia &&
                             <Combo contexto={this} label={"Referência"} ref={ (input) => this.listaCampos[5] = input } 
                                    nome="referenciaAno" valor={this.state.referenciaAno} obrigatorio={true} comboCol="col-3"
-                                   opcoes={[{NOM_DOMINIO: "2018", SIG_DOMINIO: "2018"}]}  
-                                   segundoCombo="referenciaMes" valorSegundoCombo={this.state.referenciaMes} 
-                                   opcoesSegundoCombo={[{NOM_DOMINIO: "05", SIG_DOMINIO: "05"}, {NOM_DOMINIO: "06", SIG_DOMINIO: "06"}]} />
+                                   opcoes={[{NOM_DOMINIO: "2018", SIG_DOMINIO: "2018"}]} />
                         }
                         <br />
                         {this.state.visibilidade.contratacaoServicos &&
@@ -411,11 +455,18 @@ export default class GeracaoXml extends Component {
                         }
 
                         {this.state.visibilidade.competencia && 
-                            <Combo contexto={this} label={"Competência a partir da qual não houve movimento, cuja situação perdura até a competência atual."} ref={ (input) => this.listaCampos[5] = input } 
-                                   nome="competenciaAno" valor={this.state.competenciaAno} comboCol="col-3"
-                                   opcoes={[{NOM_DOMINIO: "2018", SIG_DOMINIO: "2018"}]} labelCol="col-lg-4"
-                                   segundoCombo="competenciaMes" valorSegundoCombo={this.state.competenciaMes} 
-                                   opcoesSegundoCombo={[{NOM_DOMINIO: "05", SIG_DOMINIO: "05"}, {NOM_DOMINIO: "06", SIG_DOMINIO: "06"}]} />
+                            <Row>
+                                <Col>
+                                    <Combo contexto={this} label={"Competência a partir da qual não houve movimento, cuja situação perdura até a competência atual."} ref={ (input) => this.listaCampos[5] = input } 
+                                        nome="competenciaAno" valor={this.state.competenciaAno} comboCol="col-3" onChange={() => this.carregaCompetenciaMes()}
+                                        opcoes={this.state.combos.competenciaAno} labelCol="col-lg-4" />
+                                </Col>
+                                <Col>
+                                    <Combo contexto={this}
+                                           nome="competenciaMes" valor={this.state.competenciaMes} comboCol="col-3"
+                                           opcoes={this.state.combos.competenciaMes} labelCol="col-lg-4" />
+                                </Col>
+                            </Row>
                         }
 
                         <PainelErros erros={this.state.erros} />

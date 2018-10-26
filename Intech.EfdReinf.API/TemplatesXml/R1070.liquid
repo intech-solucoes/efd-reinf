@@ -1,54 +1,42 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
-<Reinf xmlns="http://www.reinf.esocial.gov.br/schemas/envioLoteEventos/v1_03_02" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <loteEventos>
-        <evento id="{{id}}">
-            <Reinf xmlns="http://www.reinf.esocial.gov.br/schemas/evtInfoContribuinte/v1_03_02">
-                <evtInfoContri id="{{id}}">
-                    <ideEvento>
-                        <tpAmb>{{tipoAmbiente}}</tpAmb>
-                        <procEmi>1</procEmi>
-                        <verProc>{{versao}}</verProc>
-                    </ideEvento>
-                    <ideContri>
-                        <tpInsc>{{ind_tipo_inscricao}}</tpInsc>
-                        <nrInsc>{{cod_cnpj_cpf}}</nrInsc>
-                    </ideContri>
-                    <infoContri>
-                        <inclusao>
-                            <idePeriodo>
-                                <iniValid>{{dta_inicio_validade}}</iniValid>
-                                {{ if dta_fim_validade != null }}
-                                <fimValid>{{dta_fim_validade}}</fimValid>
-                                {{ end }}
-                            </idePeriodo>
-                            <infoCadastro>
-                                <classTrib>{{ind_classif_tribut}}</classTrib>
-                                <indEscrituracao>{{ind_obrigada_ecd}}</indEscrituracao>
-                                <indDesoneracao>{{ind_desoneracao_cprb}}</indDesoneracao>
-                                <indAcordoIsenMulta>{{ind_isencao_multa}}</indAcordoIsenMulta>
-                                <indSitPJ>{{ind_situacao_pj}}</indSitPJ>
-                                <contato>
-                                    <nmCtt>{{nom_contato}}</nmCtt>
-                                    <cpfCtt>{{cod_cpf_contato}}</cpfCtt>
-                                    <foneFixo>{{cod_fone_fixo_contato}}</foneFixo>
-                                    <email>{{txt_email_contato}}</email>
-                                </contato>
-                                <softHouse>
-                                    <cnpjSoftHouse>07669168000133</cnpjSoftHouse>
-                                    <nmRazao>INTECH SOLUÇÕES EM TECNOLOGIA DA INFORMAÇÃO LTDA</nmRazao>
-                                    <nmCont>GUSTAVO HENRIQUE PERSIANO DE ALMEIDA</nmCont>
-                                    <telefone>6135332400</telefone>
-                                    <email>gustavo@intech.com.br</email>
-                                </softHouse>
-                                <infoEFR>
-                                    <ideEFD>{{ind_efr}}</ideEFD>
-                                    <cnpjEFD>{{cod_cnpj_efr}}</cnpjEFD>
-                                </infoEFR>
-                            </infoCadastro>
-                        </inclusao>
-                    </infoContri>
-                </evtInfoContri>
-            </Reinf>
-        </evento>
-    </loteEventos>
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Reinf xmlns="http://www.reinf.esocial.gov.br/schemas/envioLoteEventos/v1_04_00" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <loteEventos>
+    {{for evento in eventos}} <evento id="{{evento.id}}">
+      <Reinf xmlns="http://www.reinf.esocial.gov.br/schemas/evtTabProcesso/v1_04_00">
+        <evtTabProcesso id="{{evento.id}}">
+          <ideEvento>
+            <tpAmb>{{evento.ind_ambiente_envio}}</tpAmb>
+            <procEmi>1</procEmi>
+            <verProc>{{evento.versao}}</verProc>
+          </ideEvento>
+          <ideContri>
+            <tpInsc>{{evento.ind_tipo_inscricao}}</tpInsc>
+            <nrInsc>{{evento.cod_cnpj_cpf}}</nrInsc>
+          </ideContri>
+          <infoProcesso>
+            {{evento.abertura_tag_operacao}}
+            <ideProcesso>
+                <tpProc>{{evento.ind_tipo_processo}}</tpProc>
+                <nrProc>{{evento.num_processo}}</nrProc>
+                <iniValid>{{evento.dta_inicio_validade}}</iniValid>
+                <fimValid>{{evento.dta_fim_validade}}</fimValid>
+                <indAutoria>{{evento.ind_autoria_judicial}}</indAutoria>
+                <infoSusp>
+                  <codSusp>{{evento.cod_suspensao}}</codSusp>
+                  <indSusp>{{evento.ind_suspensao}}</indSusp>
+                  <dtDecisao>{{evento.dta_decisao}}</dtDecisao>
+                  <indDeposito>{{evento.ind_deposito_judicial}}</indDeposito>
+                </infoSusp>
+                <dadosProcJud>
+                  <ufVara>{{evento.cod_uf_vara}}</ufVara>
+                  <codMunic>{{evento.cod_municipio_vara}}</codMunic>
+                  <idVara>{{evento.cod_identificacao_vara}}</idVara>
+                </dadosProcJud>
+              </ideProcesso>
+            {{evento.fechamento_tag_operacao}}
+          </infoProcesso>
+        </evtTabProcesso>
+      </Reinf>
+    </evento>{{end}}
+  </loteEventos>
 </Reinf>
