@@ -1,8 +1,8 @@
 import { BaseService } from "@intechprev/react-lib";
 
 class GeracaoXmlService extends BaseService {
-    GerarR1000(oidContribuinte, tipoAmbiente) {
-        return this.CriarRequisicao("GET", `/geracaoXml/gerarR1000/${oidContribuinte}/${tipoAmbiente}`);
+    GerarR1000(oidContribuinte, oidUsuario, tipoOperacao, tipoAmbiente) {
+        return this.CriarRequisicao("GET", `/geracaoXml/gerarR1000/${oidContribuinte}/${oidUsuario}/${tipoOperacao}/${tipoAmbiente}`);
     }
 
     GerarR1070(oidContribuinte, tipoAmbiente) {
@@ -23,6 +23,10 @@ class GeracaoXmlService extends BaseService {
 
     BuscarArquivosGeradosPorOidContribuinte(oidContribuinte) {
         return this.CriarRequisicao("GET", `/geracaoXml/arquivosGerados/${oidContribuinte}`);
+    }
+
+    BuscarDatasPorOidContribuinte(oidContribuinte) {
+        return this.CriarRequisicao("GET", `/geracaoXml/datas/${oidContribuinte}`);
     }
 }
 

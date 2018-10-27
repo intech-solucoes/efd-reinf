@@ -86,6 +86,7 @@ export default class GeracaoXml extends Component {
         this.oidContribuinte = localStorage.getItem("contribuinte");
         this.visibilidade = this.state.visibilidade;
         this.combos = this.state.combos;
+        this.datas;
         this.dataAtual = new Date();
     }
     
@@ -99,14 +100,14 @@ export default class GeracaoXml extends Component {
             this.combos.tipoOperacao = await DominioService.BuscarPorCodigo("DMN_OPER_REGISTRO");
             this.combos.ambienteEnvio = await DominioService.BuscarPorCodigo("DMN_TIPO_AMBIENTE_EFD");
             this.combos.dominioSimNao = await DominioService.BuscarPorCodigo("DMN_SN");
-    
+
             // Busca usuários vinculados ao contribuinte.
             var usuarios = await ContribuinteService.BuscarUsuariosPorOidContribuinte(this.oidContribuinte);
             usuarios = usuarios.data.Usuarios;
             var usuariosResponsaveis = [];
             var usuario = {};
             for(var i = 0; i < usuarios.length; i++) {
-                usuario = {SIG_DOMINIO: usuarios[i].Usuario.OID_USUARIO, NOM_DOMINIO: usuarios[i].Usuario.NOM_USUARIO};
+                usuario = {valor: usuarios[i].Usuario.OID_USUARIO, nome: usuarios[i].Usuario.NOM_USUARIO};
                 usuariosResponsaveis.push(usuario);
             }
             this.combos.usuarioResponsavel = usuariosResponsaveis;
@@ -203,13 +204,14 @@ export default class GeracaoXml extends Component {
 
     onChangeR2098 = async (checkbox) => {
         this.onChange(checkbox);
+        await this.carregaReferenciaR2098();
         this.handleVisibilidade("ambienteEnvio");
         this.handleVisibilidade("referencia");
-        this.carregaReferenciaR2098();
     }
 
-    onChangeR2099 = (checkbox) => {
+    onChangeR2099 = async (checkbox) => {
         this.onChange(checkbox);
+        await this.carregaReferenciaR2099();
         this.handleVisibilidade("ambienteEnvio");
         this.handleVisibilidade("referencia");
         this.handleVisibilidade("contratacaoServicos");
@@ -219,7 +221,6 @@ export default class GeracaoXml extends Component {
         this.handleVisibilidade("producaoRural");
         this.handleVisibilidade("pagamentosDiversos");
         this.handleVisibilidade("competencia");
-        this.carregaReferenciaR2099();
         this.carregaCompetenciaAno();
     }
 
@@ -233,21 +234,46 @@ export default class GeracaoXml extends Component {
     }
 
     carregaReferenciaR2098 = async () => {
-        // Carregar combo com a referencia da tabela de movimento.
-
+        var datas = await GeracaoXmlService.BuscarDatasPorOidContribuinte(this.oidContribuinte);
+        this.datas = datas.data;
+        this.combos.referenciaAno = datas.data;
     }
 
     carregaReferenciaR2099 = async () => {
-        // Carregar combo com a referência que não esteja na tabela de movimento.
+        var datas = await GeracaoXmlService.BuscarDatasPorOidContribuinte(this.oidContribuinte);
+        this.datas = datas.data;
+        this.combos.referenciaAno = [];
+        var ano = {};
+        for(var i = 0; i < this.datas.length; i++) {
+            ano = {Ano: this.datas[i].Ano, Ano: this.datas[i].Ano};
+            if(this.datas[i].Ano >= 2018)
+                this.combos.referenciaAno.push(ano);
+        }
+    }
 
+    onChangeReferenciaAno = async () => {
+        this.combos.referenciaMes = [];
+        var mes = {};
+        if(this.state.r2098) {
+            for(var i = 0; i < this.datas.length; i++) {
+                if(this.datas[i].Ano === Number(this.state.referenciaAno)) {
+                    for(var j = 0; j < this.datas[i].Meses.length; j++) {
+                        mes = {nome: this.datas[i].Meses[j], valor: this.datas[i].Meses[j]}
+                        this.combos.referenciaMes.push(mes);
+                    }
+                }
+            }
+        } else if(this.state.r2099) {
+            
+        }
     }
 
     carregaCompetenciaAno = async () => { 
         var anoAtual = this.dataAtual.getFullYear();
         var comboCompetenciaAno = [];
         var ano = {};
-        for(var i = 2000; i <= anoAtual; i++) {
-            ano = {SIG_DOMINIO: i, NOM_DOMINIO: i};
+        for(var i = 2018; i <= anoAtual; i++) {
+            ano = {nome: i, valor: i};
             comboCompetenciaAno.push(ano);
         }
         this.combos.competenciaAno = comboCompetenciaAno;
@@ -262,9 +288,12 @@ export default class GeracaoXml extends Component {
         var qtdeMeses = 12;
         if(this.state.competenciaAno === anoAtual)
             qtdeMeses = mesAtual;
+        
+        if(this.state.competenciaAno === "")
+            qtdeMeses = 0;
 
         for(var i = 1; i <= qtdeMeses; i++) {
-            mes = {SIG_DOMINIO: i, NOM_DOMINIO: i};
+            mes = {nome: i, valor: i};
             comboCompetenciaMes.push(mes);
         }
         
@@ -273,7 +302,7 @@ export default class GeracaoXml extends Component {
 
     validarR1000 = async () => { 
         try {
-            await GeracaoXmlService.GerarR1000(this.oidContribuinte, this.state.ambienteEnvio);
+            await GeracaoXmlService.GerarR1000(this.oidContribuinte, this.state.usuarioResponsavel, this.state.tipoOperacao, this.state.ambienteEnvio);
             alert("R-1000 Gerado com sucesso!");
             this.buscarArquivosGerados();
         } catch(err) {
@@ -288,7 +317,7 @@ export default class GeracaoXml extends Component {
             this.buscarArquivosGerados();
         } catch(err) {
             if(err.response)
-                console.log(err.response.data);
+                alert(err.response.data);
             else
                 console.error(err);
         }
@@ -332,7 +361,7 @@ export default class GeracaoXml extends Component {
             this.buscarArquivosGerados();
         } catch(err) {
             if(err.response)
-                console.log(err.response.data);
+                alert(err.response.data);
             else
                 console.error(err);
         }
@@ -409,7 +438,7 @@ export default class GeracaoXml extends Component {
                         {this.state.visibilidade.usuarioResponsavel &&
                             <Combo contexto={this} label={"Usuário Responsável"} ref={ (input) => this.listaCampos[3] = input } 
                                    nome="usuarioResponsavel" valor={this.state.usuarioResponsavel} obrigatorio={true}
-                                   opcoes={this.state.combos.usuarioResponsavel} />
+                                   opcoes={this.state.combos.usuarioResponsavel} nomeMembro={"nome"} valorMembro={"valor"} />
                         }
 
                         {this.state.visibilidade.data &&
@@ -438,16 +467,16 @@ export default class GeracaoXml extends Component {
 
                         {this.state.visibilidade.referencia &&
                             <Row>
-                                <Col>
-                                    <Combo contexto={this} label={"Referência"} ref={ (input) => this.listaCampos[5] = input } 
-                                           nome="referenciaAno" valor={this.state.referenciaAno} obrigatorio={true} comboCol="col-3"
-                                           opcoes={[{NOM_DOMINIO: "2018", SIG_DOMINIO: "2018"}]} />
+                                <Col className="col-4">
+                                    <Combo contexto={this} label={"Referência"} ref={ (input) => this.listaCampos[5] = input } labelCol="col-lg-6"
+                                           nome="referenciaAno" valor={this.state.referenciaAno} obrigatorio={true} comboCol="col-6"
+                                           opcoes={this.state.combos.referenciaAno} nomeMembro={"Ano"} valorMembro={"Ano"} onChange={this.onChangeReferenciaAno} />
                                 </Col>
     
                                 <Col>
-                                    <Combo contexto={this} ref={ (input) => this.listaCampos[6] = input } 
+                                    <Combo contexto={this} ref={ (input) => this.listaCampos[6] = input }
                                            nome="referenciaMes" valor={this.state.referenciaMes} obrigatorio={true} comboCol="col-3"
-                                           opcoes={[{NOM_DOMINIO: "6", SIG_DOMINIO: "6"}]} />
+                                           opcoes={this.state.combos.referenciaMes} nomeMembro={"nome"} valorMembro={"valor"} />
                                 </Col>
                             </Row>
                         }
@@ -497,14 +526,15 @@ export default class GeracaoXml extends Component {
                         {this.state.visibilidade.competencia && 
                             <Row>
                                 <Col>
-                                    <Combo contexto={this} label={"Competência a partir da qual não houve movimento, cuja situação perdura até a competência atual."} ref={ (input) => this.listaCampos[5] = input } 
-                                        nome="competenciaAno" valor={this.state.competenciaAno} comboCol="col-3" onChange={() => this.carregaCompetenciaMes()}
-                                        opcoes={this.state.combos.competenciaAno} labelCol="col-lg-4" />
+                                    <Combo contexto={this} ref={ (input) => this.listaCampos[13] = input } labelCol="col-lg-8"
+                                           label={"Competência a partir da qual não houve movimento, cuja situação perdura até a competência atual."}
+                                           nome="competenciaAno" valor={this.state.competenciaAno} comboCol="col-4" onChange={() => this.carregaCompetenciaMes()}
+                                           opcoes={this.state.combos.competenciaAno} nomeMembro={"nome"} valorMembro={"valor"} />
                                 </Col>
                                 <Col>
-                                    <Combo contexto={this}
-                                           nome="competenciaMes" valor={this.state.competenciaMes} comboCol="col-3"
-                                           opcoes={this.state.combos.competenciaMes} labelCol="col-lg-4" />
+                                    <Combo contexto={this} ref={ (input) => this.listaCampos[14] = input }
+                                           nome="competenciaMes" valor={this.state.competenciaMes} comboCol="col-4"
+                                           opcoes={this.state.combos.competenciaMes} labelCol="col-lg-4" nomeMembro={"nome"} valorMembro={"valor"} />
                                 </Col>
                             </Row>
                         }
