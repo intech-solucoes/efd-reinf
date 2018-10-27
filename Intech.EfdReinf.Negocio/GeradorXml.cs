@@ -282,6 +282,7 @@ namespace Intech.EfdReinf.Negocio
                 item.IND_RETIFICACAO = tipoOperacao;
                 item.IND_SITUACAO_PROCESSAMENTO = DMN_SITUACAO_PROCESSAMENTO.PROCESSADO;
                 item.OID_ARQUIVO_UPLOAD = oidArquivoUpload;
+                item.OID_USUARIO_ENVIO = oidUsuario;
 
                 proxy2010.Atualizar(item);
             }
@@ -477,4 +478,4 @@ namespace Intech.EfdReinf.Negocio
 
         #endregion
     }
-}
+}
