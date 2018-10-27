@@ -251,9 +251,19 @@ export default class GeracaoXml extends Component {
         }
     }
 
-    onChangeReferenciaAno = async () => {
+    carregaReferenciaMes = async () => {
         this.combos.referenciaMes = [];
         var mes = {};
+
+        // Limpa os meses caso a opção de 'ReferenciaAno' seja vazio.
+        if(this.state.referenciaAno === "") {
+            this.combos.referenciaMes = [];
+            this.setState({ 
+                combos: this.combos,
+                referenciaMes: ""
+            });
+        }
+
         if(this.state.r2098) {
             for(var i = 0; i < this.datas.length; i++) {
                 if(this.datas[i].Ano === Number(this.state.referenciaAno)) {
@@ -261,10 +271,11 @@ export default class GeracaoXml extends Component {
                         mes = {nome: this.datas[i].Meses[j], valor: this.datas[i].Meses[j]}
                         this.combos.referenciaMes.push(mes);
                     }
+                    this.setState({ combos: this.combos });
                 }
             }
         } else if(this.state.r2099) {
-            
+            // Chamar rota que busca as datas exceto R2010
         }
     }
 
@@ -277,6 +288,7 @@ export default class GeracaoXml extends Component {
             comboCompetenciaAno.push(ano);
         }
         this.combos.competenciaAno = comboCompetenciaAno;
+        this.setState({ combos: this.combos });
     }
     
     carregaCompetenciaMes = async () => { 
@@ -298,6 +310,7 @@ export default class GeracaoXml extends Component {
         }
         
         this.combos.competenciaMes = comboCompetenciaMes;
+        this.setState({ combos: this.combos });
     }
 
     validarR1000 = async () => { 
@@ -470,7 +483,7 @@ export default class GeracaoXml extends Component {
                                 <Col className="col-4">
                                     <Combo contexto={this} label={"Referência"} ref={ (input) => this.listaCampos[5] = input } labelCol="col-lg-6"
                                            nome="referenciaAno" valor={this.state.referenciaAno} obrigatorio={true} comboCol="col-6"
-                                           opcoes={this.state.combos.referenciaAno} nomeMembro={"Ano"} valorMembro={"Ano"} onChange={this.onChangeReferenciaAno} />
+                                           opcoes={this.state.combos.referenciaAno} nomeMembro={"Ano"} valorMembro={"Ano"} onChange={this.carregaReferenciaMes} />
                                 </Col>
     
                                 <Col>
@@ -528,7 +541,7 @@ export default class GeracaoXml extends Component {
                                 <Col>
                                     <Combo contexto={this} ref={ (input) => this.listaCampos[13] = input } labelCol="col-lg-8"
                                            label={"Competência a partir da qual não houve movimento, cuja situação perdura até a competência atual."}
-                                           nome="competenciaAno" valor={this.state.competenciaAno} comboCol="col-4" onChange={() => this.carregaCompetenciaMes()}
+                                           nome="competenciaAno" valor={this.state.competenciaAno} comboCol="col-4" onChange={() => this.carregaCompetenciaMes}
                                            opcoes={this.state.combos.competenciaAno} nomeMembro={"nome"} valorMembro={"valor"} />
                                 </Col>
                                 <Col>
