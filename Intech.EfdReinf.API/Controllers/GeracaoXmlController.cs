@@ -59,9 +59,14 @@ namespace Intech.EfdReinf.API.Controllers
             {
                 var R1000 = new ContribuinteEnvioProxy().BuscarPorOidContribuinte(oidContribuinte);
                 var R1070 = new R1070Proxy().BuscarPorOidContribuinte(oidContribuinte);
-                var R2010 = new R2010Proxy().BuscarPorOidContribuinte(oidContribuinte);
                 var R2098 = new R2098Proxy().BuscarPorOidContribuinte(oidContribuinte);
                 var R2099 = new R2099Proxy().BuscarPorOidContribuinte(oidContribuinte);
+
+                var R2010 = new R2010Proxy().BuscarPorOidContribuinte(oidContribuinte)
+                    .Where(x => x.IND_SITUACAO_PROCESSAMENTO == DMN_SITUACAO_PROCESSAMENTO.PROCESSADO
+                             || x.IND_SITUACAO_PROCESSAMENTO == DMN_SITUACAO_PROCESSAMENTO.ENVIADO
+                             || x.IND_SITUACAO_PROCESSAMENTO == DMN_SITUACAO_PROCESSAMENTO.RETIFICADO)
+                    .ToList();
 
                 var listaArquivos = new List<ArquivoGerado>();
 
