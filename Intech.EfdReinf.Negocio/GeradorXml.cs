@@ -50,8 +50,6 @@ namespace Intech.EfdReinf.Negocio
                 OID_ARQUIVO_UPLOAD = oidArquivoUpload
             });
 
-            var id = "ID" + oidArquivoUpload.ToString().PadLeft(18, '0');
-
             if (contribuinte.IND_TIPO_INSCRICAO == DMN_TIPO_INSCRICAO_EFD.PESSOA_FISICA)
             {
                 if (!Validador.ValidarCPF(contribuinte.COD_CNPJ_CPF))
@@ -70,7 +68,7 @@ namespace Intech.EfdReinf.Negocio
             var template = Template.Parse(File.OpenText(templateFile).ReadToEnd());
             var xmlR1000 = template.Render(new
             {
-                id,
+                id = string.Format("ID{0}{1}{2:yyyyMMddHHmmss}{3}", contribuinte.IND_TIPO_INSCRICAO, contribuinte.COD_CNPJ_CPF.PadLeft(14, '0'), DateTime.Now, oidArquivoUpload.ToString().PadLeft(5, '0')),
                 tipoAmbiente,
                 abertura_tag_operacao = tipoOperacao == DMN_OPERACAO_REGISTRO.INCLUSAO ? "<inclusao>" : tipoOperacao == DMN_OPERACAO_REGISTRO.ALTERACAO ? "<alteracao>" : "<exclusao>",
                 versao = Assembly.GetExecutingAssembly().GetName().Version.ToString(3),
@@ -130,7 +128,7 @@ namespace Intech.EfdReinf.Negocio
             var eventos = from x in listRegistrosR1070
                           select new
                           {
-                              id = "ID" + oidArquivoUpload.ToString().PadLeft(18, '0'),
+                              id = string.Format("ID{0}{1}{2:yyyyMMddHHmmss}{3}", contribuinte.IND_TIPO_INSCRICAO, contribuinte.COD_CNPJ_CPF.PadLeft(14, '0'), DateTime.Now, oidArquivoUpload.ToString().PadLeft(5, '0')),
                               ind_ambiente_envio = tipoAmbiente,
                               versao = Assembly.GetExecutingAssembly().GetName().Version.ToString(3),
                               ind_tipo_inscricao = contribuinte.IND_TIPO_INSCRICAO,
@@ -231,7 +229,7 @@ namespace Intech.EfdReinf.Negocio
                           group x by new { x.DTA_APURACAO.Month, x.DTA_APURACAO.Year, x.COD_CNPJ_PRESTADOR } into g
                           select new
                           {
-                              id = "ID" + oidArquivoUpload.ToString().PadLeft(18, '0'),
+                              id = string.Format("ID{0}{1}{2:yyyyMMddHHmmss}{3}", contribuinte.IND_TIPO_INSCRICAO, contribuinte.COD_CNPJ_CPF.PadLeft(14, '0'), DateTime.Now, oidArquivoUpload.ToString().PadLeft(5, '0')),
                               ind_retificacao = tipoOperacao,
                               dta_apuracao = string.Format("{0}-{1}", g.Key.Year, g.Key.Month),
                               ind_ambiente_envio = tipoAmbiente,
@@ -320,14 +318,12 @@ namespace Intech.EfdReinf.Negocio
             r2099.OID_ARQUIVO_UPLOAD = oidArquivoUpload;
             var oidR2099 = R2099Proxy.Inserir(r2099);
 
-            var id = "ID" + oidR2099.ToString().PadLeft(18, '0');
-
             // Monta XML
             var templateFile = Path.Combine(baseCaminhoArquivo, "../TemplatesXml", "R2099.liquid");
             var template = Template.Parse(File.OpenText(templateFile).ReadToEnd());
             var xmlR2099 = template.Render(new
             {
-                id,
+                id = string.Format("ID{0}{1}{2:yyyyMMddHHmmss}{3}", contribuinte.IND_TIPO_INSCRICAO, contribuinte.COD_CNPJ_CPF.PadLeft(14, '0'), DateTime.Now, oidArquivoUpload.ToString().PadLeft(5, '0')),
                 dta_periodo_Apuracao = r2099.DTA_PERIODO_APURACAO.ToString("yyyy-MM"),
                 ind_ambiente_envio = r2099.IND_AMBIENTE_ENVIO,
                 versao = Assembly.GetExecutingAssembly().GetName().Version.ToString(3),
@@ -391,14 +387,12 @@ namespace Intech.EfdReinf.Negocio
                 OID_ARQUIVO_UPLOAD = oidArquivoUpload
             });
 
-            var id = "ID" + oidR2098.ToString().PadLeft(18, '0');
-
             // Monta XML
             var templateFile = Path.Combine(baseCaminhoArquivo, "../TemplatesXml", "R2098.liquid");
             var template = Template.Parse(File.OpenText(templateFile).ReadToEnd());
             var xmlR2098 = template.Render(new
             {
-                id,
+                id = string.Format("ID{0}{1}{2:yyyyMMddHHmmss}{3}", contribuinte.IND_TIPO_INSCRICAO, contribuinte.COD_CNPJ_CPF.PadLeft(14, '0'), DateTime.Now, oidArquivoUpload.ToString().PadLeft(5, '0')),
                 dta_periodo_Apuracao = dtaPeriodoApuracao.ToString("yyyy-MM"),
                 ind_ambiente_envio = tipoAmbiente,
                 versao = Assembly.GetExecutingAssembly().GetName().Version.ToString(3),
