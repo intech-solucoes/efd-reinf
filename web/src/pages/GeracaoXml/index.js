@@ -111,7 +111,8 @@ export default class GeracaoXml extends Component {
                 usuariosResponsaveis.push(usuario);
             }
             this.combos.usuarioResponsavel = usuariosResponsaveis;
-    
+            await this.setState({ combos: this.combos });
+            
             this.buscarArquivosGerados();
         } catch(err) {
             console.error(err);
@@ -151,6 +152,10 @@ export default class GeracaoXml extends Component {
                 await this.adicionarErro(campo.erros);
         }
 
+        // Em específico, a validação dos campos de Período é feita separadamente pois o Período não foi feito como um componente.
+        if(this.state.dataInicial === "" || this.state.dataFinal === "")
+            this.adicionarErro("Campo \"Período\" obrigatório.");
+
         if(this.state.erros.length === 0) {
             if(this.state.r1000)
                 await this.validarR1000();
@@ -182,11 +187,11 @@ export default class GeracaoXml extends Component {
 
     onChangeR1000 = async (checkbox) => {
         this.onChange(checkbox);
+        this.combos.tipoOperacao = await DominioService.BuscarPorCodigo("DMN_OPER_REGISTRO");
         this.handleVisibilidade("tipoOperacao");
         this.handleVisibilidade("contribuinte");
         this.handleVisibilidade("usuarioResponsavel");
         this.handleVisibilidade("ambienteEnvio");
-        this.combos.tipoOperacao = await DominioService.BuscarPorCodigo("DMN_OPER_REGISTRO");
     }
 
     onChangeR1070 = async (checkbox) => {
@@ -196,10 +201,10 @@ export default class GeracaoXml extends Component {
 
     onChangeR2010 = async (checkbox) => {
         this.onChange(checkbox);
+        this.combos.tipoOperacao = await DominioService.BuscarPorCodigo("DMN_EFD_RETIFICADORA");
         this.handleVisibilidade("tipoOperacao");
         this.handleVisibilidade("ambienteEnvio");
         this.handleVisibilidade("data");
-        this.combos.tipoOperacao = await DominioService.BuscarPorCodigo("DMN_EFD_RETIFICADORA");
     }
 
     onChangeR2098 = async (checkbox) => {
@@ -255,10 +260,13 @@ export default class GeracaoXml extends Component {
         this.combos.referenciaMes = [];
         var mes = {};
 
+        // Define o valor do combo Referencia Mes para o padrão.
+        await this.setState({ referenciaMes: "" });
+
         // Limpa os meses caso a opção de 'ReferenciaAno' seja vazio.
         if(this.state.referenciaAno === "") {
             this.combos.referenciaMes = [];
-            this.setState({ 
+            await this.setState({ 
                 combos: this.combos,
                 referenciaMes: ""
             });
@@ -271,7 +279,7 @@ export default class GeracaoXml extends Component {
                         mes = {nome: this.datas[i].Meses[j], valor: this.datas[i].Meses[j]}
                         this.combos.referenciaMes.push(mes);
                     }
-                    this.setState({ combos: this.combos });
+                   await  this.setState({ combos: this.combos });
                 }
             }
         } else if(this.state.r2099) {
@@ -296,6 +304,9 @@ export default class GeracaoXml extends Component {
         var mesAtual = this.dataAtual.getMonth() + 1;
         var comboCompetenciaMes = [];
         var mes = {};
+
+        // Define o valor do combo Competencia Mes para o padrão.
+        await this.setState({ competenciaMes: "" });
 
         var qtdeMeses = 12;
         if(this.state.competenciaAno === anoAtual)
@@ -463,15 +474,19 @@ export default class GeracaoXml extends Component {
                                                 Período * 
                                             </label></b> 
                                         </div> 
+
                                         <div className="col-3"> 
                                             <input className="form-control" name="dataInicial" id="dataInicial" type="date" value={this.state.dataInicial} 
-                                                onChange={(e) => handleFieldChange(this, e)} /> 
+                                                   onChange={async (e) => handleFieldChange(this, e)} /> 
                                         </div> 
+
                                         <div className="col-form-label"> 
                                             <b><label htmlFor="dataFinal"> a </label></b> 
                                         </div> 
-                                        <div className="col-3"> <input className="form-control" name="dataFinal" id="dataFinal" type="date" 
-                                            value={(this.state.dataFinal)} onChange={(e) => handleFieldChange(this, e)} /> 
+
+                                        <div className="col-3"> 
+                                            <input className="form-control" name="dataFinal" id="dataFinal" type="date" 
+                                                   value={(this.state.dataFinal)} onChange={(e) => handleFieldChange(this, e)} /> 
                                         </div> 
                                     </div> 
                                 </Col>
@@ -487,7 +502,7 @@ export default class GeracaoXml extends Component {
                                 </Col>
     
                                 <Col>
-                                    <Combo contexto={this} ref={ (input) => this.listaCampos[6] = input }
+                                    <Combo contexto={this} label={"Referência"} ref={ (input) => this.listaCampos[6] = input } mostrarLabel={false}
                                            nome="referenciaMes" valor={this.state.referenciaMes} obrigatorio={true} comboCol="col-3"
                                            opcoes={this.state.combos.referenciaMes} nomeMembro={"nome"} valorMembro={"valor"} />
                                 </Col>
@@ -541,12 +556,13 @@ export default class GeracaoXml extends Component {
                                 <Col>
                                     <Combo contexto={this} ref={ (input) => this.listaCampos[13] = input } labelCol="col-lg-8"
                                            label={"Competência a partir da qual não houve movimento, cuja situação perdura até a competência atual."}
-                                           nome="competenciaAno" valor={this.state.competenciaAno} comboCol="col-4" onChange={() => this.carregaCompetenciaMes}
-                                           opcoes={this.state.combos.competenciaAno} nomeMembro={"nome"} valorMembro={"valor"} />
+                                           nome="competenciaAno" valor={this.state.competenciaAno} comboCol="col-4" onChange={() => this.carregaCompetenciaMes()}
+                                           opcoes={this.state.combos.competenciaAno} nomeMembro={"nome"} valorMembro={"valor"} obrigatorio={true} />
                                 </Col>
                                 <Col>
                                     <Combo contexto={this} ref={ (input) => this.listaCampos[14] = input }
-                                           nome="competenciaMes" valor={this.state.competenciaMes} comboCol="col-4"
+                                           label={"Competência a partir da qual não houve movimento, cuja situação perdura até a competência atual."}
+                                           nome="competenciaMes" valor={this.state.competenciaMes} comboCol="col-4" obrigatorio={true} mostrarLabel={false}
                                            opcoes={this.state.combos.competenciaMes} labelCol="col-lg-4" nomeMembro={"nome"} valorMembro={"valor"} />
                                 </Col>
                             </Row>
