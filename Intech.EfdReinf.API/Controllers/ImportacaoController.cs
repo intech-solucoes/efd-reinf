@@ -280,6 +280,7 @@ namespace Intech.EfdReinf.API.Controllers
                 linhaImportacao.VAL_ADICIONAL_PROCESSO = ValidarDecimal("'ValorAdic'", colunas[35], 17, false);
                 linhaImportacao.NUM_RECIBO_RETIFICADA = ValidarString("'NrReciboRetificado'", colunas[36], 52, false);
                 linhaImportacao.IND_SITUACAO_PROCESSAMENTO = DMN_SITUACAO_PROCESSAMENTO.IMPORTADO;
+                linhaImportacao.OID_ARQUIVO_UPLOAD = _oidArquivoUpload;
             }
             catch (Exception ex)
             {

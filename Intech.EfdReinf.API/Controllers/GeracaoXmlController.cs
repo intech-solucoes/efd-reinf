@@ -59,9 +59,14 @@ namespace Intech.EfdReinf.API.Controllers
             {
                 var R1000 = new ContribuinteEnvioProxy().BuscarPorOidContribuinte(oidContribuinte);
                 var R1070 = new R1070Proxy().BuscarPorOidContribuinte(oidContribuinte);
-                var R2010 = new R2010Proxy().BuscarPorOidContribuinte(oidContribuinte);
                 var R2098 = new R2098Proxy().BuscarPorOidContribuinte(oidContribuinte);
                 var R2099 = new R2099Proxy().BuscarPorOidContribuinte(oidContribuinte);
+
+                var R2010 = new R2010Proxy().BuscarPorOidContribuinte(oidContribuinte)
+                    .Where(x => x.IND_SITUACAO_PROCESSAMENTO == DMN_SITUACAO_PROCESSAMENTO.PROCESSADO
+                             || x.IND_SITUACAO_PROCESSAMENTO == DMN_SITUACAO_PROCESSAMENTO.ENVIADO
+                             || x.IND_SITUACAO_PROCESSAMENTO == DMN_SITUACAO_PROCESSAMENTO.RETIFICADO)
+                    .ToList();
 
                 var listaArquivos = new List<ArquivoGerado>();
 
@@ -71,9 +76,9 @@ namespace Intech.EfdReinf.API.Controllers
                     listaArquivos.Add(new ArquivoGerado
                     {
                         Tipo = "R-1000",
-                        DataGeracao = item.DataGeracao.Value,
+                        DataGeracao = item.DTA_UPLOAD.Value,
                         Ambiente = item.IND_TIPO_AMBIENTE == DMN_TIPO_AMBIENTE_EFD.PRODUCAO ? "Produção" : "Pré-Produção",
-                        Status = item.Status == DMN_STATUS_EFD_UPLOAD.PROCESSADO ? "Processado" : "Gerado",
+                        Status = item.IND_STATUS == DMN_STATUS_EFD_UPLOAD.PROCESSADO ? "Processado" : "Gerado",
                         Usuario = new UsuarioProxy().BuscarPorChave(item.OID_USUARIO_ENVIO).NOM_USUARIO,
                         OidArquivoUpload = item.OID_ARQUIVO_UPLOAD
                     });
@@ -85,9 +90,9 @@ namespace Intech.EfdReinf.API.Controllers
                     listaArquivos.Add(new ArquivoGerado
                     {
                         Tipo = "R-1070",
-                        DataGeracao = item.DataGeracao.Value,
+                        DataGeracao = item.DTA_UPLOAD.Value,
                         Ambiente = item.IND_AMBIENTE_ENVIO == DMN_TIPO_AMBIENTE_EFD.PRODUCAO ? "Produção" : "Pré-Produção",
-                        Status = item.Status == DMN_STATUS_EFD_UPLOAD.PROCESSADO ? "Processado" : "Gerado",
+                        Status = item.IND_STATUS == DMN_STATUS_EFD_UPLOAD.PROCESSADO ? "Processado" : "Gerado",
                         Usuario = new UsuarioProxy().BuscarPorChave(item.OID_USUARIO_ENVIO).NOM_USUARIO,
                         OidArquivoUpload = item.OID_ARQUIVO_UPLOAD
                     });
@@ -99,9 +104,9 @@ namespace Intech.EfdReinf.API.Controllers
                     listaArquivos.Add(new ArquivoGerado
                     {
                         Tipo = "R-2010",
-                        DataGeracao = item.DataGeracao.Value,
+                        DataGeracao = item.DTA_UPLOAD.Value,
                         Ambiente = item.IND_AMBIENTE_ENVIO == DMN_TIPO_AMBIENTE_EFD.PRODUCAO ? "Produção" : "Pré-Produção",
-                        Status = item.Status == DMN_STATUS_EFD_UPLOAD.PROCESSADO ? "Processado" : "Gerado",
+                        Status = item.IND_STATUS == DMN_STATUS_EFD_UPLOAD.PROCESSADO ? "Processado" : "Gerado",
                         Usuario = new UsuarioProxy().BuscarPorChave(item.OID_USUARIO_ENVIO).NOM_USUARIO,
                         OidArquivoUpload = item.OID_ARQUIVO_UPLOAD
                     });
@@ -113,9 +118,9 @@ namespace Intech.EfdReinf.API.Controllers
                     listaArquivos.Add(new ArquivoGerado
                     {
                         Tipo = "R-2098",
-                        DataGeracao = item.DataGeracao.Value,
+                        DataGeracao = item.DTA_UPLOAD.Value,
                         Ambiente = item.IND_AMBIENTE_ENVIO == DMN_TIPO_AMBIENTE_EFD.PRODUCAO ? "Produção" : "Pré-Produção",
-                        Status = item.Status == DMN_STATUS_EFD_UPLOAD.PROCESSADO ? "Processado" : "Gerado",
+                        Status = item.IND_STATUS == DMN_STATUS_EFD_UPLOAD.PROCESSADO ? "Processado" : "Gerado",
                         Usuario = new UsuarioProxy().BuscarPorChave(item.OID_USUARIO_ENVIO).NOM_USUARIO,
                         OidArquivoUpload = item.OID_ARQUIVO_UPLOAD
                     });
@@ -127,9 +132,9 @@ namespace Intech.EfdReinf.API.Controllers
                     listaArquivos.Add(new ArquivoGerado
                     {
                         Tipo = "R-2099",
-                        DataGeracao = item.DataGeracao.Value,
+                        DataGeracao = item.DTA_UPLOAD.Value,
                         Ambiente = item.IND_AMBIENTE_ENVIO == DMN_TIPO_AMBIENTE_EFD.PRODUCAO ? "Produção" : "Pré-Produção",
-                        Status = item.Status == DMN_STATUS_EFD_UPLOAD.PROCESSADO ? "Processado" : "Gerado",
+                        Status = item.IND_STATUS == DMN_STATUS_EFD_UPLOAD.PROCESSADO ? "Processado" : "Gerado",
                         Usuario = new UsuarioProxy().BuscarPorChave(item.OID_USUARIO_ENVIO).NOM_USUARIO,
                         OidArquivoUpload = item.OID_ARQUIVO_UPLOAD
                     });
@@ -145,16 +150,16 @@ namespace Intech.EfdReinf.API.Controllers
             }
         }
 
-        [HttpGet("gerarR1000/{oidContribuinte}/{tipoAmbiente}")]
+        [HttpGet("gerarR1000/{oidContribuinte}/{oidUsuario}/{tipoOperacao}/{tipoAmbiente}")]
         [Authorize("Bearer")]
-        public ActionResult GerarR1000(decimal oidContribuinte, string tipoAmbiente)
+        public ActionResult GerarR1000(decimal oidContribuinte, decimal oidUsuario, string tipoOperacao, string tipoAmbiente)
         {
             try
             {
                 string webRootPath = HostingEnvironment.ContentRootPath;
                 string newPath = Path.Combine(webRootPath, _folderName);
 
-                new GeradorXml().GerarR1000(OidUsuario, oidContribuinte, tipoAmbiente, newPath);
+                new GeradorXml().GerarR1000(oidUsuario, oidContribuinte, tipoOperacao, tipoAmbiente, newPath);
 
                 return Ok();
             }

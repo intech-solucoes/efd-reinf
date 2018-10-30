@@ -48,6 +48,7 @@ export default class ImportacaoArquivos extends Component {
         try {
             var oidContribuinte = localStorage.getItem("contribuinte");
             await ImportacaoCsvService.ImportarCsv(oidArquivoUpload, oidContribuinte);
+            alert("Arquivo processado com sucesso.");
             this.buscarArquivosImportados();
         } catch(err) {
             if(err.response) 
@@ -87,8 +88,12 @@ export default class ImportacaoArquivos extends Component {
         var oidUsuarioContribuinte = localStorage.getItem("oidUsuarioContribuinte");
         if(this.state.erros.length === 0) {
             try { 
-                await axios.post(apiUrl + `/Upload/${oidUsuarioContribuinte}`, this.state.formData, {
-                    headers: {'Content-Type': 'multipart/form-data'},
+                var token = localStorage.getItem("token");
+                await axios.post(apiUrl + `/upload/${oidUsuarioContribuinte}`, this.state.formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        "Authorization": "Bearer " + token
+                    },
                     onUploadProgress: progressEvent => {
                     },
                 });

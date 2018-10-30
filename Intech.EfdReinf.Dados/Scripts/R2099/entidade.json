@@ -2,12 +2,12 @@
     "nomeTabela": "EFD_R2099",
     "colunasExtras": [
         {
-            "nome": "DataGeracao",
+            "nome": "DTA_UPLOAD",
             "tipo": "DateTime",
             "aceitaNulo": true
         },
         {
-            "nome": "Status",
+            "nome": "IND_STATUS",
             "tipo": "string",
             "aceitaNulo": true
         }

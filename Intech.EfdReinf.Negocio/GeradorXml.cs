@@ -19,14 +19,14 @@ namespace Intech.EfdReinf.Negocio
     {
         #region R-1000
 
-        public void GerarR1000(decimal oidUsuario, decimal oidContribuinte, string tipoAmbiente, string baseCaminhoArquivo)
+        public void GerarR1000(decimal oidUsuario, decimal oidContribuinte, string tipoOperacao, string tipoAmbiente, string baseCaminhoArquivo)
         {
             // Busca contribuinte
             var contribuinte = new ContribuinteProxy().BuscarPorChave(oidContribuinte);
             var usuarioContribuinte = new UsuarioContribuinteProxy().BuscarPorOidUsuarioOidContribuinte(oidUsuario, oidContribuinte);
                        
             // Monta nome do arquivo
-            var nomeArquivoZip = "XML_R1000_" + Guid.NewGuid().ToString() + ".intech";
+            var nomeArquivoZip = "XML_R1000_" + Guid.NewGuid().ToString() + ".zip";
             var arquivoUploadProxy = new ArquivoUploadProxy();
 
             var oidArquivoUpload = arquivoUploadProxy.Inserir(new ArquivoUploadEntidade
@@ -34,7 +34,7 @@ namespace Intech.EfdReinf.Negocio
                 DTA_UPLOAD = DateTime.Now,
                 IND_STATUS = DMN_STATUS_EFD_UPLOAD.NAO_PROCESSADO,
                 NOM_ARQUIVO_LOCAL = "Upload/" + nomeArquivoZip,
-                NOM_EXT_ARQUIVO = ".intech",
+                NOM_EXT_ARQUIVO = ".zip",
                 NOM_ARQUIVO_ORIGINAL = nomeArquivoZip,
                 NOM_DIRETORIO_LOCAL = "Upload",
                 OID_USUARIO_CONTRIBUINTE = usuarioContribuinte.OID_USUARIO_CONTRIBUINTE
@@ -50,7 +50,7 @@ namespace Intech.EfdReinf.Negocio
                 OID_ARQUIVO_UPLOAD = oidArquivoUpload
             });
 
-            var id = "ID" + oidArquivoUpload.ToString().PadLeft(18, '0');
+            var id = "ID" + oidArquivoUpload.ToString().PadLeft(36, '0');
 
             if (contribuinte.IND_TIPO_INSCRICAO == DMN_TIPO_INSCRICAO_EFD.PESSOA_FISICA)
             {
@@ -72,6 +72,7 @@ namespace Intech.EfdReinf.Negocio
             {
                 id,
                 tipoAmbiente,
+                abertura_tag_operacao = tipoOperacao == DMN_OPERACAO_REGISTRO.INCLUSAO ? "<inclusao>" : tipoOperacao == DMN_OPERACAO_REGISTRO.ALTERACAO ? "<alteracao>" : "<exclusao>",
                 versao = Assembly.GetExecutingAssembly().GetName().Version.ToString(3),
                 ind_tipo_inscricao = contribuinte.IND_TIPO_INSCRICAO,
                 cod_cnpj_cpf = contribuinte.COD_CNPJ_CPF,
@@ -87,7 +88,8 @@ namespace Intech.EfdReinf.Negocio
                 cod_fone_fixo_contato = contribuinte.COD_FONE_FIXO_CONTATO,
                 txt_email_contato = contribuinte.TXT_EMAIL_CONTATO,
                 ind_efr = contribuinte.IND_EFR,
-                cod_cnpj_efr = contribuinte.COD_CNPJ_EFR
+                cod_cnpj_efr = contribuinte.COD_CNPJ_EFR,
+                fechamento_tag_operacao = tipoOperacao == DMN_OPERACAO_REGISTRO.INCLUSAO ? "</inclusao>" : tipoOperacao == DMN_OPERACAO_REGISTRO.ALTERACAO ? "</alteracao>" : "</exclusao>"
             });
 
             var caminhoArquivo = GerarArquivo("R1000_", baseCaminhoArquivo, xmlR1000);
@@ -106,7 +108,7 @@ namespace Intech.EfdReinf.Negocio
             var usuarioContribuinte = new UsuarioContribuinteProxy().BuscarPorOidUsuarioOidContribuinte(oidUsuario, oidContribuinte);
 
             // Monta nome do arquivo
-            var nomeArquivoZip = "XML_R1070_" + Guid.NewGuid().ToString() + ".intech";
+            var nomeArquivoZip = "XML_R1070_" + Guid.NewGuid().ToString() + ".zip";
             var arquivoUploadProxy = new ArquivoUploadProxy();
 
             var oidArquivoUpload = arquivoUploadProxy.Inserir(new ArquivoUploadEntidade
@@ -114,7 +116,7 @@ namespace Intech.EfdReinf.Negocio
                 DTA_UPLOAD = DateTime.Now,
                 IND_STATUS = DMN_STATUS_EFD_UPLOAD.NAO_PROCESSADO,
                 NOM_ARQUIVO_LOCAL = "Upload/" + nomeArquivoZip,
-                NOM_EXT_ARQUIVO = ".intech",
+                NOM_EXT_ARQUIVO = ".zip",
                 NOM_ARQUIVO_ORIGINAL = nomeArquivoZip,
                 NOM_DIRETORIO_LOCAL = "Upload",
                 OID_USUARIO_CONTRIBUINTE = usuarioContribuinte.OID_USUARIO_CONTRIBUINTE
@@ -193,7 +195,7 @@ namespace Intech.EfdReinf.Negocio
             var usuarioContribuinte = new UsuarioContribuinteProxy().BuscarPorOidUsuarioOidContribuinte(oidUsuario, oidContribuinte);
 
             // Monta nome do arquivo
-            var nomeArquivoZip = "XML_R2010_" + Guid.NewGuid().ToString() + ".intech";
+            var nomeArquivoZip = "XML_R2010_" + Guid.NewGuid().ToString() + ".zip";
             var arquivoUploadProxy = new ArquivoUploadProxy();
 
             var oidArquivoUpload = arquivoUploadProxy.Inserir(new ArquivoUploadEntidade
@@ -201,7 +203,7 @@ namespace Intech.EfdReinf.Negocio
                 DTA_UPLOAD = DateTime.Now,
                 IND_STATUS = DMN_STATUS_EFD_UPLOAD.NAO_PROCESSADO,
                 NOM_ARQUIVO_LOCAL = "Upload/" + nomeArquivoZip,
-                NOM_EXT_ARQUIVO = ".intech",
+                NOM_EXT_ARQUIVO = ".zip",
                 NOM_ARQUIVO_ORIGINAL = nomeArquivoZip,
                 NOM_DIRETORIO_LOCAL = "Upload",
                 OID_USUARIO_CONTRIBUINTE = usuarioContribuinte.OID_USUARIO_CONTRIBUINTE
@@ -280,6 +282,7 @@ namespace Intech.EfdReinf.Negocio
                 item.IND_RETIFICACAO = tipoOperacao;
                 item.IND_SITUACAO_PROCESSAMENTO = DMN_SITUACAO_PROCESSAMENTO.PROCESSADO;
                 item.OID_ARQUIVO_UPLOAD = oidArquivoUpload;
+                item.OID_USUARIO_ENVIO = oidUsuario;
 
                 proxy2010.Atualizar(item);
             }
@@ -296,7 +299,7 @@ namespace Intech.EfdReinf.Negocio
             var usuarioContribuinte = new UsuarioContribuinteProxy().BuscarPorOidUsuarioOidContribuinte(oidUsuario, oidContribuinte);
             
             // Monta nome do arquivo
-            var nomeArquivoZip = "XML_R2099_" + Guid.NewGuid().ToString() + ".intech";
+            var nomeArquivoZip = "XML_R2099_" + Guid.NewGuid().ToString() + ".zip";
             var arquivoUploadProxy = new ArquivoUploadProxy();
 
             var oidArquivoUpload = arquivoUploadProxy.Inserir(new ArquivoUploadEntidade
@@ -304,7 +307,7 @@ namespace Intech.EfdReinf.Negocio
                 DTA_UPLOAD = DateTime.Now,
                 IND_STATUS = DMN_STATUS_EFD_UPLOAD.NAO_PROCESSADO,
                 NOM_ARQUIVO_LOCAL = "Upload/" + nomeArquivoZip,
-                NOM_EXT_ARQUIVO = ".intech",
+                NOM_EXT_ARQUIVO = ".zip",
                 NOM_ARQUIVO_ORIGINAL = nomeArquivoZip,
                 NOM_DIRETORIO_LOCAL = "Upload",
                 OID_USUARIO_CONTRIBUINTE = usuarioContribuinte.OID_USUARIO_CONTRIBUINTE
@@ -361,7 +364,7 @@ namespace Intech.EfdReinf.Negocio
             var dtaPeriodoApuracao = new DateTime(ano, mes, 1);                       
 
             // Monta nome do arquivo
-            var nomeArquivoZip = "XML_R2098_" + Guid.NewGuid().ToString() + ".intech";
+            var nomeArquivoZip = "XML_R2098_" + Guid.NewGuid().ToString() + ".zip";
             var arquivoUploadProxy = new ArquivoUploadProxy();
 
             var oidArquivoUpload = arquivoUploadProxy.Inserir(new ArquivoUploadEntidade
@@ -369,7 +372,7 @@ namespace Intech.EfdReinf.Negocio
                 DTA_UPLOAD = DateTime.Now,
                 IND_STATUS = DMN_STATUS_EFD_UPLOAD.NAO_PROCESSADO,
                 NOM_ARQUIVO_LOCAL = "Upload/" + nomeArquivoZip,
-                NOM_EXT_ARQUIVO = ".intech",
+                NOM_EXT_ARQUIVO = ".zip",
                 NOM_ARQUIVO_ORIGINAL = nomeArquivoZip,
                 NOM_DIRETORIO_LOCAL = "Upload",
                 OID_USUARIO_CONTRIBUINTE = usuarioContribuinte.OID_USUARIO_CONTRIBUINTE
@@ -475,4 +478,4 @@ namespace Intech.EfdReinf.Negocio
 
         #endregion
     }
-}
+}

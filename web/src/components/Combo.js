@@ -15,7 +15,10 @@ export default class Combo extends Component {
 	static defaultProps = {
 		padrao: "",
 		opcoes: [],
-		textoVazio: "Selecione uma opção"
+		textoVazio: "Selecione uma opção",
+		nomeMembro: "NOM_DOMINIO",
+		valorMembro: "SIG_DOMINIO",
+		mostrarLabel: true
 	}
 
 	async componentDidMount() {
@@ -60,9 +63,11 @@ export default class Combo extends Component {
 
         return (
 			<Row className="form-group row">
-				{this.props.label && 
+				{this.props.label && this.props.mostrarLabel &&
 					<Col className={labelCol + " col-md-12 text-lg-right col-form-label"}>
-						<b><label htmlFor={this.props.nome}>{this.props.label}{this.props.obrigatorio && " *"}</label></b>
+						<b><label htmlFor={this.props.nome}>
+							{this.props.label} {this.props.obrigatorio && " *"}
+						</label></b>
 					</Col>
 				}
 
@@ -77,7 +82,7 @@ export default class Combo extends Component {
 						{
 							this.props.opcoes.map((opcao, index) => {
 								return (
-									<option key={index} value={opcao.SIG_DOMINIO}>{opcao.NOM_DOMINIO}</option>
+									<option key={index} value={opcao[this.props.valorMembro]}>{opcao[this.props.nomeMembro]}</option>
 								)
 							})
 						}

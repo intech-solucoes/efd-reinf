@@ -7,13 +7,13 @@ export default class ArquivosGerados extends Component {
     download = async (oidArquivoUpload) => { 
         try {
             var caminhoArquivo = await UploadService.BuscarPorOidArquivoUpload(oidArquivoUpload);
-            caminhoArquivo = caminhoArquivo.data.NOM_ARQUIVO_LOCAL;
-            var nomeArquivo = caminhoArquivo.split('\\');
-            nomeArquivo = nomeArquivo[1];
+            caminhoArquivo =  caminhoArquivo.data.NOM_ARQUIVO_LOCAL;
+            var apiUrl = process.env.API_URL;
+            apiUrl = apiUrl.substring(0, apiUrl.length - 4);
+            apiUrl = apiUrl + "/" + caminhoArquivo;
 
             const link = document.createElement('a');
-            link.href = caminhoArquivo;
-            link.setAttribute('download', nomeArquivo);
+            link.href = apiUrl;
             document.body.appendChild(link);
             link.click();
         } catch(err) {

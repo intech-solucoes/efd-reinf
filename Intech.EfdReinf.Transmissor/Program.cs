@@ -22,7 +22,10 @@ namespace Intech.EfdReinf.Transmissor
             {
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
-                Application.Run(new Transmissor());
+                var main = new Main();
+
+                Application.Run(main);
+                main.BringToFront();
             }
         }
     }
