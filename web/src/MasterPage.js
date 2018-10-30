@@ -114,10 +114,14 @@ export default class MasterPage extends React.Component {
                                 <Row>
                                     <Col>
                                         {nomeUsuario}<br/>
-                                        <small className={"text-primary"}>{nomeContribuinte}</small>
+                                        <Link to={"/editarContribuinte"}>
+                                            <small className={"text-primary"}>{nomeContribuinte}</small>
+                                        </Link>
                                     </Col>
                                     <Col tamanho={"2"}>
-                                        <img className="icon" src="./imagens/UserImage.jpg" alt="user" />
+                                        <Link to={"/minhaConta"}>
+                                            <img className="icon" src="./imagens/UserImage.jpg" alt="user" />
+                                        </Link>
                                     </Col>
                                 </Row>
                             </Col>

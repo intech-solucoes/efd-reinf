@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {
-    Home, MinhaConta, AlterarSenha, GeracaoXml, ImportacaoArquivos, EditarContribuinte
+    Home, MinhaConta, AlterarSenha, GeracaoXml, ImportacaoArquivos, EditarContribuinte, SelecionarContribuinte
 } from "./pages";
 
 export default function GetRotas() {
@@ -51,6 +51,20 @@ export default function GetRotas() {
             icone: "fas fa-table",
             caminho: "/geracaoXml",
             componente: (routeProps) => <GeracaoXml routeProps={routeProps} />,
+            mostrarMenu: true,
+            exact: false
+        },
+        {
+            titulo: "Selecionar Contribuinte",
+            icone: "fas fa-exchange-alt",
+            caminho: "/selecionarContribuinte",
+            componente: () => { 
+                localStorage.removeItem("contribuinte");
+                localStorage.removeItem("oidContribuinte");
+                document.location = '/selecionarContribuinte'
+                
+                return null;
+            },
             mostrarMenu: true,
             exact: false
         }
