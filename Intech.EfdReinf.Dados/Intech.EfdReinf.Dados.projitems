@@ -38,6 +38,7 @@
     <None Include="$(MSBuildThisFileDirectory)Scripts\ArquivoUpload\BuscarPorOidUsuarioContribuinte.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\ArquivoUpload\BuscarPorOidUsuarioContribuinteStatus.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\ContribuinteEnvio\BuscarPorOidContribuinte.sql" />
+    <None Include="$(MSBuildThisFileDirectory)Scripts\Contribuinte\BuscarAtivosPorOidUsuario.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\Contribuinte\BuscarPorCpfCnpj.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\Contribuinte\BuscarPorCpfCnpjOidUsuario.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\Contribuinte\BuscarPorOidUsuario.sql" />

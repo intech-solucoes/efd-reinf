@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
+using System.Xml.XPath;
 #endregion
 
 namespace Intech.EfdReinf.Transmissor
@@ -33,7 +34,7 @@ namespace Intech.EfdReinf.Transmissor
 
         private void ButtonProcurar_Click(object sender, EventArgs e)
         {
-            // Seleciona o arquivo gerado pelo BrPrev eFinanceira
+            // Seleciona o arquivo gerado pelo BrPrev Reinf
             var fileDialog = new OpenFileDialog();
             fileDialog.Filter = "Arquivos Zip (*.zip)|*.zip";
 
@@ -86,14 +87,14 @@ namespace Intech.EfdReinf.Transmissor
                     ProgressBarSecundaria.Maximum = 1;
                     dispatcher.DoEvents();
 
-                    var retorno = webServices.ReceberLoteEvento(XElement.Load(xml.InnerXml)).ToXmlNode();
+                    var retorno = webServices.ReceberLoteEvento(XElement.Parse(xml.InnerXml)).ToXmlNode();
 
                     ProgressBarSecundaria.Value = 1;
                     dispatcher.DoEvents();
 
                     string tipoEvento = assinador.BuscarElementoAssinar(xml);
 
-                    if (tipoEvento == "evtMovOpFin")
+                    if (tipoEvento == "evtServTom")
                     {
                         var sucesso = true;
                         var eventos = BuscaEventosRetorno(retorno);
@@ -124,8 +125,8 @@ namespace Intech.EfdReinf.Transmissor
                                 {
                                     var mensagem = BuscaMensagemEvento(eventos[i]);
 
-                                    // Atualiza a ocorrência no banco utilizando o webservice da EFIWeb/WS/WSEFinanceira.asmx
-                                    //wsEFinanceira.AtualizarOcorrenciaMovimento(oidMovimento, mensagem);
+                                    // Atualiza a ocorrência no banco utilizando o webservice da EFIWeb/WS/WSReinf.asmx
+                                    //wsReinf.AtualizarOcorrenciaMovimento(oidMovimento, mensagem);
                                     sucesso = false;
                                     dispatcher.DoEvents();
                                 }
@@ -139,9 +140,9 @@ namespace Intech.EfdReinf.Transmissor
                                 try
                                 {
                                     // Atualiza o status e o nº do recibo no banco utilizando 
-                                    // o webservice da EFIWeb/WS/WSEFinanceira.asmx
+                                    // o webservice da EFIWeb/WS/WSReinf.asmx
                                     var numRecibo = BuscaRecibo(eventos[i]);
-                                    //wsEFinanceira.AtualizarStatusMovimento(oidMovimento, numRecibo);
+                                    //wsReinf.AtualizarStatusMovimento(oidMovimento, numRecibo);
                                 }
                                 catch (Exception ex)
                                 {
@@ -182,8 +183,8 @@ namespace Intech.EfdReinf.Transmissor
                             MessageBox.Show("Arquivo enviado com sucesso!\nNúmero do recibo: " + numRecibo);
 
                             // Atualiza o status e o nº do recibo no banco utilizando 
-                            // o webservice da EFIWeb/WS/WSEFinanceira.asmx
-                            //wsEFinanceira.AtualizarStatusArquivo(TextBoxArquivo.Text, numRecibo);
+                            // o webservice da EFIWeb/WS/WSReinf.asmx
+                            //wsReinf.AtualizarStatusArquivo(TextBoxArquivo.Text, numRecibo);
                         }
                     }
 
@@ -219,15 +220,16 @@ namespace Intech.EfdReinf.Transmissor
         {
             try
             {
-                XmlNamespaceManager nsmgr;
+                XPathNavigator nav = xml.CreateNavigator();
+                var nsmgr = new XmlNamespaceManager(nav.NameTable);
 
                 if (xml.GetType() == typeof(XmlDocument))
                     nsmgr = new XmlNamespaceManager(((XmlDocument)xml).NameTable);
                 else
                     nsmgr = new XmlNamespaceManager(xml.OwnerDocument.NameTable);
 
-                nsmgr.AddNamespace("a", "http://www.eFinanceira.gov.br/schemas/retornoLoteEventos/v1_2_0");
-                nsmgr.AddNamespace("b", "http://www.eFinanceira.gov.br/schemas/retornoEvento/v1_2_0");
+                nsmgr.AddNamespace("a", "http://www.reinf.esocial.gov.br/schemas/retornoLoteEventos/v1_04_00");
+                nsmgr.AddNamespace("b", "http://www.reinf.esocial.gov.br/schemas/evtTotal/v1_04_00");
 
                 return xml.SelectNodes("//a:retornoLoteEventos/a:retornoEventos/a:evento", nsmgr);
             }
@@ -242,11 +244,12 @@ namespace Intech.EfdReinf.Transmissor
         {
             try
             {
-                var nsmgr = new XmlNamespaceManager(xml.OwnerDocument.NameTable);
-                nsmgr.AddNamespace("a", "http://www.eFinanceira.gov.br/schemas/retornoLoteEventos/v1_2_0");
-                nsmgr.AddNamespace("b", "http://www.eFinanceira.gov.br/schemas/retornoEvento/v1_2_0");
+                XPathNavigator nav = xml.CreateNavigator();
+                var nsmgr = new XmlNamespaceManager(nav.NameTable);
+                nsmgr.AddNamespace("a", "http://www.reinf.esocial.gov.br/schemas/retornoLoteEventos/v1_04_00");
+                nsmgr.AddNamespace("b", "http://www.reinf.esocial.gov.br/schemas/evtTotal/v1_04_00");
 
-                return xml.SelectSingleNode(".//b:eFinanceira/b:retornoEvento/b:dadosRecepcaoEvento/b:idEvento", nsmgr).InnerText;
+                return xml.SelectSingleNode(".//b:Reinf/b:retornoEvento/b:dadosRecepcaoEvento/b:idEvento", nsmgr).InnerText;
             }
             catch (Exception ex)
             {
@@ -259,11 +262,12 @@ namespace Intech.EfdReinf.Transmissor
         {
             try
             {
-                var nsmgr = new XmlNamespaceManager(xml.OwnerDocument.NameTable);
-                nsmgr.AddNamespace("a", "http://www.eFinanceira.gov.br/schemas/retornoLoteEventos/v1_2_0");
-                nsmgr.AddNamespace("b", "http://www.eFinanceira.gov.br/schemas/retornoEvento/v1_2_0");
+                XPathNavigator nav = xml.CreateNavigator();
+                var nsmgr = new XmlNamespaceManager(nav.NameTable);
+                nsmgr.AddNamespace("a", "http://www.reinf.esocial.gov.br/schemas/retornoLoteEventos/v1_04_00");
+                nsmgr.AddNamespace("b", "http://www.reinf.esocial.gov.br/schemas/evtTotal/v1_04_00");
 
-                return xml.SelectSingleNode(".//b:eFinanceira/b:retornoEvento/b:status/b:descRetorno", nsmgr).InnerText;
+                return xml.SelectSingleNode(".//b:Reinf/b:retornoEvento/b:status/b:descRetorno", nsmgr).InnerText;
             }
             catch (Exception ex)
             {
@@ -276,11 +280,12 @@ namespace Intech.EfdReinf.Transmissor
         {
             try
             {
-                var nsmgr = new XmlNamespaceManager(xml.OwnerDocument.NameTable);
-                nsmgr.AddNamespace("a", "http://www.eFinanceira.gov.br/schemas/retornoLoteEventos/v1_2_0");
-                nsmgr.AddNamespace("b", "http://www.eFinanceira.gov.br/schemas/retornoEvento/v1_2_0");
+                XPathNavigator nav = xml.CreateNavigator();
+                var nsmgr = new XmlNamespaceManager(nav.NameTable);
+                nsmgr.AddNamespace("a", "http://www.reinf.esocial.gov.br/schemas/retornoLoteEventos/v1_04_00");
+                nsmgr.AddNamespace("b", "http://www.reinf.esocial.gov.br/schemas/evtTotal/v1_04_00");
 
-                return xml.SelectSingleNode(".//b:eFinanceira/b:retornoEvento/b:status/b:dadosRegistroOcorrenciaEvento/b:ocorrencias/b:descricao", nsmgr).InnerText;
+                return xml.SelectSingleNode(".//b:Reinf/b:retornoEvento/b:status/b:dadosRegistroOcorrenciaEvento/b:ocorrencias/b:descricao", nsmgr).InnerText;
             }
             catch (Exception ex)
             {
@@ -293,11 +298,12 @@ namespace Intech.EfdReinf.Transmissor
         {
             try
             {
-                var nsmgr = new XmlNamespaceManager(xml.OwnerDocument.NameTable);
-                nsmgr.AddNamespace("a", "http://www.eFinanceira.gov.br/schemas/retornoLoteEventos/v1_2_0");
-                nsmgr.AddNamespace("b", "http://www.eFinanceira.gov.br/schemas/retornoEvento/v1_2_0");
+                XPathNavigator nav = xml.CreateNavigator();
+                var nsmgr = new XmlNamespaceManager(nav.NameTable);
+                nsmgr.AddNamespace("a", "http://www.reinf.esocial.gov.br/schemas/retornoLoteEventos/v1_04_00");
+                nsmgr.AddNamespace("b", "http://www.reinf.esocial.gov.br/schemas/evtTotal/v1_04_00");
 
-                return xml.SelectSingleNode(".//b:eFinanceira/b:retornoEvento/b:dadosReciboEntrega/b:numeroRecibo", nsmgr).InnerText;
+                return xml.SelectSingleNode(".//b:Reinf/b:retornoEvento/b:dadosReciboEntrega/b:numeroRecibo", nsmgr).InnerText;
             }
             catch (Exception ex)
             {
@@ -310,11 +316,12 @@ namespace Intech.EfdReinf.Transmissor
         {
             try
             {
-                var nsmgr = new XmlNamespaceManager(xml.OwnerDocument.NameTable);
-                nsmgr.AddNamespace("a", "http://www.eFinanceira.gov.br/schemas/retornoLoteEventos/v1_2_0");
-                nsmgr.AddNamespace("b", "http://www.eFinanceira.gov.br/schemas/retornoEvento/v1_2_0");
+                XPathNavigator nav = xml.CreateNavigator();
+                var nsmgr = new XmlNamespaceManager(nav.NameTable);
+                nsmgr.AddNamespace("a", "http://www.reinf.esocial.gov.br/schemas/retornoLoteEventos/v1_04_00");
+                nsmgr.AddNamespace("b", "http://www.reinf.esocial.gov.br/schemas/evtTotal/v1_04_00");
 
-                return xml.SelectSingleNode("//a:retornoLoteEventos/a:retornoEventos/a:evento/b:eFinanceira/b:retornoEvento/b:status/b:descRetorno", nsmgr).InnerText;
+                return xml.SelectSingleNode("//a:retornoLoteEventos/a:retornoEventos/a:evento/b:Reinf/b:evtTotal/b:ideRecRetorno/b:ideStatus/b:descRetorno", nsmgr).InnerText;
             }
             catch (Exception ex)
             {
@@ -327,11 +334,12 @@ namespace Intech.EfdReinf.Transmissor
         {
             try
             {
-                var nsmgr = new XmlNamespaceManager(xml.OwnerDocument.NameTable);
-                nsmgr.AddNamespace("a", "http://www.eFinanceira.gov.br/schemas/retornoLoteEventos/v1_2_0");
-                nsmgr.AddNamespace("b", "http://www.eFinanceira.gov.br/schemas/retornoEvento/v1_2_0");
+                XPathNavigator nav = xml.CreateNavigator();
+                var nsmgr = new XmlNamespaceManager(nav.NameTable);
+                nsmgr.AddNamespace("a", "http://www.reinf.esocial.gov.br/schemas/retornoLoteEventos/v1_04_00");
+                nsmgr.AddNamespace("b", "http://www.reinf.esocial.gov.br/schemas/evtTotal/v1_04_00");
 
-                return xml.SelectSingleNode("//a:retornoLoteEventos/a:retornoEventos/a:evento/b:eFinanceira/b:retornoEvento/b:status/b:dadosRegistroOcorrenciaEvento/b:ocorrencias/b:descricao", nsmgr).InnerText;
+                return xml.SelectSingleNode("//a:retornoLoteEventos/a:retornoEventos/a:evento/b:Reinf/b:evtTotal/b:ideRecRetorno/b:ideStatus/b:regOcorrs/b:dscResp", nsmgr).InnerText;
             }
             catch (Exception ex)
             {

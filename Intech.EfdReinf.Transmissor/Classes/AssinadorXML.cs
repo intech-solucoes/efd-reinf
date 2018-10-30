@@ -52,7 +52,7 @@ namespace Intech.EfdReinf.Transmissor.Classes
 
             // Cria um XmlNamespaceManager baseado no XML selecionado
             XmlNamespaceManager nsmgr = new XmlNamespaceManager(arquivoXML.NameTable);
-            nsmgr.AddNamespace("eFinanceira", arquivoXML.DocumentElement.NamespaceURI);
+            nsmgr.AddNamespace("Reinf", arquivoXML.DocumentElement.NamespaceURI);
 
             // Seleciona todos os eventos do lote
             XmlNodeList eventos = arquivoXML.SelectNodes("//Reinf:loteEventos/Reinf:evento", nsmgr);

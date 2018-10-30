@@ -4,7 +4,7 @@ export default class Home extends Component {
 
     render() {
         return (
-            <img src="./imagens/EsquemaEFD-Reinf.png" />
+            <img src="./imagens/EsquemaEFD-Reinf.png" alt="Esquema Intech EFD-Reinf" />
         );
     }
 

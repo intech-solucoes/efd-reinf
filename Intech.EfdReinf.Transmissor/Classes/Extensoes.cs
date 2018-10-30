@@ -9,7 +9,7 @@ namespace System
         {
             using (XmlReader xmlReader = element.CreateReader())
             {
-                XmlDocument xmlDoc = new XmlDocument();
+                XmlDocument xmlDoc = new XmlDocument(xmlReader.NameTable);
                 xmlDoc.Load(xmlReader);
                 return xmlDoc;
             }
