@@ -54,6 +54,8 @@ export default class EditarContribuinte extends Component {
     }
 
     componentDidMount = async () => {
+        await this.buscarDadosContribuinte();
+
         this.combos.tipoInscricao = await DominioService.BuscarPorCodigo("DMN_TIPO_INSCRICAO_EFD");
         this.combos.classificacaoTributaria = await DominioService.BuscarPorCodigo("DMN_CLASSIF_TRIBUT");
         this.combos.obrigatoriedadeECD = await DominioService.BuscarPorCodigo("DMN_OBRIGADO_EFD");
@@ -76,6 +78,31 @@ export default class EditarContribuinte extends Component {
         this.erros.push(mensagem);
         await this.setState({
             erros: this.erros
+        });
+    }
+
+    buscarDadosContribuinte = async () => {
+        var oidContribuinte = localStorage.getItem("contribuinte");
+        var contribuinte = await ContribuinteService.BuscarPorOidContribuinte(oidContribuinte);
+        contribuinte = contribuinte.data;
+        this.setState({ 
+            tipoInscricao: contribuinte.IND_TIPO_INSCRICAO,
+            razaoSocial: contribuinte.NOM_RAZAO_SOCIAL,
+            cnpj: contribuinte.COD_CNPJ_CPF,
+            inicioValidade: contribuinte.DTA_INICIO_VALIDADE,
+            terminoValidade: contribuinte.DTA_VALIDADE,
+            classificacaoTributaria: contribuinte.IND_CLASSIF_TRIBUT,
+            obrigatoriedadeECD: contribuinte.IND_OBRIGADA_ECD,
+            desoneracaoFolhaCPRB: contribuinte.IND_DESONERACAO_CPRB,
+            isencaoMulta: contribuinte.IND_ISENCAO_MULTA,
+            situacaoPJ: contribuinte.IND_SITUACAO_PJ,
+            enteFederativoResponsavel: contribuinte.IND_EFR,
+            cnpjEfr: contribuinte.COD_CNPJ_EFR,
+            nomeContato: contribuinte.NOM_CONTATO,
+            cpfContato: contribuinte.COD_CPF_CONTATO,
+            telefoneFixoContato: contribuinte.COD_FONE_FIXO_CONTATO,
+            telefoneCelularContato: contribuinte.COD_FONE_CELULAR_CONTATO,
+            emailContato: contribuinte.TXT_EMAIL_CONTATO,
         });
     }
 
@@ -133,10 +160,10 @@ export default class EditarContribuinte extends Component {
      * 'S', cnpjEfr não deve ser obrigatório; caso possua o valor 'N', cnpjEfr deve ser obrigatório.
      */
     handleEfrChange = async () => {
-        if(this.state.enteFederativoResponsavel !== 'N')
-            await this.setState({ cnpjEfrObrigatorio: false });
-        else
+        if(this.state.enteFederativoResponsavel === 'S')
             await this.setState({ cnpjEfrObrigatorio: true });
+        else if(this.state.enteFederativoResponsavel === 'N')
+            await this.setState({ cnpjEfrObrigatorio: false });
     }
 
     render() {
@@ -197,7 +224,7 @@ export default class EditarContribuinte extends Component {
                                     mascara={"99.999.999/9999-99"} botaoAjuda={textosAjuda.cnpjEfr} col="col-lg-5" />
 
                         <CampoTexto contexto={this} ref={ (input) => this.listaCampos[12] = input }
-                                    label={"Nome do Contato"} nome={"nomeContato"} tipo={"text"} 
+                                    label={"Nome do Contato"} nome={"nomeContato"} tipo={"text"} max={70}
                                     placeholder={"Nome do Contato"} obrigatorio={true} valor={this.state.nomeContato} 
                                     terminoValidadeobrigatorio={false} botaoAjuda={textosAjuda.nomeContato} col="col-lg-5" />
 
