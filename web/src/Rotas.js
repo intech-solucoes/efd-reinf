@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {
-    Home, MinhaConta, AlterarSenha, GeracaoXml, ImportacaoArquivos
+    Home, MinhaConta, AlterarSenha, GeracaoXml, ImportacaoArquivos, EditarContribuinte
 } from "./pages";
 
 export default function GetRotas() {
@@ -43,6 +43,14 @@ export default function GetRotas() {
             icone: "fas fa-file-import",
             caminho: "/importacaoArquivos",
             componente: (routeProps) => <ImportacaoArquivos routeProps={routeProps} />,
+            mostrarMenu: true,
+            exact: false
+        },
+        {
+            titulo: "Editar Contribuinte",
+            icone: "fas fa-user",
+            caminho: "/editarContribuinte",
+            componente: (routeProps) => <EditarContribuinte routeProps={routeProps} />,
             mostrarMenu: true,
             exact: false
         }
