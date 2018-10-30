@@ -200,7 +200,7 @@ export default class NovoContribuinte extends Component {
                                     mascara={"99.999.999/9999-99"} botaoAjuda={textosAjuda.cnpjEfr} col="col-lg-5" />
 
                         <CampoTexto contexto={this} ref={ (input) => this.listaCampos[12] = input }
-                                    label={"Nome do Contato"} nome={"nomeContato"} tipo={"text"} 
+                                    label={"Nome do Contato"} nome={"nomeContato"} tipo={"text"} max={70}
                                     placeholder={"Nome do Contato"} obrigatorio={true} valor={this.state.nomeContato} 
                                     terminoValidadeobrigatorio={false} botaoAjuda={textosAjuda.nomeContato} col="col-lg-5" />
 

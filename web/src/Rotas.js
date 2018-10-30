@@ -23,19 +23,19 @@ export default function GetRotas() {
             exact: false
         },
         {
+            titulo: "Contribuinte",
+            icone: "fas fa-building",
+            caminho: "/editarContribuinte",
+            componente: (routeProps) => <EditarContribuinte routeProps={routeProps} />,
+            mostrarMenu: true,
+            exact: false
+        },
+        {
             titulo: "Alterar Senha",
             icone: "",
             caminho: "/alterarSenha",
             componente: (routeProps) => <AlterarSenha routeProps={routeProps} />,
             mostrarMenu: false,
-            exact: false
-        },
-        {
-            titulo: "Geração XML",
-            icone: "fas fa-table",
-            caminho: "/geracaoXml",
-            componente: (routeProps) => <GeracaoXml routeProps={routeProps} />,
-            mostrarMenu: true,
             exact: false
         },
         {
@@ -47,10 +47,10 @@ export default function GetRotas() {
             exact: false
         },
         {
-            titulo: "Editar Contribuinte",
-            icone: "fas fa-user",
-            caminho: "/editarContribuinte",
-            componente: (routeProps) => <EditarContribuinte routeProps={routeProps} />,
+            titulo: "Geração XML",
+            icone: "fas fa-table",
+            caminho: "/geracaoXml",
+            componente: (routeProps) => <GeracaoXml routeProps={routeProps} />,
             mostrarMenu: true,
             exact: false
         }

@@ -102,7 +102,7 @@ export default class GeracaoXml extends Component {
             this.combos.dominioSimNao = await DominioService.BuscarPorCodigo("DMN_SN");
 
             // Busca usuários vinculados ao contribuinte.
-            var usuarios = await ContribuinteService.BuscarUsuariosPorOidContribuinte(this.oidContribuinte);
+            var usuarios = await ContribuinteService.BuscarPorOidContribuinte(this.oidContribuinte);
             usuarios = usuarios.data.Usuarios;
             var usuariosResponsaveis = [];
             var usuario = {};
@@ -153,8 +153,10 @@ export default class GeracaoXml extends Component {
         }
 
         // Em específico, a validação dos campos de Período é feita separadamente pois o Período não foi feito como um componente.
-        if(this.state.dataInicial === "" || this.state.dataFinal === "")
-            this.adicionarErro("Campo \"Período\" obrigatório.");
+        if(this.state.r2010) {
+            if(this.state.dataInicial === "" || this.state.dataFinal === "")
+                this.adicionarErro("Campo \"Período\" obrigatório.");
+        }
 
         if(this.state.erros.length === 0) {
             if(this.state.r1000)
