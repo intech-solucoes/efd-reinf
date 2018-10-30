@@ -115,7 +115,7 @@ export default class NovoContribuinte extends Component {
                       this.state.cpfContato, this.state.telefoneFixoContato, this.state.telefoneCelularContato, this.state.emailContato, this.state.emailContato);
 
                 alert("Contribuinte inserido com sucesso! Aguarde confirmação da Intech para iniciar a utilização do Intech EFD-Reinf!");
-                window.location.reload();
+                document.location = "/selecionarContribuinte";
                 
             } catch(err) {
 				if(err.response) {
