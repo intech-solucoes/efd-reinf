@@ -50,7 +50,7 @@ namespace Intech.EfdReinf.Negocio
                 OID_ARQUIVO_UPLOAD = oidArquivoUpload
             });
 
-            var id = "ID" + oidArquivoUpload.ToString().PadLeft(18, '0');
+            var id = "ID" + oidArquivoUpload.ToString().PadLeft(36, '0');
 
             if (contribuinte.IND_TIPO_INSCRICAO == DMN_TIPO_INSCRICAO_EFD.PESSOA_FISICA)
             {
