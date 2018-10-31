@@ -81,12 +81,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="Consulta.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Consulta.Designer.cs">
-      <DependentUpon>Consulta.cs</DependentUpon>
-    </Compile>
     <Compile Include="Home.cs">
       <SubType>UserControl</SubType>
     </Compile>
