@@ -26,6 +26,20 @@ namespace Intech.EfdReinf.API.Controllers
             }
         }
 
+        [HttpGet("ativos")]
+        [Authorize("Bearer")]
+        public IActionResult ListarAtivos()
+        {
+            try
+            {
+                return Json(new ContribuinteProxy().BuscarAtivosPorOidUsuario(OidUsuario));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpGet("{oid}")]
         [Authorize("Bearer")]
         public IActionResult Buscar(decimal oid)

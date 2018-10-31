@@ -23,7 +23,7 @@ export default class SelecionarContribuinte extends Component {
 
     async componentDidMount() {
         try {
-            var result = await ContribuinteService.Listar();
+            var result = await ContribuinteService.ListarAtivos();
             this.setState({
                 contribuintes: result.data
             });

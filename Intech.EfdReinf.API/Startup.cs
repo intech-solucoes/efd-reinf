@@ -110,12 +110,16 @@ namespace Intech.EfdReinf.API
                 cors.AllowAnyMethod();
             });
 
+            var uploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "Upload");
+
+            if (!Directory.Exists(uploadFolder))
+                Directory.CreateDirectory(uploadFolder);
+
             app.UseFileServer(new FileServerOptions
             {
-                FileProvider = new PhysicalFileProvider(
-                Path.Combine(Directory.GetCurrentDirectory(), "Upload")),
-                    RequestPath = "/Upload",
-                    EnableDirectoryBrowsing = true
+                FileProvider = new PhysicalFileProvider(uploadFolder),
+                RequestPath = "/Upload",
+                EnableDirectoryBrowsing = true
             });
 
             //app.UseHttpsRedirection();

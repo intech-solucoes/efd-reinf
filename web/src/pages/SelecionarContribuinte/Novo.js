@@ -115,7 +115,7 @@ export default class NovoContribuinte extends Component {
                       this.state.cpfContato, this.state.telefoneFixoContato, this.state.telefoneCelularContato, this.state.emailContato, this.state.emailContato);
 
                 alert("Contribuinte inserido com sucesso! Aguarde confirmação da Intech para iniciar a utilização do Intech EFD-Reinf!");
-                window.location.reload();
+                document.location = document.location.pathname;
                 
             } catch(err) {
 				if(err.response) {
@@ -130,13 +130,13 @@ export default class NovoContribuinte extends Component {
 
     /**
      * @description Método que altera o state de obrigatoriedade do campo cnpjEfr, cujo a regra é: caso o combo 'Ente Federativo Responsável' possua o valor 
-     * 'S', cnpjEfr não deve ser obrigatório; caso possua o valor 'N', cnpjEfr deve ser obrigatório.
+     * 'S', cnpjEfr deve ser obrigatório; caso possua o valor 'N', cnpjEfr não deve ser obrigatório.
      */
     handleEfrChange = async () => {
-        if(this.state.enteFederativoResponsavel !== 'N')
-            await this.setState({ cnpjEfrObrigatorio: false });
-        else
+        if(this.state.enteFederativoResponsavel === 'S')
             await this.setState({ cnpjEfrObrigatorio: true });
+        else if(this.state.enteFederativoResponsavel === 'N')
+            await this.setState({ cnpjEfrObrigatorio: false });
     }
 
     render() {
@@ -200,7 +200,7 @@ export default class NovoContribuinte extends Component {
                                     mascara={"99.999.999/9999-99"} botaoAjuda={textosAjuda.cnpjEfr} col="col-lg-5" />
 
                         <CampoTexto contexto={this} ref={ (input) => this.listaCampos[12] = input }
-                                    label={"Nome do Contato"} nome={"nomeContato"} tipo={"text"} 
+                                    label={"Nome do Contato"} nome={"nomeContato"} tipo={"text"} max={70}
                                     placeholder={"Nome do Contato"} obrigatorio={true} valor={this.state.nomeContato} 
                                     terminoValidadeobrigatorio={false} botaoAjuda={textosAjuda.nomeContato} col="col-lg-5" />
 
