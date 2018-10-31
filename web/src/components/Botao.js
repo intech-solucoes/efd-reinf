@@ -27,7 +27,7 @@ export default class Botao extends Component {
         var type = this.props.submit ? "submit" : "button";
 
         return (
-            <button type={type} className={"btn btn-" + this.props.tipo + block} onClick={this.onClick} disabled={this.state.carregando}>
+            <button type={type} className={"btn btn-" + this.props.tipo + block} onClick={this.onClick} disabled={this.props.desativado || this.state.carregando}>
                 {!this.state.carregando && 
                     this.props.titulo}
 

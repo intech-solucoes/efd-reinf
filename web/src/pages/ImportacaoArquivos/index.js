@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from "axios";
+import { Link } from "react-router-dom";
 import { Row, Col, Box, Combo, Botao, InputFile, PainelErros } from '../../components';
 import { DominioService, UploadService, ImportacaoCsvService } from "@intechprev/efdreinf-service";
 
@@ -21,12 +22,14 @@ export default class ImportacaoArquivos extends Component {
             visibilidadeInput: true,
             erros: []
         }
+
+        this.oidUsuarioContribuinte = localStorage.getItem("oidUsuarioContribuinte");
     }
 
     async componentDidMount() {
         window.scrollTo(0, 0);
         var comboSituacao = await DominioService.BuscarPorCodigo("DMN_STATUS_IMPORTACAO");
-        this.setState({ filtrarSituacaoCombo: comboSituacao, });
+        this.setState({ filtrarSituacaoCombo: comboSituacao.data });
         this.buscarArquivosImportados();
     }
 
@@ -55,16 +58,6 @@ export default class ImportacaoArquivos extends Component {
                 alert(err.response.data);
             else
                 console.error(err);
-        }
-    }
-
-    buscarArquivosImportados = async () => {
-        var oidUsuarioContribuinte = localStorage.getItem("oidUsuarioContribuinte");
-        try { 
-            var arquivosImportacao = await UploadService.BuscarPorOidUsuarioContribuinte(oidUsuarioContribuinte);
-            await this.setState({ arquivosImportacao: arquivosImportacao.data });
-        } catch(err) {
-            console.error(err);
         }
     }
 
@@ -109,10 +102,13 @@ export default class ImportacaoArquivos extends Component {
         }
     }
 
-    filtrarSituacao = async () => { 
-        var oidUsuarioContribuinte = localStorage.getItem("oidUsuarioContribuinte");
-        var arquivosImportacao = await UploadService.BuscarPorOidUsuarioContribuinteStatus(oidUsuarioContribuinte, this.state.situacao);
-        await this.setState({ arquivosImportacao: arquivosImportacao.data });
+    buscarArquivosImportados = async () => { 
+        try { 
+            var arquivosImportacao = await UploadService.BuscarPorOidUsuarioContribuinteStatus(this.oidUsuarioContribuinte, this.state.situacao);
+            await this.setState({ arquivosImportacao: arquivosImportacao.data });
+        } catch(err) {
+            console.error(err);
+        }
     }
 
     deletar = async (oidArquivoUpload) => {
@@ -135,7 +131,27 @@ export default class ImportacaoArquivos extends Component {
             document.body.appendChild(link);
             link.click();
         } catch(err) {
-            alert("Nenhum registro encontrado.");
+            alert("Nenhuma ocorrência encontrada.");
+        }
+    }
+
+    download = async (oidArquivoUpload) => { 
+        try {
+            var caminhoArquivo = await UploadService.BuscarPorOidArquivoUpload(oidArquivoUpload);
+            caminhoArquivo =  caminhoArquivo.data.NOM_ARQUIVO_LOCAL;
+            var apiUrl = process.env.API_URL;
+            apiUrl = apiUrl.substring(0, apiUrl.length - 4);
+            apiUrl = apiUrl + "/" + caminhoArquivo;
+
+            const link = document.createElement('a');
+            link.href = apiUrl;
+            document.body.appendChild(link);
+            link.click();
+        } catch(err) {
+            if(err.response.data) 
+                alert(err.response.data);
+            else 
+                console.error(err);
         }
     }
 
@@ -143,20 +159,34 @@ export default class ImportacaoArquivos extends Component {
         return (
             <div>
                 <Box titulo="Instruções">
-                    <h5>Para realizar uma importação de arquivo externo (formato CSV):</h5>
+                    <h6>Para realizar uma importação de arquivo externo (formato CSV):</h6>
                     <br />
-                    <h5>1. Selecione um arquivo para importação (botão "Selecione um arquivo..." e faça o upload no botão "Enviar");</h5>
-                    <h5>2. Selecione da lista o arquivo desejado para importação, se necessário filtre a situação do arquivo;</h5>
-                    <h5>3. Clique no botão "Importar";</h5>
-                    <h5>4. Caso ocorra erros durante a importação, no final do processo será impresso um relatório com os erros;</h5>
+                    <h6>1. Selecione um arquivo para importação (botão "Selecione um arquivo..." e faça o upload no botão "Enviar");</h6>
+                    <h6>2. Selecione da lista o arquivo desejado para importação, se necessário filtre a situação do arquivo;</h6>
+                    <h6>3. Clique no botão "Processar";</h6>
+                    <h6>4. Caso ocorra erros durante a importação, no final do processo será impresso um relatório com os erros;</h6>
+                    <h6>5. Após o processamento  o(s) arquivo(s) XML já podem ser gerados <Link to={"/geracaoXml"}>aqui</Link>.</h6>
                     <br />
-                    <h5>Links do Leiaute:</h5>
-                    <a href="layouts/LayoutImportacao-R1070 - Processos ADM-JUD.xlsx" download="LayoutImportacao-R1070 - Processos ADM-JUD.xlsx"><h5>-Leiaute Importação - Registro R-1070</h5></a>
-                    <a href="layouts/LayoutImportacao-R2010 - Retenção PREVIDENCIARIA.xlsx" download="LayoutImportacao-R2010 - Retenção PREVIDENCIARIA.xlsx"><h5>-Leiaute Importação - Registro R-2010</h5></a>
+
+                    Leiautes de Importação de Arquivos CSV:
                     <br />
-                    <h5>Manual de preenchimento:</h5>
-                    <a href=""><h5>-Manual de preenchimento - Registro R-1070.pdf</h5></a>
-                    <a href=""><h5>-Manual de preenchimento - Registro R-2010.pdf</h5></a>
+
+                    <a href="layouts/LayoutImportacao-R1070 - Processos ADM-JUD.xlsx" 
+                       download="LayoutImportacao-R1070 - Processos ADM-JUD.xlsx">
+                       -Leiaute Importação - Registro R-1070
+                    </a>
+                    <br />
+
+                    <a href="layouts/LayoutImportacao-R2010 - Retenção PREVIDENCIARIA.xlsx" 
+                       download="LayoutImportacao-R2010 - Retenção PREVIDENCIARIA.xlsx">
+                       -Leiaute Importação - Registro R-2010
+                    </a>
+                    <br /><br />
+
+                    Manual de preenchimento:
+                    <br />
+                    <a href="">-Manual de preenchimento - Registro R-1070.pdf</a><br />
+                    <a href="">-Manual de preenchimento - Registro R-2010.pdf</a>
                 </Box>
 
                 <Box titulo="Arquivo para Upload">
@@ -165,7 +195,7 @@ export default class ImportacaoArquivos extends Component {
                             {this.state.visibilidadeInput && 
                                 <div>
                                     <InputFile contexto={this} ref={ (input) => this.listaCampos[0] = input } label={"Arquivo para upload"}
-                                            nome={"arquivo"} aceita={".csv"} obrigatorio={true} valor={this.state.arquivo} onChange={this.uploadFile} />
+                                               nome={"arquivo"} aceita={".csv"} obrigatorio={true} onChange={this.uploadFile} />
                                     <Botao tipo={"primary btn-sm"} titulo={"Enviar"} clicar={this.enviar} />
                                 </div>
                             }
@@ -174,9 +204,9 @@ export default class ImportacaoArquivos extends Component {
                             }
                         </Col>
                     </Row>
-                    <br />
                     <Row>
                         <Col tamanho="5">
+                            {this.state.erros.length > 0 && <br />}
                             <PainelErros erros={this.state.erros} />
                         </Col>
                     </Row>
@@ -185,8 +215,8 @@ export default class ImportacaoArquivos extends Component {
                 <Box titulo={"Arquivo para Importação"}>
 
                     <Combo contexto={this} label={"Filtrar situação do arquivo"} ref={ (input) => this.listaCampos[1] = input } 
-                        nome="situacao" valor={this.state.situacao} col={"col-lg-6"} comboCol={"col-lg-4"}
-                        opcoes={this.state.filtrarSituacaoCombo.data} textoVazio={"Todos"} onChange={this.filtrarSituacao} />
+                           nome="situacao" valor={this.state.situacao} col={"col-lg-6"} comboCol={"col-lg-4"} padrao={"NAO"}
+                           opcoes={this.state.filtrarSituacaoCombo} textoVazio={"Todos"} onChange={this.buscarArquivosImportados} />
 
                     {this.state.arquivosImportacao.length > 0 &&
                         <table className="table table-striped">
@@ -198,32 +228,45 @@ export default class ImportacaoArquivos extends Component {
                                     <th>Status</th>
                                     <th>Usuário</th>
                                     <th></th>
-                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {
                                     this.state.arquivosImportacao.map((arquivo, index) => {
+                                        var status = arquivo.IND_STATUS === 'PRO' ? "Processado" : "Não Processado";
+                                        var corStatus = arquivo.IND_STATUS === 'PRO' ? "#14B449" : "blue";
+                                        var processarDesativado = arquivo.IND_STATUS === 'PRO' ? true : false;
+                                        var ocorrenciaDesativado = arquivo.IND_STATUS === 'PRO' ? false : true;
+
                                         return (
                                             <tr key={index}>
-                                                <td>
-                                                    <Botao tipo={"light btn-sm"} clicar={() => this.importarCsv(arquivo.OID_ARQUIVO_UPLOAD)}>
-                                                        <i className="fas fa-angle-right"></i>
-                                                        <i className="fas fa-angle-right"></i>
+                                                <td width="90">
+                                                    <Botao tipo={"light btn-sm"} clicar={() => this.importarCsv(arquivo.OID_ARQUIVO_UPLOAD)} 
+                                                           desativado={processarDesativado} usaLoading={true} >
+                                                        Processar
                                                     </Botao>
                                                 </td>
+
                                                 <td>{arquivo.NOM_ARQUIVO_ORIGINAL}</td>
-                                                <td>{arquivo.DTA_UPLOAD}</td>
-                                                <td>{arquivo.IND_STATUS}</td>
+
+                                                <td width="140">{arquivo.DTA_UPLOAD}</td>
+
+                                                <td width="120"><font color={corStatus}>{status}</font></td>
+
                                                 <td>{arquivo.NOM_USUARIO}</td>
-                                                <td>
-                                                    <Botao tipo={"light btn-sm"} clicar={() => this.gerarRelatorio(arquivo.OID_ARQUIVO_UPLOAD)}>
-                                                        <i className="fas fa-clipboard"></i>
-                                                    </Botao>
-                                                </td>
-                                                <td>
-                                                    <Botao tipo={"light btn-sm"} clicar={() => this.deletar(arquivo.OID_ARQUIVO_UPLOAD)}>
-                                                        <i className="fas fa-trash-alt"></i>
+
+                                                <td width="240">
+                                                    <Botao tipo={"light btn-sm"} clicar={() => this.gerarRelatorio(arquivo.OID_ARQUIVO_UPLOAD)}
+                                                           desativado={ocorrenciaDesativado} usaLoading={true} >
+                                                        Ocorrências
+                                                    </Botao>&nbsp;
+
+                                                    <Botao tipo={"light btn-sm"} clicar={() => this.deletar(arquivo.OID_ARQUIVO_UPLOAD)} usaLoading={true}>
+                                                        Excluir
+                                                    </Botao>&nbsp;
+
+                                                    <Botao tipo={"light btn-sm"} clicar={() => this.download(arquivo.OID_ARQUIVO_UPLOAD)} usaLoading={true}>
+                                                        Download
                                                     </Botao>
                                                 </td>
                                             </tr>
