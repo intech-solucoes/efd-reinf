@@ -4,6 +4,7 @@ import ContribuinteService from "./ContribuinteService";
 import DominioService from "./DominioService";
 import GeracaoXmlService from "./GeracaoXmlService";
 import UploadService from "./UploadService";
+import ImportacaoCsvService from "./ImportacaoCsvService";
 
 export {
     VersaoService,
@@ -11,5 +12,6 @@ export {
     ContribuinteService,
     DominioService,
     GeracaoXmlService,
-    UploadService
+    UploadService,
+    ImportacaoCsvService
 };

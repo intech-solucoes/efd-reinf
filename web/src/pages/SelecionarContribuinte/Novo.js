@@ -115,7 +115,7 @@ export default class NovoContribuinte extends Component {
                       this.state.cpfContato, this.state.telefoneFixoContato, this.state.telefoneCelularContato, this.state.emailContato, this.state.emailContato);
 
                 alert("Contribuinte inserido com sucesso! Aguarde confirmação da Intech para iniciar a utilização do Intech EFD-Reinf!");
-                window.location.reload();
+                document.location = document.location.pathname;
                 
             } catch(err) {
 				if(err.response) {
@@ -130,13 +130,13 @@ export default class NovoContribuinte extends Component {
 
     /**
      * @description Método que altera o state de obrigatoriedade do campo cnpjEfr, cujo a regra é: caso o combo 'Ente Federativo Responsável' possua o valor 
-     * 'S', cnpjEfr não deve ser obrigatório; caso possua o valor 'N', cnpjEfr deve ser obrigatório.
+     * 'S', cnpjEfr deve ser obrigatório; caso possua o valor 'N', cnpjEfr não deve ser obrigatório.
      */
     handleEfrChange = async () => {
-        if(this.state.enteFederativoResponsavel !== 'N')
-            await this.setState({ cnpjEfrObrigatorio: false });
-        else
+        if(this.state.enteFederativoResponsavel === 'S')
             await this.setState({ cnpjEfrObrigatorio: true });
+        else if(this.state.enteFederativoResponsavel === 'N')
+            await this.setState({ cnpjEfrObrigatorio: false });
     }
 
     render() {
@@ -149,7 +149,7 @@ export default class NovoContribuinte extends Component {
 
                         <Combo contexto={this} label={"Tipo de inscrição"} ref={ (input) => this.listaCampos[0] = input } 
                                nome="tipoInscricao" valor={this.state.tipoInscricao} obrigatorio={true} padrao={"1"}
-                               opcoes={this.state.combos.tipoInscricao.data} desabilitado={true} textoVazio="Selecione uma opção" col="col-lg-5" />
+                               opcoes={this.state.combos.tipoInscricao.data} desabilitado={true} textoVazio="Selecione uma opção" labelCol="col-lg-5" />
 
                         <CampoTexto contexto={this} ref={ (input) => this.listaCampos[1] = input }
                                     label={"Razão social"} nome={"razaoSocial"} tipo={"text"} max={115}
@@ -171,28 +171,28 @@ export default class NovoContribuinte extends Component {
 
                         <Combo contexto={this} label={"Classificação Tributária"} ref={ (input) => this.listaCampos[5] = input } 
                                nome="classificacaoTributaria" valor={this.state.classificacaoTributaria} obrigatorio={true} textoVazio="Selecione uma opção"
-                               opcoes={this.state.combos.classificacaoTributaria.data} botaoAjuda={textosAjuda.classificacaoTributaria} col="col-lg-5"  />
+                               opcoes={this.state.combos.classificacaoTributaria.data} botaoAjuda={textosAjuda.classificacaoTributaria} labelCol="col-lg-5"  />
 
                         <Combo contexto={this} label={"Obrigatoriedade ECD"} ref={ (input) => this.listaCampos[6] = input } 
                                nome="obrigatoriedadeECD" valor={this.state.obrigatoriedadeECD} obrigatorio={true} textoVazio="Selecione uma opção"
-                               opcoes={this.state.combos.obrigatoriedadeECD.data} botaoAjuda={textosAjuda.obrigatoriedadeECD} col="col-lg-5" />
+                               opcoes={this.state.combos.obrigatoriedadeECD.data} botaoAjuda={textosAjuda.obrigatoriedadeECD} labelCol="col-lg-5" />
 
                         <Combo contexto={this} label={"Desoneração Folha CPRB"} ref={ (input) => this.listaCampos[7] = input } 
                                nome="desoneracaoFolhaCPRB" valor={this.state.desoneracaoFolhaCPRB} obrigatorio={true} textoVazio="Selecione uma opção"
-                               opcoes={this.state.combos.desoneracaoFolhaCPRB.data} botaoAjuda={textosAjuda.desoneracaoFolhaCPRB} col="col-lg-5" />
+                               opcoes={this.state.combos.desoneracaoFolhaCPRB.data} botaoAjuda={textosAjuda.desoneracaoFolhaCPRB} labelCol="col-lg-5" />
 
                         <Combo contexto={this} label={"Isenção Multa"} ref={ (input) => this.listaCampos[8] = input } 
                                nome="isencaoMulta" valor={this.state.isencaoMulta} obrigatorio={true} textoVazio="Selecione uma opção"
-                               opcoes={this.state.combos.isencaoMulta.data} botaoAjuda={textosAjuda.isencaoMulta} col="col-lg-5" />
+                               opcoes={this.state.combos.isencaoMulta.data} botaoAjuda={textosAjuda.isencaoMulta} labelCol="col-lg-5" />
 
                         <Combo contexto={this} label={"Situação PJ"} ref={ (input) => this.listaCampos[9] = input } 
                                nome="situacaoPJ" valor={this.state.situacaoPJ} obrigatorio={true} textoVazio="Selecione uma opção"
-                               opcoes={this.state.combos.situacaoPJ.data} botaoAjuda={textosAjuda.situacaoPJ} col="col-lg-5" />
+                               opcoes={this.state.combos.situacaoPJ.data} botaoAjuda={textosAjuda.situacaoPJ} labelCol="col-lg-5" />
 
                         <Combo contexto={this} label={"Ente Federativo Responsável (EFR)"} ref={ (input) => this.listaCampos[10] = input } 
                                nome="enteFederativoResponsavel" valor={this.state.enteFederativoResponsavel} obrigatorio={true}
                                opcoes={this.state.combos.enteFederativoResponsavel.data} botaoAjuda={textosAjuda.enteFederativoResponsavel} 
-                               onChange={this.handleEfrChange} col="col-lg-5" textoVazio="Selecione uma opção" />
+                               onChange={this.handleEfrChange} labelCol="col-lg-5" textoVazio="Selecione uma opção" />
 
                         <CampoTexto contexto={this} ref={ (input) => this.listaCampos[11] = input } 
                                     placeholder={"CNPJ EFR"} valor={this.state.cnpjEfr} label={"CNPJ EFR"} 
@@ -200,7 +200,7 @@ export default class NovoContribuinte extends Component {
                                     mascara={"99.999.999/9999-99"} botaoAjuda={textosAjuda.cnpjEfr} col="col-lg-5" />
 
                         <CampoTexto contexto={this} ref={ (input) => this.listaCampos[12] = input }
-                                    label={"Nome do Contato"} nome={"nomeContato"} tipo={"text"} 
+                                    label={"Nome do Contato"} nome={"nomeContato"} tipo={"text"} max={70}
                                     placeholder={"Nome do Contato"} obrigatorio={true} valor={this.state.nomeContato} 
                                     terminoValidadeobrigatorio={false} botaoAjuda={textosAjuda.nomeContato} col="col-lg-5" />
 

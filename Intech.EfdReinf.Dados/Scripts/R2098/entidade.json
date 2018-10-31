@@ -1,3 +1,15 @@
 ﻿{
-  "nomeTabela": "EFD_R2098"
+    "nomeTabela": "EFD_R2098",
+    "colunasExtras": [
+        {
+            "nome": "DTA_UPLOAD",
+            "tipo": "DateTime",
+            "aceitaNulo": true
+        },
+        {
+            "nome": "IND_STATUS",
+            "tipo": "string",
+            "aceitaNulo": true
+        }
+    ]
 }

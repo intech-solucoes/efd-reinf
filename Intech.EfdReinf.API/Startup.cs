@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Intech.Lib.Data.Erros;
@@ -11,6 +12,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -85,6 +87,8 @@ namespace Intech.EfdReinf.API
                     .RequireAuthenticatedUser().Build());
             });
 
+
+
             ErrosBanco.Popular();
         }
 
@@ -104,6 +108,18 @@ namespace Intech.EfdReinf.API
                 cors.AllowAnyHeader();
                 cors.AllowAnyOrigin();
                 cors.AllowAnyMethod();
+            });
+
+            var uploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "Upload");
+
+            if (!Directory.Exists(uploadFolder))
+                Directory.CreateDirectory(uploadFolder);
+
+            app.UseFileServer(new FileServerOptions
+            {
+                FileProvider = new PhysicalFileProvider(uploadFolder),
+                RequestPath = "/Upload",
+                EnableDirectoryBrowsing = true
             });
 
             //app.UseHttpsRedirection();

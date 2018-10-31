@@ -13,6 +13,40 @@ namespace Intech.EfdReinf.Dados.DAO
     public abstract class R2010DAO : BaseDAO<R2010Entidade>
     {
         
+		public virtual IEnumerable<DateTime> BuscarDatasEnviados(decimal OID_CONTRIBUINTE)
+		{
+			try
+			{
+				if(AppSettings.IS_SQL_SERVER_PROVIDER)
+					return Conexao.Query<DateTime>("SELECT DTA_APURACAO FROM EFD_R2010 WHERE OID_CONTRIBUINTE = @OID_CONTRIBUINTE   AND IND_SITUACAO_PROCESSAMENTO = 'ENV' ORDER BY DTA_APURACAO", new { OID_CONTRIBUINTE });
+				else if(AppSettings.IS_ORACLE_PROVIDER)
+					return Conexao.Query<DateTime>("SELECT DTA_APURACAO FROM EFD_R2010 WHERE OID_CONTRIBUINTE=:OID_CONTRIBUINTE AND IND_SITUACAO_PROCESSAMENTO='ENV' ORDER BY DTA_APURACAO", new { OID_CONTRIBUINTE });
+				else
+					throw new Exception("Provider não suportado!");
+			}
+			finally
+			{
+				Conexao.Close();
+			}
+		}
+
+		public virtual IEnumerable<R2010Entidade> BuscarPorOidContribuinte(decimal OID_CONTRIBUINTE)
+		{
+			try
+			{
+				if(AppSettings.IS_SQL_SERVER_PROVIDER)
+					return Conexao.Query<R2010Entidade>("SELECT EFD_R2010.*,     EFD_ARQUIVO_UPLOAD.DTA_UPLOAD,     EFD_ARQUIVO_UPLOAD.IND_STATUS FROM EFD_R2010 INNER JOIN EFD_ARQUIVO_UPLOAD ON EFD_ARQUIVO_UPLOAD.OID_ARQUIVO_UPLOAD = EFD_R2010.OID_ARQUIVO_UPLOAD WHERE OID_CONTRIBUINTE = @OID_CONTRIBUINTE", new { OID_CONTRIBUINTE });
+				else if(AppSettings.IS_ORACLE_PROVIDER)
+					return Conexao.Query<R2010Entidade>("SELECT EFD_R2010.*, EFD_ARQUIVO_UPLOAD.DTA_UPLOAD, EFD_ARQUIVO_UPLOAD.IND_STATUS FROM EFD_R2010 INNER  JOIN EFD_ARQUIVO_UPLOAD  ON EFD_ARQUIVO_UPLOAD.OID_ARQUIVO_UPLOAD=EFD_R2010.OID_ARQUIVO_UPLOAD WHERE OID_CONTRIBUINTE=:OID_CONTRIBUINTE", new { OID_CONTRIBUINTE });
+				else
+					throw new Exception("Provider não suportado!");
+			}
+			finally
+			{
+				Conexao.Close();
+			}
+		}
+
 		public virtual IEnumerable<R2010Entidade> BuscarPorOidContribuinteDtaInicioDtaFimIndSituacaoProcessamento(decimal OID_CONTRIBUINTE, DateTime DTA_INICIO, DateTime DTA_FIM, string IND_SITUACAO_PROCESSAMENTO)
 		{
 			try

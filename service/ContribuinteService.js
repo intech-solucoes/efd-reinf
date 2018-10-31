@@ -13,6 +13,14 @@ class UsuarioService extends BaseService {
     Listar() {
         return this.CriarRequisicao("GET", "/contribuinte");
     }
+
+    ListarAtivos() {
+        return this.CriarRequisicao("GET", "/contribuinte/ativos");
+    }
+
+    BuscarPorOidContribuinte(oidContribuinte) { 
+        return this.CriarRequisicao("GET", `/contribuinte/${oidContribuinte}`);
+    }
 }
 
 export default new UsuarioService();

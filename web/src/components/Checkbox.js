@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 
 export default class Checkbox extends Component {
-    constructor(props) {
-        super(props);
-    }
 
     onChange = async (e) => {
         var context = this.props.contexto;

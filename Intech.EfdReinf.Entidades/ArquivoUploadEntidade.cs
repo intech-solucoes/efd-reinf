@@ -16,8 +16,7 @@ namespace Intech.EfdReinf.Entidades
 		public string NOM_DIRETORIO_LOCAL { get; set; }
 		public string NOM_ARQUIVO_LOCAL { get; set; }
 		public string IND_STATUS { get; set; }
-        [Write(false)]
-		public string NOM_USUARIO { get; set; }
+		[Write(false)] public string NOM_USUARIO { get; set; }
         
     }
 }
