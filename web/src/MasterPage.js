@@ -72,7 +72,7 @@ export default class MasterPage extends React.Component {
                     <nav className="navbar-default nav-open">
                         <ul>
                             <li className="navbar-header">
-                                <img src="./imagens/intech.png" alt="Intech" />
+                                <img src="./imagens/IntechSemSlogan.png" alt="IntechSemSlogan" />
                             </li>
                             {
                                 rotas.map((rota, index) => {
