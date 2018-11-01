@@ -90,7 +90,7 @@ namespace Intech.EfdReinf.Negocio.Proxy
             contribuinte.COD_FONE_CELULAR_CONTATO = contribuinte.COD_FONE_CELULAR_CONTATO.LimparMascara();
             contribuinte.COD_FONE_FIXO_CONTATO = contribuinte.COD_FONE_FIXO_CONTATO.LimparMascara();
             contribuinte.DTA_VALIDADE = DateTime.Now;
-            contribuinte.IND_APROVADO = DMN_SN.NAO;
+            contribuinte.IND_APROVADO = DMN_SN.SIM;
 
             var proxyContribuinte = new ContribuinteProxy();
             var proxyUsuarioContribuinte = new UsuarioContribuinteProxy();
