@@ -15,9 +15,10 @@ export default class Radio extends Component {
 
     render() {
         return (
-            <div className="radio">
-                <label>
-                    <input type="radio" value={this.props.valor} checked={this.props.marcado} onChange={this.onChange} />
+            <div className="form-check">
+                <input className={"form-check-input"} name={this.props.nome} id={this.props.nome} type="radio" 
+                       value={this.props.valor} checked={this.props.marcado} onChange={this.onChange} />
+                <label className="form-check-label" htmlFor={this.props.nome} >
                     {this.props.label}
                 </label>
             </div>
