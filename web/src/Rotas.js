@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {
-    Home, MinhaConta, AlterarSenha, GeracaoXml, ImportacaoArquivos
+    Home, MinhaConta, AlterarSenha, GeracaoXml, ImportacaoArquivos, EditarContribuinte, SelecionarContribuinte
 } from "./pages";
 
 export default function GetRotas() {
@@ -23,11 +23,27 @@ export default function GetRotas() {
             exact: false
         },
         {
+            titulo: "Contribuinte",
+            icone: "fas fa-building",
+            caminho: "/editarContribuinte",
+            componente: (routeProps) => <EditarContribuinte routeProps={routeProps} />,
+            mostrarMenu: true,
+            exact: false
+        },
+        {
             titulo: "Alterar Senha",
             icone: "",
             caminho: "/alterarSenha",
             componente: (routeProps) => <AlterarSenha routeProps={routeProps} />,
             mostrarMenu: false,
+            exact: false
+        },
+        {
+            titulo: "Importação de Arquivos",
+            icone: "fas fa-file-import",
+            caminho: "/importacaoArquivos",
+            componente: (routeProps) => <ImportacaoArquivos routeProps={routeProps} />,
+            mostrarMenu: true,
             exact: false
         },
         {
@@ -39,10 +55,16 @@ export default function GetRotas() {
             exact: false
         },
         {
-            titulo: "Importação de Arquivos",
-            icone: "fas fa-file-import",
-            caminho: "/importacaoArquivos",
-            componente: (routeProps) => <ImportacaoArquivos routeProps={routeProps} />,
+            titulo: "Selecionar Contribuinte",
+            icone: "fas fa-exchange-alt",
+            caminho: "/selecionarContribuinte",
+            componente: () => { 
+                localStorage.removeItem("contribuinte");
+                localStorage.removeItem("oidContribuinte");
+                document.location = '/selecionarContribuinte'
+                
+                return null;
+            },
             mostrarMenu: true,
             exact: false
         }

@@ -5,7 +5,7 @@ import { ContribuinteService, DominioService } from "@intechprev/efdreinf-servic
 
 const textosAjuda = require('../../Textos');
 
-export default class NovoContribuinte extends Component {
+export default class EditarContribuinte extends Component {
     constructor(props) {
         super(props);
         
@@ -54,6 +54,8 @@ export default class NovoContribuinte extends Component {
     }
 
     componentDidMount = async () => {
+        await this.buscarDadosContribuinte();
+
         this.combos.tipoInscricao = await DominioService.BuscarPorCodigo("DMN_TIPO_INSCRICAO_EFD");
         this.combos.classificacaoTributaria = await DominioService.BuscarPorCodigo("DMN_CLASSIF_TRIBUT");
         this.combos.obrigatoriedadeECD = await DominioService.BuscarPorCodigo("DMN_OBRIGADO_EFD");
@@ -79,7 +81,32 @@ export default class NovoContribuinte extends Component {
         });
     }
 
-    novo = async () => {
+    buscarDadosContribuinte = async () => {
+        var oidContribuinte = localStorage.getItem("contribuinte");
+        var contribuinte = await ContribuinteService.BuscarPorOidContribuinte(oidContribuinte);
+        contribuinte = contribuinte.data;
+        this.setState({ 
+            tipoInscricao: contribuinte.IND_TIPO_INSCRICAO,
+            razaoSocial: contribuinte.NOM_RAZAO_SOCIAL,
+            cnpj: contribuinte.COD_CNPJ_CPF,
+            inicioValidade: contribuinte.DTA_INICIO_VALIDADE,
+            terminoValidade: contribuinte.DTA_VALIDADE,
+            classificacaoTributaria: contribuinte.IND_CLASSIF_TRIBUT,
+            obrigatoriedadeECD: contribuinte.IND_OBRIGADA_ECD,
+            desoneracaoFolhaCPRB: contribuinte.IND_DESONERACAO_CPRB,
+            isencaoMulta: contribuinte.IND_ISENCAO_MULTA,
+            situacaoPJ: contribuinte.IND_SITUACAO_PJ,
+            enteFederativoResponsavel: contribuinte.IND_EFR,
+            cnpjEfr: contribuinte.COD_CNPJ_EFR,
+            nomeContato: contribuinte.NOM_CONTATO,
+            cpfContato: contribuinte.COD_CPF_CONTATO,
+            telefoneFixoContato: contribuinte.COD_FONE_FIXO_CONTATO,
+            telefoneCelularContato: contribuinte.COD_FONE_CELULAR_CONTATO,
+            emailContato: contribuinte.TXT_EMAIL_CONTATO,
+        });
+    }
+
+    alterar = async () => {
         // Validação dos campos de telefone: ao menos um telefone do contato deve ser fornecido, e estes não devem estar inválidos.
         await this.setState({ tamanhoMinimoTelefoneCelular: 0, tamanhoMinimoTelefoneFixo: 0 });
 
@@ -107,20 +134,15 @@ export default class NovoContribuinte extends Component {
             await this.adicionarErro("Pelo menos um telefone do contato deve ser fornecido");
 
         if(this.state.erros.length === 0) {
-            // Criar contribuinte.
+            // Atualizar dados do contribuinte.
             try {
-                var contribuinte = await ContribuinteService.Criar(this.state.razaoSocial, this.state.tipoInscricao, this.state.cnpj, this.state.inicioValidade, 
-                      this.state.terminoValidade, this.state.classificacaoTributaria, this.state.obrigatoriedadeECD, this.state.desoneracaoFolhaCPRB, 
-                      this.state.isencaoMulta, this.state.situacaoPJ, this.state.enteFederativoResponsavel, this.state.cnpjEfr, this.state.nomeContato, 
-                      this.state.cpfContato, this.state.telefoneFixoContato, this.state.telefoneCelularContato, this.state.emailContato, this.state.emailContato);
+                // await ContribuinteService.AlterarDados(this.state.razaoSocial, this.state.tipoInscricao, this.state.cnpj, this.state.inicioValidade, 
+                //       this.state.terminoValidade, this.state.classificacaoTributaria, this.state.obrigatoriedadeECD, this.state.desoneracaoFolhaCPRB, 
+                //       this.state.isencaoMulta, this.state.situacaoPJ, this.state.enteFederativoResponsavel, this.state.cnpjEfr, this.state.nomeContato, 
+                //       this.state.cpfContato, this.state.telefoneFixoContato, this.state.telefoneCelularContato, this.state.emailContato, this.state.emailContato);
 
-                contribuinte = contribuinte.data;
-                alert("Contribuinte inserido com sucesso!");
-
-                localStorage.setItem("contribuinte", contribuinte.OID_CONTRIBUINTE);
-                localStorage.setItem("nomeContribuinte", contribuinte.NOM_RAZAO_SOCIAL);
-                localStorage.setItem("oidUsuarioContribuinte", contribuinte.Usuarios[0].OID_USUARIO_CONTRIBUINTE);
-                document.location = '/';
+                alert("Contribuinte alterado com sucesso! Aguarde confirmação da Intech para iniciar a utilização do Intech EFD-Reinf!");
+                window.location.reload();
                 
             } catch(err) {
 				if(err.response) {
@@ -135,7 +157,7 @@ export default class NovoContribuinte extends Component {
 
     /**
      * @description Método que altera o state de obrigatoriedade do campo cnpjEfr, cujo a regra é: caso o combo 'Ente Federativo Responsável' possua o valor 
-     * 'S', cnpjEfr deve ser obrigatório; caso possua o valor 'N', cnpjEfr não deve ser obrigatório.
+     * 'S', cnpjEfr não deve ser obrigatório; caso possua o valor 'N', cnpjEfr deve ser obrigatório.
      */
     handleEfrChange = async () => {
         if(this.state.enteFederativoResponsavel === 'S')
@@ -149,9 +171,6 @@ export default class NovoContribuinte extends Component {
             <div>
                 <Row>
                     <Col>
-                        <h4>Novo Contribuinte</h4>
-                        <br/>
-
                         <Combo contexto={this} label={"Tipo de inscrição"} ref={ (input) => this.listaCampos[0] = input } 
                                nome="tipoInscricao" valor={this.state.tipoInscricao} obrigatorio={true} padrao={"1"}
                                opcoes={this.state.combos.tipoInscricao.data} desabilitado={true} textoVazio="Selecione uma opção" labelCol="col-lg-5" />
@@ -239,7 +258,7 @@ export default class NovoContribuinte extends Component {
                                 <PainelErros erros={this.state.erros} />
 
                                 <br />
-                                <Botao titulo={"Incluir Novo Contribuinte"} tipo={"primary"} clicar={this.novo}
+                                <Botao titulo={"Alterar Dados do Contribuinte"} tipo={"primary"} clicar={this.alterar}
                                     block={true} usaLoading={true} />
 
                             </Col>
