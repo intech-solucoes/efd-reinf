@@ -78,8 +78,8 @@ namespace Intech.EfdReinf.Negocio.Proxy
             if(!string.IsNullOrEmpty(contribuinte.TXT_EMAIL_CONTATO) && !Validador.ValidarEmail(contribuinte.TXT_EMAIL_CONTATO))
                 throw new Exception("E-mail inválido.");
 
-            if (contribuinte.IND_EFR == DMN_EFR_EFD.NAO && string.IsNullOrEmpty(contribuinte.COD_CNPJ_EFR))
-                throw new Exception("CNPJ do Ente Federativo Responsável - EFR é obrigatório e exclusivo se EFR = Não. Informação validada no cadastro do CNPJ da RFB.");
+            if (contribuinte.IND_EFR == DMN_EFR_EFD.SIM && string.IsNullOrEmpty(contribuinte.COD_CNPJ_EFR))
+                throw new Exception("CNPJ do Ente Federativo Responsável - EFR é obrigatório e exclusivo se EFR = Sim. Informação validada no cadastro do CNPJ da RFB.");
             
             if (contribuinte.DTA_FIM_VALIDADE != null && contribuinte.DTA_INICIO_VALIDADE > contribuinte.DTA_FIM_VALIDADE)
                 throw new Exception("A data de Término Validade deve ser maior que a data de Início Validade");
