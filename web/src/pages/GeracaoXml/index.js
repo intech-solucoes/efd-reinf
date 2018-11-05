@@ -191,8 +191,8 @@ export default class GeracaoXml extends Component {
         } else if(this.state.opcaoSelecionada === "r2099") {
             await this.carregaReferenciaR2099();
             camposVisiveis = ["referencia", "referenciaAno", "contratacaoServicos", "prestacaoServicos", 
-                                  "associacaoDesportiva", "repasseAssociacaoDesportiva", "producaoRural",
-                                  "pagamentosDiversos", "competencia"];
+                              "associacaoDesportiva", "repasseAssociacaoDesportiva", "producaoRural",
+                              "pagamentosDiversos", "competencia"];
                                   
             await this.handleVisibilidade(camposVisiveis);
             await this.carregaCompetenciaAno();
@@ -205,13 +205,11 @@ export default class GeracaoXml extends Component {
      */
     handleVisibilidade = async (campos) => {
         for(var key in this.visibilidade) {
-            if(campos.includes(key)) {
+            if(campos.includes(key))
                 this.visibilidade[key] = true;
-            } else {
+            else
                 this.visibilidade[key] = false;
-            }
         }
-        await this.setState({ visibilidade: this.visibilidade });
 
         if(campos !== "contribuinte")
             this.setState({ 
@@ -254,7 +252,7 @@ export default class GeracaoXml extends Component {
             });
         }
 
-        if(this.state.r2098) {
+        if(this.state.opcaoSelecionada === 'r2098') {
             for(var i = 0; i < this.datas.length; i++) {
                 if(this.datas[i].Ano === Number(this.state.referenciaAno)) {
                     for(var j = 0; j < this.datas[i].Meses.length; j++) {
@@ -264,7 +262,7 @@ export default class GeracaoXml extends Component {
                    await this.setState({ combos: this.combos });
                 }
             }
-        } else if(this.state.r2099) {
+        } else if(this.state.opcaoSelecionada === 'r2099') {
             // Chamar rota que busca as datas exceto R2010
         }
     }
