@@ -40,7 +40,7 @@ namespace Intech.EfdReinf.API
                     jsonOptions.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                     jsonOptions.SerializerSettings.Formatting = Formatting.Indented;
                     jsonOptions.SerializerSettings.ContractResolver = new DefaultContractResolver();
-                    jsonOptions.SerializerSettings.DateFormatString = "dd/MM/yyyy";
+                    jsonOptions.SerializerSettings.DateFormatString = "dd/MM/yyyy HH:mm:ss";
                 });
 
             services.AddMemoryCache();

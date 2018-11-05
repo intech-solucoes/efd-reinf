@@ -109,13 +109,18 @@ export default class NovoContribuinte extends Component {
         if(this.state.erros.length === 0) {
             // Criar contribuinte.
             try {
-                await ContribuinteService.Criar(this.state.razaoSocial, this.state.tipoInscricao, this.state.cnpj, this.state.inicioValidade, 
+                var contribuinte = await ContribuinteService.Criar(this.state.razaoSocial, this.state.tipoInscricao, this.state.cnpj, this.state.inicioValidade, 
                       this.state.terminoValidade, this.state.classificacaoTributaria, this.state.obrigatoriedadeECD, this.state.desoneracaoFolhaCPRB, 
                       this.state.isencaoMulta, this.state.situacaoPJ, this.state.enteFederativoResponsavel, this.state.cnpjEfr, this.state.nomeContato, 
                       this.state.cpfContato, this.state.telefoneFixoContato, this.state.telefoneCelularContato, this.state.emailContato, this.state.emailContato);
 
-                alert("Contribuinte inserido com sucesso! Aguarde confirmação da Intech para iniciar a utilização do Intech EFD-Reinf!");
-                document.location = document.location.pathname;
+                contribuinte = contribuinte.data;
+                alert("Contribuinte inserido com sucesso!");
+
+                localStorage.setItem("contribuinte", contribuinte.OID_CONTRIBUINTE);
+                localStorage.setItem("nomeContribuinte", contribuinte.NOM_RAZAO_SOCIAL);
+                localStorage.setItem("oidUsuarioContribuinte", contribuinte.Usuarios[0].OID_USUARIO_CONTRIBUINTE);
+                document.location = '/';
                 
             } catch(err) {
 				if(err.response) {
@@ -200,7 +205,7 @@ export default class NovoContribuinte extends Component {
                                     mascara={"99.999.999/9999-99"} botaoAjuda={textosAjuda.cnpjEfr} col="col-lg-5" />
 
                         <CampoTexto contexto={this} ref={ (input) => this.listaCampos[12] = input }
-                                    label={"Nome do Contato"} nome={"nomeContato"} tipo={"text"} 
+                                    label={"Nome do Contato"} nome={"nomeContato"} tipo={"text"} max={70}
                                     placeholder={"Nome do Contato"} obrigatorio={true} valor={this.state.nomeContato} 
                                     terminoValidadeobrigatorio={false} botaoAjuda={textosAjuda.nomeContato} col="col-lg-5" />
 

@@ -72,7 +72,7 @@ export default class MasterPage extends React.Component {
                     <nav className="navbar-default nav-open">
                         <ul>
                             <li className="navbar-header">
-                                <img src="./imagens/intech.png" alt="Intech" />
+                                <img src="./imagens/IntechSemSlogan.png" alt="IntechSemSlogan" />
                             </li>
                             {
                                 rotas.map((rota, index) => {
@@ -114,10 +114,14 @@ export default class MasterPage extends React.Component {
                                 <Row>
                                     <Col>
                                         {nomeUsuario}<br/>
-                                        <small className={"text-primary"}>{nomeContribuinte}</small>
+                                        <Link to={"/editarContribuinte"}>
+                                            <small className={"text-primary"}>{nomeContribuinte}</small>
+                                        </Link>
                                     </Col>
                                     <Col tamanho={"2"}>
-                                        <img className="icon" src="./imagens/UserImage.jpg" alt="user" />
+                                        <Link to={"/minhaConta"}>
+                                            <img className="icon" src="./imagens/UserImage.jpg" alt="user" />
+                                        </Link>
                                     </Col>
                                 </Row>
                             </Col>
