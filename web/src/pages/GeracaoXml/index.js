@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Botao, CampoTexto, Combo, Checkbox, Box, Col, Row, PainelErros } from '../../components';
+import { Botao, CampoTexto, Combo, Box, Col, Row, PainelErros, Radio } from '../../components';
 import { handleFieldChange } from "@intechprev/react-lib";
 import ArquivosGerados from './ArquivosGerados';
 
@@ -13,12 +13,8 @@ export default class GeracaoXml extends Component {
         this.erros = [];
 
         this.state = {
-            // States de Campos:
-            r1000: false,
-            r1070: false,
-            r2010: false,
-            r2098: false,
-            r2099: false,
+            // States dos campos:
+            opcaoSelecionada: "r1000",
 
             tipoOperacao: "",
             ambienteEnvio: "",
@@ -35,13 +31,6 @@ export default class GeracaoXml extends Component {
             pagamentosDiversos: "",
             competenciaAno: "",
             competenciaMes: "",
-
-            // States de visibilidade e campos desabilitados:
-            checkboxR1000Desabilitado: false,
-            checkboxR1070Desabilitado: false,
-            checkboxR2010Desabilitado: false,
-            checkboxR2098Desabilitado: false,
-            checkboxR2099Desabilitado: false,
 
             visibilidade: {
                 tipoOperacao: false,
@@ -113,6 +102,7 @@ export default class GeracaoXml extends Component {
             this.combos.usuarioResponsavel = usuariosResponsaveis;
             await this.setState({ combos: this.combos });
             
+            this.alternarCampos();
             this.buscarArquivosGerados();
         } catch(err) {
             console.error(err);
@@ -131,6 +121,10 @@ export default class GeracaoXml extends Component {
         await this.setState({
             erros: this.erros
         });
+    }
+    
+    changeAmbienteEnvio = async () => { 
+        // Dar update na EFD_CONTRIBUINTE
     }
 
     buscarArquivosGerados = async () => { 
@@ -159,83 +153,67 @@ export default class GeracaoXml extends Component {
         }
 
         if(this.state.erros.length === 0) {
-            if(this.state.r1000)
+            if(this.state.opcaoSelecionada === 'r1000')
                 await this.validarR1000();
-            if(this.state.r1070)
+            if(this.state.opcaoSelecionada === 'r1070')
                 await this.validarR1070();
-            if(this.state.r2010)
+            if(this.state.opcaoSelecionada === 'r2010')
                 await this.validarR2010();
-            if(this.state.r2098)
+            if(this.state.opcaoSelecionada === 'r2098')
                 await this.validarR2098();
-            if(this.state.r2099)
+            if(this.state.opcaoSelecionada === 'r2099')
                 await this.validarR2099();
         }
     }
 
-    onChange = async (checkbox) => { 
-        await this.limparErros();
+    alternarCampos = async () => {
+        var camposVisiveis = [];
+        if(this.state.opcaoSelecionada === "r1000") {
+            this.combos.tipoOperacao = await DominioService.BuscarPorCodigo("DMN_OPER_REGISTRO");
+            camposVisiveis = ["tipoOperacao", "contribuinte", "usuarioResponsavel"];
 
-        if(checkbox !== 'r1000')
-            await this.setState({ r1000: false, checkboxR1000Desabilitado: !this.state.checkboxR1000Desabilitado });
-        if(checkbox !== 'r1070')
-            await this.setState({ r1070: false, checkboxR1070Desabilitado: !this.state.checkboxR1070Desabilitado });
-        if(checkbox !== 'r2010')
-            await this.setState({ r2010: false, checkboxR2010Desabilitado: !this.state.checkboxR2010Desabilitado });
-        if(checkbox !== 'r2098')
-            await this.setState({ r2098: false, checkboxR2098Desabilitado: !this.state.checkboxR2098Desabilitado });
-        if(checkbox !== 'r2099')
-            await this.setState({ r2099: false, checkboxR2099Desabilitado: !this.state.checkboxR2099Desabilitado });
+            await this.handleVisibilidade(camposVisiveis);
+
+        } else if(this.state.opcaoSelecionada === "r1070") {
+            camposVisiveis = [];
+            await this.handleVisibilidade(camposVisiveis);
+
+        } else if(this.state.opcaoSelecionada === "r2010") {
+            this.combos.tipoOperacao = await DominioService.BuscarPorCodigo("DMN_EFD_RETIFICADORA");
+            camposVisiveis = ["tipoOperacao", "data"];
+            await this.handleVisibilidade(camposVisiveis);
+
+        } else if(this.state.opcaoSelecionada === "r2098") {
+            await this.carregaReferenciaR2098();
+            camposVisiveis = ["referencia", "referenciaAno"];
+            await this.handleVisibilidade(camposVisiveis);
+
+        } else if(this.state.opcaoSelecionada === "r2099") {
+            await this.carregaReferenciaR2099();
+            camposVisiveis = ["referencia", "referenciaAno", "contratacaoServicos", "prestacaoServicos", 
+                              "associacaoDesportiva", "repasseAssociacaoDesportiva", "producaoRural",
+                              "pagamentosDiversos", "competencia"];
+                                  
+            await this.handleVisibilidade(camposVisiveis);
+            await this.carregaCompetenciaAno();
+        }
     }
 
-    onChangeR1000 = async (checkbox) => {
-        this.onChange(checkbox);
-        this.combos.tipoOperacao = await DominioService.BuscarPorCodigo("DMN_OPER_REGISTRO");
-        this.handleVisibilidade("tipoOperacao");
-        this.handleVisibilidade("contribuinte");
-        this.handleVisibilidade("usuarioResponsavel");
-        this.handleVisibilidade("ambienteEnvio");
-    }
+    /**
+     * @param campos Array com o 'nome' de cada campo que ficará visível.
+     * @description Método que altera o estado de visibilidade de cada campo dentro do array para true, e a visibilidade dos outros campos para false.
+     */
+    handleVisibilidade = async (campos) => {
+        for(var key in this.visibilidade) {
+            if(campos.includes(key))
+                this.visibilidade[key] = true;
+            else
+                this.visibilidade[key] = false;
+        }
 
-    onChangeR1070 = async (checkbox) => {
-        this.onChange(checkbox);
-        this.handleVisibilidade("ambienteEnvio");
-    }
-
-    onChangeR2010 = async (checkbox) => {
-        this.onChange(checkbox);
-        this.combos.tipoOperacao = await DominioService.BuscarPorCodigo("DMN_EFD_RETIFICADORA");
-        this.handleVisibilidade("tipoOperacao");
-        this.handleVisibilidade("ambienteEnvio");
-        this.handleVisibilidade("data");
-    }
-
-    onChangeR2098 = async (checkbox) => {
-        this.onChange(checkbox);
-        await this.carregaReferenciaR2098();
-        this.handleVisibilidade("ambienteEnvio");
-        this.handleVisibilidade("referencia");
-    }
-
-    onChangeR2099 = async (checkbox) => {
-        this.onChange(checkbox);
-        await this.carregaReferenciaR2099();
-        this.handleVisibilidade("ambienteEnvio");
-        this.handleVisibilidade("referencia");
-        this.handleVisibilidade("contratacaoServicos");
-        this.handleVisibilidade("prestacaoServicos");
-        this.handleVisibilidade("associacaoDesportiva");
-        this.handleVisibilidade("repasseAssociacaoDesportiva");
-        this.handleVisibilidade("producaoRural");
-        this.handleVisibilidade("pagamentosDiversos");
-        this.handleVisibilidade("competencia");
-        this.carregaCompetenciaAno();
-    }
-
-    handleVisibilidade = async (campo) => {
-        this.visibilidade[campo] = !this.state.visibilidade[campo];
-        if(campo !== "contribuinte")
+        if(campos !== "contribuinte")
             this.setState({ 
-                [campo]: "",
+                [campos]: "",
                 visibilidade: this.visibilidade
             });
     }
@@ -274,17 +252,17 @@ export default class GeracaoXml extends Component {
             });
         }
 
-        if(this.state.r2098) {
+        if(this.state.opcaoSelecionada === 'r2098') {
             for(var i = 0; i < this.datas.length; i++) {
                 if(this.datas[i].Ano === Number(this.state.referenciaAno)) {
                     for(var j = 0; j < this.datas[i].Meses.length; j++) {
                         mes = {nome: this.datas[i].Meses[j], valor: this.datas[i].Meses[j]}
                         this.combos.referenciaMes.push(mes);
                     }
-                   await  this.setState({ combos: this.combos });
+                   await this.setState({ combos: this.combos });
                 }
             }
-        } else if(this.state.r2099) {
+        } else if(this.state.opcaoSelecionada === 'r2099') {
             // Chamar rota que busca as datas exceto R2010
         }
     }
@@ -419,162 +397,157 @@ export default class GeracaoXml extends Component {
     }
 
     render() {
-        var opcaoSelecionada = this.state.r1000 || this.state.r1070 || this.state.r2010 || this.state.r2098 || this.state.r2099;
 
         return (
             <div>
                 <Box titulo={"Tipo de Registro"}>
-                    <Checkbox contexto={this} nome={"r1000"} onChange={() => this.onChangeR1000('r1000')}
-                              valor={this.state.r1000} desabilitado={this.state.checkboxR1000Desabilitado} label={"R-1000 - Informações do Contribuinte"} />
+                    <Combo contexto={this} label={"Ambiente para envio"} ref={ (input) => this.listaCampos[1] = input } 
+                           nome="ambienteEnvio" valor={this.state.ambienteEnvio} comboCol={"col-3"}
+                           opcoes={this.state.combos.ambienteEnvio.data} onChange={this.changeAmbienteEnvio} />
 
-                    <Checkbox contexto={this} nome={"r1070"} onChange={() => this.onChangeR1070('r1070')}
-                              valor={this.state.r1070} desabilitado={this.state.checkboxR1070Desabilitado} label={"R-1070 - Tabela de Processos Administrativos/Judiciais"} />
+                    <Radio contexto={this} nome={"r1000"} marcado={this.state.opcaoSelecionada === 'r1000'} 
+                           label={"R-1000 - Informações do Contribuinte"} valor={"r1000"} onChange={this.alternarCampos} />
 
-                    <Checkbox contexto={this} nome={"r2010"} onChange={() => this.onChangeR2010('r2010')}
-                              valor={this.state.r2010} desabilitado={this.state.checkboxR2010Desabilitado} label={"R-2010 - Retenção Contribuição Previdenciária - Serviços Tomados"} />
-                                
-                    <Checkbox contexto={this} nome={"r2098"} onChange={() => this.onChangeR2098('r2098')}
-                              valor={this.state.r2098} desabilitado={this.state.checkboxR2098Desabilitado} label={"R-2098 - Reabertura dos Eventos Periódicos"} />
+                    <Radio contexto={this} nome={"r1070"} marcado={this.state.opcaoSelecionada === 'r1070'} 
+                           label={"R-1070 - Tabela de Processos Administrativos/Judiciais"} valor={"r1070"} onChange={this.alternarCampos} />
 
-                    <Checkbox contexto={this} nome={"r2099"} onChange={() => this.onChangeR2099('r2099')}
-                              valor={this.state.r2099} desabilitado={this.state.checkboxR2099Desabilitado} label={"R-2099 - Fechamento de Eventos Periódicos"} />
+                    <Radio contexto={this} nome={"r2010"} marcado={this.state.opcaoSelecionada === 'r2010'} 
+                           label={"R-2010 - Retenção Contribuição Previdenciária - Serviços Tomados"} valor={"r2010"} onChange={this.alternarCampos} />
+                           
+                    <Radio contexto={this} nome={"r2098"} marcado={this.state.opcaoSelecionada === 'r2098'} 
+                           label={"R-2098 - Reabertura dos Eventos Periódicos"} valor={"r2098"} onChange={this.alternarCampos} />
+
+                    <Radio contexto={this} nome={"r2099"} marcado={this.state.opcaoSelecionada === 'r2099'} 
+                           label={"R-2099 - Fechamento de Eventos Periódicos"} valor={"r2099"} onChange={this.alternarCampos} />
                 </Box>
 
-                {opcaoSelecionada &&
-                    <Box>
-                        {this.state.visibilidade.tipoOperacao &&
-                            <Combo contexto={this} label={"Tipo de operação"} ref={ (input) => this.listaCampos[0] = input } 
-                                   nome="tipoOperacao" valor={this.state.tipoOperacao} obrigatorio={true} 
-                                   opcoes={this.state.combos.tipoOperacao.data} />
-                        }
+                <Box>
+                    {this.state.visibilidade.tipoOperacao &&
+                        <Combo contexto={this} label={"Tipo de operação"} ref={ (input) => this.listaCampos[0] = input } 
+                                nome="tipoOperacao" valor={this.state.tipoOperacao} obrigatorio={true} 
+                                opcoes={this.state.combos.tipoOperacao.data} />
+                    }
 
-                        {this.state.visibilidade.ambienteEnvio && 
-                            <Combo contexto={this} label={"Ambiente para envio"} ref={ (input) => this.listaCampos[1] = input } 
-                                   nome="ambienteEnvio" valor={this.state.ambienteEnvio} obrigatorio={true}
-                                   opcoes={this.state.combos.ambienteEnvio.data} />
-                        }
+                    {this.state.visibilidade.contribuinte &&
+                        <CampoTexto contexto={this} ref={ (input) => this.listaCampos[2] = input }
+                                    label={"Contribuinte"} nome={"contribuinte"} tipo={"text"} 
+                                    placeholder={"Contribuinte"} valor={this.state.contribuinte}
+                                    obrigatorio={true} desabilitado={true} />
+                    }
 
-                        {this.state.visibilidade.contribuinte &&
-                            <CampoTexto contexto={this} ref={ (input) => this.listaCampos[2] = input }
-                                        label={"Contribuinte"} nome={"contribuinte"} tipo={"text"} 
-                                        placeholder={"Contribuinte"} valor={this.state.contribuinte}
-                                        obrigatorio={true} desabilitado={true} />
-                        }
+                    {this.state.visibilidade.usuarioResponsavel &&
+                        <Combo contexto={this} label={"Usuário Responsável"} ref={ (input) => this.listaCampos[3] = input } 
+                                nome="usuarioResponsavel" valor={this.state.usuarioResponsavel} obrigatorio={true}
+                                opcoes={this.state.combos.usuarioResponsavel} nomeMembro={"nome"} valorMembro={"valor"} />
+                    }
 
-                        {this.state.visibilidade.usuarioResponsavel &&
-                            <Combo contexto={this} label={"Usuário Responsável"} ref={ (input) => this.listaCampos[3] = input } 
-                                   nome="usuarioResponsavel" valor={this.state.usuarioResponsavel} obrigatorio={true}
-                                   opcoes={this.state.combos.usuarioResponsavel} nomeMembro={"nome"} valorMembro={"valor"} />
-                        }
-
-                        {this.state.visibilidade.data &&
-                            <Row>
-                                <Col>
-                                    <div className="form-group row">
-                                        <div className="col-lg-2 col-md-12 text-lg-right col-form-label"> 
-                                            <b><label htmlFor="dataInicial"> 
-                                                Período * 
-                                            </label></b> 
-                                        </div> 
-
-                                        <div className="col-3"> 
-                                            <input className="form-control" name="dataInicial" id="dataInicial" type="date" value={this.state.dataInicial} 
-                                                   onChange={async (e) => handleFieldChange(this, e)} /> 
-                                        </div> 
-
-                                        <div className="col-form-label"> 
-                                            <b><label htmlFor="dataFinal"> a </label></b> 
-                                        </div> 
-
-                                        <div className="col-3"> 
-                                            <input className="form-control" name="dataFinal" id="dataFinal" type="date" 
-                                                   value={(this.state.dataFinal)} onChange={(e) => handleFieldChange(this, e)} /> 
-                                        </div> 
+                    {this.state.visibilidade.data &&
+                        <Row>
+                            <Col>
+                                <div className="form-group row">
+                                    <div className="col-lg-2 col-md-12 text-lg-right col-form-label"> 
+                                        <b><label htmlFor="dataInicial"> 
+                                            Período * 
+                                        </label></b> 
                                     </div> 
-                                </Col>
-                            </Row>
-                        }
 
-                        {this.state.visibilidade.referencia &&
-                            <Row>
-                                <Col className="col-4">
-                                    <Combo contexto={this} label={"Referência"} ref={ (input) => this.listaCampos[5] = input } labelCol="col-lg-6"
-                                           nome="referenciaAno" valor={this.state.referenciaAno} obrigatorio={true} comboCol="col-6"
-                                           opcoes={this.state.combos.referenciaAno} nomeMembro={"Ano"} valorMembro={"Ano"} onChange={this.carregaReferenciaMes} />
-                                </Col>
-    
-                                <Col>
-                                    <Combo contexto={this} label={"Referência"} ref={ (input) => this.listaCampos[6] = input } mostrarLabel={false}
-                                           nome="referenciaMes" valor={this.state.referenciaMes} obrigatorio={true} comboCol="col-3"
-                                           opcoes={this.state.combos.referenciaMes} nomeMembro={"nome"} valorMembro={"valor"} />
-                                </Col>
-                            </Row>
-                        }
-                        <br />
-                        {this.state.visibilidade.contratacaoServicos &&
-                            <Combo contexto={this} ref={ (input) => this.listaCampos[7] = input } labelCol="col-lg-4"
-                                    label={"Contratou serviços sujeitos à retenção de contribuição previdenciária?"}
-                                    nome="contratacaoServicos" valor={this.state.contratacaoServicos} obrigatorio={true}
-                                    opcoes={this.state.combos.dominioSimNao.data} />
-                        }
+                                    <div className="col-3"> 
+                                        <input className="form-control" name="dataInicial" id="dataInicial" type="date" value={this.state.dataInicial} 
+                                                onChange={async (e) => handleFieldChange(this, e)} /> 
+                                    </div> 
 
-                        {this.state.visibilidade.prestacaoServicos &&
-                            <Combo contexto={this} ref={ (input) => this.listaCampos[8] = input } labelCol="col-lg-4"
-                                    label={"Prestou serviços sujeitos à retenção de contribuição previdenciária?"} 
-                                    nome="prestacaoServicos" valor={this.state.prestacaoServicos} obrigatorio={true}
-                                    opcoes={this.state.combos.dominioSimNao.data} />
-                        }
+                                    <div className="col-form-label"> 
+                                        <b><label htmlFor="dataFinal"> a </label></b> 
+                                    </div> 
 
-                        {this.state.visibilidade.associacaoDesportiva &&
-                            <Combo contexto={this} ref={ (input) => this.listaCampos[9] = input } labelCol="col-lg-4"
-                                    label={"A associação desportiva que mantém equipe de futebol profissional, possui informações sobre recursos recebidos?"}
-                                    nome="associacaoDesportiva" valor={this.state.associacaoDesportiva} obrigatorio={true}
-                                    opcoes={this.state.combos.dominioSimNao.data} />
-                        }
+                                    <div className="col-3"> 
+                                        <input className="form-control" name="dataFinal" id="dataFinal" type="date" 
+                                                value={(this.state.dataFinal)} onChange={(e) => handleFieldChange(this, e)} /> 
+                                    </div> 
+                                </div> 
+                            </Col>
+                        </Row>
+                    }
 
-                        {this.state.visibilidade.repasseAssociacaoDesportiva &&
-                            <Combo contexto={this} ref={ (input) => this.listaCampos[10] = input } labelCol="col-lg-4"
-                                    label={"Possui informações sobre repasses efetuados à associação desportiva que mantém equipe de futebol profissional?"}
-                                    nome="repasseAssociacaoDesportiva" valor={this.state.repasseAssociacaoDesportiva} obrigatorio={true}
-                                    opcoes={this.state.combos.dominioSimNao.data} />
-                        }
+                    {this.state.visibilidade.referencia &&
+                        <Row>
+                            <Col className="col-4">
+                                <Combo contexto={this} label={"Referência"} ref={ (input) => this.listaCampos[5] = input } labelCol="col-lg-6"
+                                        nome="referenciaAno" valor={this.state.referenciaAno} obrigatorio={true} comboCol="col-6"
+                                        opcoes={this.state.combos.referenciaAno} nomeMembro={"Ano"} valorMembro={"Ano"} onChange={this.carregaReferenciaMes} />
+                            </Col>
 
-                        {this.state.visibilidade.producaoRural && 
-                            <Combo contexto={this} ref={ (input) => this.listaCampos[11] = input } labelCol="col-lg-4"
-                                    label={"O produtor rural PJ/Agroindústria possui informações de comercialização de produção?"} 
-                                    nome="producaoRural" valor={this.state.producaoRural} obrigatorio={true}
-                                    opcoes={this.state.combos.dominioSimNao.data} />
-                        }
+                            <Col>
+                                <Combo contexto={this} label={"Referência"} ref={ (input) => this.listaCampos[6] = input } mostrarLabel={false}
+                                        nome="referenciaMes" valor={this.state.referenciaMes} obrigatorio={true} comboCol="col-3"
+                                        opcoes={this.state.combos.referenciaMes} nomeMembro={"nome"} valorMembro={"valor"} />
+                            </Col>
+                        </Row>
+                    }
+                    <br />
+                    {this.state.visibilidade.contratacaoServicos &&
+                        <Combo contexto={this} ref={ (input) => this.listaCampos[7] = input } labelCol="col-lg-4"
+                                label={"Contratou serviços sujeitos à retenção de contribuição previdenciária?"}
+                                nome="contratacaoServicos" valor={this.state.contratacaoServicos} obrigatorio={true}
+                                opcoes={this.state.combos.dominioSimNao.data} />
+                    }
 
-                        {this.state.visibilidade.pagamentosDiversos &&
-                            <Combo contexto={this} ref={ (input) => this.listaCampos[12] = input } labelCol="col-lg-4"
-                                   label={"Possui informações de pagamentos diversos no período de apuração?"}
-                                   nome="pagamentosDiversos" valor={this.state.pagamentosDiversos} obrigatorio={true}
-                                   opcoes={this.state.combos.dominioSimNao.data} /> 
-                        }
+                    {this.state.visibilidade.prestacaoServicos &&
+                        <Combo contexto={this} ref={ (input) => this.listaCampos[8] = input } labelCol="col-lg-4"
+                                label={"Prestou serviços sujeitos à retenção de contribuição previdenciária?"} 
+                                nome="prestacaoServicos" valor={this.state.prestacaoServicos} obrigatorio={true}
+                                opcoes={this.state.combos.dominioSimNao.data} />
+                    }
 
-                        {this.state.visibilidade.competencia && 
-                            <Row>
-                                <Col>
-                                    <Combo contexto={this} ref={ (input) => this.listaCampos[13] = input } labelCol="col-lg-8"
-                                           label={"Competência a partir da qual não houve movimento, cuja situação perdura até a competência atual."}
-                                           nome="competenciaAno" valor={this.state.competenciaAno} comboCol="col-4" onChange={() => this.carregaCompetenciaMes()}
-                                           opcoes={this.state.combos.competenciaAno} nomeMembro={"nome"} valorMembro={"valor"} obrigatorio={true} />
-                                </Col>
-                                <Col>
-                                    <Combo contexto={this} ref={ (input) => this.listaCampos[14] = input }
-                                           label={"Competência a partir da qual não houve movimento, cuja situação perdura até a competência atual."}
-                                           nome="competenciaMes" valor={this.state.competenciaMes} comboCol="col-4" obrigatorio={true} mostrarLabel={false}
-                                           opcoes={this.state.combos.competenciaMes} labelCol="col-lg-4" nomeMembro={"nome"} valorMembro={"valor"} />
-                                </Col>
-                            </Row>
-                        }
+                    {this.state.visibilidade.associacaoDesportiva &&
+                        <Combo contexto={this} ref={ (input) => this.listaCampos[9] = input } labelCol="col-lg-4"
+                                label={"A associação desportiva que mantém equipe de futebol profissional, possui informações sobre recursos recebidos?"}
+                                nome="associacaoDesportiva" valor={this.state.associacaoDesportiva} obrigatorio={true}
+                                opcoes={this.state.combos.dominioSimNao.data} />
+                    }
 
-                        <PainelErros erros={this.state.erros} />
+                    {this.state.visibilidade.repasseAssociacaoDesportiva &&
+                        <Combo contexto={this} ref={ (input) => this.listaCampos[10] = input } labelCol="col-lg-4"
+                                label={"Possui informações sobre repasses efetuados à associação desportiva que mantém equipe de futebol profissional?"}
+                                nome="repasseAssociacaoDesportiva" valor={this.state.repasseAssociacaoDesportiva} obrigatorio={true}
+                                opcoes={this.state.combos.dominioSimNao.data} />
+                    }
 
-                        <Botao titulo={"Gerar"} tipo={"primary"} clicar={this.gerar} usaLoading={true} />
-                    </Box>
-                }
+                    {this.state.visibilidade.producaoRural && 
+                        <Combo contexto={this} ref={ (input) => this.listaCampos[11] = input } labelCol="col-lg-4"
+                                label={"O produtor rural PJ/Agroindústria possui informações de comercialização de produção?"} 
+                                nome="producaoRural" valor={this.state.producaoRural} obrigatorio={true}
+                                opcoes={this.state.combos.dominioSimNao.data} />
+                    }
+
+                    {this.state.visibilidade.pagamentosDiversos &&
+                        <Combo contexto={this} ref={ (input) => this.listaCampos[12] = input } labelCol="col-lg-4"
+                                label={"Possui informações de pagamentos diversos no período de apuração?"}
+                                nome="pagamentosDiversos" valor={this.state.pagamentosDiversos} obrigatorio={true}
+                                opcoes={this.state.combos.dominioSimNao.data} /> 
+                    }
+
+                    {this.state.visibilidade.competencia && 
+                        <Row>
+                            <Col>
+                                <Combo contexto={this} ref={ (input) => this.listaCampos[13] = input } labelCol="col-lg-8"
+                                        label={"Competência a partir da qual não houve movimento, cuja situação perdura até a competência atual."}
+                                        nome="competenciaAno" valor={this.state.competenciaAno} comboCol="col-4" onChange={() => this.carregaCompetenciaMes()}
+                                        opcoes={this.state.combos.competenciaAno} nomeMembro={"nome"} valorMembro={"valor"} obrigatorio={true} />
+                            </Col>
+                            <Col>
+                                <Combo contexto={this} ref={ (input) => this.listaCampos[14] = input }
+                                        label={"Competência a partir da qual não houve movimento, cuja situação perdura até a competência atual."}
+                                        nome="competenciaMes" valor={this.state.competenciaMes} comboCol="col-4" obrigatorio={true} mostrarLabel={false}
+                                        opcoes={this.state.combos.competenciaMes} labelCol="col-lg-4" nomeMembro={"nome"} valorMembro={"valor"} />
+                            </Col>
+                        </Row>
+                    }
+
+                    <PainelErros erros={this.state.erros} />
+
+                    <Botao titulo={"Gerar"} tipo={"primary"} clicar={this.gerar} usaLoading={true} />
+                </Box>
 
                 <ArquivosGerados arquivos={this.state.arquivosGerados} />
             </div>

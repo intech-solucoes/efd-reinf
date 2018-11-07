@@ -61,7 +61,7 @@ export default function GetRotas() {
             componente: () => { 
                 localStorage.removeItem("contribuinte");
                 localStorage.removeItem("oidContribuinte");
-                document.location = '/selecionarContribuinte'
+                document.location = document.location.pathname;
                 
                 return null;
             },
