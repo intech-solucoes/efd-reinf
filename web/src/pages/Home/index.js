@@ -17,6 +17,16 @@ export default class Home extends Component {
                 
                 <Row>
                     <Col className="col-lg-8">
+                        <Box titulo="Faça aqui o download do transmissor:">
+                            <h5>
+                                <i className="fas fa-download"></i> <a href="">Transmissor</a>
+                            </h5>
+                        </Box>
+                    </Col>
+                </Row>
+
+                <Row>
+                    <Col className="col-lg-8">
                         <Box>
                             <div align="center">
                                 <img src="./imagens/EsquemaEFD-Reinf.png" alt="Esquema Intech EFD-Reinf" width="593" height="1048" />

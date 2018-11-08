@@ -28,6 +28,10 @@ class GeracaoXmlService extends BaseService {
     BuscarDatasPorOidContribuinte(oidContribuinte) {
         return this.CriarRequisicao("GET", `/geracaoXml/datas/${oidContribuinte}`);
     }
+
+    BuscarDatasR2099PorOidContribuinte(oidContribuinte) { 
+        return this.CriarRequisicao("GET", `/geracaoXml/datasR2099/${oidContribuinte}`);
+    }
 }
 
 export default new GeracaoXmlService();

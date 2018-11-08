@@ -90,6 +90,7 @@ export default class GeracaoXml extends Component {
             this.combos.tipoOperacao = await DominioService.BuscarPorCodigo("DMN_OPER_REGISTRO");
             this.combos.ambienteEnvio = await DominioService.BuscarPorCodigo("DMN_TIPO_AMBIENTE_EFD");
             this.combos.dominioSimNao = await DominioService.BuscarPorCodigo("DMN_SN");
+            // Buscar o valor do ambiente de envio do contribuinte logado.
 
             // Busca usuários vinculados ao contribuinte.
             var usuarios = await ContribuinteService.BuscarPorOidContribuinte(this.oidContribuinte);
@@ -133,6 +134,7 @@ export default class GeracaoXml extends Component {
     }
     
     toggleAmbienteEnvio = async () => { 
+        console.log(this.oidContribuinte);
         var contribuinte = await ContribuinteService.AlterarAmbienteEnvio(this.oidContribuinte);
         this.setState({ 
             contribuinte: contribuinte.data
@@ -166,15 +168,15 @@ export default class GeracaoXml extends Component {
 
         if(this.state.erros.length === 0) {
             if(this.state.opcaoSelecionada === 'r1000')
-                await this.validarR1000();
+                await this.gerarR1000();
             if(this.state.opcaoSelecionada === 'r1070')
-                await this.validarR1070();
+                await this.gerarR1070();
             if(this.state.opcaoSelecionada === 'r2010')
-                await this.validarR2010();
+                await this.gerarR2010();
             if(this.state.opcaoSelecionada === 'r2098')
-                await this.validarR2098();
+                await this.gerarR2098();
             if(this.state.opcaoSelecionada === 'r2099')
-                await this.validarR2099();
+                await this.gerarR2099();
         }
     }
 
@@ -196,12 +198,12 @@ export default class GeracaoXml extends Component {
             await this.handleVisibilidade(camposVisiveis);
 
         } else if(this.state.opcaoSelecionada === "r2098") {
-            await this.carregaReferenciaR2098();
+            await this.carregaReferencia();
             camposVisiveis = ["referencia", "referenciaAno"];
             await this.handleVisibilidade(camposVisiveis);
 
         } else if(this.state.opcaoSelecionada === "r2099") {
-            await this.carregaReferenciaR2099();
+            await this.carregaReferencia();
             camposVisiveis = ["referencia", "referenciaAno", "contratacaoServicos", "prestacaoServicos", 
                               "associacaoDesportiva", "repasseAssociacaoDesportiva", "producaoRural",
                               "pagamentosDiversos", "competencia"];
@@ -230,22 +232,16 @@ export default class GeracaoXml extends Component {
             });
     }
 
-    carregaReferenciaR2098 = async () => {
-        var datas = await GeracaoXmlService.BuscarDatasPorOidContribuinte(this.oidContribuinte);
+    carregaReferencia = async () => {
+        var datas = [];
+
+        if(this.state.opcaoSelecionada === 'r2098')
+            datas = await GeracaoXmlService.BuscarDatasPorOidContribuinte(this.oidContribuinte);
+        else if(this.state.opcaoSelecionada === 'r2099')
+            datas = await GeracaoXmlService.BuscarDatasR2099PorOidContribuinte(this.oidContribuinte);
+
         this.datas = datas.data;
         this.combos.referenciaAno = datas.data;
-    }
-
-    carregaReferenciaR2099 = async () => {
-        var datas = await GeracaoXmlService.BuscarDatasPorOidContribuinte(this.oidContribuinte);
-        this.datas = datas.data;
-        this.combos.referenciaAno = [];
-        var ano = {};
-        for(var i = 0; i < this.datas.length; i++) {
-            ano = {Ano: this.datas[i].Ano, Ano: this.datas[i].Ano};
-            if(this.datas[i].Ano >= 2018)
-                this.combos.referenciaAno.push(ano);
-        }
     }
 
     carregaReferenciaMes = async () => {
@@ -264,18 +260,15 @@ export default class GeracaoXml extends Component {
             });
         }
 
-        if(this.state.opcaoSelecionada === 'r2098') {
-            for(var i = 0; i < this.datas.length; i++) {
-                if(this.datas[i].Ano === Number(this.state.referenciaAno)) {
-                    for(var j = 0; j < this.datas[i].Meses.length; j++) {
-                        mes = {nome: this.datas[i].Meses[j], valor: this.datas[i].Meses[j]}
-                        this.combos.referenciaMes.push(mes);
-                    }
-                   await this.setState({ combos: this.combos });
+        // Percorre o vetor de anos e posteriormente os meses que há dentro do ano selecionado.
+        for(var i = 0; i < this.datas.length; i++) {
+            if(this.datas[i].Ano === Number(this.state.referenciaAno)) {
+                for(var j = 0; j < this.datas[i].Meses.length; j++) {
+                    mes = {nome: this.datas[i].Meses[j], valor: this.datas[i].Meses[j]}
+                    this.combos.referenciaMes.push(mes);
                 }
+               await this.setState({ combos: this.combos });
             }
-        } else if(this.state.opcaoSelecionada === 'r2099') {
-            // Chamar rota que busca as datas exceto R2010
         }
     }
 
