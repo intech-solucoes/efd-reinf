@@ -49,6 +49,7 @@
     <None Include="$(MSBuildThisFileDirectory)Scripts\R2010\BuscarPorOidContribuinte.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\R2010\BuscarPorOidContribuinteDtaInicioDtaFimIndSituacaoProcessamento.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\R2010\BuscarPorOidContribuinteMesEnvioAnoEnvio.sql" />
+    <None Include="$(MSBuildThisFileDirectory)Scripts\R2010\ExcluirPorOidContribuinteDtaApuracao.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\R2098\BuscarPorOidContribuinte.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\R2099\BuscarPorOidContribuinte.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\R2099\BuscarPorOidContribuinteAnoMesIndSituacaoProcessamento.sql" />

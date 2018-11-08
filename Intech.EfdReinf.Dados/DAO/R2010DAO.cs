@@ -81,5 +81,22 @@ namespace Intech.EfdReinf.Dados.DAO
 			}
 		}
 
+		public virtual R2010Entidade ExcluirPorOidContribuinteDtaApuracao(decimal OID_CONTRIBUINTE, DateTime DTA_APURACAO)
+		{
+			try
+			{
+				if(AppSettings.IS_SQL_SERVER_PROVIDER)
+					return Conexao.QuerySingleOrDefault<R2010Entidade>("DELETE FROM EFD_R2010 WHERE EFD_R2010.OID_CONTRIBUINTE = @OID_CONTRIBUINTE   AND EFD_R2010.DTA_APURACAO = @DTA_APURACAO   AND EFD_R2010.IND_SITUACAO_PROCESSAMENTO IN('IMP', 'PRO')", new { OID_CONTRIBUINTE, DTA_APURACAO });
+				else if(AppSettings.IS_ORACLE_PROVIDER)
+					return Conexao.QuerySingleOrDefault<R2010Entidade>("DELETE FROM EFD_R2010 WHERE EFD_R2010.OID_CONTRIBUINTE=:OID_CONTRIBUINTE AND EFD_R2010.DTA_APURACAO=:DTA_APURACAO AND EFD_R2010.IND_SITUACAO_PROCESSAMENTO IN ('IMP', 'PRO')", new { OID_CONTRIBUINTE, DTA_APURACAO });
+				else
+					throw new Exception("Provider não suportado!");
+			}
+			finally
+			{
+				Conexao.Close();
+			}
+		}
+
     }
 }
