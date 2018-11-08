@@ -24,7 +24,7 @@ namespace Intech.EfdReinf.API.Controllers
         private CultureInfo _culturePtBR = new CultureInfo("pt-BR");
         private ArquivoUploadProxy _proxyArquivoUpload = new ArquivoUploadProxy();
         private ImportacaoCriticaProxy _proxyImportacaoCritica = new ImportacaoCriticaProxy();
-
+        R2010Proxy _proxyR2010 = new R2010Proxy();
 
         [HttpPost("importarCsv/{oidArquivoUpload}/{oidContribuinte}")]
         [Authorize("Bearer")]
@@ -60,6 +60,7 @@ namespace Intech.EfdReinf.API.Controllers
                 switch (indRegistro)
                 {
                     case DMN_REGISTRO_EFD.R_1070:
+                        ImportarCsv1070(linhas);
                         break;
                     case DMN_REGISTRO_EFD.R_2010:
                         ImportarCsv2010(linhas);
@@ -223,6 +224,9 @@ namespace Intech.EfdReinf.API.Controllers
 
                 if (_listImportacaoCritica.Count <= 0)
                 {
+                    //Excluindo registros existentes na tabela EFD_R2010 para o "OID_CONTRIBUINTE" e "DTA_APURACAO".
+                    ExcluirR2010();
+
                     //Gravando as linhas do arquivo na tabela EFD_R2010.
                     GravarR2010();
                 }
@@ -342,13 +346,19 @@ namespace Intech.EfdReinf.API.Controllers
             }
         }
 
-        private void GravarR2010()
+        private void ExcluirR2010()
         {
-            R2010Proxy proxyR2010 = new R2010Proxy();
-
             foreach (var item in _listR2010)
             {
-                decimal oidR2010 = proxyR2010.Inserir(item);
+                _proxyR2010.ExcluirPorOidContribuinteDtaApuracao(item.OID_CONTRIBUINTE, item.DTA_APURACAO);        
+            }
+        }
+
+        private void GravarR2010()
+        { 
+            foreach (var item in _listR2010)
+            {                
+                decimal oidR2010 = _proxyR2010.Inserir(item);
             }
         }
 
