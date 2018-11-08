@@ -117,7 +117,7 @@ export default class MinhaConta extends Component {
                         <div className="media" key={index}>
                             <div className="media-body">
                                 <h5 className="mt-0 text-primary">{contribuinte.NOM_RAZAO_SOCIAL}</h5>
-                                {contribuinte.COD_CNPJ_CPF}
+                                <h6>{contribuinte.COD_CNPJ_CPF}</h6>
                             </div>
                         </div>
                         

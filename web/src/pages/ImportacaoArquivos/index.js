@@ -4,8 +4,6 @@ import { Link } from "react-router-dom";
 import { Row, Col, Box, Combo, Botao, InputFile, PainelErros } from '../../components';
 import { DominioService, UploadService, ImportacaoCsvService } from "@intechprev/efdreinf-service";
 
-const apiUrl = process.env.API_URL;
-
 export default class ImportacaoArquivos extends Component {
     constructor(props) {
         super(props);
@@ -77,6 +75,7 @@ export default class ImportacaoArquivos extends Component {
         if(!this.state.formData)
             await this.adicionarErro("Campo \"Arquivo para Upload\" obrigatório.");
 
+        var apiUrl = require("../../config").apiUrl;
         // Rota para upload.
         var oidUsuarioContribuinte = localStorage.getItem("oidUsuarioContribuinte");
         if(this.state.erros.length === 0) {
@@ -123,7 +122,10 @@ export default class ImportacaoArquivos extends Component {
             alert("Registro excluído com sucesso!");
             this.buscarArquivosImportados();
         } catch(err) {
-            console.error(err);
+            if(err.response.data)
+                alert(err.response.data);
+            else 
+                console.error(err);
         }
     }
 
@@ -142,10 +144,10 @@ export default class ImportacaoArquivos extends Component {
     }
 
     download = async (oidArquivoUpload) => { 
+        var apiUrl = require("../../config").apiUrl;
         try {
             var caminhoArquivo = await UploadService.BuscarPorOidArquivoUpload(oidArquivoUpload);
             caminhoArquivo =  caminhoArquivo.data.NOM_ARQUIVO_LOCAL;
-            var apiUrl = process.env.API_URL;
             apiUrl = apiUrl.substring(0, apiUrl.length - 4);
             apiUrl = apiUrl + "/" + caminhoArquivo;
 
@@ -154,7 +156,7 @@ export default class ImportacaoArquivos extends Component {
             document.body.appendChild(link);
             link.click();
         } catch(err) {
-            if(err.response.data) 
+            if(err.response) 
                 alert(err.response.data);
             else 
                 console.error(err);
