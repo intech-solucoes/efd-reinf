@@ -5,7 +5,7 @@
   "homepage": "http://10.10.170.11/EfdReinf/",
   "dependencies": {
     "@intechprev/efdreinf-service": "^0.0.1",
-    "@intechprev/react-lib": "^0.0.3",
+    "@intechprev/react-lib": "^0.0.4",
     "autoprefixer": "7.1.6",
     "axios": "^0.18.0",
     "babel-core": "6.26.0",
@@ -107,7 +107,6 @@
     "extends": "react-app"
   },
   "workspaces": [
-    "../service",
-    "../../lib/react-lib"
+    "../service"
   ]
 }

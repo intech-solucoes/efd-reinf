@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Botao, CampoTexto, Combo, Box, Col, Row, PainelErros, Radio } from '../../components';
+import { Botao, CampoTexto, Combo, Box, Col, Row, PainelErros, PainelAlerta, Radio } from '../../components';
 import { handleFieldChange } from "@intechprev/react-lib";
-import ArquivosGerados from './ArquivosGerados';
+import ArquivosGerados from "./ArquivosGerados";
 
-import { DominioService, GeracaoXmlService, ContribuinteService } from '@intechprev/efdreinf-service';
+import { DominioService, GeracaoXmlService, ContribuinteService } from "@intechprev/efdreinf-service";
 
 export default class GeracaoXml extends Component {
     constructor(props) {
@@ -17,8 +17,9 @@ export default class GeracaoXml extends Component {
             opcaoSelecionada: "r1000",
 
             tipoOperacao: "",
-            ambienteEnvio: "",
-            contribuinte: "",
+            ambienteEnvio: "2",
+            contribuinte: {},
+            nomeContribuinte: "",
             dataInicial: "",
             dataFinal: "",
             referenciaAno: "",
@@ -54,7 +55,6 @@ export default class GeracaoXml extends Component {
             // States de combos e tabela:
             combos: {
                 tipoOperacao: [],
-                ambienteEnvio: [],
                 usuarioResponsavel: [],
                 referenciaAno: [],
                 referenciaMes: [],
@@ -85,7 +85,8 @@ export default class GeracaoXml extends Component {
         try {
             // Busca valores para preenchimento dos campos e combos.
             var nomeContribuinte = localStorage.getItem("nomeContribuinte");
-            this.setState({ contribuinte: nomeContribuinte });
+            this.setState({ nomeContribuinte: nomeContribuinte });
+
             this.combos.tipoOperacao = await DominioService.BuscarPorCodigo("DMN_OPER_REGISTRO");
             this.combos.ambienteEnvio = await DominioService.BuscarPorCodigo("DMN_TIPO_AMBIENTE_EFD");
             this.combos.dominioSimNao = await DominioService.BuscarPorCodigo("DMN_SN");
@@ -93,12 +94,20 @@ export default class GeracaoXml extends Component {
             // Busca usuários vinculados ao contribuinte.
             var usuarios = await ContribuinteService.BuscarPorOidContribuinte(this.oidContribuinte);
             usuarios = usuarios.data.Usuarios;
+
+            var contribuinte = await ContribuinteService.BuscarPorOidContribuinte(this.oidContribuinte);
+            await this.setState({
+                contribuinte: contribuinte.data
+            });
+
             var usuariosResponsaveis = [];
             var usuario = {};
+
             for(var i = 0; i < usuarios.length; i++) {
                 usuario = {valor: usuarios[i].Usuario.OID_USUARIO, nome: usuarios[i].Usuario.NOM_USUARIO};
                 usuariosResponsaveis.push(usuario);
             }
+
             this.combos.usuarioResponsavel = usuariosResponsaveis;
             await this.setState({ combos: this.combos });
             
@@ -123,8 +132,11 @@ export default class GeracaoXml extends Component {
         });
     }
     
-    changeAmbienteEnvio = async () => { 
-        // Dar update na EFD_CONTRIBUINTE
+    toggleAmbienteEnvio = async () => { 
+        var contribuinte = await ContribuinteService.AlterarAmbienteEnvio(this.oidContribuinte);
+        this.setState({ 
+            contribuinte: contribuinte.data
+        });
     }
 
     buscarArquivosGerados = async () => { 
@@ -243,7 +255,7 @@ export default class GeracaoXml extends Component {
         // Define o valor do combo Referencia Mes para o padrão.
         await this.setState({ referenciaMes: "" });
 
-        // Limpa os meses caso a opção de 'ReferenciaAno' seja vazio.
+        // Limpa os meses caso a opção de "ReferenciaAno" seja vazio.
         if(this.state.referenciaAno === "") {
             this.combos.referenciaMes = [];
             await this.setState({ 
@@ -304,9 +316,9 @@ export default class GeracaoXml extends Component {
         this.setState({ combos: this.combos });
     }
 
-    validarR1000 = async () => { 
+    gerarR1000 = async () => { 
         try {
-            await GeracaoXmlService.GerarR1000(this.oidContribuinte, this.state.usuarioResponsavel, this.state.tipoOperacao, this.state.ambienteEnvio);
+            await GeracaoXmlService.GerarR1000(this.oidContribuinte, this.state.usuarioResponsavel, this.state.tipoOperacao, this.state.contribuinte.IND_TIPO_AMBIENTE);
             alert("R-1000 Gerado com sucesso!");
             this.buscarArquivosGerados();
         } catch(err) {
@@ -314,9 +326,9 @@ export default class GeracaoXml extends Component {
         }
     }
 
-    validarR1070 = async () => { 
+    gerarR1070 = async () => { 
         try {
-            await GeracaoXmlService.GerarR1070(this.oidContribuinte, this.state.ambienteEnvio);
+            await GeracaoXmlService.GerarR1070(this.oidContribuinte, this.state.contribuinte.IND_TIPO_AMBIENTE);
             alert("R-1070 Gerado com sucesso!");
             this.buscarArquivosGerados();
         } catch(err) {
@@ -327,7 +339,7 @@ export default class GeracaoXml extends Component {
         }
     }
 
-    validarR2010 = async () => { 
+    gerarR2010 = async () => { 
         var dataInicial = this.state.dataInicial.split("-");
         var dataFinal = this.state.dataFinal.split("-");
 
@@ -345,7 +357,7 @@ export default class GeracaoXml extends Component {
             dataFinal = this.state.dataFinal.split("-");
             dataFinal = dataFinal[2] + "." + dataFinal[1] + "." + dataFinal[0];
             try {
-                await GeracaoXmlService.GerarR2010(this.oidContribuinte, this.state.tipoOperacao, this.state.ambienteEnvio, dataInicial, dataFinal);
+                await GeracaoXmlService.GerarR2010(this.oidContribuinte, this.state.tipoOperacao, this.state.contribuinte.IND_TIPO_AMBIENTE, dataInicial, dataFinal);
                 alert("R2010 Gerado com sucesso!");
                 this.buscarArquivosGerados();
             } catch(err) {
@@ -358,9 +370,9 @@ export default class GeracaoXml extends Component {
         
     }
     
-    validarR2098 = async () => {
+    gerarR2098 = async () => {
         try {
-            await GeracaoXmlService.GerarR2098(this.oidContribuinte, this.state.ambienteEnvio, this.state.referenciaAno, this.state.referenciaMes);
+            await GeracaoXmlService.GerarR2098(this.oidContribuinte, this.state.contribuinte.IND_TIPO_AMBIENTE, this.state.referenciaAno, this.state.referenciaMes);
             alert("R-2098 Gerado com sucesso!");
             this.buscarArquivosGerados();
         } catch(err) {
@@ -371,13 +383,13 @@ export default class GeracaoXml extends Component {
         }
     }
 
-    validarR2099 = async () => {
+    gerarR2099 = async () => {
         var periodo = "01/" + this.state.referenciaMes + "/" + this.state.referenciaAno;
         var competencia = "01/" + this.state.competenciaMes + "/" + this.state.competenciaAno;
 
         var r2099 = {
             OID_CONTRIBUINTE: this.oidContribuinte,
-            IND_AMBIENTE_ENVIO: this.state.ambienteEnvio,
+            IND_AMBIENTE_ENVIO: this.state.contribuinte.IND_TIPO_AMBIENTE,
             DTA_PERIODO_APURACAO: periodo,
             IND_CONTRATACAO_SERV: this.state.contratacaoServicos,
             IND_PRESTACAO_SERV: this.state.prestacaoServicos,
@@ -400,10 +412,18 @@ export default class GeracaoXml extends Component {
 
         return (
             <div>
+                <PainelAlerta tipo={this.state.contribuinte.IND_TIPO_AMBIENTE === "1" ? "success" : "info"}>
+                    <span className="h3">{this.state.contribuinte.IND_TIPO_AMBIENTE === "1" ? "Produção" : "Produção Restrita"}</span>
+
+                    <Botao 
+                        clicar={this.toggleAmbienteEnvio}
+                        pequeno={true} className={"float-right"}
+                        tipo={this.state.contribuinte.IND_TIPO_AMBIENTE === "1" ? "success" : "info"} 
+                        titulo={"Trocar Ambiente"}
+                    />
+                </PainelAlerta>
+
                 <Box titulo={"Tipo de Registro"}>
-                    <Combo contexto={this} label={"Ambiente para envio"} ref={ (input) => this.listaCampos[1] = input } 
-                           nome="ambienteEnvio" valor={this.state.ambienteEnvio} comboCol={"col-3"}
-                           opcoes={this.state.combos.ambienteEnvio.data} onChange={this.changeAmbienteEnvio} />
 
                     <Radio contexto={this} nome={"r1000"} marcado={this.state.opcaoSelecionada === 'r1000'} 
                            label={"R-1000 - Informações do Contribuinte"} valor={"r1000"} onChange={this.alternarCampos} />
@@ -431,7 +451,7 @@ export default class GeracaoXml extends Component {
                     {this.state.visibilidade.contribuinte &&
                         <CampoTexto contexto={this} ref={ (input) => this.listaCampos[2] = input }
                                     label={"Contribuinte"} nome={"contribuinte"} tipo={"text"} 
-                                    placeholder={"Contribuinte"} valor={this.state.contribuinte}
+                                    placeholder={"Contribuinte"} valor={this.state.nomeContribuinte}
                                     obrigatorio={true} desabilitado={true} />
                     }
 

@@ -10,17 +10,15 @@ class UsuarioService extends BaseService {
             NOM_CONTATO, COD_CPF_CONTATO, COD_FONE_FIXO_CONTATO, COD_FONE_CELULAR_CONTATO, TXT_EMAIL_CONTATO });
     }
 
-    Listar() {
-        return this.CriarRequisicao("GET", "/contribuinte");
-    }
+    Atualizar(contribuinte) { return this.CriarRequisicao("PUT", `/contribuinte`, contribuinte); }
 
-    ListarAtivos() {
-        return this.CriarRequisicao("GET", "/contribuinte/ativos");
-    }
+    Listar() { return this.CriarRequisicao("GET", "/contribuinte"); }
 
-    BuscarPorOidContribuinte(oidContribuinte) { 
-        return this.CriarRequisicao("GET", `/contribuinte/${oidContribuinte}`);
-    }
+    ListarAtivos() { return this.CriarRequisicao("GET", "/contribuinte/ativos"); }
+
+    BuscarPorOidContribuinte(oidContribuinte) { return this.CriarRequisicao("GET", `/contribuinte/${oidContribuinte}`); }
+
+    AlterarAmbienteEnvio(oidContribuinte) { return this.CriarRequisicao("PUT", `/contribuinte/alterarAmbiente/${oidContribuinte}`); }
 }
 
 export default new UsuarioService();

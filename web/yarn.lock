@@ -2,6 +2,12 @@
 # yarn lockfile v1
 
 
+"@intechprev/react-lib@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@intechprev/react-lib/-/react-lib-0.0.4.tgz#d29b8fea130c899c2871042c3921625378d037bd"
+  dependencies:
+    axios "^0.18.0"
+
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@mrmlnc/readdir-enhanced/-/readdir-enhanced-2.2.1.tgz#524af240d1a360527b730475ecfa1344aa540dde"

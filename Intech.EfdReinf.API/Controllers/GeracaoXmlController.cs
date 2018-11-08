@@ -33,17 +33,46 @@ namespace Intech.EfdReinf.API.Controllers
             {
                 var datas = new R2010Proxy().BuscarDatasEnviados(oidContribuinte).ToList();
 
-                var listaDatas = from data in datas
-                                 group data by data.Year into g
-                                 select new
-                                 {
-                                     Ano = g.Key,
-                                     Meses = from mes in g
-                                             group mes by mes.Month into g2
-                                             select g2.Key
-                                 };
+                var datasFiltradas = from data in datas
+                                     group data by data.Year into g
+                                     select new
+                                     {
+                                         Ano = g.Key,
+                                         Meses = from mes in g
+                                                 group mes by mes.Month into g2
+                                                 select g2.Key
+                                     };
 
-                return Json(listaDatas);
+                return Json(datasFiltradas);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("datasR2099/{oidContribuinte}")]
+        [Authorize("Bearer")]
+        public IActionResult BuscarDatasR2099(decimal oidContribuinte)
+        {
+            try
+            {
+                var datasFiltradas = new List<DateTime>();
+
+                for(var data = new DateTime(2018, 1, 1); data <= DateTime.Today; data = data.AddMonths(1))
+                    datasFiltradas.Add(data);
+
+                var datasAgrupadas = from data in datasFiltradas
+                                     group data by data.Year into g
+                                     select new
+                                     {
+                                         Ano = g.Key,
+                                         Meses = from mes in g
+                                                 group mes by mes.Month into g2
+                                                 select g2.Key
+                                     };
+
+                return Json(datasAgrupadas);
             }
             catch (Exception ex)
             {

@@ -8,9 +8,10 @@ import Box from './Box';
 import Col from './Col';
 import Row from './Row';
 import Checkbox from "./Checkbox";
-import PainelErros from "./PainelErros";
-import InputFile from "./InputFile";
 import Radio from "./Radio";
+import PainelErros from "./PainelErros";
+import PainelAlerta from "./PainelAlerta";
+import InputFile from "./InputFile";
 
 export {
     Botao,
@@ -20,10 +21,11 @@ export {
     Modal,
     Dialog,
     Checkbox,
+    Radio,
     Box,
     Col,
     Row,
     PainelErros,
-    InputFile,
-    Radio
+    PainelAlerta,
+    InputFile
 };

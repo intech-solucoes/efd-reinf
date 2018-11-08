@@ -103,8 +103,14 @@ export default class ImportacaoArquivos extends Component {
     }
 
     buscarArquivosImportados = async () => { 
-        try { 
-            var arquivosImportacao = await UploadService.BuscarPorOidUsuarioContribuinteStatus(this.oidUsuarioContribuinte, this.state.situacao);
+        try {
+            var situacao = this.state.situacao
+            if(situacao === "")
+                situacao = null;
+
+            console.log(situacao);
+            
+            var arquivosImportacao = await UploadService.BuscarCsvPorOidUsuarioContribuinteStatus(this.oidUsuarioContribuinte, situacao);
             await this.setState({ arquivosImportacao: arquivosImportacao.data });
         } catch(err) {
             console.error(err);
