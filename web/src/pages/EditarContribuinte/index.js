@@ -91,7 +91,7 @@ export default class EditarContribuinte extends Component {
             razaoSocial: contribuinte.NOM_RAZAO_SOCIAL,
             cnpj: contribuinte.COD_CNPJ_CPF,
             inicioValidade: contribuinte.DTA_INICIO_VALIDADE,
-            terminoValidade: contribuinte.DTA_VALIDADE,
+            terminoValidade: contribuinte.DTA_FIM_VALIDADE,
             classificacaoTributaria: contribuinte.IND_CLASSIF_TRIBUT,
             obrigatoriedadeECD: contribuinte.IND_OBRIGADA_ECD,
             desoneracaoFolhaCPRB: contribuinte.IND_DESONERACAO_CPRB,
