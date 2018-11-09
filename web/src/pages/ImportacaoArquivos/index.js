@@ -81,6 +81,7 @@ export default class ImportacaoArquivos extends Component {
         if(this.state.erros.length === 0) {
             try { 
                 var token = localStorage.getItem("token");
+
                 await axios.post(apiUrl + `/upload/${oidUsuarioContribuinte}`, this.state.formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
@@ -89,8 +90,14 @@ export default class ImportacaoArquivos extends Component {
                     onUploadProgress: progressEvent => {
                     },
                 });
+
                 alert("Arquivo enviado com sucesso!");
-                await this.setState({ visibilidadeInput: false });
+
+                // Quando o arquivo é enviado com sucesso, esconde-se o campo de enviar arquivos e limpa o state formData;
+                await this.setState({ 
+                    visibilidadeInput: false,
+                    formData: null
+                });
                 this.buscarArquivosImportados();
             } catch (err) {
                 if(err.response)
