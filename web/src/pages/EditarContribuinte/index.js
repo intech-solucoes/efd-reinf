@@ -138,7 +138,7 @@ export default class EditarContribuinte extends Component {
             var contribuinte = await ContribuinteService.BuscarPorOidContribuinte(this.oidContribuinte);
             contribuinte = contribuinte.data;
 
-            var contribuinte = {
+            contribuinte = {
                 OID_CONTRIBUINTE: this.oidContribuinte,
                 NOM_RAZAO_SOCIAL: this.state.razaoSocial,
                 IND_TIPO_INSCRICAO: this.state.tipoInscricao,

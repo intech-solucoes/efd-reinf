@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {
-    Home, MinhaConta, AlterarSenha, GeracaoXml, ImportacaoArquivos, EditarContribuinte, SelecionarContribuinte
+    Home, MinhaConta, AlterarSenha, GeracaoXml, ImportacaoArquivos, EditarContribuinte
 } from "./pages";
 
 export default function GetRotas() {

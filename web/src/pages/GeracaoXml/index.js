@@ -161,7 +161,7 @@ export default class GeracaoXml extends Component {
         }
 
         // Em específico, a validação dos campos de Período é feita separadamente pois o Período não foi feito como um componente.
-        if(this.state.r2010) {
+        if(this.state.opcaoSelecionada === 'r2010') {
             if(this.state.dataInicial === "" || this.state.dataFinal === "")
                 this.adicionarErro("Campo \"Período\" obrigatório.");
         }

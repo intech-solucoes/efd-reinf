@@ -67,10 +67,10 @@ export default class AlterarSenha extends Component {
 
         // Validação dos campos senha e confirmação de senha.
         if(this.state.novaSenha.length < 6)
-            await this.adicionarErro("A senha deve possuir ao menos 6 caracteres!");
+            await this.adicionarErro("A senha deve possuir ao menos 6 caracteres.");
 
         else if(this.state.novaSenha !== this.state.confirmarSenha)
-            await this.adicionarErro("As senhas devem coincidir!");
+            await this.adicionarErro("As senhas devem coincidir.");
     }
 
     render() {
