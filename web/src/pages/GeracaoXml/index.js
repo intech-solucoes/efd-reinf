@@ -241,7 +241,7 @@ export default class GeracaoXml extends Component {
             datas = await GeracaoXmlService.BuscarDatasR2099PorOidContribuinte(this.oidContribuinte);
 
         this.datas = datas.data;
-        this.combos.referenciaAno = datas.data;
+        this.combos.referenciaAno = this.datas;
     }
 
     carregaReferenciaMes = async () => {
