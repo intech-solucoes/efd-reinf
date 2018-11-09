@@ -44,13 +44,11 @@ export default class ArquivosGerados extends Component {
                         <tbody>
                             {
                                 this.props.arquivos.map((arquivo, index) => {
-                                    var dataGeracao = arquivo.DataGeracao.split(" ");
-                                    dataGeracao = dataGeracao[0];
 
                                     return (
                                         <tr key={index}>
                                             <td>{arquivo.Tipo}</td>
-                                            <td>{dataGeracao}</td>
+                                            <td>{arquivo.DataGeracao}</td>
                                             <td>{arquivo.Ambiente}</td>
                                             <td>{arquivo.Status}</td>
                                             <td>{arquivo.Usuario}</td>

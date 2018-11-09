@@ -134,7 +134,6 @@ export default class GeracaoXml extends Component {
     }
     
     toggleAmbienteEnvio = async () => { 
-        console.log(this.oidContribuinte);
         var contribuinte = await ContribuinteService.AlterarAmbienteEnvio(this.oidContribuinte);
         this.setState({ 
             contribuinte: contribuinte.data
@@ -437,8 +436,8 @@ export default class GeracaoXml extends Component {
                 <Box>
                     {this.state.visibilidade.tipoOperacao &&
                         <Combo contexto={this} label={"Tipo de operação"} ref={ (input) => this.listaCampos[0] = input } 
-                                nome="tipoOperacao" valor={this.state.tipoOperacao} obrigatorio={true} 
-                                opcoes={this.state.combos.tipoOperacao.data} />
+                               nome="tipoOperacao" valor={this.state.tipoOperacao} obrigatorio={true} 
+                               opcoes={this.state.combos.tipoOperacao.data} />
                     }
 
                     {this.state.visibilidade.contribuinte &&
@@ -450,8 +449,8 @@ export default class GeracaoXml extends Component {
 
                     {this.state.visibilidade.usuarioResponsavel &&
                         <Combo contexto={this} label={"Usuário Responsável"} ref={ (input) => this.listaCampos[3] = input } 
-                                nome="usuarioResponsavel" valor={this.state.usuarioResponsavel} obrigatorio={true}
-                                opcoes={this.state.combos.usuarioResponsavel} nomeMembro={"nome"} valorMembro={"valor"} />
+                               nome="usuarioResponsavel" valor={this.state.usuarioResponsavel} obrigatorio={true}
+                               opcoes={this.state.combos.usuarioResponsavel} nomeMembro={"nome"} valorMembro={"valor"} />
                     }
 
                     {this.state.visibilidade.data &&
@@ -486,51 +485,51 @@ export default class GeracaoXml extends Component {
                         <Row>
                             <Col className="col-4">
                                 <Combo contexto={this} label={"Referência"} ref={ (input) => this.listaCampos[5] = input } labelCol="col-lg-6"
-                                        nome="referenciaAno" valor={this.state.referenciaAno} obrigatorio={true} comboCol="col-6"
-                                        opcoes={this.state.combos.referenciaAno} nomeMembro={"Ano"} valorMembro={"Ano"} onChange={this.carregaReferenciaMes} />
+                                       nome="referenciaAno" valor={this.state.referenciaAno} obrigatorio={true} comboCol="col-6"
+                                       opcoes={this.state.combos.referenciaAno} nomeMembro={"Ano"} valorMembro={"Ano"} onChange={this.carregaReferenciaMes} />
                             </Col>
 
                             <Col>
                                 <Combo contexto={this} label={"Referência"} ref={ (input) => this.listaCampos[6] = input } mostrarLabel={false}
-                                        nome="referenciaMes" valor={this.state.referenciaMes} obrigatorio={true} comboCol="col-3"
-                                        opcoes={this.state.combos.referenciaMes} nomeMembro={"nome"} valorMembro={"valor"} />
+                                       nome="referenciaMes" valor={this.state.referenciaMes} obrigatorio={true} comboCol="col-3"
+                                       opcoes={this.state.combos.referenciaMes} nomeMembro={"nome"} valorMembro={"valor"} />
                             </Col>
                         </Row>
                     }
                     <br />
                     {this.state.visibilidade.contratacaoServicos &&
                         <Combo contexto={this} ref={ (input) => this.listaCampos[7] = input } labelCol="col-lg-4"
-                                label={"Contratou serviços sujeitos à retenção de contribuição previdenciária?"}
-                                nome="contratacaoServicos" valor={this.state.contratacaoServicos} obrigatorio={true}
-                                opcoes={this.state.combos.dominioSimNao.data} />
+                               label={"Contratou serviços sujeitos à retenção de contribuição previdenciária?"}
+                               nome="contratacaoServicos" valor={this.state.contratacaoServicos} obrigatorio={true}
+                               opcoes={this.state.combos.dominioSimNao.data} />
                     }
 
                     {this.state.visibilidade.prestacaoServicos &&
                         <Combo contexto={this} ref={ (input) => this.listaCampos[8] = input } labelCol="col-lg-4"
-                                label={"Prestou serviços sujeitos à retenção de contribuição previdenciária?"} 
-                                nome="prestacaoServicos" valor={this.state.prestacaoServicos} obrigatorio={true}
-                                opcoes={this.state.combos.dominioSimNao.data} />
+                               label={"Prestou serviços sujeitos à retenção de contribuição previdenciária?"} 
+                               nome="prestacaoServicos" valor={this.state.prestacaoServicos} obrigatorio={true}
+                               opcoes={this.state.combos.dominioSimNao.data} />
                     }
 
                     {this.state.visibilidade.associacaoDesportiva &&
                         <Combo contexto={this} ref={ (input) => this.listaCampos[9] = input } labelCol="col-lg-4"
-                                label={"A associação desportiva que mantém equipe de futebol profissional, possui informações sobre recursos recebidos?"}
-                                nome="associacaoDesportiva" valor={this.state.associacaoDesportiva} obrigatorio={true}
-                                opcoes={this.state.combos.dominioSimNao.data} />
+                               label={"A associação desportiva que mantém equipe de futebol profissional, possui informações sobre recursos recebidos?"}
+                               nome="associacaoDesportiva" valor={this.state.associacaoDesportiva} obrigatorio={true}
+                               opcoes={this.state.combos.dominioSimNao.data} />
                     }
 
                     {this.state.visibilidade.repasseAssociacaoDesportiva &&
                         <Combo contexto={this} ref={ (input) => this.listaCampos[10] = input } labelCol="col-lg-4"
-                                label={"Possui informações sobre repasses efetuados à associação desportiva que mantém equipe de futebol profissional?"}
-                                nome="repasseAssociacaoDesportiva" valor={this.state.repasseAssociacaoDesportiva} obrigatorio={true}
-                                opcoes={this.state.combos.dominioSimNao.data} />
+                               label={"Possui informações sobre repasses efetuados à associação desportiva que mantém equipe de futebol profissional?"}
+                               nome="repasseAssociacaoDesportiva" valor={this.state.repasseAssociacaoDesportiva} obrigatorio={true}
+                               opcoes={this.state.combos.dominioSimNao.data} />
                     }
 
                     {this.state.visibilidade.producaoRural && 
                         <Combo contexto={this} ref={ (input) => this.listaCampos[11] = input } labelCol="col-lg-4"
-                                label={"O produtor rural PJ/Agroindústria possui informações de comercialização de produção?"} 
-                                nome="producaoRural" valor={this.state.producaoRural} obrigatorio={true}
-                                opcoes={this.state.combos.dominioSimNao.data} />
+                               label={"O produtor rural PJ/Agroindústria possui informações de comercialização de produção?"} 
+                               nome="producaoRural" valor={this.state.producaoRural} obrigatorio={true}
+                               opcoes={this.state.combos.dominioSimNao.data} />
                     }
 
                     {this.state.visibilidade.pagamentosDiversos &&
@@ -544,15 +543,15 @@ export default class GeracaoXml extends Component {
                         <Row>
                             <Col>
                                 <Combo contexto={this} ref={ (input) => this.listaCampos[13] = input } labelCol="col-lg-8"
-                                        label={"Competência a partir da qual não houve movimento, cuja situação perdura até a competência atual."}
-                                        nome="competenciaAno" valor={this.state.competenciaAno} comboCol="col-4" onChange={() => this.carregaCompetenciaMes()}
-                                        opcoes={this.state.combos.competenciaAno} nomeMembro={"nome"} valorMembro={"valor"} obrigatorio={true} />
+                                       label={"Competência a partir da qual não houve movimento, cuja situação perdura até a competência atual."}
+                                       nome="competenciaAno" valor={this.state.competenciaAno} comboCol="col-4" onChange={() => this.carregaCompetenciaMes()}
+                                       opcoes={this.state.combos.competenciaAno} nomeMembro={"nome"} valorMembro={"valor"} obrigatorio={true} />
                             </Col>
                             <Col>
                                 <Combo contexto={this} ref={ (input) => this.listaCampos[14] = input }
-                                        label={"Competência a partir da qual não houve movimento, cuja situação perdura até a competência atual."}
-                                        nome="competenciaMes" valor={this.state.competenciaMes} comboCol="col-4" obrigatorio={true} mostrarLabel={false}
-                                        opcoes={this.state.combos.competenciaMes} labelCol="col-lg-4" nomeMembro={"nome"} valorMembro={"valor"} />
+                                       label={"Competência a partir da qual não houve movimento, cuja situação perdura até a competência atual."}
+                                       nome="competenciaMes" valor={this.state.competenciaMes} comboCol="col-4" obrigatorio={true} mostrarLabel={false}
+                                       opcoes={this.state.combos.competenciaMes} labelCol="col-lg-4" nomeMembro={"nome"} valorMembro={"valor"} />
                             </Col>
                         </Row>
                     }

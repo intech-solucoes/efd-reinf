@@ -165,7 +165,6 @@ export default class EditarContribuinte extends Component {
                 await ContribuinteService.Atualizar(contribuinte);
 
                 alert("Dados do Contribuinte atualizados com sucesso!");
-                window.location.reload();
                 
             } catch(err) {
 				if(err.response) {
