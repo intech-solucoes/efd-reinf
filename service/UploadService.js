@@ -9,8 +9,8 @@ class Upload extends BaseService {
         return this.CriarRequisicao("GET", `/upload/porOidUsuarioContribuinte/${OidUsuarioContribuinte}`);
     }
 
-    BuscarPorOidUsuarioContribuinteStatus(oidUsuarioContribuinte, status) {
-        return this.CriarRequisicao("GET", `/upload/porOidUsuarioContribuinte/${oidUsuarioContribuinte}/${status}`);
+    BuscarCsvPorOidUsuarioContribuinteStatus(oidUsuarioContribuinte, status) {
+        return this.CriarRequisicao("GET", `/upload/CsvPorOidUsuarioContribuinte/${oidUsuarioContribuinte}/${status}`);
     }
 
     Relatorio(oidArquivoUpload) {

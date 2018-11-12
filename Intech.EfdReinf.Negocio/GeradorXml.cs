@@ -68,12 +68,12 @@ namespace Intech.EfdReinf.Negocio
             var template = Template.Parse(File.OpenText(templateFile).ReadToEnd());
             var xmlR1000 = template.Render(new
             {
-                id = string.Format("ID{0}{1}{2:yyyyMMddHHmmss}{3}", contribuinte.IND_TIPO_INSCRICAO, contribuinte.COD_CNPJ_CPF.PadLeft(14, '0'), DateTime.Now, oidArquivoUpload.ToString().PadLeft(5, '0')),
+                id =  $"ID{contribuinte.IND_TIPO_INSCRICAO}{contribuinte.COD_CNPJ_CPF.Substring(0, 8).PadLeft(14, '0')}{DateTime.Now:yyyyMMddHHmmss}{oidArquivoUpload.ToString().PadLeft(5, '0')}",
                 tipoAmbiente,
                 abertura_tag_operacao = tipoOperacao == DMN_OPERACAO_REGISTRO.INCLUSAO ? "<inclusao>" : tipoOperacao == DMN_OPERACAO_REGISTRO.ALTERACAO ? "<alteracao>" : "<exclusao>",
                 versao = Assembly.GetExecutingAssembly().GetName().Version.ToString(3),
                 ind_tipo_inscricao = contribuinte.IND_TIPO_INSCRICAO,
-                cod_cnpj_cpf = contribuinte.COD_CNPJ_CPF,
+                cod_cnpj_cpf = contribuinte.COD_CNPJ_CPF.Substring(0, 8),
                 dta_inicio_validade = contribuinte.DTA_INICIO_VALIDADE.ToString("yyyy-MM"),
                 dta_fim_validade = contribuinte.DTA_FIM_VALIDADE?.ToString("yyyy-MM"),
                 ind_classif_tribut = contribuinte.IND_CLASSIF_TRIBUT,

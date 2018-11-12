@@ -48,9 +48,12 @@ namespace Intech.EfdReinf.Transmissor
             {
                 ButtonProcurar.Enabled = false;
                 ButtonTransmitir.Enabled = false;
+                TextBoxLog.Clear();
 
                 ProgressBarSecundaria.Value = 0;
                 ProgressBarPrimaria.Value = 0;
+
+                dispatcher.DoEvents();
 
                 // Instancia a classe que irá assinar o arquivo
                 var assinador = new AssinadorXML(dispatcher, ProgressBarSecundaria);

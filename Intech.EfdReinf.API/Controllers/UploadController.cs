@@ -14,6 +14,7 @@ using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http.Headers;
 #endregion
 
@@ -58,13 +59,20 @@ namespace Intech.EfdReinf.API.Controllers
             }
         }
 
-        [HttpGet("porOidUsuarioContribuinte/{oidUsuarioContribuinte}/{status}")]
+        [HttpGet("CsvPorOidUsuarioContribuinte/{oidUsuarioContribuinte}/{status}")]
         [Authorize("Bearer")]
         public IActionResult Buscar(decimal oidUsuarioContribuinte, string status)
         {
             try
             {
-                return Json(new ArquivoUploadProxy().BuscarPorOidUsuarioContribuinteStatus(oidUsuarioContribuinte, status));
+                if (string.IsNullOrEmpty(status) || status == "null")
+                    status = null;
+
+                var arquivosCSV = new ArquivoUploadProxy().BuscarPorOidUsuarioContribuinteStatus(oidUsuarioContribuinte, status)
+                    .Where(x => x.NOM_EXT_ARQUIVO.ToUpper().Replace(".", "") == "CSV")
+                    .ToList();
+
+                return Json(arquivosCSV);
             }
             catch (Exception ex)
             {

@@ -24,10 +24,14 @@ export default class Botao extends Component {
 
     render() {
         var block = this.props.block ? " btn-block" : "";
+        var sm = this.props.pequeno ? " btn-sm" : "";
         var type = this.props.submit ? "submit" : "button";
 
         return (
-            <button type={type} className={"btn btn-" + this.props.tipo + block} onClick={this.onClick} disabled={this.props.desativado || this.state.carregando}>
+            <button type={type} 
+                className={"btn btn-" + this.props.tipo + block + sm + " " + this.props.className} 
+                onClick={this.onClick} disabled={this.props.desativado || this.state.carregando}
+            >
                 {!this.state.carregando && 
                     this.props.titulo}
 

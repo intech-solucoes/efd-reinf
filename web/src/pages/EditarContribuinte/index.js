@@ -51,6 +51,7 @@ export default class EditarContribuinte extends Component {
         }
         
         this.combos = this.state.combos;
+        this.oidContribuinte = localStorage.getItem("contribuinte");
     }
 
     componentDidMount = async () => {
@@ -82,15 +83,15 @@ export default class EditarContribuinte extends Component {
     }
 
     buscarDadosContribuinte = async () => {
-        var oidContribuinte = localStorage.getItem("contribuinte");
-        var contribuinte = await ContribuinteService.BuscarPorOidContribuinte(oidContribuinte);
+        var contribuinte = await ContribuinteService.BuscarPorOidContribuinte(this.oidContribuinte);
         contribuinte = contribuinte.data;
+
         this.setState({ 
             tipoInscricao: contribuinte.IND_TIPO_INSCRICAO,
             razaoSocial: contribuinte.NOM_RAZAO_SOCIAL,
             cnpj: contribuinte.COD_CNPJ_CPF,
             inicioValidade: contribuinte.DTA_INICIO_VALIDADE,
-            terminoValidade: contribuinte.DTA_VALIDADE,
+            terminoValidade: contribuinte.DTA_FIM_VALIDADE,
             classificacaoTributaria: contribuinte.IND_CLASSIF_TRIBUT,
             obrigatoriedadeECD: contribuinte.IND_OBRIGADA_ECD,
             desoneracaoFolhaCPRB: contribuinte.IND_DESONERACAO_CPRB,
@@ -134,15 +135,36 @@ export default class EditarContribuinte extends Component {
             await this.adicionarErro("Pelo menos um telefone do contato deve ser fornecido");
 
         if(this.state.erros.length === 0) {
-            // Atualizar dados do contribuinte.
-            try {
-                // await ContribuinteService.AlterarDados(this.state.razaoSocial, this.state.tipoInscricao, this.state.cnpj, this.state.inicioValidade, 
-                //       this.state.terminoValidade, this.state.classificacaoTributaria, this.state.obrigatoriedadeECD, this.state.desoneracaoFolhaCPRB, 
-                //       this.state.isencaoMulta, this.state.situacaoPJ, this.state.enteFederativoResponsavel, this.state.cnpjEfr, this.state.nomeContato, 
-                //       this.state.cpfContato, this.state.telefoneFixoContato, this.state.telefoneCelularContato, this.state.emailContato, this.state.emailContato);
+            var contribuinte = await ContribuinteService.BuscarPorOidContribuinte(this.oidContribuinte);
+            contribuinte = contribuinte.data;
 
-                alert("Contribuinte alterado com sucesso! Aguarde confirmação da Intech para iniciar a utilização do Intech EFD-Reinf!");
-                window.location.reload();
+            contribuinte = {
+                OID_CONTRIBUINTE: this.oidContribuinte,
+                NOM_RAZAO_SOCIAL: this.state.razaoSocial,
+                IND_TIPO_INSCRICAO: this.state.tipoInscricao,
+                COD_CNPJ_CPF: this.state.cnpj,
+                DTA_INICIO_VALIDADE: this.state.inicioValidade,
+                DTA_FIM_VALIDADE: this.state.terminoValidade,
+                IND_CLASSIF_TRIBUT: this.state.classificacaoTributaria,
+                IND_OBRIGADA_ECD: this.state.obrigatoriedadeECD,
+                IND_DESONERACAO_CPRB: this.state.desoneracaoFolhaCPRB,
+                IND_ISENCAO_MULTA: this.state.desoneracaoFolhaCPRB,
+                IND_SITUACAO_PJ: this.state.situacaoPJ,
+                IND_EFR: this.state.enteFederativoResponsavel,
+                COD_CNPJ_EFR: this.state.cnpjEfr,
+                NOM_CONTATO: this.state.nomeContato,
+                COD_CPF_CONTATO: this.state.cpfContato,
+                COD_FONE_FIXO_CONTATO: this.state.telefoneFixoContato,
+                COD_FONE_CELULAR_CONTATO: this.state.telefoneCelularContato,
+                TXT_EMAIL_CONTATO: this.state.emailContato,
+                IND_APROVADO: "SIM",
+                DTA_VALIDADE: contribuinte.DTA_VALIDADE,
+                IND_TIPO_AMBIENTE: contribuinte.IND_TIPO_AMBIENTE
+            }
+            try {
+                await ContribuinteService.Atualizar(contribuinte);
+
+                alert("Dados do Contribuinte atualizados com sucesso!");
                 
             } catch(err) {
 				if(err.response) {
@@ -234,12 +256,12 @@ export default class EditarContribuinte extends Component {
                 <CampoTexto contexto={this} ref={ (input) => this.listaCampos[14] = input }
                             label={"Telefone Fixo do Contato"} nome={"telefoneFixoContato"} tipo={"text"} 
                             placeholder={"Telefone Fixo do Contato"} valor={this.state.telefoneFixoContato} obrigatorio={false} 
-                            mascara={"(99) 9999-9999"} botaoAjuda={textosAjuda.telefoneFixoContato} col="col-lg-4" min={this.state.tamanhoMinimoTelefoneFixo} />
+                            mascara={"(99) 9999-9999"} botaoAjuda={textosAjuda.telefoneFixoContato} col="col-lg-4" />
 
                 <CampoTexto contexto={this} ref={ (input) => this.listaCampos[15] = input }
                             label={"Telefone Celular do Contato"} nome={"telefoneCelularContato"} tipo={"text"} 
                             placeholder={"Telefone Celular do Contato"} valor={this.state.telefoneCelularContato} obrigatorio={false} 
-                            mascara={"(99) 99999-9999"} botaoAjuda={textosAjuda.telefoneCelularContato} col="col-lg-4" min={this.state.tamanhoMinimoTelefoneCelular} />
+                            mascara={"(99) 99999-9999"} botaoAjuda={textosAjuda.telefoneCelularContato} col="col-lg-4" />
 
                 <CampoTexto contexto={this} ref={ (input) => this.listaCampos[16] = input }
                             label={"E-mail do Contato"} nome={"emailContato"} tipo={"text"} 

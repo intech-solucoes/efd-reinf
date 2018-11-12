@@ -5,10 +5,10 @@ import { UploadService } from '@intechprev/efdreinf-service';
 export default class ArquivosGerados extends Component {
 
     download = async (oidArquivoUpload) => { 
+        var apiUrl = require('../../config').apiUrl;
         try {
             var caminhoArquivo = await UploadService.BuscarPorOidArquivoUpload(oidArquivoUpload);
             caminhoArquivo =  caminhoArquivo.data.NOM_ARQUIVO_LOCAL;
-            var apiUrl = process.env.API_URL;
             apiUrl = apiUrl.substring(0, apiUrl.length - 4);
             apiUrl = apiUrl + "/" + caminhoArquivo;
 
@@ -17,7 +17,7 @@ export default class ArquivosGerados extends Component {
             document.body.appendChild(link);
             link.click();
         } catch(err) {
-            if(err.response.data) 
+            if(err.response) 
                 alert(err.response.data);
             else 
                 console.error(err);
@@ -44,13 +44,11 @@ export default class ArquivosGerados extends Component {
                         <tbody>
                             {
                                 this.props.arquivos.map((arquivo, index) => {
-                                    var dataGeracao = arquivo.DataGeracao.split(" ");
-                                    dataGeracao = dataGeracao[0];
 
                                     return (
                                         <tr key={index}>
                                             <td>{arquivo.Tipo}</td>
-                                            <td>{dataGeracao}</td>
+                                            <td>{arquivo.DataGeracao}</td>
                                             <td>{arquivo.Ambiente}</td>
                                             <td>{arquivo.Status}</td>
                                             <td>{arquivo.Usuario}</td>
