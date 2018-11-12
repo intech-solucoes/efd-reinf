@@ -70,7 +70,7 @@ export default class Page extends Component {
 
     render() {
         var Title = () => {
-            var rota = window.history.pathname;
+            var rota = this.props.history.location.pathname;
             
             var titulo = "";
 
