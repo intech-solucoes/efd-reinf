@@ -120,7 +120,7 @@ export default class NovoContribuinte extends Component {
                 localStorage.setItem("contribuinte", contribuinte.OID_CONTRIBUINTE);
                 localStorage.setItem("nomeContribuinte", contribuinte.NOM_RAZAO_SOCIAL);
                 localStorage.setItem("oidUsuarioContribuinte", contribuinte.Usuarios[0].OID_USUARIO_CONTRIBUINTE);
-                document.location = '/';
+                this.props.history.push('/');
                 
             } catch(err) {
 				if(err.response) {

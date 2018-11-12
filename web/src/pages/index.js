@@ -1,3 +1,5 @@
+import Page from "./Page";
+import PageClean from "./PageClean";
 import Login from "./Login";
 import Cadastro from "./Cadastro";
 import SelecionarContribuinte from "./SelecionarContribuinte";
@@ -11,6 +13,9 @@ import ImportacaoArquivos from "./ImportacaoArquivos";
 import EditarContribuinte from "./EditarContribuinte";
 
 export {
+    Page, 
+    PageClean, 
+    
     Login,
     Cadastro,
     EsqueciSenha,

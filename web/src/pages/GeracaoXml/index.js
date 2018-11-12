@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
-import { Botao, CampoTexto, Combo, Box, Col, Row, PainelErros, PainelAlerta, Radio } from '../../components';
-import { handleFieldChange } from "@intechprev/react-lib";
-import ArquivosGerados from "./ArquivosGerados";
 
+import { handleFieldChange } from "@intechprev/react-lib";
 import { DominioService, GeracaoXmlService, ContribuinteService } from "@intechprev/efdreinf-service";
+
+import { Botao, CampoTexto, Combo, Box, Col, Row, PainelErros, PainelAlerta, Radio } from '../../components';
+import { Page } from "../";
+
+import ArquivosGerados from "./ArquivosGerados";
 
 export default class GeracaoXml extends Component {
     constructor(props) {
@@ -403,7 +406,7 @@ export default class GeracaoXml extends Component {
     render() {
 
         return (
-            <div>
+            <Page {...this.props}>
                 <PainelAlerta tipo={this.state.contribuinte.IND_TIPO_AMBIENTE === "1" ? "success" : "info"}>
                     <span className="h3">{this.state.contribuinte.IND_TIPO_AMBIENTE === "1" ? "Produção" : "Produção Restrita"}</span>
 
@@ -562,7 +565,7 @@ export default class GeracaoXml extends Component {
                 </Box>
 
                 <ArquivosGerados arquivos={this.state.arquivosGerados} />
-            </div>
+            </Page>
 
         )
     }

@@ -1,16 +1,17 @@
 import React from 'react';
 
 import {
+    Login, Cadastro, EsqueciSenha, SelecionarContribuinte,
     Home, MinhaConta, AlterarSenha, GeracaoXml, ImportacaoArquivos, EditarContribuinte
 } from "./pages";
 
-export default function GetRotas() {
+function getRotas() {
     return [
         {
             titulo: "Página Inicial",
             icone: "fas fa-home",
             caminho: "/",
-            componente: (routeProps) => <Home routeProps={routeProps} />,
+            componente: (routeProps) => <Home {...routeProps} />,
             mostrarMenu: true,
             exact: true
         },
@@ -18,7 +19,7 @@ export default function GetRotas() {
             titulo: "Minha Conta",
             icone: "fas fa-user",
             caminho: "/minhaConta",
-            componente: (routeProps) => <MinhaConta routeProps={routeProps} />,
+            componente: (routeProps) => <MinhaConta {...routeProps} />,
             mostrarMenu: true,
             exact: false
         },
@@ -26,7 +27,7 @@ export default function GetRotas() {
             titulo: "Contribuinte",
             icone: "fas fa-building",
             caminho: "/editarContribuinte",
-            componente: (routeProps) => <EditarContribuinte routeProps={routeProps} />,
+            componente: (routeProps) => <EditarContribuinte {...routeProps} />,
             mostrarMenu: true,
             exact: false
         },
@@ -34,7 +35,7 @@ export default function GetRotas() {
             titulo: "Alterar Senha",
             icone: "",
             caminho: "/alterarSenha",
-            componente: (routeProps) => <AlterarSenha routeProps={routeProps} />,
+            componente: (routeProps) => <AlterarSenha {...routeProps} />,
             mostrarMenu: false,
             exact: false
         },
@@ -42,7 +43,7 @@ export default function GetRotas() {
             titulo: "Importação de Arquivos",
             icone: "fas fa-file-import",
             caminho: "/importacaoArquivos",
-            componente: (routeProps) => <ImportacaoArquivos routeProps={routeProps} />,
+            componente: (routeProps) => <ImportacaoArquivos {...routeProps} />,
             mostrarMenu: true,
             exact: false
         },
@@ -50,23 +51,39 @@ export default function GetRotas() {
             titulo: "Geração XML",
             icone: "fas fa-table",
             caminho: "/geracaoXml",
-            componente: (routeProps) => <GeracaoXml routeProps={routeProps} />,
+            componente: (routeProps) => <GeracaoXml {...routeProps} />,
             mostrarMenu: true,
             exact: false
         },
         {
+            titulo: "Login",
+            caminho: "/login",
+            componente: (routeProps) => <Login {...routeProps} />,
+            mostrarMenu: false,
+            exact: false
+        },
+        {
+            titulo: "Cadastro",
+            caminho: "/cadastro",
+            componente: (routeProps) => <Cadastro {...routeProps} />,
+            mostrarMenu: false,
+            exact: false
+        },
+        {
             titulo: "Selecionar Contribuinte",
-            icone: "fas fa-exchange-alt",
             caminho: "/selecionarContribuinte",
-            componente: () => { 
-                localStorage.removeItem("contribuinte");
-                localStorage.removeItem("oidContribuinte");
-                document.location = document.location.pathname;
-                
-                return null;
-            },
-            mostrarMenu: true,
+            componente: (routeProps) => <SelecionarContribuinte {...routeProps} />,
+            mostrarMenu: false,
+            exact: false
+        },
+        {
+            titulo: "Esqueci Minha Senha",
+            caminho: "/esqueciSenha",
+            componente: (routeProps) => <EsqueciSenha {...routeProps} />,
+            mostrarMenu: false,
             exact: false
         }
     ]
 }
+
+export default getRotas();

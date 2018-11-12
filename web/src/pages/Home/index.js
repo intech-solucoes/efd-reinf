@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { Box, Row, Col } from '../../components';
+import { Page } from "../";
 
 export default class Home extends Component {
 
     render() {
         return (
-            <div>
+            <Page {...this.props}>
                 <Row>
                     <Col className="col-lg-8">
                         <Box titulo="Manuais para Geração do Arquivo CSV:" >
@@ -34,7 +35,7 @@ export default class Home extends Component {
                         </Box>
                     </Col>
                 </Row>
-            </div>
+            </Page>
         );
     }
 

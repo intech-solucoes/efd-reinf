@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import NovoContribuinte from "./Novo";
 import { Modal, Col, Row, PainelErros } from "../../components";
+import { PageClean } from "../";
 
 import "./index.css";
 
@@ -51,7 +52,7 @@ export default class SelecionarContribuinte extends Component {
     }
 
     selecionar = async (contribuinte) => {
-        await localStorage.setItem("contribuinte", contribuinte.OID_CONTRIBUINTE);
+        await localStorage.setItem("oidContribuinte", contribuinte.OID_CONTRIBUINTE);
         await localStorage.setItem("nomeContribuinte", contribuinte.NOM_RAZAO_SOCIAL);
         await localStorage.setItem("oidUsuarioContribuinte", contribuinte.OID_USUARIO_CONTRIBUINTE);
 
@@ -59,19 +60,18 @@ export default class SelecionarContribuinte extends Component {
         await localStorage.setItem("nomeUsuario", result.data.NOM_USUARIO);
 
         this.props.history.push("/");
-        document.location.reload();
     }
 
     render() {
         return (
-            <div>
+            <PageClean {...this.props}>
                 <h4>Selecione um contribuinte</h4>
 				<br/>
 				<br/>
 
                 {this.state.contribuintes.map((contribuinte, index) => {
                     return (
-                        <Row key={index}>
+                        <Row key={index} className={"mb-3"}>
                             <Col>
                                 <div className="contrib-card" onClick={() => this.selecionar(contribuinte)}>
                                     <Row>
@@ -94,7 +94,6 @@ export default class SelecionarContribuinte extends Component {
                         Nenhum contribuinte cadastrado
                     </div>}
                 <br/>
-				<br/>
 
                 <PainelErros erros={this.state.erros} />
                 
@@ -107,7 +106,7 @@ export default class SelecionarContribuinte extends Component {
                 <Modal ref={this.modal}>
                     <NovoContribuinte />
                 </Modal>
-            </div>
+            </PageClean>
         );
     }
 

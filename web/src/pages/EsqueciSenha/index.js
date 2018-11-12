@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 
-import { Botao, CampoTexto, PainelErros } from "../../components";
-
 import { UsuarioService } from "@intechprev/efdreinf-service";
+
+import { Botao, CampoTexto, PainelErros } from "../../components";
+import { PageClean } from "../";
 
 export default class EsqueciSenha extends Component {
 
@@ -60,7 +61,7 @@ export default class EsqueciSenha extends Component {
 
     render() {
         return (
-            <div>
+            <PageClean {...this.props}>
                 <h4>Esqueci a Senha</h4>
 				<br/>
 
@@ -75,7 +76,7 @@ export default class EsqueciSenha extends Component {
                 </div>
 
                 <PainelErros erros={this.state.erros} />
-            </div>
+            </PageClean>
         )
     }
 

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import { CampoTexto, Botao, Box, Row, Col } from '../../components';
+import { Page } from "../";
 
 import { UsuarioService, ContribuinteService } from "@intechprev/efdreinf-service";
 
@@ -15,7 +16,13 @@ export default class MinhaConta extends Component {
         this.erros = [];
 
         this.state = {
-            usuario: {},
+            usuario: {
+                TXT_EMAIL: "",
+                NOM_USUARIO: "",
+                COD_CPF: "",
+                COD_TELEFONE_FIXO: "",
+                COD_TELEFONE_CEL: ""
+            },
             listaContribuintes: [],
             erros: []
         }
@@ -73,7 +80,7 @@ export default class MinhaConta extends Component {
 
     render() {
         return (
-            <div>
+            <Page {...this.props}>
                 <Box>
                     <CampoTexto contexto={this} ref={ (input) => this.listaCampos[0] = input }
                                 label={"E-mail"} nome={"TXT_EMAIL"} tipo={"email"} placeholder={"E-mail"}
@@ -123,7 +130,7 @@ export default class MinhaConta extends Component {
                         
                     ))}
                 </Box>
-            </div>
+            </Page>
         );
     }
 }

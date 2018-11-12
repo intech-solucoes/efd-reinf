@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { Box, Botao } from '../../components';
+
 import { UploadService } from '@intechprev/efdreinf-service';
+
+import { Box, Botao } from '../../components';
 
 export default class ArquivosGerados extends Component {
 

@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { Row, Col, Box, Combo, Botao, InputFile, PainelErros } from '../../components';
+
 import { DominioService, UploadService, ImportacaoCsvService } from "@intechprev/efdreinf-service";
+
+import { Row, Col, Box, Combo, Botao, InputFile, PainelErros } from '../../components';
+import { Page } from "../";
 
 export default class ImportacaoArquivos extends Component {
     constructor(props) {
@@ -170,7 +173,7 @@ export default class ImportacaoArquivos extends Component {
 
     render() {
         return (
-            <div>
+            <Page {...this.props}>
                 <Box titulo="Instruções">
                     <h6>Para realizar uma importação de arquivo externo (formato CSV):</h6>
                     <br />
@@ -293,7 +296,7 @@ export default class ImportacaoArquivos extends Component {
                         <h4>Não há arquivos importados</h4>
                     }
                 </Box>
-            </div>
+            </Page>
         );
     }
 }
