@@ -252,12 +252,11 @@ export default class ImportacaoArquivos extends Component {
                                         var status = arquivo.IND_STATUS === 'PRO' ? "Processado" : "Não Processado";
                                         var corStatus = arquivo.IND_STATUS === 'PRO' ? "#14B449" : "blue";
                                         var processarDesativado = arquivo.IND_STATUS === 'PRO' ? true : false;
-                                        var ocorrenciaDesativado = arquivo.IND_STATUS === 'PRO' ? false : true;
 
                                         return (
                                             <tr key={index}>
                                                 <td width="90">
-                                                    <Botao tipo={"light btn-sm"} clicar={() => this.importarCsv(arquivo.OID_ARQUIVO_UPLOAD)} 
+                                                    <Botao tipo={"primary btn-sm"} clicar={() => this.importarCsv(arquivo.OID_ARQUIVO_UPLOAD)} 
                                                            desativado={processarDesativado} usaLoading={true} >
                                                         Processar
                                                     </Botao>
@@ -272,17 +271,17 @@ export default class ImportacaoArquivos extends Component {
                                                 <td>{arquivo.NOM_USUARIO}</td>
 
                                                 <td width="240">
-                                                    <Botao tipo={"light btn-sm"} clicar={() => this.gerarRelatorio(arquivo.OID_ARQUIVO_UPLOAD)}
-                                                           desativado={ocorrenciaDesativado} usaLoading={true} >
+                                                    <Botao tipo={"info btn btn-sm"} clicar={() => this.gerarRelatorio(arquivo.OID_ARQUIVO_UPLOAD)}
+                                                           usaLoading={true} >
                                                         Ocorrências
                                                     </Botao>&nbsp;
 
-                                                    <Botao tipo={"light btn-sm"} clicar={() => this.deletar(arquivo.OID_ARQUIVO_UPLOAD)} usaLoading={true}>
-                                                        Excluir
+                                                    <Botao tipo={"info btn-sm"} clicar={() => this.download(arquivo.OID_ARQUIVO_UPLOAD)} usaLoading={true}>
+                                                        Download
                                                     </Botao>&nbsp;
 
-                                                    <Botao tipo={"light btn-sm"} clicar={() => this.download(arquivo.OID_ARQUIVO_UPLOAD)} usaLoading={true}>
-                                                        Download
+                                                    <Botao tipo={"danger btn-sm"} clicar={() => this.deletar(arquivo.OID_ARQUIVO_UPLOAD)} usaLoading={true}>
+                                                        Excluir
                                                     </Botao>
                                                 </td>
                                             </tr>
