@@ -77,6 +77,10 @@ namespace Intech.EfdReinf.API.Controllers
                     //Atualizando o status do arquivo na tabela EFD_ARQUIVO_UPLOAD.
                     AtualizarArquivoUpload(rowArquivoUpload);
                 }
+                else
+                {
+                    return BadRequest("Arquivo não importado. Existe(m) erro(s) no layout do arquivo.");
+                }
 
                 return Ok();
             }
