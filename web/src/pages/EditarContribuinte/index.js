@@ -52,7 +52,7 @@ export default class EditarContribuinte extends Component {
         }
         
         this.combos = this.state.combos;
-        this.oidContribuinte = localStorage.getItem("contribuinte");
+        this.oidContribuinte = localStorage.getItem("oidContribuinte");
     }
 
     componentDidMount = async () => {

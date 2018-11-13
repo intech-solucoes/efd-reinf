@@ -256,10 +256,8 @@ export default class ImportacaoArquivos extends Component {
                                         return (
                                             <tr key={index}>
                                                 <td width="90">
-                                                    <Botao tipo={"primary btn-sm"} clicar={() => this.importarCsv(arquivo.OID_ARQUIVO_UPLOAD)} 
-                                                           desativado={processarDesativado} usaLoading={true} >
-                                                        Processar
-                                                    </Botao>
+                                                    <Botao titulo="Processar" tipo={"primary btn-sm"} usaLoading={true} desativado={processarDesativado}
+                                                           clicar={() => this.importarCsv(arquivo.OID_ARQUIVO_UPLOAD)} />
                                                 </td>
 
                                                 <td>{arquivo.NOM_ARQUIVO_ORIGINAL}</td>
@@ -271,18 +269,14 @@ export default class ImportacaoArquivos extends Component {
                                                 <td>{arquivo.NOM_USUARIO}</td>
 
                                                 <td width="240">
-                                                    <Botao tipo={"info btn btn-sm"} clicar={() => this.gerarRelatorio(arquivo.OID_ARQUIVO_UPLOAD)}
-                                                           usaLoading={true} >
-                                                        Ocorrências
-                                                    </Botao>&nbsp;
+                                                    <Botao titulo="Ocorrências" tipo={"info btn btn-sm"} usaLoading={true} 
+                                                           clicar={() => this.gerarRelatorio(arquivo.OID_ARQUIVO_UPLOAD)} />&nbsp;
 
-                                                    <Botao tipo={"info btn-sm"} clicar={() => this.download(arquivo.OID_ARQUIVO_UPLOAD)} usaLoading={true}>
-                                                        Download
-                                                    </Botao>&nbsp;
+                                                    <Botao titulo="Download" tipo={"info btn-sm"} usaLoading={true}
+                                                           clicar={() => this.download(arquivo.OID_ARQUIVO_UPLOAD)} />&nbsp;
 
-                                                    <Botao tipo={"danger btn-sm"} clicar={() => this.deletar(arquivo.OID_ARQUIVO_UPLOAD)} usaLoading={true}>
-                                                        Excluir
-                                                    </Botao>
+                                                    <Botao titulo="Excluir" tipo={"danger btn-sm"} usaLoading={true}
+                                                           clicar={() => this.deletar(arquivo.OID_ARQUIVO_UPLOAD)} />
                                                 </td>
                                             </tr>
                                         );

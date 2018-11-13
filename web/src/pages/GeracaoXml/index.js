@@ -75,7 +75,7 @@ export default class GeracaoXml extends Component {
             arquivosGerados: []
         }
 
-        this.oidContribuinte = localStorage.getItem("contribuinte");
+        this.oidContribuinte = localStorage.getItem("oidContribuinte");
         this.visibilidade = this.state.visibilidade;
         this.combos = this.state.combos;
         this.datas = {};
