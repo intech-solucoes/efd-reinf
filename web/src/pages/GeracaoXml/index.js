@@ -467,8 +467,8 @@ export default class GeracaoXml extends Component {
                                     </div> 
 
                                     <div className="col-3"> 
-                                        <input className="form-control" name="dataInicial" id="dataInicial" type="date" value={this.state.dataInicial} 
-                                                onChange={async (e) => handleFieldChange(this, e)} /> 
+                                        <input className="form-control" name="dataInicial" id="dataInicial" type="date" max="2080-01-01"
+                                               value={this.state.dataInicial} onChange={async (e) => handleFieldChange(this, e)} /> 
                                     </div> 
 
                                     <div className="col-form-label"> 
@@ -476,8 +476,8 @@ export default class GeracaoXml extends Component {
                                     </div> 
 
                                     <div className="col-3"> 
-                                        <input className="form-control" name="dataFinal" id="dataFinal" type="date" 
-                                                value={(this.state.dataFinal)} onChange={(e) => handleFieldChange(this, e)} /> 
+                                        <input className="form-control" name="dataFinal" id="dataFinal" type="date" max="2080-01-01"
+                                               value={(this.state.dataFinal)} onChange={(e) => handleFieldChange(this, e)} /> 
                                     </div> 
                                 </div> 
                             </Col>
