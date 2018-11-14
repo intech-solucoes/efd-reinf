@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 import { DominioService, UploadService, ImportacaoCsvService } from "@intechprev/efdreinf-service";
 
-import { Row, Col, Box, Combo, Botao, InputFile, PainelErros } from '../../components';
+import { Row, Col, Box, Combo, Botao, InputFile } from '../../components';
 import { Page } from "../";
 
 export default class ImportacaoArquivos extends Component {
@@ -65,21 +65,27 @@ export default class ImportacaoArquivos extends Component {
     uploadFile = async (e) => {
         const formData = new FormData()
         var arquivoUpload = e.target.files[0];
-        formData.append("File", arquivoUpload, arquivoUpload.name);
-        await this.setState({ 
-            formData: formData,
-            arquivo: ""
-        });
+        
+        if(arquivoUpload) {
+            formData.append("File", arquivoUpload, arquivoUpload.name);
+            await this.setState({ 
+                formData: formData,
+                arquivo: ""
+            });
+        } else {
+            await this.setState({ 
+                formData: null,
+                arquivo: ""
+            });
+        }
     }
 
     enviar = async () => { 
         await this.limparErros();
 
-        if(!this.state.formData)
-            await this.adicionarErro("Campo \"Arquivo para Upload\" obrigatório.");
-
-        var apiUrl = require("../../config").apiUrl;
         // Rota para upload.
+        var apiUrl = require("../../config").apiUrl;
+
         var oidUsuarioContribuinte = localStorage.getItem("oidUsuarioContribuinte");
         if(this.state.erros.length === 0) {
             try { 
@@ -102,9 +108,10 @@ export default class ImportacaoArquivos extends Component {
                     formData: null
                 });
                 this.buscarArquivosImportados();
+                
             } catch (err) {
                 if(err.response)
-                    this.adicionarErro(err.response);
+                    this.adicionarErro(err.response.data);
                 else 
                     this.adicionarErro(err);
             }
@@ -212,18 +219,13 @@ export default class ImportacaoArquivos extends Component {
                                 <div>
                                     <InputFile contexto={this} ref={ (input) => this.listaCampos[0] = input } label={"Arquivo para upload"}
                                                nome={"arquivo"} aceita={".csv"} obrigatorio={true} onChange={this.uploadFile} />
-                                    <Botao tipo={"primary btn-sm"} titulo={"Enviar"} clicar={this.enviar} />
+                                    <Botao tipo={"primary btn-sm"} titulo={"Enviar"} clicar={this.enviar} desativado={!this.state.formData}/>
                                 </div>
                             }
                             {!this.state.visibilidadeInput && 
-                                <Botao titulo={"Enviar outro arquivo"} tipo={"primary"} clicar={async () => await this.setState({ visibilidadeInput: true })} />
+                                <Botao titulo={"Enviar outro arquivo"} tipo={"primary"}
+                                       clicar={async () => await this.setState({ visibilidadeInput: true })} />
                             }
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col tamanho="5">
-                            {this.state.erros.length > 0 && <br />}
-                            <PainelErros erros={this.state.erros} />
                         </Col>
                     </Row>
                 </Box>
