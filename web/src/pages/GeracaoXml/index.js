@@ -80,6 +80,8 @@ export default class GeracaoXml extends Component {
         this.combos = this.state.combos;
         this.datas = {};
         this.dataAtual = new Date();
+
+        this.page = React.createRef();
     }
     
     componentDidMount = async () => {
@@ -115,8 +117,9 @@ export default class GeracaoXml extends Component {
             this.combos.usuarioResponsavel = usuariosResponsaveis;
             await this.setState({ combos: this.combos });
             
-            this.alternarCampos();
-            this.buscarArquivosGerados();
+            await this.alternarCampos();
+
+            await this.page.current.loading(false);
         } catch(err) {
             console.error(err);
         }
@@ -141,12 +144,6 @@ export default class GeracaoXml extends Component {
         this.setState({ 
             contribuinte: contribuinte.data
         });
-    }
-
-    buscarArquivosGerados = async () => { 
-        // Busca arquivos gerados pelo contribuinte logado.
-        var arquivosGerados = await GeracaoXmlService.BuscarArquivosGeradosPorOidContribuinte(this.oidContribuinte);
-        await this.setState({ arquivosGerados: arquivosGerados.data });
     }
     
     gerar = async () => { 
@@ -406,7 +403,7 @@ export default class GeracaoXml extends Component {
     render() {
 
         return (
-            <Page {...this.props}>
+            <Page {...this.props} ref={this.page}>
                 <PainelAlerta tipo={this.state.contribuinte.IND_TIPO_AMBIENTE === "1" ? "success" : "info"}>
                     <span className="h3">{this.state.contribuinte.IND_TIPO_AMBIENTE === "1" ? "Produção" : "Produção Restrita"}</span>
 
@@ -564,7 +561,7 @@ export default class GeracaoXml extends Component {
                     <Botao titulo={"Gerar"} tipo={"primary"} clicar={this.gerar} usaLoading={true} />
                 </Box>
 
-                <ArquivosGerados arquivos={this.state.arquivosGerados} />
+                <ArquivosGerados />
             </Page>
 
         )

@@ -53,9 +53,11 @@ export default class EditarContribuinte extends Component {
         
         this.combos = this.state.combos;
         this.oidContribuinte = localStorage.getItem("oidContribuinte");
+
+        this.page = React.createRef();
     }
 
-    componentDidMount = async () => {
+    async componentDidMount() {
         await this.buscarDadosContribuinte();
 
         this.combos.tipoInscricao = await DominioService.BuscarPorCodigo("DMN_TIPO_INSCRICAO_EFD");
@@ -67,6 +69,8 @@ export default class EditarContribuinte extends Component {
         this.combos.enteFederativoResponsavel = await DominioService.BuscarPorCodigo("DMN_EFR_EFD");
         
         await this.setState({ combos: this.combos });
+
+        await this.page.current.loading(false);
     }
 
     limparErros = async () => {
@@ -87,7 +91,7 @@ export default class EditarContribuinte extends Component {
         var contribuinte = await ContribuinteService.BuscarPorOidContribuinte(this.oidContribuinte);
         contribuinte = contribuinte.data;
 
-        this.setState({ 
+        await this.setState({ 
             tipoInscricao: contribuinte.IND_TIPO_INSCRICAO,
             razaoSocial: contribuinte.NOM_RAZAO_SOCIAL,
             cnpj: contribuinte.COD_CNPJ_CPF,
@@ -191,7 +195,7 @@ export default class EditarContribuinte extends Component {
 
     render() {
         return (
-            <Page {...this.props}>
+            <Page {...this.props} ref={this.page}>
                 <Box>
                     <Combo contexto={this} label={"Tipo de inscrição"} ref={ (input) => this.listaCampos[0] = input } 
                             nome="tipoInscricao" valor={this.state.tipoInscricao} obrigatorio={true} padrao={"1"}

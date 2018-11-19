@@ -25,13 +25,17 @@ export default class ImportacaoArquivos extends Component {
         }
 
         this.oidUsuarioContribuinte = localStorage.getItem("oidUsuarioContribuinte");
+
+        this.page = React.createRef();
     }
 
     async componentDidMount() {
         window.scrollTo(0, 0);
         var comboSituacao = await DominioService.BuscarPorCodigo("DMN_STATUS_IMPORTACAO");
-        this.setState({ filtrarSituacaoCombo: comboSituacao.data });
-        this.buscarArquivosImportados();
+        await this.setState({ filtrarSituacaoCombo: comboSituacao.data });
+        await this.buscarArquivosImportados();
+
+        await this.page.current.loading(false);
     }
 
     limparErros = async () => {
@@ -180,7 +184,7 @@ export default class ImportacaoArquivos extends Component {
 
     render() {
         return (
-            <Page {...this.props}>
+            <Page {...this.props} ref={this.page}>
                 <Box titulo="Instruções">
                     <h6>Para realizar uma importação de arquivo externo (formato CSV):</h6>
                     <br />

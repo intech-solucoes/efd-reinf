@@ -1,10 +1,24 @@
 import React, { Component } from 'react';
 
-import { UploadService } from '@intechprev/efdreinf-service';
+import { UploadService, GeracaoXmlService } from '@intechprev/efdreinf-service';
 
 import { Box, Botao } from '../../components';
 
 export default class ArquivosGerados extends Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            arquivosGerados: []
+        }
+
+        this.oidContribuinte = localStorage.getItem("oidContribuinte");
+    }
+
+    async componentDidMount() {
+        await this.buscarArquivosGerados();
+    }
 
     download = async (oidArquivoUpload) => { 
         var apiUrl = require('../../config').apiUrl;
@@ -26,8 +40,14 @@ export default class ArquivosGerados extends Component {
         }
     }
 
+    buscarArquivosGerados = async () => { 
+        // Busca arquivos gerados pelo contribuinte logado.
+        var arquivosGerados = await GeracaoXmlService.BuscarArquivosGeradosPorOidContribuinte(this.oidContribuinte);
+        await this.setState({ arquivosGerados: arquivosGerados.data });
+    }
+
     render() {
-        var temArquivos = this.props.arquivos.length > 0;
+        var temArquivos = this.state.arquivosGerados.length > 0;
 
         return (
             <Box titulo={"Arquivos Gerados"}>
@@ -45,7 +65,7 @@ export default class ArquivosGerados extends Component {
                         </thead>
                         <tbody>
                             {
-                                this.props.arquivos.map((arquivo, index) => {
+                                this.state.arquivosGerados.map((arquivo, index) => {
 
                                     return (
                                         <tr key={index}>

@@ -26,6 +26,8 @@ export default class MinhaConta extends Component {
             listaContribuintes: [],
             erros: []
         }
+
+        this.page = React.createRef();
     }
 
     async componentDidMount() {
@@ -38,6 +40,8 @@ export default class MinhaConta extends Component {
         await this.setState({
             listaContribuintes: result.data
         });
+
+        await this.page.current.loading(false);
     }
 
     limparErros = async () => {
@@ -80,7 +84,7 @@ export default class MinhaConta extends Component {
 
     render() {
         return (
-            <Page {...this.props}>
+            <Page {...this.props} ref={this.page}>
                 <Box>
                     <CampoTexto contexto={this} ref={ (input) => this.listaCampos[0] = input }
                                 label={"E-mail"} nome={"TXT_EMAIL"} tipo={"email"} placeholder={"E-mail"}

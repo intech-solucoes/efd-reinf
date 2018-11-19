@@ -4,9 +4,19 @@ import { Page } from "../";
 
 export default class Home extends Component {
 
+    constructor(props) {
+        super(props);
+
+        this.page = React.createRef();
+    }
+
+    async componentDidMount() {
+        this.page.current.loading(false);
+    }
+
     render() {
         return (
-            <Page {...this.props}>
+            <Page {...this.props} ref={this.page}>
                 <Row>
                     <Col>
                         <Box titulo="Manuais para Geração do Arquivo CSV:" >

@@ -2,7 +2,6 @@
   "name": "web",
   "version": "0.0.10",
   "private": true,
-  "homepage": "http://10.10.170.11/EfdReinf/",
   "dependencies": {
     "@intechprev/efdreinf-service": "^0.0.1",
     "@intechprev/react-lib": "^0.0.4",
@@ -63,8 +62,10 @@
     "start": "yarn build:config-dev && node scripts/start.js",
     "build": "node scripts/build.js",
     "build:test": "yarn build:config-test && yarn build && ./node_modules/.bin/cpy **/* Z:/EfdReinf --parents --cwd=build",
+    "build:prod": "yarn build:config-prod && yarn build && ./node_modules/.bin/cpy **/* G:/Publish/EfdReinf --parents --cwd=build",
     "build:config-dev": "./node_modules/.bin/cpy src/configs/config.dev.json src --rename=config.json",
     "build:config-test": "./node_modules/.bin/cpy src/configs/config.test.json src --rename=config.json",
+    "build:config-prod": "./node_modules/.bin/cpy src/configs/config.prod.json src --rename=config.json",
     "test": "node scripts/test.js --env=jsdom"
   },
   "jest": {

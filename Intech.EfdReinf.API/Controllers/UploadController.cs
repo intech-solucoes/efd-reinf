@@ -100,6 +100,10 @@ namespace Intech.EfdReinf.API.Controllers
                     string fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
                     var filePathArray = fileName.Split(".");
                     var ext = filePathArray[filePathArray.Length - 1];
+
+                    if (ext.ToLower() != "csv")
+                        throw new Exception("Formato de arquivo inválido. Apenas arquivos .csv são suportados.");
+
                     string fullPath = Path.Combine(newPath, fileName);
                     using (var stream = new FileStream(fullPath, FileMode.Create))
                     {

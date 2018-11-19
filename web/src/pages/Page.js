@@ -13,12 +13,17 @@ export default class Page extends Component {
 
         this.state = {
             nomeUsuario: "",
-            nomeContribuinte: ""
+            nomeContribuinte: "",
+            loading: false
         }
+
+        this.page = React.createRef();
     }
 
     async componentWillMount() {
         try {
+            await this.loading(true);
+
             var nomeUsuario = await localStorage.getItem("nomeUsuario");
             var nomeContribuinte = await localStorage.getItem("nomeContribuinte");
 
@@ -46,6 +51,12 @@ export default class Page extends Component {
             }
         }
         
+    }
+
+    loading = async (valor) => {
+        await this.setState({
+            loading: valor
+        });
     }
 
     selecionarContribuinte = (e) => {
@@ -82,77 +93,83 @@ export default class Page extends Component {
 
             return titulo;
         };
-
+        
         return (
-            <div className="wrapper">
-                <nav className="navbar-default nav-open">
-                    <ul>
-                        <li className="navbar-header">
-                            <img src="./imagens/IntechSemSlogan.png" alt="IntechSemSlogan" />
-                        </li>
-                        {
-                            Rotas.map((rota, index) => {
-                                var link = rota.caminhoLink ? rota.caminhoLink : rota.caminho;
+            <div>
+                <div className="loader" hidden={!this.state.loading}>
+                    <img src="./imagens/loading.gif" />
+                </div>
 
-                                if(rota.mostrarMenu) {
-                                    return (
-                                        <li key={index}>
-                                            <Link to={link}>
-                                                <i className={rota.icone}></i>
-                                                {rota.titulo}
-                                            </Link>
-                                        </li>
-                                    );
-                                }
-                                else return "";
-                            })
-                        }
-                        <li>
-                            <a href="." onClick={this.selecionarContribuinte}>
-                                <i className="fas fa-exchange-alt"></i>
-                                Selecionar Contribuinte
-                            </a>
-                        </li>
+                <div className="wrapper">
+                    <nav className="navbar-default nav-open">
+                        <ul>
+                            <li className="navbar-header">
+                                <img src="./imagens/IntechSemSlogan.png" alt="IntechSemSlogan" />
+                            </li>
+                            {
+                                Rotas.map((rota, index) => {
+                                    var link = rota.caminhoLink ? rota.caminhoLink : rota.caminho;
 
-                        <li>
-                            <a href="." onClick={this.logout}>
-                                <i className="fas fa-sign-out-alt"></i>
-                                Sair
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
+                                    if(rota.mostrarMenu) {
+                                        return (
+                                            <li key={index}>
+                                                <Link to={link}>
+                                                    <i className={rota.icone}></i>
+                                                    {rota.titulo}
+                                                </Link>
+                                            </li>
+                                        );
+                                    }
+                                    else return "";
+                                })
+                            }
+                            <li>
+                                <a href="." onClick={this.selecionarContribuinte}>
+                                    <i className="fas fa-exchange-alt"></i>
+                                    Selecionar Contribuinte
+                                </a>
+                            </li>
 
-                <div className="page-wrapper nav-open">
-                    <Row className="page-heading">
-                        <Col>
-                            <button className="btn btn-primary btn-menu" onClick={this.toggleMenu}>
-                                <i className="fa fa-list"></i>
-                            </button>
+                            <li>
+                                <a href="." onClick={this.logout}>
+                                    <i className="fas fa-sign-out-alt"></i>
+                                    Sair
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
 
-                            <Title />
-                        </Col>
-                        <Col tamanho={"sm-4"} className={"text-right user-icon"}>
+                    <div className="page-wrapper nav-open">
+                        <Row className="page-heading">
+                            <Col>
+                                <button className="btn btn-primary btn-menu" onClick={this.toggleMenu}>
+                                    <i className="fa fa-list"></i>
+                                </button>
 
-                            <Row>
-                                <Col>
-                                    {this.state.nomeUsuario}<br/>
-                                    <Link to={"/editarContribuinte"}>
-                                        <small className={"text-primary"}>{this.state.nomeContribuinte}</small>
-                                    </Link>
-                                </Col>
-                                <Col tamanho={"2"}>
-                                    <Link to={"/minhaConta"}>
-                                        <img className="icon" src="./imagens/UserImage.jpg" alt="user" />
-                                    </Link>
-                                </Col>
-                            </Row>
-                        </Col>
-                    </Row>
+                                <Title />
+                            </Col>
+                            <Col tamanho={"sm-4"} className={"text-right user-icon"}>
 
-                    <div className="wrapper-content">
-                        <div id="route">
-                            {this.props.children}
+                                <Row>
+                                    <Col>
+                                        {this.state.nomeUsuario}<br/>
+                                        <Link to={"/editarContribuinte"}>
+                                            <small className={"text-primary"}>{this.state.nomeContribuinte}</small>
+                                        </Link>
+                                    </Col>
+                                    <Col tamanho={"2"}>
+                                        <Link to={"/minhaConta"}>
+                                            <img className="icon" src="./imagens/UserImage.jpg" alt="user" />
+                                        </Link>
+                                    </Col>
+                                </Row>
+                            </Col>
+                        </Row>
+
+                        <div className="wrapper-content">
+                            <div id="route">
+                                {this.props.children}
+                            </div>
                         </div>
                     </div>
                 </div>

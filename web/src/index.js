@@ -6,7 +6,7 @@ import Rotas from './Rotas';
 class MainRender extends Component {
 	render() {
 		return (
-			<HashRouter>
+			<HashRouter basename={process.env.PUBLIC_URL}>
 				<Switch>
 					{ Rotas.map((rota, index) => <Route key={index} exact={rota.exact} path={rota.caminho} component={rota.componente} />) }
 				</Switch>
