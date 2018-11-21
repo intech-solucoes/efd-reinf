@@ -104,7 +104,7 @@ export default class SelecionarContribuinte extends Component {
                 </Row>
                 
                 <Modal ref={this.modal}>
-                    <NovoContribuinte />
+                    <NovoContribuinte {...this.props} />
                 </Modal>
             </PageClean>
         );

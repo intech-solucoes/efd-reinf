@@ -67,6 +67,7 @@ namespace Intech.EfdReinf.Negocio.Proxy
 
             contribuinte.DTA_VALIDADE = DateTime.Now;
             contribuinte.IND_APROVADO = DMN_SN.SIM;
+            contribuinte.IND_TIPO_AMBIENTE = DMN_TIPO_AMBIENTE_EFD.PRODUCAO_RESTRITA;
 
             var proxyContribuinte = new ContribuinteProxy();
             var proxyUsuarioContribuinte = new UsuarioContribuinteProxy();

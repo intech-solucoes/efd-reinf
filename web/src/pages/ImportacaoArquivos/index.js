@@ -54,7 +54,7 @@ export default class ImportacaoArquivos extends Component {
 
     importarCsv = async (oidArquivoUpload) => {
         try {
-            var oidContribuinte = localStorage.getItem("contribuinte");
+            var oidContribuinte = localStorage.getItem("oidContribuinte");
             await ImportacaoCsvService.ImportarCsv(oidArquivoUpload, oidContribuinte);
             alert("Arquivo processado com sucesso.");
             this.buscarArquivosImportados();
