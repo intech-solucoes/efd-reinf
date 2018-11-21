@@ -68,7 +68,7 @@ export default class Page extends Component {
         this.props.history.push("/selecionarContribuinte");
     }
 
-    logout(e) {
+    logout = (e) => {
         e.preventDefault();
 
         localStorage.removeItem("token");
@@ -97,7 +97,7 @@ export default class Page extends Component {
         return (
             <div>
                 <div className="loader" hidden={!this.state.loading}>
-                    <img src="./imagens/loading.gif" />
+                    <img src="./imagens/loading.gif" alt="loading" />
                 </div>
 
                 <div className="wrapper">
