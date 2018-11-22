@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import { CampoTexto, Botao, Box, Row, Col } from '../../components';
+import { Page } from "../";
 
 import { UsuarioService, ContribuinteService } from "@intechprev/efdreinf-service";
 
@@ -15,10 +16,18 @@ export default class MinhaConta extends Component {
         this.erros = [];
 
         this.state = {
-            usuario: {},
+            usuario: {
+                TXT_EMAIL: "",
+                NOM_USUARIO: "",
+                COD_CPF: "",
+                COD_TELEFONE_FIXO: "",
+                COD_TELEFONE_CEL: ""
+            },
             listaContribuintes: [],
             erros: []
         }
+
+        this.page = React.createRef();
     }
 
     async componentDidMount() {
@@ -31,6 +40,8 @@ export default class MinhaConta extends Component {
         await this.setState({
             listaContribuintes: result.data
         });
+
+        await this.page.current.loading(false);
     }
 
     limparErros = async () => {
@@ -73,7 +84,7 @@ export default class MinhaConta extends Component {
 
     render() {
         return (
-            <div>
+            <Page {...this.props} ref={this.page}>
                 <Box>
                     <CampoTexto contexto={this} ref={ (input) => this.listaCampos[0] = input }
                                 label={"E-mail"} nome={"TXT_EMAIL"} tipo={"email"} placeholder={"E-mail"}
@@ -117,13 +128,13 @@ export default class MinhaConta extends Component {
                         <div className="media" key={index}>
                             <div className="media-body">
                                 <h5 className="mt-0 text-primary">{contribuinte.NOM_RAZAO_SOCIAL}</h5>
-                                {contribuinte.COD_CNPJ_CPF}
+                                <h6>{contribuinte.COD_CNPJ_CPF}</h6>
                             </div>
                         </div>
                         
                     ))}
                 </Box>
-            </div>
+            </Page>
         );
     }
 }

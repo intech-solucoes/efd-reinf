@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 
 import { Botao, CampoTexto, PainelErros } from "../../components";
+import { PageClean } from "../";
 
 import { UsuarioService } from "@intechprev/efdreinf-service";
 
@@ -69,7 +70,7 @@ export default class Cadastro extends Component {
 
     render() {
         return (
-            <div>
+            <PageClean {...this.props}>
                 <h4>Novo Usuário</h4>
 				<br/>
 
@@ -106,7 +107,7 @@ export default class Cadastro extends Component {
                 </div>
                 
                 <PainelErros erros={this.state.erros} />
-			</div>
+			</PageClean>
         );
     }
 

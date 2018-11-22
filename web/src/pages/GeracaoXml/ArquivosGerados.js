@@ -1,14 +1,30 @@
 import React, { Component } from 'react';
+
+import { UploadService, GeracaoXmlService } from '@intechprev/efdreinf-service';
+
 import { Box, Botao } from '../../components';
-import { UploadService } from '@intechprev/efdreinf-service';
 
 export default class ArquivosGerados extends Component {
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            arquivosGerados: []
+        }
+
+        this.oidContribuinte = localStorage.getItem("oidContribuinte");
+    }
+
+    async componentDidMount() {
+        await this.buscarArquivosGerados();
+    }
+
     download = async (oidArquivoUpload) => { 
+        var apiUrl = require('../../config').apiUrl;
         try {
             var caminhoArquivo = await UploadService.BuscarPorOidArquivoUpload(oidArquivoUpload);
             caminhoArquivo =  caminhoArquivo.data.NOM_ARQUIVO_LOCAL;
-            var apiUrl = process.env.API_URL;
             apiUrl = apiUrl.substring(0, apiUrl.length - 4);
             apiUrl = apiUrl + "/" + caminhoArquivo;
 
@@ -17,15 +33,21 @@ export default class ArquivosGerados extends Component {
             document.body.appendChild(link);
             link.click();
         } catch(err) {
-            if(err.response.data) 
+            if(err.response) 
                 alert(err.response.data);
             else 
                 console.error(err);
         }
     }
 
+    buscarArquivosGerados = async () => { 
+        // Busca arquivos gerados pelo contribuinte logado.
+        var arquivosGerados = await GeracaoXmlService.BuscarArquivosGeradosPorOidContribuinte(this.oidContribuinte);
+        await this.setState({ arquivosGerados: arquivosGerados.data });
+    }
+
     render() {
-        var temArquivos = this.props.arquivos.length > 0;
+        var temArquivos = this.state.arquivosGerados.length > 0;
 
         return (
             <Box titulo={"Arquivos Gerados"}>
@@ -43,14 +65,12 @@ export default class ArquivosGerados extends Component {
                         </thead>
                         <tbody>
                             {
-                                this.props.arquivos.map((arquivo, index) => {
-                                    var dataGeracao = arquivo.DataGeracao.split(" ");
-                                    dataGeracao = dataGeracao[0];
+                                this.state.arquivosGerados.map((arquivo, index) => {
 
                                     return (
                                         <tr key={index}>
                                             <td>{arquivo.Tipo}</td>
-                                            <td>{dataGeracao}</td>
+                                            <td>{arquivo.DataGeracao}</td>
                                             <td>{arquivo.Ambiente}</td>
                                             <td>{arquivo.Status}</td>
                                             <td>{arquivo.Usuario}</td>

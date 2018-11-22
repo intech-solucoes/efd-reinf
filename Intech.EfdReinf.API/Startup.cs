@@ -41,6 +41,7 @@ namespace Intech.EfdReinf.API
                     jsonOptions.SerializerSettings.Formatting = Formatting.Indented;
                     jsonOptions.SerializerSettings.ContractResolver = new DefaultContractResolver();
                     jsonOptions.SerializerSettings.DateFormatString = "dd/MM/yyyy HH:mm:ss";
+                    jsonOptions.SerializerSettings.Culture = new System.Globalization.CultureInfo("pt-BR");
                 });
 
             services.AddMemoryCache();

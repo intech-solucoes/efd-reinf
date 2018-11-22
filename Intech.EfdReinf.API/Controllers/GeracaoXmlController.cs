@@ -33,17 +33,46 @@ namespace Intech.EfdReinf.API.Controllers
             {
                 var datas = new R2010Proxy().BuscarDatasEnviados(oidContribuinte).ToList();
 
-                var listaDatas = from data in datas
-                                 group data by data.Year into g
-                                 select new
-                                 {
-                                     Ano = g.Key,
-                                     Meses = from mes in g
-                                             group mes by mes.Month into g2
-                                             select g2.Key
-                                 };
+                var datasFiltradas = from data in datas
+                                     group data by data.Year into g
+                                     select new
+                                     {
+                                         Ano = g.Key,
+                                         Meses = from mes in g
+                                                 group mes by mes.Month into g2
+                                                 select g2.Key
+                                     };
 
-                return Json(listaDatas);
+                return Json(datasFiltradas);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("datasR2099/{oidContribuinte}")]
+        [Authorize("Bearer")]
+        public IActionResult BuscarDatasR2099(decimal oidContribuinte)
+        {
+            try
+            {
+                var datasFiltradas = new List<DateTime>();
+
+                for(var data = new DateTime(2018, 1, 1); data <= DateTime.Today; data = data.AddMonths(1))
+                    datasFiltradas.Add(data);
+
+                var datasAgrupadas = from data in datasFiltradas
+                                     group data by data.Year into g
+                                     select new
+                                     {
+                                         Ano = g.Key,
+                                         Meses = from mes in g
+                                                 group mes by mes.Month into g2
+                                                 select g2.Key
+                                     };
+
+                return Json(datasAgrupadas);
             }
             catch (Exception ex)
             {
@@ -77,7 +106,7 @@ namespace Intech.EfdReinf.API.Controllers
                     {
                         Tipo = "R-1000",
                         DataGeracao = item.DTA_UPLOAD.Value,
-                        Ambiente = item.IND_TIPO_AMBIENTE == DMN_TIPO_AMBIENTE_EFD.PRODUCAO ? "Produção" : "Pré-Produção",
+                        Ambiente = item.IND_TIPO_AMBIENTE == DMN_TIPO_AMBIENTE_EFD.PRODUCAO ? "Produção" : "Produção Restrita",
                         Status = item.IND_STATUS == DMN_STATUS_EFD_UPLOAD.PROCESSADO ? "Processado" : "Gerado",
                         Usuario = new UsuarioProxy().BuscarPorChave(item.OID_USUARIO_ENVIO).NOM_USUARIO,
                         OidArquivoUpload = item.OID_ARQUIVO_UPLOAD
@@ -91,7 +120,7 @@ namespace Intech.EfdReinf.API.Controllers
                     {
                         Tipo = "R-1070",
                         DataGeracao = item.DTA_UPLOAD.Value,
-                        Ambiente = item.IND_AMBIENTE_ENVIO == DMN_TIPO_AMBIENTE_EFD.PRODUCAO ? "Produção" : "Pré-Produção",
+                        Ambiente = item.IND_AMBIENTE_ENVIO == DMN_TIPO_AMBIENTE_EFD.PRODUCAO ? "Produção" : "Produção Restrita",
                         Status = item.IND_STATUS == DMN_STATUS_EFD_UPLOAD.PROCESSADO ? "Processado" : "Gerado",
                         Usuario = new UsuarioProxy().BuscarPorChave(item.OID_USUARIO_ENVIO).NOM_USUARIO,
                         OidArquivoUpload = item.OID_ARQUIVO_UPLOAD
@@ -105,7 +134,7 @@ namespace Intech.EfdReinf.API.Controllers
                     {
                         Tipo = "R-2010",
                         DataGeracao = item.DTA_UPLOAD.Value,
-                        Ambiente = item.IND_AMBIENTE_ENVIO == DMN_TIPO_AMBIENTE_EFD.PRODUCAO ? "Produção" : "Pré-Produção",
+                        Ambiente = item.IND_AMBIENTE_ENVIO == DMN_TIPO_AMBIENTE_EFD.PRODUCAO ? "Produção" : "Produção Restrita",
                         Status = item.IND_STATUS == DMN_STATUS_EFD_UPLOAD.PROCESSADO ? "Processado" : "Gerado",
                         Usuario = new UsuarioProxy().BuscarPorChave(item.OID_USUARIO_ENVIO).NOM_USUARIO,
                         OidArquivoUpload = item.OID_ARQUIVO_UPLOAD
@@ -119,7 +148,7 @@ namespace Intech.EfdReinf.API.Controllers
                     {
                         Tipo = "R-2098",
                         DataGeracao = item.DTA_UPLOAD.Value,
-                        Ambiente = item.IND_AMBIENTE_ENVIO == DMN_TIPO_AMBIENTE_EFD.PRODUCAO ? "Produção" : "Pré-Produção",
+                        Ambiente = item.IND_AMBIENTE_ENVIO == DMN_TIPO_AMBIENTE_EFD.PRODUCAO ? "Produção" : "Produção Restrita",
                         Status = item.IND_STATUS == DMN_STATUS_EFD_UPLOAD.PROCESSADO ? "Processado" : "Gerado",
                         Usuario = new UsuarioProxy().BuscarPorChave(item.OID_USUARIO_ENVIO).NOM_USUARIO,
                         OidArquivoUpload = item.OID_ARQUIVO_UPLOAD
@@ -133,7 +162,7 @@ namespace Intech.EfdReinf.API.Controllers
                     {
                         Tipo = "R-2099",
                         DataGeracao = item.DTA_UPLOAD.Value,
-                        Ambiente = item.IND_AMBIENTE_ENVIO == DMN_TIPO_AMBIENTE_EFD.PRODUCAO ? "Produção" : "Pré-Produção",
+                        Ambiente = item.IND_AMBIENTE_ENVIO == DMN_TIPO_AMBIENTE_EFD.PRODUCAO ? "Produção" : "Produção Restrita",
                         Status = item.IND_STATUS == DMN_STATUS_EFD_UPLOAD.PROCESSADO ? "Processado" : "Gerado",
                         Usuario = new UsuarioProxy().BuscarPorChave(item.OID_USUARIO_ENVIO).NOM_USUARIO,
                         OidArquivoUpload = item.OID_ARQUIVO_UPLOAD

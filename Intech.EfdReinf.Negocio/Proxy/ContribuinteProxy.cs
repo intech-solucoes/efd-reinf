@@ -54,43 +54,20 @@ namespace Intech.EfdReinf.Negocio.Proxy
             return listaContribuintes;
         }
 
+        public override bool Atualizar(ContribuinteEntidade contribuinte)
+        {
+            Validar(ref contribuinte);
+
+            return base.Atualizar(contribuinte);
+        }
+
         public decimal Inserir(ContribuinteEntidade contribuinte, decimal oidUsuario)
         {
-            // Validações pessoa jurídica
-            if(contribuinte.IND_TIPO_INSCRICAO == DMN_TIPO_INSCRICAO_EFD.PESSOA_JURIDICA)
-            {
-                if (!Validador.ValidarCNPJ(contribuinte.COD_CNPJ_CPF))
-                    throw new Exception("CNPJ inválido.");
-            }
+            Validar(ref contribuinte);
 
-            // Validações pessoa física
-            else if (contribuinte.IND_TIPO_INSCRICAO == DMN_TIPO_INSCRICAO_EFD.PESSOA_FISICA)
-            {
-                if(!Validador.ValidarCPF(contribuinte.COD_CNPJ_CPF))
-                    throw new Exception("CPF inválido.");
-
-                if (contribuinte.IND_CLASSIF_TRIBUT != "21" || contribuinte.IND_CLASSIF_TRIBUT != "22")
-                    throw new Exception("Os códigos [21] \"Pessoa Física, exceto Segurado Especial\" e [22] \"Segurado Especial\" " +
-                        "somente podem ser utilizados se o \"Tipo de Inscrição\" for igual a \"PESSOA FÍSICA\". Para os demais códigos, " +
-                        "o \"Tipo de Inscrição\" deve ser igual a \"PESSOA JURÍDICA.\"");
-            }
-
-            if(!string.IsNullOrEmpty(contribuinte.TXT_EMAIL_CONTATO) && !Validador.ValidarEmail(contribuinte.TXT_EMAIL_CONTATO))
-                throw new Exception("E-mail inválido.");
-
-            if (contribuinte.IND_EFR == DMN_EFR_EFD.SIM && string.IsNullOrEmpty(contribuinte.COD_CNPJ_EFR))
-                throw new Exception("CNPJ do Ente Federativo Responsável - EFR é obrigatório e exclusivo se EFR = Sim. Informação validada no cadastro do CNPJ da RFB.");
-            
-            if (contribuinte.DTA_FIM_VALIDADE != null && contribuinte.DTA_INICIO_VALIDADE > contribuinte.DTA_FIM_VALIDADE)
-                throw new Exception("A data de Término Validade deve ser maior que a data de Início Validade");
-
-            contribuinte.COD_CNPJ_EFR = contribuinte.COD_CNPJ_EFR.LimparMascara();
-            contribuinte.COD_CNPJ_CPF = contribuinte.COD_CNPJ_CPF.LimparMascara();
-            contribuinte.COD_CPF_CONTATO = contribuinte.COD_CPF_CONTATO.LimparMascara();
-            contribuinte.COD_FONE_CELULAR_CONTATO = contribuinte.COD_FONE_CELULAR_CONTATO.LimparMascara();
-            contribuinte.COD_FONE_FIXO_CONTATO = contribuinte.COD_FONE_FIXO_CONTATO.LimparMascara();
             contribuinte.DTA_VALIDADE = DateTime.Now;
             contribuinte.IND_APROVADO = DMN_SN.SIM;
+            contribuinte.IND_TIPO_AMBIENTE = DMN_TIPO_AMBIENTE_EFD.PRODUCAO_RESTRITA;
 
             var proxyContribuinte = new ContribuinteProxy();
             var proxyUsuarioContribuinte = new UsuarioContribuinteProxy();
@@ -103,7 +80,7 @@ namespace Intech.EfdReinf.Negocio.Proxy
 
             contribuinteExistente = proxyContribuinte.BuscarPorCpfCnpj(contribuinte.COD_CNPJ_CPF);
 
-            if(contribuinteExistente != null)
+            if (contribuinteExistente != null)
                 throw new Exception("Já existe um contribuinte com esse CNPJ vinculado a outro usuário. Favor entrar em contato com a Intech.");
 
             var oidContribuinte = base.Inserir(contribuinte);
@@ -123,6 +100,43 @@ namespace Intech.EfdReinf.Negocio.Proxy
             EnvioEmail.EnviarMailKit(config.Email, config.EmailsCadastroContribuintes, $"[EFD-Reinf] - Novo Contribuinte", textoEmail);
 
             return oidContribuinte;
+        }
+
+        private void Validar(ref ContribuinteEntidade contribuinte)
+        {
+            // Validações pessoa jurídica
+            if (contribuinte.IND_TIPO_INSCRICAO == DMN_TIPO_INSCRICAO_EFD.PESSOA_JURIDICA)
+            {
+                if (!Validador.ValidarCNPJ(contribuinte.COD_CNPJ_CPF))
+                    throw new Exception("CNPJ inválido.");
+            }
+
+            // Validações pessoa física
+            else if (contribuinte.IND_TIPO_INSCRICAO == DMN_TIPO_INSCRICAO_EFD.PESSOA_FISICA)
+            {
+                if (!Validador.ValidarCPF(contribuinte.COD_CNPJ_CPF))
+                    throw new Exception("CPF inválido.");
+
+                if (contribuinte.IND_CLASSIF_TRIBUT != "21" || contribuinte.IND_CLASSIF_TRIBUT != "22")
+                    throw new Exception("Os códigos [21] \"Pessoa Física, exceto Segurado Especial\" e [22] \"Segurado Especial\" " +
+                        "somente podem ser utilizados se o \"Tipo de Inscrição\" for igual a \"PESSOA FÍSICA\". Para os demais códigos, " +
+                        "o \"Tipo de Inscrição\" deve ser igual a \"PESSOA JURÍDICA.\"");
+            }
+
+            if (!string.IsNullOrEmpty(contribuinte.TXT_EMAIL_CONTATO) && !Validador.ValidarEmail(contribuinte.TXT_EMAIL_CONTATO))
+                throw new Exception("E-mail inválido.");
+
+            if (contribuinte.IND_EFR == DMN_EFR_EFD.SIM && string.IsNullOrEmpty(contribuinte.COD_CNPJ_EFR))
+                throw new Exception("CNPJ do Ente Federativo Responsável - EFR é obrigatório e exclusivo se EFR = Sim. Informação validada no cadastro do CNPJ da RFB.");
+
+            if (contribuinte.DTA_FIM_VALIDADE != null && contribuinte.DTA_INICIO_VALIDADE > contribuinte.DTA_FIM_VALIDADE)
+                throw new Exception("A data de Término Validade deve ser maior que a data de Início Validade");
+
+            contribuinte.COD_CNPJ_EFR = contribuinte.COD_CNPJ_EFR.LimparMascara();
+            contribuinte.COD_CNPJ_CPF = contribuinte.COD_CNPJ_CPF.LimparMascara();
+            contribuinte.COD_CPF_CONTATO = contribuinte.COD_CPF_CONTATO.LimparMascara();
+            contribuinte.COD_FONE_CELULAR_CONTATO = contribuinte.COD_FONE_CELULAR_CONTATO.LimparMascara();
+            contribuinte.COD_FONE_FIXO_CONTATO = contribuinte.COD_FONE_FIXO_CONTATO.LimparMascara();
         }
     }
 }

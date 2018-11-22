@@ -1,11 +1,10 @@
 {
   "name": "web",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "private": true,
-  "homepage": "http://10.10.170.11/EfdReinf/",
   "dependencies": {
     "@intechprev/efdreinf-service": "^0.0.1",
-    "@intechprev/react-lib": "^0.0.3",
+    "@intechprev/react-lib": "^0.0.4",
     "autoprefixer": "7.1.6",
     "axios": "^0.18.0",
     "babel-core": "6.26.0",
@@ -35,6 +34,7 @@
     "postcss-flexbugs-fixes": "3.2.0",
     "postcss-loader": "2.0.8",
     "promise": "8.0.1",
+    "prop-types": "^15.6.2",
     "raf": "3.4.0",
     "react": "^16.4.2",
     "react-dev-utils": "^5.0.2",
@@ -59,9 +59,13 @@
   "scripts": {
     "build:css": "sass -t compressed ./src/styles/main.scss ./public/css/main.css",
     "watch:css": "sass -t compressed --watch ./src/styles/main.scss:./public/css/main.css",
-    "start": "node scripts/start.js",
+    "start": "yarn build:config-dev && node scripts/start.js",
     "build": "node scripts/build.js",
-    "build:test": "yarn build && ./node_modules/.bin/cpy **/* Z:/EfdReinf --parents --cwd=build",
+    "build:test": "yarn build:config-test && yarn build && ./node_modules/.bin/cpy **/* Z:/EfdReinf --parents --cwd=build",
+    "build:prod": "yarn build:config-prod && yarn build && ./node_modules/.bin/cpy **/* G:/Publish/EfdReinf --parents --cwd=build",
+    "build:config-dev": "./node_modules/.bin/cpy src/configs/config.dev.json src --rename=config.json",
+    "build:config-test": "./node_modules/.bin/cpy src/configs/config.test.json src --rename=config.json",
+    "build:config-prod": "./node_modules/.bin/cpy src/configs/config.prod.json src --rename=config.json",
     "test": "node scripts/test.js --env=jsdom"
   },
   "jest": {
@@ -107,7 +111,6 @@
     "extends": "react-app"
   },
   "workspaces": [
-    "../service",
-    "../../lib/react-lib"
+    "../service"
   ]
 }

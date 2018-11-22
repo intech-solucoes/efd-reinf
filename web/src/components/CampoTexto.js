@@ -27,7 +27,9 @@ export default class CampoTexto extends Component {
 		else if(this.props.tipo === "email" && validarEmail(this.props.valor))
 			this.erros.push("E-mail inválido.");
 
-		var valorSemMascara = this.props.valor.split("_").join("");
+		var valorSemMascara = null;
+		if(this.props.valor !== undefined)
+			valorSemMascara = this.props.valor.split("_").join("");
 		if(this.props.min && valorSemMascara.length < this.props.min)
 			this.erros.push(`Campo "${this.props.label || this.props.placeholder}" inválido.`);
 

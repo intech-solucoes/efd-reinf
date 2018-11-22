@@ -2,6 +2,12 @@
 # yarn lockfile v1
 
 
+"@intechprev/react-lib@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@intechprev/react-lib/-/react-lib-0.0.4.tgz#d29b8fea130c899c2871042c3921625378d037bd"
+  dependencies:
+    axios "^0.18.0"
+
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@mrmlnc/readdir-enhanced/-/readdir-enhanced-2.2.1.tgz#524af240d1a360527b730475ecfa1344aa540dde"
@@ -5300,7 +5306,7 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@^15.5.10, prop-types@^15.6.0, prop-types@^15.6.1:
+prop-types@^15.5.10, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2:
   version "15.6.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.6.2.tgz#05d5ca77b4453e985d60fc7ff8c859094a497102"
   dependencies:

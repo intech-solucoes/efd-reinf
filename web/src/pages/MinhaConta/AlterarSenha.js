@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 import { CampoTexto, Botao, Box, PainelErros, Row, Col } from '../../components';
+import { Page } from "../";
 
 import { UsuarioService } from "@intechprev/efdreinf-service";
 
@@ -67,38 +68,40 @@ export default class AlterarSenha extends Component {
 
         // Validação dos campos senha e confirmação de senha.
         if(this.state.novaSenha.length < 6)
-            await this.adicionarErro("A senha deve possuir ao menos 6 caracteres!");
+            await this.adicionarErro("A senha deve possuir ao menos 6 caracteres.");
 
         else if(this.state.novaSenha !== this.state.confirmarSenha)
-            await this.adicionarErro("As senhas devem coincidir!");
+            await this.adicionarErro("As senhas devem coincidir.");
     }
 
     render() {
         return (
-            <Box>
-                <CampoTexto contexto={this} ref={ (input) => this.listaCampos[0] = input }
-                            label={"Senha Atual"} nome={"senhaAtual"} tipo={"password"} valor={this.state.senhaAtual}
-                            placeholder={"Informe sua senha atual"} obrigatorio={true} />
+            <Page {...this.props}>
+                <Box>
+                    <CampoTexto contexto={this} ref={ (input) => this.listaCampos[0] = input }
+                                label={"Senha Atual"} nome={"senhaAtual"} tipo={"password"} valor={this.state.senhaAtual}
+                                placeholder={"Informe sua senha atual"} obrigatorio={true} />
 
-                <CampoTexto contexto={this} ref={ (input) => this.listaCampos[1] = input }
-                            label={"Nova Senha"} nome={"novaSenha"} tipo={"password"} valor={this.state.novaSenha}
-                            placeholder={"Informe sua senha nova"} obrigatorio={true} />
+                    <CampoTexto contexto={this} ref={ (input) => this.listaCampos[1] = input }
+                                label={"Nova Senha"} nome={"novaSenha"} tipo={"password"} valor={this.state.novaSenha}
+                                placeholder={"Informe sua senha nova"} obrigatorio={true} />
+                                
+                    <CampoTexto contexto={this} ref={ (input) => this.listaCampos[2] = input }
+                                label={"Confirmar Senha"} nome={"confirmarSenha"} tipo={"password"} valor={this.state.confirmarSenha}
+                                placeholder={"Confirme sua nova senha"} obrigatorio={true} />
+
+                    <Row>
+                        <Col>
+                            <PainelErros erros={this.state.erros} />
+
+                            <Botao titulo={"Alterar Senha"} tipo={"primary"} clicar={this.alterarSenha} usaLoading={true} />
                             
-                <CampoTexto contexto={this} ref={ (input) => this.listaCampos[2] = input }
-                            label={"Confirmar Senha"} nome={"confirmarSenha"} tipo={"password"} valor={this.state.confirmarSenha}
-                            placeholder={"Confirme sua nova senha"} obrigatorio={true} />
+                            <Link to="/minhaConta" className="btn btn-light ml-3">Cancelar</Link>
+                        </Col>
+                    </Row>
 
-                <Row>
-                    <Col>
-                        <PainelErros erros={this.state.erros} />
-
-                        <Botao titulo={"Alterar Senha"} tipo={"primary"} clicar={this.alterarSenha} usaLoading={true} />
-                        
-                        <Link to="/minhaConta" className="btn btn-light ml-3">Cancelar</Link>
-                    </Col>
-                </Row>
-
-            </Box>
+                </Box>
+            </Page>
         );
     }
 }

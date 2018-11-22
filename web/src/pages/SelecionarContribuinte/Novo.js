@@ -54,15 +54,19 @@ export default class NovoContribuinte extends Component {
     }
 
     componentDidMount = async () => {
-        this.combos.tipoInscricao = await DominioService.BuscarPorCodigo("DMN_TIPO_INSCRICAO_EFD");
-        this.combos.classificacaoTributaria = await DominioService.BuscarPorCodigo("DMN_CLASSIF_TRIBUT");
-        this.combos.obrigatoriedadeECD = await DominioService.BuscarPorCodigo("DMN_OBRIGADO_EFD");
-        this.combos.desoneracaoFolhaCPRB = await DominioService.BuscarPorCodigo("DMN_DESONERACAO_EFD");
-        this.combos.isencaoMulta = await DominioService.BuscarPorCodigo("DMN_ISENC_MULTA_EFD");
-        this.combos.situacaoPJ = await DominioService.BuscarPorCodigo("DMN_SITUACAO_PJ");
-        this.combos.enteFederativoResponsavel = await DominioService.BuscarPorCodigo("DMN_EFR_EFD");
-        
-        await this.setState({ combos: this.combos });
+        try {
+            this.combos.tipoInscricao = await DominioService.BuscarPorCodigo("DMN_TIPO_INSCRICAO_EFD");
+            this.combos.classificacaoTributaria = await DominioService.BuscarPorCodigo("DMN_CLASSIF_TRIBUT");
+            this.combos.obrigatoriedadeECD = await DominioService.BuscarPorCodigo("DMN_OBRIGADO_EFD");
+            this.combos.desoneracaoFolhaCPRB = await DominioService.BuscarPorCodigo("DMN_DESONERACAO_EFD");
+            this.combos.isencaoMulta = await DominioService.BuscarPorCodigo("DMN_ISENC_MULTA_EFD");
+            this.combos.situacaoPJ = await DominioService.BuscarPorCodigo("DMN_SITUACAO_PJ");
+            this.combos.enteFederativoResponsavel = await DominioService.BuscarPorCodigo("DMN_EFR_EFD");
+            
+            await this.setState({ combos: this.combos });
+        } catch(err) {
+            console.error(err);
+        }
     }
 
     limparErros = async () => {
@@ -117,11 +121,10 @@ export default class NovoContribuinte extends Component {
                 contribuinte = contribuinte.data;
                 alert("Contribuinte inserido com sucesso!");
 
-                localStorage.setItem("contribuinte", contribuinte.OID_CONTRIBUINTE);
+                localStorage.setItem("oidContribuinte", contribuinte.OID_CONTRIBUINTE);
                 localStorage.setItem("nomeContribuinte", contribuinte.NOM_RAZAO_SOCIAL);
                 localStorage.setItem("oidUsuarioContribuinte", contribuinte.Usuarios[0].OID_USUARIO_CONTRIBUINTE);
-                document.location = '/';
-                
+                this.props.history.push('/');
             } catch(err) {
 				if(err.response) {
 					await this.adicionarErro(err.response.data);

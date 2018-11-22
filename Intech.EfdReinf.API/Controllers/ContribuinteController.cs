@@ -1,6 +1,7 @@
 ﻿#region Usings
 using Intech.EfdReinf.Entidades;
 using Intech.EfdReinf.Negocio.Proxy;
+using Intech.Lib.Dominios;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System; 
@@ -65,6 +66,43 @@ namespace Intech.EfdReinf.API.Controllers
                 var contribuinteNovo = proxyContribuinte.BuscarPorChave(oidContribuinteNovo);
 
                 return Json(contribuinteNovo);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut]
+        [Authorize("Bearer")]
+        public IActionResult Atualizar([FromBody] ContribuinteEntidade contribuinte)
+        {
+            try
+            {
+                var proxyContribuinte = new ContribuinteProxy();
+                proxyContribuinte.Atualizar(contribuinte);
+
+                return Json(contribuinte);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("alterarAmbiente/{oidContribuinte}")]
+        [Authorize("Bearer")]
+        public IActionResult AlterarAmbiente(decimal oidContribuinte)
+        {
+            try
+            {
+                var contribuinteProxy = new ContribuinteProxy();
+                var contribuinte = contribuinteProxy.BuscarPorChave(oidContribuinte);
+                contribuinte.IND_TIPO_AMBIENTE = contribuinte.IND_TIPO_AMBIENTE == DMN_TIPO_AMBIENTE_EFD.PRODUCAO ? DMN_TIPO_AMBIENTE_EFD.PRODUCAO_RESTRITA : DMN_TIPO_AMBIENTE_EFD.PRODUCAO;
+
+                contribuinteProxy.Atualizar(contribuinte);
+
+                return Json(contribuinte);
             }
             catch (Exception ex)
             {

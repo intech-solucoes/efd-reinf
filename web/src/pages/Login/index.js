@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import { Botao, CampoTexto, Dialog, PainelErros } from "../../components";
+import { PageClean } from "../";
 
 import packageJson from '../../../package.json';
 
@@ -23,7 +24,7 @@ export default class Login extends Component {
         this.dialog = React.createRef();
 	}
 
-	entrar = async () => {
+	entrar = async (e) => {
 		await this.limparErros();
 
 		for(var i = 0; i < this.listaCampos.length; i++) {
@@ -37,7 +38,7 @@ export default class Login extends Component {
 		if(this.state.erros.length === 0) {
 			try {
 				var resultado = await UsuarioService.Login(this.state.email, this.state.senha);
-				localStorage.setItem("token", resultado.data.AccessToken);
+				await localStorage.setItem("token", resultado.data.AccessToken);
 				this.props.history.push("/selecionarContribuinte");
 			} catch(erro) {
 				if(erro.response) {
@@ -76,7 +77,7 @@ export default class Login extends Component {
 
 	render() {
 		return (
-			<div>
+			<PageClean {...this.props}>
 
                 <h4>Bem-Vindo ao Intech EFD-Reinf</h4>
 				<br/>
@@ -115,7 +116,7 @@ export default class Login extends Component {
 
 				<Dialog ref={this.dialog} confirmar={this.confirmarReenvio}
 						textoConfirmar={"Enviar"} mensagem={"E-mail não confirmado. Deseja enviar novamente a confirmação?"} />
-			</div>
+			</PageClean>
 		);
 	}
 }

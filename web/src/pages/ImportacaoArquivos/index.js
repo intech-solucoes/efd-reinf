@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { Row, Col, Box, Combo, Botao, InputFile, PainelErros } from '../../components';
+
 import { DominioService, UploadService, ImportacaoCsvService } from "@intechprev/efdreinf-service";
 
-const apiUrl = process.env.API_URL;
+import { Row, Col, Box, Combo, Botao, InputFile } from '../../components';
+import { Page } from "../";
 
 export default class ImportacaoArquivos extends Component {
     constructor(props) {
@@ -24,13 +25,17 @@ export default class ImportacaoArquivos extends Component {
         }
 
         this.oidUsuarioContribuinte = localStorage.getItem("oidUsuarioContribuinte");
+
+        this.page = React.createRef();
     }
 
     async componentDidMount() {
         window.scrollTo(0, 0);
         var comboSituacao = await DominioService.BuscarPorCodigo("DMN_STATUS_IMPORTACAO");
-        this.setState({ filtrarSituacaoCombo: comboSituacao.data });
-        this.buscarArquivosImportados();
+        await this.setState({ filtrarSituacaoCombo: comboSituacao.data });
+        await this.buscarArquivosImportados();
+
+        await this.page.current.loading(false);
     }
 
     limparErros = async () => {
@@ -49,7 +54,7 @@ export default class ImportacaoArquivos extends Component {
 
     importarCsv = async (oidArquivoUpload) => {
         try {
-            var oidContribuinte = localStorage.getItem("contribuinte");
+            var oidContribuinte = localStorage.getItem("oidContribuinte");
             await ImportacaoCsvService.ImportarCsv(oidArquivoUpload, oidContribuinte);
             alert("Arquivo processado com sucesso.");
             this.buscarArquivosImportados();
@@ -64,25 +69,33 @@ export default class ImportacaoArquivos extends Component {
     uploadFile = async (e) => {
         const formData = new FormData()
         var arquivoUpload = e.target.files[0];
-        formData.append("File", arquivoUpload, arquivoUpload.name);
-        await this.setState({ 
-            formData: formData,
-            arquivo: ""
-        });
+        
+        if(arquivoUpload) {
+            formData.append("File", arquivoUpload, arquivoUpload.name);
+            await this.setState({ 
+                formData: formData,
+                arquivo: ""
+            });
+        } else {
+            await this.setState({ 
+                formData: null,
+                arquivo: ""
+            });
+        }
     }
 
     enviar = async () => { 
         await this.limparErros();
 
-        if(!this.state.formData)
-            await this.adicionarErro("Campo \"Arquivo para Upload\" obrigatório.");
-
         // Rota para upload.
+        var apiUrl = require("../../config").apiUrl;
+
         var oidUsuarioContribuinte = localStorage.getItem("oidUsuarioContribuinte");
         if(this.state.erros.length === 0) {
             try { 
                 var token = localStorage.getItem("token");
-                await axios.post(apiUrl + `/upload/${oidUsuarioContribuinte}`, this.state.formData, {
+
+                var oidArquivoUpload = await axios.post(apiUrl + `/upload/${oidUsuarioContribuinte}`, this.state.formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                         "Authorization": "Bearer " + token
@@ -90,12 +103,23 @@ export default class ImportacaoArquivos extends Component {
                     onUploadProgress: progressEvent => {
                     },
                 });
-                alert("Arquivo enviado com sucesso!");
-                await this.setState({ visibilidadeInput: false });
+
+                // Caso o arquivo esteja totalmente em branco, o retorno é zero.
+                if(oidArquivoUpload.data === 0)
+                    alert("O arquivo está em branco. O envio foi cancelado.");
+                else
+                    alert("Arquivo enviado com sucesso!");
+
+                // Quando o arquivo é enviado com sucesso, esconde-se o campo de enviar arquivos e limpa o state formData;
+                await this.setState({ 
+                    visibilidadeInput: false,
+                    formData: null
+                });
                 this.buscarArquivosImportados();
+
             } catch (err) {
                 if(err.response)
-                    this.adicionarErro(err.response);
+                    alert(err.response.data);
                 else 
                     this.adicionarErro(err);
             }
@@ -103,8 +127,12 @@ export default class ImportacaoArquivos extends Component {
     }
 
     buscarArquivosImportados = async () => { 
-        try { 
-            var arquivosImportacao = await UploadService.BuscarPorOidUsuarioContribuinteStatus(this.oidUsuarioContribuinte, this.state.situacao);
+        try {
+            var situacao = this.state.situacao
+            if(situacao === "")
+                situacao = null;
+            
+            var arquivosImportacao = await UploadService.BuscarCsvPorOidUsuarioContribuinteStatus(this.oidUsuarioContribuinte, situacao);
             await this.setState({ arquivosImportacao: arquivosImportacao.data });
         } catch(err) {
             console.error(err);
@@ -117,7 +145,10 @@ export default class ImportacaoArquivos extends Component {
             alert("Registro excluído com sucesso!");
             this.buscarArquivosImportados();
         } catch(err) {
-            console.error(err);
+            if(err.response.data)
+                alert(err.response.data);
+            else 
+                console.error(err);
         }
     }
 
@@ -136,10 +167,10 @@ export default class ImportacaoArquivos extends Component {
     }
 
     download = async (oidArquivoUpload) => { 
+        var apiUrl = require("../../config").apiUrl;
         try {
             var caminhoArquivo = await UploadService.BuscarPorOidArquivoUpload(oidArquivoUpload);
             caminhoArquivo =  caminhoArquivo.data.NOM_ARQUIVO_LOCAL;
-            var apiUrl = process.env.API_URL;
             apiUrl = apiUrl.substring(0, apiUrl.length - 4);
             apiUrl = apiUrl + "/" + caminhoArquivo;
 
@@ -148,7 +179,7 @@ export default class ImportacaoArquivos extends Component {
             document.body.appendChild(link);
             link.click();
         } catch(err) {
-            if(err.response.data) 
+            if(err.response) 
                 alert(err.response.data);
             else 
                 console.error(err);
@@ -157,7 +188,7 @@ export default class ImportacaoArquivos extends Component {
 
     render() {
         return (
-            <div>
+            <Page {...this.props} ref={this.page}>
                 <Box titulo="Instruções">
                     <h6>Para realizar uma importação de arquivo externo (formato CSV):</h6>
                     <br />
@@ -196,18 +227,13 @@ export default class ImportacaoArquivos extends Component {
                                 <div>
                                     <InputFile contexto={this} ref={ (input) => this.listaCampos[0] = input } label={"Arquivo para upload"}
                                                nome={"arquivo"} aceita={".csv"} obrigatorio={true} onChange={this.uploadFile} />
-                                    <Botao tipo={"primary btn-sm"} titulo={"Enviar"} clicar={this.enviar} />
+                                    <Botao tipo={"primary btn-sm"} titulo={"Enviar"} clicar={this.enviar} desativado={!this.state.formData}/>
                                 </div>
                             }
                             {!this.state.visibilidadeInput && 
-                                <Botao titulo={"Enviar outro arquivo"} tipo={"primary"} clicar={async () => await this.setState({ visibilidadeInput: true })} />
+                                <Botao titulo={"Enviar outro arquivo"} tipo={"primary"}
+                                       clicar={async () => await this.setState({ visibilidadeInput: true })} />
                             }
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col tamanho="5">
-                            {this.state.erros.length > 0 && <br />}
-                            <PainelErros erros={this.state.erros} />
                         </Col>
                     </Row>
                 </Box>
@@ -236,15 +262,12 @@ export default class ImportacaoArquivos extends Component {
                                         var status = arquivo.IND_STATUS === 'PRO' ? "Processado" : "Não Processado";
                                         var corStatus = arquivo.IND_STATUS === 'PRO' ? "#14B449" : "blue";
                                         var processarDesativado = arquivo.IND_STATUS === 'PRO' ? true : false;
-                                        var ocorrenciaDesativado = arquivo.IND_STATUS === 'PRO' ? false : true;
 
                                         return (
                                             <tr key={index}>
                                                 <td width="90">
-                                                    <Botao tipo={"light btn-sm"} clicar={() => this.importarCsv(arquivo.OID_ARQUIVO_UPLOAD)} 
-                                                           desativado={processarDesativado} usaLoading={true} >
-                                                        Processar
-                                                    </Botao>
+                                                    <Botao titulo="Processar" tipo={"primary btn-sm"} usaLoading={true} desativado={processarDesativado}
+                                                           clicar={() => this.importarCsv(arquivo.OID_ARQUIVO_UPLOAD)} />
                                                 </td>
 
                                                 <td>{arquivo.NOM_ARQUIVO_ORIGINAL}</td>
@@ -256,18 +279,14 @@ export default class ImportacaoArquivos extends Component {
                                                 <td>{arquivo.NOM_USUARIO}</td>
 
                                                 <td width="240">
-                                                    <Botao tipo={"light btn-sm"} clicar={() => this.gerarRelatorio(arquivo.OID_ARQUIVO_UPLOAD)}
-                                                           desativado={ocorrenciaDesativado} usaLoading={true} >
-                                                        Ocorrências
-                                                    </Botao>&nbsp;
+                                                    <Botao titulo="Ocorrências" tipo={"info btn btn-sm"} usaLoading={true} 
+                                                           clicar={() => this.gerarRelatorio(arquivo.OID_ARQUIVO_UPLOAD)} />&nbsp;
 
-                                                    <Botao tipo={"light btn-sm"} clicar={() => this.deletar(arquivo.OID_ARQUIVO_UPLOAD)} usaLoading={true}>
-                                                        Excluir
-                                                    </Botao>&nbsp;
+                                                    <Botao titulo="Download" tipo={"info btn-sm"} usaLoading={true}
+                                                           clicar={() => this.download(arquivo.OID_ARQUIVO_UPLOAD)} />&nbsp;
 
-                                                    <Botao tipo={"light btn-sm"} clicar={() => this.download(arquivo.OID_ARQUIVO_UPLOAD)} usaLoading={true}>
-                                                        Download
-                                                    </Botao>
+                                                    <Botao titulo="Excluir" tipo={"danger btn-sm"} usaLoading={true}
+                                                           clicar={() => this.deletar(arquivo.OID_ARQUIVO_UPLOAD)} />
                                                 </td>
                                             </tr>
                                         );
@@ -280,7 +299,7 @@ export default class ImportacaoArquivos extends Component {
                         <h4>Não há arquivos importados</h4>
                     }
                 </Box>
-            </div>
+            </Page>
         );
     }
 }
