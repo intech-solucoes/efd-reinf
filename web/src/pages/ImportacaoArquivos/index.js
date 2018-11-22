@@ -95,7 +95,7 @@ export default class ImportacaoArquivos extends Component {
             try { 
                 var token = localStorage.getItem("token");
 
-                await axios.post(apiUrl + `/upload/${oidUsuarioContribuinte}`, this.state.formData, {
+                var oidArquivoUpload = await axios.post(apiUrl + `/upload/${oidUsuarioContribuinte}`, this.state.formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                         "Authorization": "Bearer " + token
@@ -104,7 +104,11 @@ export default class ImportacaoArquivos extends Component {
                     },
                 });
 
-                alert("Arquivo enviado com sucesso!");
+                // Caso o arquivo esteja totalmente em branco, o retorno é zero.
+                if(oidArquivoUpload.data === 0)
+                    alert("O arquivo está em branco. O envio foi cancelado.");
+                else
+                    alert("Arquivo enviado com sucesso!");
 
                 // Quando o arquivo é enviado com sucesso, esconde-se o campo de enviar arquivos e limpa o state formData;
                 await this.setState({ 
@@ -112,10 +116,10 @@ export default class ImportacaoArquivos extends Component {
                     formData: null
                 });
                 this.buscarArquivosImportados();
-                
+
             } catch (err) {
                 if(err.response)
-                    this.adicionarErro(err.response.data);
+                    alert(err.response.data);
                 else 
                     this.adicionarErro(err);
             }
