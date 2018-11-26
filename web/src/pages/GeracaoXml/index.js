@@ -82,6 +82,7 @@ export default class GeracaoXml extends Component {
         this.dataAtual = new Date();
 
         this.page = React.createRef();
+        this.arquivosGerados = React.createRef();
     }
     
     componentDidMount = async () => {
@@ -211,7 +212,7 @@ export default class GeracaoXml extends Component {
             await this.carregaCompetenciaAno();
         }
     }
-
+    
     /**
      * @param campos Array com o 'nome' de cada campo que ficará visível.
      * @description Método que altera o estado de visibilidade de cada campo dentro do array para true, e a visibilidade dos outros campos para false.
@@ -312,7 +313,7 @@ export default class GeracaoXml extends Component {
         try {
             await GeracaoXmlService.GerarR1000(this.oidContribuinte, this.state.usuarioResponsavel, this.state.tipoOperacao, this.state.contribuinte.IND_TIPO_AMBIENTE);
             alert("R-1000 Gerado com sucesso!");
-            this.buscarArquivosGerados();
+            this.arquivosGerados.current.buscarArquivosGerados();
         } catch(err) {
             console.error(err);
         }
@@ -322,7 +323,7 @@ export default class GeracaoXml extends Component {
         try {
             await GeracaoXmlService.GerarR1070(this.oidContribuinte, this.state.contribuinte.IND_TIPO_AMBIENTE);
             alert("R-1070 Gerado com sucesso!");
-            this.buscarArquivosGerados();
+            this.arquivosGerados.current.buscarArquivosGerados();
         } catch(err) {
             if(err.response)
                 alert(err.response.data);
@@ -351,7 +352,7 @@ export default class GeracaoXml extends Component {
             try {
                 await GeracaoXmlService.GerarR2010(this.oidContribuinte, this.state.tipoOperacao, this.state.contribuinte.IND_TIPO_AMBIENTE, dataInicial, dataFinal);
                 alert("R2010 Gerado com sucesso!");
-                this.buscarArquivosGerados();
+                this.arquivosGerados.current.buscarArquivosGerados();
             } catch(err) {
                 if(err.response)
                     await this.adicionarErro(err.response.data);
@@ -366,7 +367,7 @@ export default class GeracaoXml extends Component {
         try {
             await GeracaoXmlService.GerarR2098(this.oidContribuinte, this.state.contribuinte.IND_TIPO_AMBIENTE, this.state.referenciaAno, this.state.referenciaMes);
             alert("R-2098 Gerado com sucesso!");
-            this.buscarArquivosGerados();
+            this.arquivosGerados.current.buscarArquivosGerados();
         } catch(err) {
             if(err.response)
                 alert(err.response.data);
@@ -394,7 +395,7 @@ export default class GeracaoXml extends Component {
         try { 
             await GeracaoXmlService.GerarR2099(this.oidContribuinte, r2099);
             alert("R2099 Gerado com sucesso!");
-            this.buscarArquivosGerados();
+            this.arquivosGerados.current.buscarArquivosGerados();
         } catch(err) {
             console.error(err);
         }
@@ -561,7 +562,7 @@ export default class GeracaoXml extends Component {
                     <Botao titulo={"Gerar"} tipo={"primary"} clicar={this.gerar} usaLoading={true} />
                 </Box>
 
-                <ArquivosGerados />
+                <ArquivosGerados ref={this.arquivosGerados} />
             </Page>
 
         )
