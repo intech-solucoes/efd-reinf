@@ -1,7 +1,8 @@
 {
   "name": "web",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "private": true,
+  "homepage": "http://10.10.170.11/EfdReinf/",
   "dependencies": {
     "@intechprev/efdreinf-service": "^0.0.1",
     "@intechprev/react-lib": "^0.0.4",
