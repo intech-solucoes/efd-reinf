@@ -47,4 +47,5 @@
   <Import Project="..\Intech.EfdReinf.Entidades\Intech.EfdReinf.Entidades.projitems" Label="Shared" />
   <Import Project="..\Intech.EfdReinf.Dados\Intech.EfdReinf.Dados.projitems" Label="Shared" />
   <Import Project="..\..\lib\dotnet-lib\Intech.Lib.Dominios\Intech.Lib.Dominios.projitems" Label="Shared" />
+  <Import Project="..\..\lib\dotnet-lib\Intech.Lib.Relatorios\Intech.Lib.Relatorios.projitems" Label="Shared" />
 </Project>

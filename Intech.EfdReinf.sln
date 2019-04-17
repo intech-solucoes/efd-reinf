@@ -27,8 +27,11 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Intech.Lib.Dominios", "..\l
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intech.EfdReinf.Transmissor", "Intech.EfdReinf.Transmissor\Intech.EfdReinf.Transmissor.csproj", "{CBECB4F5-6FE7-410E-B648-044B70A3E0D3}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Intech.Lib.Relatorios", "..\lib\dotnet-lib\Intech.Lib.Relatorios\Intech.Lib.Relatorios.shproj", "{067F6A75-7DD8-48F9-9C4C-1A34B928A124}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\lib\dotnet-lib\Intech.Lib.Relatorios\Intech.Lib.Relatorios.projitems*{067f6a75-7dd8-48f9-9c4c-1a34b928a124}*SharedItemsImports = 13
 		..\lib\dotnet-lib\Intech.Lib.Web\Intech.Lib.Web.projitems*{17fb1551-d800-46e6-8b2f-3a19bbb43eba}*SharedItemsImports = 13
 		..\lib\dotnet-lib\Intech.Lib.Data\Intech.Lib.Data.projitems*{1b8bf169-24e1-48f0-b3bd-ec9fc413b578}*SharedItemsImports = 13
 		..\lib\dotnet-lib\Intech.Lib.Dapper\Intech.Lib.Dapper.projitems*{21944d5c-2af2-467a-b973-172529bf229d}*SharedItemsImports = 13
@@ -64,6 +67,7 @@ Global
 		{B6E91566-1997-439A-BF01-7B0A6BDAF450} = {9CE94235-29AC-4405-9211-CF79058EFDBB}
 		{F68676E1-4DDF-4EAF-80C5-F0CF54009589} = {9CE94235-29AC-4405-9211-CF79058EFDBB}
 		{6FCB20F6-C048-4F2E-BF16-48D72C8AF407} = {DFC9BBD0-0EDB-40A8-8EE5-E8C9F8F4F984}
+		{067F6A75-7DD8-48F9-9C4C-1A34B928A124} = {DFC9BBD0-0EDB-40A8-8EE5-E8C9F8F4F984}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3EAAB29C-DC13-41D7-B182-D30E5FA98489}
