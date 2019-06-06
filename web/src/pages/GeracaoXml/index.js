@@ -178,6 +178,8 @@ export default class GeracaoXml extends Component {
             if(this.state.opcaoSelecionada === 'r2099')
                 await this.gerarR2099();
         }
+
+        window.location.reload();
     }
 
     alternarCampos = async () => {

@@ -40,12 +40,12 @@
                                     <telefone>6135332400</telefone>
                                     <email>gustavo@intech.com.br</email>
                                 </softHouse>
+                              {{ if ind_efr != "N" }}
                                 <infoEFR>
-                                    <ideEFR>{{ind_efr}}</ideEFR>
-                                    {{ if ind_efr != "N" }}
-                                    <cnpjEFR>{{cod_cnpj_efr}}</cnpjEFR>
-                                    {{ end }}
+                                    <ideEFR>{{ind_efr}}</ideEFR>                                    
+                                    <cnpjEFR>{{cod_cnpj_efr}}</cnpjEFR>                                    
                                 </infoEFR>
+                              {{ end }}
                             </infoCadastro>
                       {{fechamento_tag_operacao}}
                     </infoContri>
