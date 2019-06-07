@@ -231,7 +231,7 @@ namespace Intech.EfdReinf.Negocio
                           {
                               id = string.Format("ID{0}{1}{2:yyyyMMddHHmmss}{3}", contribuinte.IND_TIPO_INSCRICAO, contribuinte.COD_CNPJ_CPF.PadLeft(14, '0'), DateTime.Now, oidArquivoUpload.ToString().PadLeft(5, '0')),
                               ind_retificacao = tipoOperacao,
-                              dta_apuracao = string.Format("{0}-{1}", g.Key.Year, g.Key.Month),
+                              dta_apuracao = string.Format("{0}-{1}", g.Key.Year, g.Key.Month.ToString().PadLeft(2, '0')),
                               ind_ambiente_envio = tipoAmbiente,
                               versao = Assembly.GetExecutingAssembly().GetName().Version.ToString(3),
                               ind_tipo_inscricao = contribuinte.IND_TIPO_INSCRICAO,

@@ -94,7 +94,7 @@ export default class AlterarSenha extends Component {
                         <Col>
                             <PainelErros erros={this.state.erros} />
 
-                            <Botao titulo={"Alterar Senha"} tipo={"primary"} clicar={this.alterarSenha} usaLoading={true} />
+                            <Botao titulo={"Alterar Senha"} tipo={"primary"} clicar={this.alterarSenha} usaLoading={false} />
                             
                             <Link to="/minhaConta" className="btn btn-light ml-3">Cancelar</Link>
                         </Col>

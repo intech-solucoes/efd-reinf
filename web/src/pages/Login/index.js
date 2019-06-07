@@ -38,9 +38,9 @@ export default class Login extends Component {
 		if(this.state.erros.length === 0) {
 			try {
 				var resultado = await UsuarioService.Login(this.state.email, this.state.senha);
-				console.log(resultado.data);
-				//await localStorage.setItem("token", resultado.data.AccessToken);
-				//this.props.history.push("/selecionarContribuinte");
+				//console.log(resultado.data);
+				await localStorage.setItem("token", resultado.data.AccessToken);
+				this.props.history.push("/selecionarContribuinte");
 			} catch(erro) {
 				if(erro.response) {
 					if(erro.response.data === "IND_EMAIL_VERIFICADO")

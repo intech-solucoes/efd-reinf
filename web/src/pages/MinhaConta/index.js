@@ -117,7 +117,7 @@ export default class MinhaConta extends Component {
                             <Botao titulo={"Salvar"} tipo={"primary"} clicar={this.alterarDados}
                                 usaLoading={true} />
                             
-                            <Link to="/alterarSenha" className={"btn btn-light ml-3"}>Alterar Senha</Link>
+                            <Link to="AlterarSenha" className={"btn btn-light ml-3"}>Alterar Senha</Link>
                         </Col>
                     </Row>
                 </Box>
