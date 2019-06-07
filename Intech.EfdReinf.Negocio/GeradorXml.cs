@@ -132,7 +132,7 @@ namespace Intech.EfdReinf.Negocio
                               ind_ambiente_envio = tipoAmbiente,
                               versao = Assembly.GetExecutingAssembly().GetName().Version.ToString(3),
                               ind_tipo_inscricao = contribuinte.IND_TIPO_INSCRICAO,
-                              cod_cnpj_cpf = contribuinte.COD_CNPJ_CPF,
+                              cod_cnpj_cpf = contribuinte.COD_CNPJ_CPF.Substring(0, 8),
                               abertura_tag_operacao = x.IND_OPERACAO_REGISTRO == DMN_OPERACAO_REGISTRO.INCLUSAO ? "<inclusao>" : x.IND_OPERACAO_REGISTRO == DMN_OPERACAO_REGISTRO.ALTERACAO ? "<alteracao>" : "<exclusao>",
                               ind_tipo_processo = x.IND_TIPO_PROCESSO,
                               num_processo = x.NUM_PROCESSO,
@@ -235,7 +235,7 @@ namespace Intech.EfdReinf.Negocio
                               ind_ambiente_envio = tipoAmbiente,
                               versao = Assembly.GetExecutingAssembly().GetName().Version.ToString(3),
                               ind_tipo_inscricao = contribuinte.IND_TIPO_INSCRICAO,
-                              cod_cnpj_cpf = contribuinte.COD_CNPJ_CPF,
+                              cod_cnpj_cpf = contribuinte.COD_CNPJ_CPF.Substring(0, 8),
                               cod_insc_estabelecimento = g.First().COD_INSC_ESTABELECIMENTO,
                               cod_cnpj_cpf_obra = g.First().COD_CNPJ_CPF_OBRA,
                               ind_obra = g.First().IND_OBRA,
@@ -329,7 +329,7 @@ namespace Intech.EfdReinf.Negocio
                 ind_ambiente_envio = r2099.IND_AMBIENTE_ENVIO,
                 versao = Assembly.GetExecutingAssembly().GetName().Version.ToString(3),
                 ind_tipo_inscricao = contribuinte.IND_TIPO_INSCRICAO,
-                cod_cnpj_cpf = contribuinte.COD_CNPJ_CPF,
+                cod_cnpj_cpf = contribuinte.COD_CNPJ_CPF.Substring(0, 8),
                 nom_contato = contribuinte.NOM_CONTATO,
                 cod_cpf_contato = contribuinte.COD_CPF_CONTATO,
                 cod_fone_celular_contato = contribuinte.COD_FONE_CELULAR_CONTATO,
@@ -398,7 +398,7 @@ namespace Intech.EfdReinf.Negocio
                 ind_ambiente_envio = tipoAmbiente,
                 versao = Assembly.GetExecutingAssembly().GetName().Version.ToString(3),
                 ind_tipo_inscricao = contribuinte.IND_TIPO_INSCRICAO,
-                cod_cnpj_cpf = contribuinte.COD_CNPJ_CPF
+                cod_cnpj_cpf = contribuinte.COD_CNPJ_CPF.Substring(0, 8)
             });
 
             var caminhoArquivo = GerarArquivo("R2098_", baseCaminhoArquivo, xmlR2098);
