@@ -19,6 +19,12 @@ export default class AlterarSenha extends Component {
 
             erros: []
         }
+
+        this.page = React.createRef();
+    }
+    
+    async componentDidMount() {
+        await this.page.current.loading(false);
     }
 
     limparErros = async () => {
@@ -76,7 +82,7 @@ export default class AlterarSenha extends Component {
 
     render() {
         return (
-            <Page {...this.props}>
+            <Page {...this.props} ref={this.page}>
                 <Box>
                     <CampoTexto contexto={this} ref={ (input) => this.listaCampos[0] = input }
                                 label={"Senha Atual"} nome={"senhaAtual"} tipo={"password"} valor={this.state.senhaAtual}
