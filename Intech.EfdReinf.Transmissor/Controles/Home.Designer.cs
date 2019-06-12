@@ -1,4 +1,4 @@
-﻿namespace Intech.EfdReinf.Transmissor
+﻿namespace Intech.EfdReinf.Transmissor.Controles
 {
     partial class Home
     {

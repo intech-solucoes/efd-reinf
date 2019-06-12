@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
+﻿#region Usings
+using Intech.EfdReinf.Transmissor.Controles;
+using System;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using System.Windows.Forms; 
+#endregion
 
 namespace Intech.EfdReinf.Transmissor
 {
@@ -29,7 +25,7 @@ namespace Intech.EfdReinf.Transmissor
         private void ButtonTransmitir_Click(object sender, EventArgs e)
         {
             panel1.Controls.Clear();
-            panel1.Controls.Add(new Transmissor());
+            panel1.Controls.Add(new Transmitir());
         }
 
         private void ButtonConsultar_Click(object sender, EventArgs e)

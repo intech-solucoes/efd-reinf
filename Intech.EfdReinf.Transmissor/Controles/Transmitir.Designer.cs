@@ -1,6 +1,6 @@
-﻿namespace Intech.EfdReinf.Transmissor
+﻿namespace Intech.EfdReinf.Transmissor.Controles
 {
-    partial class Transmissor
+    partial class Transmitir
     {
         /// <summary> 
         /// Required designer variable.

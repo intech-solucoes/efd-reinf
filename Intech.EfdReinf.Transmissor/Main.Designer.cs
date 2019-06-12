@@ -1,4 +1,6 @@
-﻿namespace Intech.EfdReinf.Transmissor
+﻿using Intech.EfdReinf.Transmissor.Controles;
+
+namespace Intech.EfdReinf.Transmissor
 {
     partial class Main
     {
@@ -31,7 +33,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.label1 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.home1 = new Intech.EfdReinf.Transmissor.Home();
+            this.home1 = new Intech.EfdReinf.Transmissor.Controles.Home();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.ButtonInicio = new System.Windows.Forms.Button();
             this.ButtonTransmitir = new System.Windows.Forms.Button();
