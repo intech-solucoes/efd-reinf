@@ -42,21 +42,25 @@ namespace Intech.EfdReinf.Negocio.Proxy
             {
                 usuario.NUM_TENTATIVA++;
 
-                Atualizar(usuario);
-
                 if (usuario.NUM_TENTATIVA >= 5)
                 {
                     usuario.IND_BLOQUEADO = DMN_SN.SIM;
-                    Atualizar(usuario);
+                    base.Atualizar(usuario);
                     throw new Exception("Número de tentativas de acesso esgotado. O usuário está bloqueado. Favor entrar em contato com a Intech");
+                }
+                else
+                {
+                    base.Atualizar(usuario);
                 }
 
                 throw new Exception("Credenciais Inválidas");
             }
 
-            usuario.NUM_TENTATIVA = 0;
-
-            Atualizar(usuario);
+            if (usuario.NUM_TENTATIVA > 0)
+            {
+                usuario.NUM_TENTATIVA = 0;
+                base.Atualizar(usuario);
+            }
 
             return usuario;
         }

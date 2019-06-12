@@ -3,6 +3,7 @@ using ICSharpCode.SharpZipLib.Zip;
 using Intech.EfdReinf.Entidades;
 using Intech.EfdReinf.Negocio.Proxy;
 using Intech.Lib.Dominios;
+using Intech.Lib.Dominios.EfdReinf;
 using Intech.Lib.Util.Date;
 using Intech.Lib.Util.Validacoes;
 using Scriban;
