@@ -3,6 +3,7 @@ using Intech.EfdReinf.Entidades;
 using Intech.EfdReinf.Negocio;
 using Intech.EfdReinf.Negocio.Proxy;
 using Intech.Lib.Dominios;
+using Intech.Lib.Dominios.EfdReinf;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
