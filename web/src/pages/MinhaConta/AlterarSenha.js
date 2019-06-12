@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
+import { BrowserRouter, Route, Link  } from 'react-router-dom'
 import { CampoTexto, Botao, Box, PainelErros, Row, Col } from '../../components';
 import { Page } from "../";
 
 import { UsuarioService } from "@intechprev/efdreinf-service";
+import { router } from 'sw-toolbox';
 
 export default class AlterarSenha extends Component {
     constructor(props) {
@@ -48,7 +49,7 @@ export default class AlterarSenha extends Component {
             try {
                 await UsuarioService.AlterarSenha(this.state.senhaAtual, this.state.novaSenha);
                 alert("Senha alterada com sucesso!");
-                this.props.routeProps.history.push('/minhaConta');
+                this.props.history.push('/minhaConta');
             } catch(err) {
 				if(err.response) {
 					await this.adicionarErro(err.response.data);
@@ -81,8 +82,8 @@ export default class AlterarSenha extends Component {
     }
 
     render() {
-        return (
-            <Page {...this.props} ref={this.page}>
+        return (            
+            <Page {...this.props} ref={this.page}>                
                 <Box>
                     <CampoTexto contexto={this} ref={ (input) => this.listaCampos[0] = input }
                                 label={"Senha Atual"} nome={"senhaAtual"} tipo={"password"} valor={this.state.senhaAtual}

@@ -26,7 +26,7 @@ class UsuarioService extends BaseService {
     }
 
     AlterarSenha(senhaAtual, senhaNova) {
-        return this.CriarRequisicao("PUT", "/usuario/alterarSenha", { senhaAtual, senhaNova });
+        return this.CriarRequisicao("POST", "/usuario/alterarSenha", { senhaAtual, senhaNova });
     }
 }
 

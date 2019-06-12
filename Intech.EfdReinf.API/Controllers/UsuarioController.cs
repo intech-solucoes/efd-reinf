@@ -174,7 +174,7 @@ namespace Intech.EfdReinf.API.Controllers
             }
         }
 
-        [HttpPut("alterarSenha")]
+        [HttpPost("alterarSenha")]
         [Authorize("Bearer")]
         public IActionResult AlterarSenha([FromBody] SenhaLogin senhas)
         {
