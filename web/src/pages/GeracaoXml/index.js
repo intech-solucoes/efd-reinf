@@ -179,7 +179,7 @@ export default class GeracaoXml extends Component {
                 await this.gerarR2099();
         }
 
-        window.location.reload();
+        //window.location.reload();
     }
 
     alternarCampos = async () => {
@@ -362,7 +362,6 @@ export default class GeracaoXml extends Component {
                     await this.adicionarErro(err);
             }
         }
-        
     }
     
     gerarR2098 = async () => {

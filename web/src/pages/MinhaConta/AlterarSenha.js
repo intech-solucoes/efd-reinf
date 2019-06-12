@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Link  } from 'react-router-dom'
+import { Link  } from 'react-router-dom'
 import { CampoTexto, Botao, Box, PainelErros, Row, Col } from '../../components';
 import { Page } from "../";
 
 import { UsuarioService } from "@intechprev/efdreinf-service";
-import { router } from 'sw-toolbox';
 
 export default class AlterarSenha extends Component {
     constructor(props) {
