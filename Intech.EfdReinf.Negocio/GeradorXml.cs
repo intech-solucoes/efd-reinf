@@ -229,7 +229,7 @@ namespace Intech.EfdReinf.Negocio
                           group x by new { x.DTA_APURACAO.Month, x.DTA_APURACAO.Year, x.COD_CNPJ_PRESTADOR } into g
                           select new
                           {
-                              id = string.Format("ID{0}{1}{2:yyyyMMddHHmmss}{3}", contribuinte.IND_TIPO_INSCRICAO, contribuinte.COD_CNPJ_CPF.PadLeft(14, '0'), DateTime.Now, oidArquivoUpload.ToString().PadLeft(5, '0')),
+                              id = string.Format("ID{0}{1}{2:yyyyMMddHHmmss}{3}", contribuinte.IND_TIPO_INSCRICAO, contribuinte.COD_CNPJ_CPF.Substring(0, 8).PadRight(14, '0'), DateTime.Now, oidArquivoUpload.ToString().PadLeft(5, '0')),
                               ind_retificacao = tipoOperacao,
                               dta_apuracao = string.Format("{0}-{1}", g.Key.Year, g.Key.Month.ToString().PadLeft(2, '0')),
                               ind_ambiente_envio = tipoAmbiente,
@@ -240,9 +240,9 @@ namespace Intech.EfdReinf.Negocio
                               cod_cnpj_cpf_obra = g.First().COD_CNPJ_CPF_OBRA,
                               ind_obra = g.First().IND_OBRA,
                               cod_cnpj_prestador = g.First().COD_CNPJ_PRESTADOR,
-                              val_total_bruto = g.First().VAL_TOTAL_BRUTO.ToString().Replace('.', ','),
-                              val_base_retencao = g.First().VAL_BASE_RETENCAO.ToString().Replace('.', ','),
-                              val_total_retencao = g.First().VAL_TOTAL_RETENCAO.ToString().Replace('.', ','),
+                              val_total_bruto = g.Sum(x => x.VAL_TOTAL_BRUTO).ToString().Replace('.', ','),
+                              val_base_retencao = g.Sum(x => x.VAL_BASE_RETENCAO).ToString().Replace('.', ','),
+                              val_total_retencao = g.Sum(x => x.VAL_TOTAL_RETENCAO).ToString().Replace('.', ','),
                               ind_cprb = g.First().IND_CPRB,
                               notas_fiscais = from y in listRegistrosR2010
                                               where y.DTA_APURACAO.Month == g.Key.Month &&
