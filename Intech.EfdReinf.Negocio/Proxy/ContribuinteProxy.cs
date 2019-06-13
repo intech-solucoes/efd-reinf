@@ -3,7 +3,6 @@ using Intech.EfdReinf.Dados.DAO;
 using Intech.EfdReinf.Entidades;
 using Intech.Lib.Data.Erros;
 using Intech.Lib.Dominios;
-using Intech.Lib.Dominios.EfdReinf;
 using Intech.Lib.Util.Email;
 using Intech.Lib.Util.Validacoes;
 using Intech.Lib.Web;
