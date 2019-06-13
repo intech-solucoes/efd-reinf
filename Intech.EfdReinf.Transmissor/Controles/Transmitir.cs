@@ -13,18 +13,22 @@ using System.Xml.Serialization;
 using System.Xml.XPath;
 #endregion
 
-namespace Intech.EfdReinf.Transmissor
+namespace Intech.EfdReinf.Transmissor.Controles
 {
-    public partial class Transmissor : UserControl
+    public partial class Transmitir : UserControl
     {
+        private const string NamespaceRetornoLoteEventos = "http://www.reinf.esocial.gov.br/schemas/retornoLoteEventos/v1_04_00";
+        private const string NamespaceEvtTotal = "http://www.reinf.esocial.gov.br/schemas/evtTotal/v1_04_00";
+
         DispatcherHelper dispatcher = new DispatcherHelper();
         WebServicesRF webServices = new WebServicesRF();
         XmlDocument xmlRetornoEvento = new XmlDocument();
         StringBuilder logEventos = new StringBuilder();
+
         private bool salvar;
         private string nomeArquivoLog;
 
-        public Transmissor()
+        public Transmitir()
         {
             InitializeComponent();
             
@@ -114,8 +118,8 @@ namespace Intech.EfdReinf.Transmissor
                         {
                             // Busca o OID_OPER_FINANCEIRA na tag, onde os 3 primeiros caracteres são ignorados,
                             // E o resto da string é o OID.
-                            var idEvento = BuscaIDEvento(eventos[i]);
-                            var oidMovimento = Convert.ToDecimal(idEvento.Replace("ID9", ""));
+                            //var idEvento = BuscaIDEvento(eventos[i]);
+                            //var oidMovimento = Convert.ToDecimal(idEvento.Replace("ID9", ""));
 
                             var resultado = BuscaResultadoEvento(eventos[i]);
 
@@ -231,8 +235,8 @@ namespace Intech.EfdReinf.Transmissor
                 else
                     nsmgr = new XmlNamespaceManager(xml.OwnerDocument.NameTable);
 
-                nsmgr.AddNamespace("a", "http://www.reinf.esocial.gov.br/schemas/retornoLoteEventos/v1_04_00");
-                nsmgr.AddNamespace("b", "http://www.reinf.esocial.gov.br/schemas/evtTotal/v1_04_00");
+                nsmgr.AddNamespace("a", NamespaceRetornoLoteEventos);
+                nsmgr.AddNamespace("b", NamespaceEvtTotal);
 
                 return xml.SelectNodes("//a:retornoLoteEventos/a:retornoEventos/a:evento", nsmgr);
             }
@@ -249,10 +253,10 @@ namespace Intech.EfdReinf.Transmissor
             {
                 XPathNavigator nav = xml.CreateNavigator();
                 var nsmgr = new XmlNamespaceManager(nav.NameTable);
-                nsmgr.AddNamespace("a", "http://www.reinf.esocial.gov.br/schemas/retornoLoteEventos/v1_04_00");
-                nsmgr.AddNamespace("b", "http://www.reinf.esocial.gov.br/schemas/evtTotal/v1_04_00");
+                nsmgr.AddNamespace("a", NamespaceRetornoLoteEventos);
+                nsmgr.AddNamespace("b", NamespaceEvtTotal);
 
-                return xml.SelectSingleNode(".//b:Reinf/b:retornoEvento/b:dadosRecepcaoEvento/b:idEvento", nsmgr).InnerText;
+                return xml.SelectSingleNode(".//b:Reinf/b:evtTotal", nsmgr).Attributes["id"].Value;
             }
             catch (Exception ex)
             {
@@ -267,10 +271,10 @@ namespace Intech.EfdReinf.Transmissor
             {
                 XPathNavigator nav = xml.CreateNavigator();
                 var nsmgr = new XmlNamespaceManager(nav.NameTable);
-                nsmgr.AddNamespace("a", "http://www.reinf.esocial.gov.br/schemas/retornoLoteEventos/v1_04_00");
-                nsmgr.AddNamespace("b", "http://www.reinf.esocial.gov.br/schemas/evtTotal/v1_04_00");
+                nsmgr.AddNamespace("a", NamespaceRetornoLoteEventos);
+                nsmgr.AddNamespace("b", NamespaceEvtTotal);
 
-                return xml.SelectSingleNode(".//b:Reinf/b:retornoEvento/b:status/b:descRetorno", nsmgr).InnerText;
+                return xml.SelectSingleNode(".//b:Reinf/b:evtTotal/b:ideRecRetorno/b:ideStatus/b:descRetorno", nsmgr).InnerText;
             }
             catch (Exception ex)
             {
@@ -285,10 +289,10 @@ namespace Intech.EfdReinf.Transmissor
             {
                 XPathNavigator nav = xml.CreateNavigator();
                 var nsmgr = new XmlNamespaceManager(nav.NameTable);
-                nsmgr.AddNamespace("a", "http://www.reinf.esocial.gov.br/schemas/retornoLoteEventos/v1_04_00");
-                nsmgr.AddNamespace("b", "http://www.reinf.esocial.gov.br/schemas/evtTotal/v1_04_00");
+                nsmgr.AddNamespace("a", NamespaceRetornoLoteEventos);
+                nsmgr.AddNamespace("b", NamespaceEvtTotal);
 
-                return xml.SelectSingleNode(".//b:Reinf/b:retornoEvento/b:status/b:dadosRegistroOcorrenciaEvento/b:ocorrencias/b:descricao", nsmgr).InnerText;
+                return xml.SelectSingleNode(".//b:Reinf/b:evtTotal/b:ideRecRetorno/b:ideStatus/b:regOcorrs/b:dscResp", nsmgr).InnerText;
             }
             catch (Exception ex)
             {
@@ -303,8 +307,8 @@ namespace Intech.EfdReinf.Transmissor
             {
                 XPathNavigator nav = xml.CreateNavigator();
                 var nsmgr = new XmlNamespaceManager(nav.NameTable);
-                nsmgr.AddNamespace("a", "http://www.reinf.esocial.gov.br/schemas/retornoLoteEventos/v1_04_00");
-                nsmgr.AddNamespace("b", "http://www.reinf.esocial.gov.br/schemas/evtTotal/v1_04_00");
+                nsmgr.AddNamespace("a", NamespaceRetornoLoteEventos);
+                nsmgr.AddNamespace("b", NamespaceEvtTotal);
 
                 return xml.SelectSingleNode(".//b:Reinf/b:retornoEvento/b:dadosReciboEntrega/b:numeroRecibo", nsmgr).InnerText;
             }
@@ -321,8 +325,8 @@ namespace Intech.EfdReinf.Transmissor
             {
                 XPathNavigator nav = xml.CreateNavigator();
                 var nsmgr = new XmlNamespaceManager(nav.NameTable);
-                nsmgr.AddNamespace("a", "http://www.reinf.esocial.gov.br/schemas/retornoLoteEventos/v1_04_00");
-                nsmgr.AddNamespace("b", "http://www.reinf.esocial.gov.br/schemas/evtTotal/v1_04_00");
+                nsmgr.AddNamespace("a", NamespaceRetornoLoteEventos);
+                nsmgr.AddNamespace("b", NamespaceEvtTotal);
 
                 return xml.SelectSingleNode("//a:retornoLoteEventos/a:retornoEventos/a:evento/b:Reinf/b:evtTotal/b:ideRecRetorno/b:ideStatus/b:descRetorno", nsmgr).InnerText;
             }
@@ -339,8 +343,8 @@ namespace Intech.EfdReinf.Transmissor
             {
                 XPathNavigator nav = xml.CreateNavigator();
                 var nsmgr = new XmlNamespaceManager(nav.NameTable);
-                nsmgr.AddNamespace("a", "http://www.reinf.esocial.gov.br/schemas/retornoLoteEventos/v1_04_00");
-                nsmgr.AddNamespace("b", "http://www.reinf.esocial.gov.br/schemas/evtTotal/v1_04_00");
+                nsmgr.AddNamespace("a", NamespaceRetornoLoteEventos);
+                nsmgr.AddNamespace("b", NamespaceEvtTotal);
 
                 return xml.SelectSingleNode("//a:retornoLoteEventos/a:retornoEventos/a:evento/b:Reinf/b:evtTotal/b:ideRecRetorno/b:ideStatus/b:regOcorrs/b:dscResp", nsmgr).InnerText;
             }
@@ -410,29 +414,29 @@ namespace Intech.EfdReinf.Transmissor
             var IV = encriptado.Key;
             var lote = Convert.ToBase64String(encriptado.Value);
 
-            X509Certificate2 cert;
-            string thumbprint;
+            //X509Certificate2 cert;
+            //string thumbprint;
 
-            if (Global.AMBIENTE_TESTES)
-            {
-                cert = new X509Certificate2("cert_preprod.cer");
-                thumbprint = "88edffa74bf7984197c1749ba96f56372dc02bac";
-            }
-            else
-            {
-                cert = new X509Certificate2("cert_prod.cer");
-                thumbprint = "4f96a2a59ef1248411e0ec4b3aed7f3c3e2d6727";
-            }
+            //if (Global.AMBIENTE_TESTES)
+            //{
+            //    cert = new X509Certificate2("cert_preprod.cer");
+            //    thumbprint = "88edffa74bf7984197c1749ba96f56372dc02bac";
+            //}
+            //else
+            //{
+            //    cert = new X509Certificate2("cert_prod.cer");
+            //    thumbprint = "4f96a2a59ef1248411e0ec4b3aed7f3c3e2d6727";
+            //}
 
-            var tagChave = Convert.ToBase64String(EncriptarPrivateKeyToRSA(IV, cert));
+            //var tagChave = Convert.ToBase64String(EncriptarPrivateKeyToRSA(IV, cert));
 
             var eventoCriptografado = new XmlEventoCriptografado
             {
                 loteCriptografado = new LoteCriptografado
                 {
                     id = "ID0",
-                    idCertificado = thumbprint,
-                    chave = tagChave,
+                    //idCertificado = thumbprint,
+                    //chave = tagChave,
                     lote = lote
                 }
             };
