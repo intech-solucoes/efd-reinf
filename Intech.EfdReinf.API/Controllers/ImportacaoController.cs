@@ -171,11 +171,11 @@ namespace Intech.EfdReinf.API.Controllers
                 linhaImportacao.IND_TIPO_PROCESSO = ValidarString("'TpProc'", colunas[1], 1, true);
                 linhaImportacao.NUM_PROCESSO = ValidarString("'NrProc'", colunas[2], 21, true);
                 linhaImportacao.DTA_INICIO_VALIDADE = ValidarDateTime("'IniValid'", colunas[3], true);
-                linhaImportacao.DTA_FIM_VALIDADE = ValidarDateTime("'FimValid'", colunas[4], false);
+                linhaImportacao.DTA_FIM_VALIDADE = string.IsNullOrEmpty(colunas[4].ToString()) ? (DateTime?)null : ValidarDateTime("'FimValid'", colunas[4], false);
                 linhaImportacao.IND_AUTORIA_JUDICIAL = ValidarString("'IndAutoria'", colunas[5], 1, true);
                 linhaImportacao.COD_SUSPENSAO = ValidarString("'CodSusp'", colunas[6], 14, false);
                 linhaImportacao.IND_SUSPENSAO = ValidarString("'IndSusp'", colunas[7], 2, false);
-                linhaImportacao.DTA_DECISAO = ValidarDateTime("'DtDecisao'", colunas[8], false);
+                linhaImportacao.DTA_DECISAO = string.IsNullOrEmpty(colunas[8].ToString()) ? (DateTime?)null : ValidarDateTime("'DtDecisao'", colunas[8], false);
                 linhaImportacao.IND_DEPOSITO_JUDICIAL = ValidarString("'IndDeposito'", colunas[9], 1, false);
                 linhaImportacao.COD_UF_VARA = ValidarString("'UfVara'", colunas[10], 2, false);
                 linhaImportacao.COD_MUNICIPIO_VARA = ValidarString("'CodMunic'", colunas[11], 7, false);
