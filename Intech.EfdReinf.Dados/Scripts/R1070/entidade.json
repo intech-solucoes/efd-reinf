@@ -1,15 +1,15 @@
 ﻿{
     "nomeTabela": "EFD_R1070",
-    "colunasExtras": [
-        {
-            "nome": "DTA_UPLOAD",
-            "tipo": "DateTime",
-            "aceitaNulo": true
-        },
-        {
-            "nome": "IND_STATUS",
-            "tipo": "string",
-            "aceitaNulo": true
-        }
-    ]
+  "colunasExtras": [
+    {
+      "nome": "DTA_UPLOAD",
+      "tipo": "DateTime",
+      "aceitaNulo": true
+    },
+    {
+      "nome": "IND_STATUS",
+      "tipo": "string",
+      "aceitaNulo": true
+    }
+  ]
 }

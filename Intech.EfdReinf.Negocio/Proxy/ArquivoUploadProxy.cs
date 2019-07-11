@@ -1,4 +1,4 @@
-using Intech.EfdReinf.Dados.DAO;
+﻿using Intech.EfdReinf.Dados.DAO;
 
 namespace Intech.EfdReinf.Negocio.Proxy
 {

@@ -181,7 +181,8 @@ namespace Intech.EfdReinf.API.Controllers
                 linhaImportacao.COD_MUNICIPIO_VARA = ValidarString("'CodMunic'", colunas[11], 7, false);
                 linhaImportacao.COD_IDENTIFICACAO_VARA = ValidarString("'IdVara'", colunas[12], 2, false);
                 linhaImportacao.IND_OPERACAO_REGISTRO = ValidarString("'IndOperacao'", colunas[13], 3, true);
-                linhaImportacao.IND_SITUACAO_PROCESSAMENTO = DMN_SITUACAO_PROCESSAMENTO.IMPORTADO;                
+                linhaImportacao.IND_SITUACAO_PROCESSAMENTO = DMN_SITUACAO_PROCESSAMENTO.IMPORTADO;
+                linhaImportacao.OID_ARQUIVO_UPLOAD = _oidArquivoUpload;
             }
             catch (Exception ex)
             {
@@ -265,7 +266,7 @@ namespace Intech.EfdReinf.API.Controllers
                 linhaImportacao.VAL_RETENCAO_JUD_PRINC = ValidarDecimal("'VlrTotalNRetPrinc'", colunas[10], 17, false);
                 linhaImportacao.VAL_RETENCAO_JUD_ADIC = ValidarDecimal("'VlrTotalNRetAdic'", colunas[11], 17, false);
                 linhaImportacao.IND_CPRB = ValidarDecimal("'IndCPRB'", colunas[12], 1, true);
-                linhaImportacao.COD_SERIE_NF = ValidarString("'Serie'", colunas[13], 5, true);
+                linhaImportacao.COD_SERIE_NF = ValidarString("'Serie'", colunas[13], 5, false);
                 linhaImportacao.NUM_DOCUMENTO_NF = ValidarString("'NumDocto'", colunas[14], 15, true);
                 linhaImportacao.DTA_EMISSAO_NF = ValidarDateTime("'DtEmissaoNF'", colunas[15], true);
                 linhaImportacao.VAL_BRUTO_NF = ValidarDecimal("'VlrBruto'", colunas[16], 17, true);

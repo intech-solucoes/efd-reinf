@@ -1,10 +1,20 @@
 ﻿{
     "nomeTabela": "EFD_ARQUIVO_UPLOAD",
-    "colunasExtras": [
-        {
-            "nome": "NOM_USUARIO",
-            "tipo": "string",
-            "aceitaNulo": false
-        }
-    ]
+  "colunasExtras": [
+    {
+      "nome": "NOM_USUARIO",
+      "tipo": "string",
+      "aceitaNulo": false
+    },
+    {
+      "nome": "IND_AMBIENTE_ENVIO",
+      "tipo": "string",
+      "aceitaNulo": true
+    },
+    {
+      "nome": "OID_USUARIO_ENVIO",
+      "tipo": "decimal",
+      "aceitaNulo": true
+    }
+  ]
 }

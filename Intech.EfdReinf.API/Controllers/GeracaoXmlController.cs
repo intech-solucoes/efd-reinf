@@ -89,7 +89,7 @@ namespace Intech.EfdReinf.API.Controllers
             try
             {
                 var R1000 = new ContribuinteEnvioProxy().BuscarPorOidContribuinte(oidContribuinte);
-                var R1070 = new R1070Proxy().BuscarPorOidContribuinte(oidContribuinte);
+                var R1070 = new ArquivoUploadProxy().BuscarR1070PorOidContribuinteNaoEnviado(oidContribuinte);
                 var R2098 = new R2098Proxy().BuscarPorOidContribuinte(oidContribuinte);
                 var R2099 = new R2099Proxy().BuscarPorOidContribuinte(oidContribuinte);
 
@@ -121,7 +121,7 @@ namespace Intech.EfdReinf.API.Controllers
                     listaArquivos.Add(new ArquivoGerado
                     {
                         Tipo = "R-1070",
-                        DataGeracao = item.DTA_UPLOAD.Value,
+                        DataGeracao = item.DTA_UPLOAD,
                         Ambiente = item.IND_AMBIENTE_ENVIO == DMN_TIPO_AMBIENTE_EFD.PRODUCAO ? "Produção" : "Produção Restrita",
                         Status = item.IND_STATUS == DMN_STATUS_EFD_UPLOAD.PROCESSADO ? "Processado" : "Gerado",
                         Usuario = new UsuarioProxy().BuscarPorChave(item.OID_USUARIO_ENVIO).NOM_USUARIO,
