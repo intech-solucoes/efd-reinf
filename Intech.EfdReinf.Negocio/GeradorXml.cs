@@ -123,12 +123,12 @@ namespace Intech.EfdReinf.Negocio
             R1070Proxy proxyR1070 = new R1070Proxy();
             IEnumerable<R1070Entidade> listRegistrosR1070;
 
-            listRegistrosR1070 = proxyR1070.BuscarPorOidContribuinte(oidContribuinte);
+            listRegistrosR1070 = proxyR1070.BuscarPorOidContribuinteNaoEnviados(oidContribuinte);
 
             var eventos = from x in listRegistrosR1070
                           select new
                           {
-                              id = string.Format("ID{0}{1}{2:yyyyMMddHHmmss}{3}", contribuinte.IND_TIPO_INSCRICAO, contribuinte.COD_CNPJ_CPF.PadLeft(14, '0'), DateTime.Now, oidArquivoUpload.ToString().PadLeft(5, '0')),
+                              id = string.Format("ID{0}{1}{2:yyyyMMddHHmmss}{3}", contribuinte.IND_TIPO_INSCRICAO, contribuinte.COD_CNPJ_CPF.PadLeft(14, '0'), DateTime.Now, x.OID_R1070.ToString().PadLeft(5, '0')),
                               ind_ambiente_envio = tipoAmbiente,
                               versao = Assembly.GetExecutingAssembly().GetName().Version.ToString(3),
                               ind_tipo_inscricao = contribuinte.IND_TIPO_INSCRICAO,
@@ -229,7 +229,7 @@ namespace Intech.EfdReinf.Negocio
                           group x by new { x.DTA_APURACAO.Month, x.DTA_APURACAO.Year, x.COD_CNPJ_PRESTADOR } into g
                           select new
                           {
-                              id = string.Format("ID{0}{1}{2:yyyyMMddHHmmss}{3}", contribuinte.IND_TIPO_INSCRICAO, contribuinte.COD_CNPJ_CPF.Substring(0, 8).PadRight(14, '0'), DateTime.Now, oidArquivoUpload.ToString().PadLeft(5, '0')),
+                              id = string.Format("ID{0}{1}{2:yyyyMMddHHmmss}{3}", contribuinte.IND_TIPO_INSCRICAO, contribuinte.COD_CNPJ_CPF.Substring(0, 8).PadRight(14, '0'), DateTime.Now, g.First().OID_R2010.ToString().PadLeft(5, '0')),
                               ind_retificacao = tipoOperacao,
                               dta_apuracao = string.Format("{0}-{1}", g.Key.Year, g.Key.Month.ToString().PadLeft(2, '0')),
                               ind_ambiente_envio = tipoAmbiente,

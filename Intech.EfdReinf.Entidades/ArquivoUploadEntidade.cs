@@ -17,6 +17,8 @@ namespace Intech.EfdReinf.Entidades
 		public string NOM_ARQUIVO_LOCAL { get; set; }
 		public string IND_STATUS { get; set; }
 		[Write(false)] public string NOM_USUARIO { get; set; }
+		[Write(false)] public string IND_AMBIENTE_ENVIO { get; set; }
+		[Write(false)] public decimal? OID_USUARIO_ENVIO { get; set; }
         
     }
 }
