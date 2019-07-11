@@ -15,6 +15,11 @@
       "nome": "OID_USUARIO_ENVIO",
       "tipo": "decimal",
       "aceitaNulo": true
+    },
+    {
+      "nome": "IND_SITUACAO_PROCESSAMENTO",
+      "tipo": "string",
+      "aceitaNulo": true
     }
   ]
 }

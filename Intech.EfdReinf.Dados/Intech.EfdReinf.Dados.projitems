@@ -35,6 +35,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)DAO\UsuarioDAO.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)Scripts\ArquivoUpload\BuscarR2010PorOidContribuinteNaoEnviado.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\ArquivoUpload\BuscarR1070PorOidContribuinteNaoEnviado.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\ArquivoUpload\BuscarPorOidUsuarioContribuinte.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\ArquivoUpload\BuscarPorOidUsuarioContribuinteStatus.sql" />

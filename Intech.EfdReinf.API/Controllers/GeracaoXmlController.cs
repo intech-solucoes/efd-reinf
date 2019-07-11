@@ -93,7 +93,7 @@ namespace Intech.EfdReinf.API.Controllers
                 var R2098 = new R2098Proxy().BuscarPorOidContribuinte(oidContribuinte);
                 var R2099 = new R2099Proxy().BuscarPorOidContribuinte(oidContribuinte);
 
-                var R2010 = new R2010Proxy().BuscarPorOidContribuinte(oidContribuinte)
+                var R2010 = new ArquivoUploadProxy().BuscarR2010PorOidContribuinteNaoEnviado(oidContribuinte)
                     .Where(x => x.IND_SITUACAO_PROCESSAMENTO == DMN_SITUACAO_PROCESSAMENTO.PROCESSADO
                              || x.IND_SITUACAO_PROCESSAMENTO == DMN_SITUACAO_PROCESSAMENTO.ENVIADO
                              || x.IND_SITUACAO_PROCESSAMENTO == DMN_SITUACAO_PROCESSAMENTO.RETIFICADO)
@@ -135,7 +135,7 @@ namespace Intech.EfdReinf.API.Controllers
                     listaArquivos.Add(new ArquivoGerado
                     {
                         Tipo = "R-2010",
-                        DataGeracao = item.DTA_UPLOAD.Value,
+                        DataGeracao = item.DTA_UPLOAD,
                         Ambiente = item.IND_AMBIENTE_ENVIO == DMN_TIPO_AMBIENTE_EFD.PRODUCAO ? "Produção" : "Produção Restrita",
                         Status = item.IND_STATUS == DMN_STATUS_EFD_UPLOAD.PROCESSADO ? "Processado" : "Gerado",
                         Usuario = new UsuarioProxy().BuscarPorChave(item.OID_USUARIO_ENVIO).NOM_USUARIO,

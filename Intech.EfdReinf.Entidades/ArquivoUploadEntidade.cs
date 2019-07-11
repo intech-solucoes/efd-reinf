@@ -19,6 +19,7 @@ namespace Intech.EfdReinf.Entidades
 		[Write(false)] public string NOM_USUARIO { get; set; }
 		[Write(false)] public string IND_AMBIENTE_ENVIO { get; set; }
 		[Write(false)] public decimal? OID_USUARIO_ENVIO { get; set; }
+		[Write(false)] public string IND_SITUACAO_PROCESSAMENTO { get; set; }
         
     }
 }
