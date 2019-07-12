@@ -240,9 +240,9 @@ namespace Intech.EfdReinf.Negocio
                               cod_cnpj_cpf_obra = g.First().COD_CNPJ_CPF_OBRA,
                               ind_obra = g.First().IND_OBRA,
                               cod_cnpj_prestador = g.First().COD_CNPJ_PRESTADOR,
-                              val_total_bruto = g.Sum(x => x.VAL_TOTAL_BRUTO).ToString().Replace('.', ','),
-                              val_base_retencao = g.Sum(x => x.VAL_BASE_RETENCAO).ToString().Replace('.', ','),
-                              val_total_retencao = g.Sum(x => x.VAL_TOTAL_RETENCAO).ToString().Replace('.', ','),
+                              val_total_bruto = g.Sum(x => x.VAL_BRUTO_NF).ToString().Replace('.', ','),
+                              val_base_retencao = g.Sum(x => x.VAL_BASE_RET_SERVICO).ToString().Replace('.', ','),
+                              val_total_retencao = g.Sum(x => x.VAL_RETENCAO_SERVICO).ToString().Replace('.', ','),
                               ind_cprb = g.First().IND_CPRB,
                               notas_fiscais = from y in listRegistrosR2010
                                               where y.DTA_APURACAO.Month == g.Key.Month &&
@@ -251,7 +251,7 @@ namespace Intech.EfdReinf.Negocio
                                               group y by new { y.NUM_DOCUMENTO_NF } into z
                                               select new
                                               {
-                                                  cod_serie_nf = z.First().COD_SERIE_NF,
+                                                  cod_serie_nf = string.IsNullOrEmpty(z.First().COD_SERIE_NF) ? "1" : z.First().COD_SERIE_NF,
                                                   num_documento_nf = z.Key.NUM_DOCUMENTO_NF,
                                                   dta_emissao_nf = z.First().DTA_EMISSAO_NF.ToString("yyyy-MM-dd"),
                                                   val_bruto_nf = z.First().VAL_BRUTO_NF.ToString().Replace('.', ','),
