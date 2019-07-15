@@ -28,6 +28,9 @@
             <evtComProd>{{ind_producao_rural}}</evtComProd>
             <evtCPRB>{{ind_desoneracao_cprb}}</evtCPRB>
             <evtPgtos>{{ind_pagamentos_diversos}}</evtPgtos>
+            {{ if dta_competencia_sem_mov != null }}
+            <compSemMovto>{{dta_competencia_sem_mov}}</compSemMovto>
+            {{ end }}
           </infoFech>
         </evtFechaEvPer>        
       </Reinf>

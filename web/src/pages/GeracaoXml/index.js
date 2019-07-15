@@ -285,6 +285,22 @@ export default class GeracaoXml extends Component {
         this.combos.competenciaAno = comboCompetenciaAno;
         this.setState({ combos: this.combos });
     }
+
+    definiObrigatoriedadeCompetenciaMes = () =>{
+        var retorno = false;
+
+        if(this.state.contratacaoServicos === "NAO" &&
+           this.state.prestacaoServicos === "NAO" &&
+           this.state.associacaoDesportiva === "NAO" &&
+           this.state.repasseAssociacaoDesportiva === "NAO" &&
+           this.state.producaoRural === "NAO" &&
+           this.state.pagamentosDiversos === "NAO" ) {
+
+            retorno = true;
+        }
+
+        return retorno;
+    }
     
     carregaCompetenciaMes = async () => { 
         var anoAtual = this.dataAtual.getFullYear().toString();
@@ -547,12 +563,12 @@ export default class GeracaoXml extends Component {
                                 <Combo contexto={this} ref={ (input) => this.listaCampos[13] = input } labelCol="col-lg-8"
                                        label={"Competência a partir da qual não houve movimento, cuja situação perdura até a competência atual."}
                                        nome="competenciaAno" valor={this.state.competenciaAno} comboCol="col-4" onChange={() => this.carregaCompetenciaMes()}
-                                       opcoes={this.state.combos.competenciaAno} nomeMembro={"nome"} valorMembro={"valor"} obrigatorio={true} />
+                                       opcoes={this.state.combos.competenciaAno} nomeMembro={"nome"} valorMembro={"valor"} obrigatorio={this.definiObrigatoriedadeCompetenciaMes()} />
                             </Col>
                             <Col>
                                 <Combo contexto={this} ref={ (input) => this.listaCampos[14] = input }
                                        label={"Competência a partir da qual não houve movimento, cuja situação perdura até a competência atual."}
-                                       nome="competenciaMes" valor={this.state.competenciaMes} comboCol="col-4" obrigatorio={true} mostrarLabel={false}
+                                       nome="competenciaMes" valor={this.state.competenciaMes} comboCol="col-4" obrigatorio={this.definiObrigatoriedadeCompetenciaMes()} mostrarLabel={false}
                                        opcoes={this.state.combos.competenciaMes} labelCol="col-lg-4" nomeMembro={"nome"} valorMembro={"valor"} />
                             </Col>
                         </Row>

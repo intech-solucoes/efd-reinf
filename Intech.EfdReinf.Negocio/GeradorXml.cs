@@ -125,6 +125,9 @@ namespace Intech.EfdReinf.Negocio
 
             listRegistrosR1070 = proxyR1070.BuscarPorOidContribuinteNaoEnviados(oidContribuinte);
 
+            if (listRegistrosR1070.Count() == 0)
+                throw new Exception("Não existem registros para geração de arquivo XML.");
+
             var eventos = from x in listRegistrosR1070
                           select new
                           {
@@ -137,7 +140,7 @@ namespace Intech.EfdReinf.Negocio
                               ind_tipo_processo = x.IND_TIPO_PROCESSO,
                               num_processo = x.NUM_PROCESSO,
                               dta_inicio_validade = x.DTA_INICIO_VALIDADE.ToString("yyyy-MM"),
-                              dta_fim_validade = x.DTA_FIM_VALIDADE == null ? string.Empty : Convert.ToDateTime(x.DTA_FIM_VALIDADE).ToString("yyyy-MM"),
+                              dta_fim_validade = x.DTA_FIM_VALIDADE == null ? null : Convert.ToDateTime(x.DTA_FIM_VALIDADE).ToString("yyyy-MM"),
                               ind_autoria_judicial = x.IND_AUTORIA_JUDICIAL,
                               cod_suspensao = x.COD_SUSPENSAO,
                               ind_suspensao = x.IND_SUSPENSAO,
@@ -340,7 +343,8 @@ namespace Intech.EfdReinf.Negocio
                 ind_repasse_assoc_desport = r2099.IND_REPASSE_ASSOC_DESPORT,
                 ind_producao_rural = r2099.IND_PRODUCAO_RURAL,
                 ind_desoneracao_cprb = contribuinte.IND_DESONERACAO_CPRB,
-                ind_pagamentos_diversos = r2099.IND_PAGAMENTOS_DIVERSOS
+                ind_pagamentos_diversos = r2099.IND_PAGAMENTOS_DIVERSOS,
+                dta_competencia_sem_mov = r2099.DTA_COMPETENCIA_SEM_MOV == null ? null : Convert.ToDateTime(r2099.DTA_COMPETENCIA_SEM_MOV).ToString("yyyy-MM")
             });
 
             var caminhoArquivo = GerarArquivo("R2099_", baseCaminhoArquivo, xmlR2099);
