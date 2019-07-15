@@ -19,8 +19,10 @@
                 <tpProc>{{evento.ind_tipo_processo}}</tpProc>
                 <nrProc>{{evento.num_processo}}</nrProc>
                 <iniValid>{{evento.dta_inicio_validade}}</iniValid>
+                {{ if evento.dta_fim_validade != null }}
                 <fimValid>{{evento.dta_fim_validade}}</fimValid>
-                <indAutoria>{{evento.ind_autoria_judicial}}</indAutoria>
+                {{ end }}
+              <indAutoria>{{evento.ind_autoria_judicial}}</indAutoria>
                 <infoSusp>
                   <codSusp>{{evento.cod_suspensao}}</codSusp>
                   <indSusp>{{evento.ind_suspensao}}</indSusp>

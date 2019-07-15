@@ -128,7 +128,7 @@ namespace Intech.EfdReinf.Negocio
             var eventos = from x in listRegistrosR1070
                           select new
                           {
-                              id = string.Format("ID{0}{1}{2:yyyyMMddHHmmss}{3}", contribuinte.IND_TIPO_INSCRICAO, contribuinte.COD_CNPJ_CPF.PadLeft(14, '0'), DateTime.Now, x.OID_R1070.ToString().PadLeft(5, '0')),
+                              id = string.Format("ID{0}{1}{2:yyyyMMddHHmmss}{3}", contribuinte.IND_TIPO_INSCRICAO, contribuinte.COD_CNPJ_CPF.Substring(0, 8).PadRight(14, '0'), DateTime.Now, x.OID_R1070.ToString().PadLeft(5, '0')),
                               ind_ambiente_envio = tipoAmbiente,
                               versao = Assembly.GetExecutingAssembly().GetName().Version.ToString(3),
                               ind_tipo_inscricao = contribuinte.IND_TIPO_INSCRICAO,
@@ -141,7 +141,7 @@ namespace Intech.EfdReinf.Negocio
                               ind_autoria_judicial = x.IND_AUTORIA_JUDICIAL,
                               cod_suspensao = x.COD_SUSPENSAO,
                               ind_suspensao = x.IND_SUSPENSAO,
-                              dta_decisao = x.DTA_DECISAO == null ? string.Empty : Convert.ToDateTime(x.DTA_DECISAO).ToString("dd/MM/yyyy"),
+                              dta_decisao = x.DTA_DECISAO == null ? string.Empty : Convert.ToDateTime(x.DTA_DECISAO).ToString("yyyy-MM-dd"),
                               ind_deposito_judicial = x.IND_DEPOSITO_JUDICIAL,
                               cod_uf_vara = x.COD_UF_VARA,
                               cod_municipio_vara = x.COD_MUNICIPIO_VARA,
@@ -324,7 +324,7 @@ namespace Intech.EfdReinf.Negocio
             var template = Template.Parse(File.OpenText(templateFile).ReadToEnd());
             var xmlR2099 = template.Render(new
             {
-                id = string.Format("ID{0}{1}{2:yyyyMMddHHmmss}{3}", contribuinte.IND_TIPO_INSCRICAO, contribuinte.COD_CNPJ_CPF.PadLeft(14, '0'), DateTime.Now, oidArquivoUpload.ToString().PadLeft(5, '0')),
+                id = string.Format("ID{0}{1}{2:yyyyMMddHHmmss}{3}", contribuinte.IND_TIPO_INSCRICAO, contribuinte.COD_CNPJ_CPF.Substring(0, 8).PadRight(14, '0'), DateTime.Now, r2099.OID_R2099.ToString().PadLeft(5, '0')),
                 dta_periodo_Apuracao = r2099.DTA_PERIODO_APURACAO.ToString("yyyy-MM"),
                 ind_ambiente_envio = r2099.IND_AMBIENTE_ENVIO,
                 versao = Assembly.GetExecutingAssembly().GetName().Version.ToString(3),
@@ -393,7 +393,7 @@ namespace Intech.EfdReinf.Negocio
             var template = Template.Parse(File.OpenText(templateFile).ReadToEnd());
             var xmlR2098 = template.Render(new
             {
-                id = string.Format("ID{0}{1}{2:yyyyMMddHHmmss}{3}", contribuinte.IND_TIPO_INSCRICAO, contribuinte.COD_CNPJ_CPF.PadLeft(14, '0'), DateTime.Now, oidArquivoUpload.ToString().PadLeft(5, '0')),
+                id = string.Format("ID{0}{1}{2:yyyyMMddHHmmss}{3}", contribuinte.IND_TIPO_INSCRICAO, contribuinte.COD_CNPJ_CPF.Substring(0, 8).PadRight(14, '0'), DateTime.Now, oidR2098.ToString().PadLeft(5, '0')),
                 dta_periodo_Apuracao = dtaPeriodoApuracao.ToString("yyyy-MM"),
                 ind_ambiente_envio = tipoAmbiente,
                 versao = Assembly.GetExecutingAssembly().GetName().Version.ToString(3),
