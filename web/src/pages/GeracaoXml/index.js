@@ -395,7 +395,12 @@ export default class GeracaoXml extends Component {
 
     gerarR2099 = async () => {
         var periodo = "01/" + this.state.referenciaMes + "/" + this.state.referenciaAno;
-        var competencia = "01/" + this.state.competenciaMes + "/" + this.state.competenciaAno;
+        var competencia = "";
+
+        if(this.state.competenciaMes !== "" && this.state.competenciaAno !== "")
+        {
+            competencia = "01/" + this.state.competenciaMes + "/" + this.state.competenciaAno;
+        }
 
         var r2099 = {
             OID_CONTRIBUINTE: this.oidContribuinte,

@@ -328,7 +328,7 @@ namespace Intech.EfdReinf.Negocio
             var xmlR2099 = template.Render(new
             {
                 id = string.Format("ID{0}{1}{2:yyyyMMddHHmmss}{3}", contribuinte.IND_TIPO_INSCRICAO, contribuinte.COD_CNPJ_CPF.Substring(0, 8).PadRight(14, '0'), DateTime.Now, r2099.OID_R2099.ToString().PadLeft(5, '0')),
-                dta_periodo_Apuracao = r2099.DTA_PERIODO_APURACAO.ToString("yyyy-MM"),
+                dta_periodo_apuracao = r2099.DTA_PERIODO_APURACAO.ToString("yyyy-MM"),
                 ind_ambiente_envio = r2099.IND_AMBIENTE_ENVIO,
                 versao = Assembly.GetExecutingAssembly().GetName().Version.ToString(3),
                 ind_tipo_inscricao = contribuinte.IND_TIPO_INSCRICAO,
@@ -337,13 +337,13 @@ namespace Intech.EfdReinf.Negocio
                 cod_cpf_contato = contribuinte.COD_CPF_CONTATO,
                 cod_fone_celular_contato = contribuinte.COD_FONE_CELULAR_CONTATO,
                 txt_email_contato = contribuinte.TXT_EMAIL_CONTATO,
-                ind_contratacao_serv = r2099.IND_CONTRATACAO_SERV,
-                ind_prestacao_serv = r2099.IND_PRESTACAO_SERV,
-                ind_associacao_desportiva = r2099.IND_ASSOCIACAO_DESPORTIVA,
-                ind_repasse_assoc_desport = r2099.IND_REPASSE_ASSOC_DESPORT,
-                ind_producao_rural = r2099.IND_PRODUCAO_RURAL,
-                ind_desoneracao_cprb = contribuinte.IND_DESONERACAO_CPRB,
-                ind_pagamentos_diversos = r2099.IND_PAGAMENTOS_DIVERSOS,
+                ind_contratacao_serv = r2099.IND_CONTRATACAO_SERV.Substring(0,1),
+                ind_prestacao_serv = r2099.IND_PRESTACAO_SERV.Substring(0, 1),
+                ind_associacao_desportiva = r2099.IND_ASSOCIACAO_DESPORTIVA.Substring(0, 1),
+                ind_repasse_assoc_desport = r2099.IND_REPASSE_ASSOC_DESPORT.Substring(0, 1),
+                ind_producao_rural = r2099.IND_PRODUCAO_RURAL.Substring(0, 1),
+                ind_desoneracao_cprb = contribuinte.IND_DESONERACAO_CPRB == "0" ? "N" : "S",
+                ind_pagamentos_diversos = r2099.IND_PAGAMENTOS_DIVERSOS.Substring(0, 1),
                 dta_competencia_sem_mov = r2099.DTA_COMPETENCIA_SEM_MOV == null ? null : Convert.ToDateTime(r2099.DTA_COMPETENCIA_SEM_MOV).ToString("yyyy-MM")
             });
 
