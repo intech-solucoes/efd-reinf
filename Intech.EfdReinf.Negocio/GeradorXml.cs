@@ -216,7 +216,7 @@ namespace Intech.EfdReinf.Negocio
                     listRegistrosR2010 = proxy2010.BuscarPorOidContribuinteDtaInicioDtaFimIndSituacaoProcessamento(oidContribuinte, dtaInicial, dtaFinal, DMN_SITUACAO_PROCESSAMENTO.IMPORTADO);
                     break;
                 case DMN_EFD_RETIFICADORA.RETIFICADORA:
-                    listRegistrosR2010 = proxy2010.BuscarPorOidContribuinteMesEnvioAnoEnvio(oidContribuinte, dtaInicial.Month, dtaInicial.Year);
+                    listRegistrosR2010 = proxy2010.BuscarPorOidContribuinteMesEnvioAnoEnvio(oidContribuinte, dtaInicial.Month, dtaInicial.Year, DMN_SITUACAO_PROCESSAMENTO.IMPORTADO);
                     break;
                 default:
                     throw new Exception("Tipo de operação inválido.");

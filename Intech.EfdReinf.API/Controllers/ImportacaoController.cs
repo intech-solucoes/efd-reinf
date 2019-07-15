@@ -232,7 +232,7 @@ namespace Intech.EfdReinf.API.Controllers
                 if (_listImportacaoCritica.Count <= 0)
                 {
                     //Excluindo registros existentes na tabela EFD_R2010 para o "OID_CONTRIBUINTE" e "DTA_APURACAO".
-                    ExcluirR2010();
+                    //ExcluirR2010();
 
                     //Gravando as linhas do arquivo na tabela EFD_R2010.
                     GravarR2010();
