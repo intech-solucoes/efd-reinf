@@ -16,6 +16,15 @@ namespace Intech.EfdReinf.Transmissor
             LabelVersao.Text = $"{Assembly.GetExecutingAssembly().GetName().Version.Major}.{Assembly.GetExecutingAssembly().GetName().Version.Revision}";
         }
 
+        private void Main_Load(object sender, EventArgs e)
+        {
+            TopMost = true;
+            Focus();
+            panel1.Controls.Clear();
+            panel1.Controls.Add(new Home());
+            TopMost = false;
+        }
+
         private void ButtonInicio_Click(object sender, EventArgs e)
         {
             panel1.Controls.Clear();
@@ -31,13 +40,13 @@ namespace Intech.EfdReinf.Transmissor
         private void ButtonConsultar_Click(object sender, EventArgs e)
         {
             panel1.Controls.Clear();
-            panel1.Controls.Add(new Home());
+            panel1.Controls.Add(new Consultar());
         }
 
         private void ButtonUtilitarios_Click(object sender, EventArgs e)
         {
             panel1.Controls.Clear();
-            panel1.Controls.Add(new Home());
+            panel1.Controls.Add(new Utilitarios());
         }
     }
 }

@@ -25,7 +25,6 @@ namespace Intech.EfdReinf.Transmissor
                 var main = new Main();
 
                 Application.Run(main);
-                main.BringToFront();
             }
         }
     }

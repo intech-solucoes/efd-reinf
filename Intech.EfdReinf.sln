@@ -5,14 +5,6 @@ VisualStudioVersion = 15.0.27703.2035
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib", "Lib", "{DFC9BBD0-0EDB-40A8-8EE5-E8C9F8F4F984}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Intech.Lib.Dapper", "..\lib\dotnet-lib\Intech.Lib.Dapper\Intech.Lib.Dapper.shproj", "{21944D5C-2AF2-467A-B973-172529BF229D}"
-EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Intech.Lib.Data", "..\lib\dotnet-lib\Intech.Lib.Data\Intech.Lib.Data.shproj", "{1B8BF169-24E1-48F0-B3BD-EC9FC413B578}"
-EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Intech.Lib.Util", "..\lib\dotnet-lib\Intech.Lib.Util\Intech.Lib.Util.shproj", "{73968E62-3181-49AC-8C2D-81331534BC6E}"
-EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Intech.Lib.Web", "..\lib\dotnet-lib\Intech.Lib.Web\Intech.Lib.Web.shproj", "{17FB1551-D800-46E6-8B2F-3A19BBB43EBA}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Intech.EfdReinf.API", "Intech.EfdReinf.API\Intech.EfdReinf.API.csproj", "{E1641C17-17B3-4BA2-8D86-E04D3B6A0EC7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Negocio", "Negocio", "{9CE94235-29AC-4405-9211-CF79058EFDBB}"
@@ -23,22 +15,15 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Intech.EfdReinf.Entidades",
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Intech.EfdReinf.Negocio", "Intech.EfdReinf.Negocio\Intech.EfdReinf.Negocio.shproj", "{F68676E1-4DDF-4EAF-80C5-F0CF54009589}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Intech.Lib.Dominios", "..\lib\dotnet-lib\Intech.Lib.Dominios\Intech.Lib.Dominios.shproj", "{6FCB20F6-C048-4F2E-BF16-48D72C8AF407}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intech.EfdReinf.Transmissor", "Intech.EfdReinf.Transmissor\Intech.EfdReinf.Transmissor.csproj", "{CBECB4F5-6FE7-410E-B648-044B70A3E0D3}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Intech.Lib.Relatorios", "..\lib\dotnet-lib\Intech.Lib.Relatorios\Intech.Lib.Relatorios.shproj", "{067F6A75-7DD8-48F9-9C4C-1A34B928A124}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Intech.Lib.Dominios", "..\Intech.Lib\Intech.Lib.Dominios\Intech.Lib.Dominios.csproj", "{027B7F1A-AC36-46C7-9355-917A1CF75365}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		..\lib\dotnet-lib\Intech.Lib.Relatorios\Intech.Lib.Relatorios.projitems*{067f6a75-7dd8-48f9-9c4c-1a34b928a124}*SharedItemsImports = 13
-		..\lib\dotnet-lib\Intech.Lib.Web\Intech.Lib.Web.projitems*{17fb1551-d800-46e6-8b2f-3a19bbb43eba}*SharedItemsImports = 13
-		..\lib\dotnet-lib\Intech.Lib.Data\Intech.Lib.Data.projitems*{1b8bf169-24e1-48f0-b3bd-ec9fc413b578}*SharedItemsImports = 13
-		..\lib\dotnet-lib\Intech.Lib.Dapper\Intech.Lib.Dapper.projitems*{21944d5c-2af2-467a-b973-172529bf229d}*SharedItemsImports = 13
-		..\lib\dotnet-lib\Intech.Lib.Dominios\Intech.Lib.Dominios.projitems*{6fcb20f6-c048-4f2e-bf16-48d72c8af407}*SharedItemsImports = 13
-		..\lib\dotnet-lib\Intech.Lib.Util\Intech.Lib.Util.projitems*{73968e62-3181-49ac-8c2d-81331534bc6e}*SharedItemsImports = 13
 		Intech.EfdReinf.Dados\Intech.EfdReinf.Dados.projitems*{ac54bc6d-5ab7-45c2-b658-18f1a41db0ce}*SharedItemsImports = 13
 		Intech.EfdReinf.Entidades\Intech.EfdReinf.Entidades.projitems*{b6e91566-1997-439a-bf01-7b0a6bdaf450}*SharedItemsImports = 13
+		Intech.EfdReinf.Entidades\Intech.EfdReinf.Entidades.projitems*{cbecb4f5-6fe7-410e-b648-044b70a3e0d3}*SharedItemsImports = 4
 		Intech.EfdReinf.Negocio\Intech.EfdReinf.Negocio.projitems*{f68676e1-4ddf-4eaf-80c5-f0cf54009589}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -54,20 +39,19 @@ Global
 		{CBECB4F5-6FE7-410E-B648-044B70A3E0D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CBECB4F5-6FE7-410E-B648-044B70A3E0D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CBECB4F5-6FE7-410E-B648-044B70A3E0D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{027B7F1A-AC36-46C7-9355-917A1CF75365}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{027B7F1A-AC36-46C7-9355-917A1CF75365}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{027B7F1A-AC36-46C7-9355-917A1CF75365}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{027B7F1A-AC36-46C7-9355-917A1CF75365}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{21944D5C-2AF2-467A-B973-172529BF229D} = {DFC9BBD0-0EDB-40A8-8EE5-E8C9F8F4F984}
-		{1B8BF169-24E1-48F0-B3BD-EC9FC413B578} = {DFC9BBD0-0EDB-40A8-8EE5-E8C9F8F4F984}
-		{73968E62-3181-49AC-8C2D-81331534BC6E} = {DFC9BBD0-0EDB-40A8-8EE5-E8C9F8F4F984}
-		{17FB1551-D800-46E6-8B2F-3A19BBB43EBA} = {DFC9BBD0-0EDB-40A8-8EE5-E8C9F8F4F984}
 		{AC54BC6D-5AB7-45C2-B658-18F1A41DB0CE} = {9CE94235-29AC-4405-9211-CF79058EFDBB}
 		{B6E91566-1997-439A-BF01-7B0A6BDAF450} = {9CE94235-29AC-4405-9211-CF79058EFDBB}
 		{F68676E1-4DDF-4EAF-80C5-F0CF54009589} = {9CE94235-29AC-4405-9211-CF79058EFDBB}
-		{6FCB20F6-C048-4F2E-BF16-48D72C8AF407} = {DFC9BBD0-0EDB-40A8-8EE5-E8C9F8F4F984}
-		{067F6A75-7DD8-48F9-9C4C-1A34B928A124} = {DFC9BBD0-0EDB-40A8-8EE5-E8C9F8F4F984}
+		{027B7F1A-AC36-46C7-9355-917A1CF75365} = {DFC9BBD0-0EDB-40A8-8EE5-E8C9F8F4F984}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3EAAB29C-DC13-41D7-B182-D30E5FA98489}

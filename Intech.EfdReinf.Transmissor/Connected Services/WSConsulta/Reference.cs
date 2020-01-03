@@ -23,6 +23,83 @@ namespace Intech.EfdReinf.Transmissor.WSConsulta {
         [System.ServiceModel.OperationContractAttribute(Action="http://sped.fazenda.gov.br/ConsultasReinf/ConsultaInformacoesConsolidadas", ReplyAction="http://sped.fazenda.gov.br/ConsultasReinf/ConsultaInformacoesConsolidadasResponse" +
             "")]
         System.Threading.Tasks.Task<Intech.EfdReinf.Transmissor.WSConsulta.ConsultaInformacoesConsolidadasResponse> ConsultaInformacoesConsolidadasAsync(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaInformacoesConsolidadasRequest request);
+        
+        // CODEGEN: Generating message contract since element name nrInsc from namespace http://sped.fazenda.gov.br/ is not marked nillable
+        [System.ServiceModel.OperationContractAttribute(Action="http://sped.fazenda.gov.br/ConsultasReinf/ConsultaReciboEvento1000", ReplyAction="http://sped.fazenda.gov.br/ConsultasReinf/ConsultaReciboEvento1000Response")]
+        Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento1000Response ConsultaReciboEvento1000(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento1000Request request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://sped.fazenda.gov.br/ConsultasReinf/ConsultaReciboEvento1000", ReplyAction="http://sped.fazenda.gov.br/ConsultasReinf/ConsultaReciboEvento1000Response")]
+        System.Threading.Tasks.Task<Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento1000Response> ConsultaReciboEvento1000Async(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento1000Request request);
+        
+        // CODEGEN: Generating message contract since element name nrInsc from namespace http://sped.fazenda.gov.br/ is not marked nillable
+        [System.ServiceModel.OperationContractAttribute(Action="http://sped.fazenda.gov.br/ConsultasReinf/ConsultaReciboEvento1070", ReplyAction="http://sped.fazenda.gov.br/ConsultasReinf/ConsultaReciboEvento1070Response")]
+        Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento1070Response ConsultaReciboEvento1070(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento1070Request request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://sped.fazenda.gov.br/ConsultasReinf/ConsultaReciboEvento1070", ReplyAction="http://sped.fazenda.gov.br/ConsultasReinf/ConsultaReciboEvento1070Response")]
+        System.Threading.Tasks.Task<Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento1070Response> ConsultaReciboEvento1070Async(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento1070Request request);
+        
+        // CODEGEN: Generating message contract since element name nrInsc from namespace http://sped.fazenda.gov.br/ is not marked nillable
+        [System.ServiceModel.OperationContractAttribute(Action="http://sped.fazenda.gov.br/ConsultasReinf/ConsultaReciboEvento2010", ReplyAction="http://sped.fazenda.gov.br/ConsultasReinf/ConsultaReciboEvento2010Response")]
+        Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2010Response ConsultaReciboEvento2010(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2010Request request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://sped.fazenda.gov.br/ConsultasReinf/ConsultaReciboEvento2010", ReplyAction="http://sped.fazenda.gov.br/ConsultasReinf/ConsultaReciboEvento2010Response")]
+        System.Threading.Tasks.Task<Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2010Response> ConsultaReciboEvento2010Async(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2010Request request);
+        
+        // CODEGEN: Generating message contract since element name nrInsc from namespace http://sped.fazenda.gov.br/ is not marked nillable
+        [System.ServiceModel.OperationContractAttribute(Action="http://sped.fazenda.gov.br/ConsultasReinf/ConsultaReciboEvento2020", ReplyAction="http://sped.fazenda.gov.br/ConsultasReinf/ConsultaReciboEvento2020Response")]
+        Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2020Response ConsultaReciboEvento2020(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2020Request request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://sped.fazenda.gov.br/ConsultasReinf/ConsultaReciboEvento2020", ReplyAction="http://sped.fazenda.gov.br/ConsultasReinf/ConsultaReciboEvento2020Response")]
+        System.Threading.Tasks.Task<Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2020Response> ConsultaReciboEvento2020Async(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2020Request request);
+        
+        // CODEGEN: Generating message contract since element name nrInsc from namespace http://sped.fazenda.gov.br/ is not marked nillable
+        [System.ServiceModel.OperationContractAttribute(Action="http://sped.fazenda.gov.br/ConsultasReinf/ConsultaReciboEvento2030", ReplyAction="http://sped.fazenda.gov.br/ConsultasReinf/ConsultaReciboEvento2030Response")]
+        Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2030Response ConsultaReciboEvento2030(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2030Request request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://sped.fazenda.gov.br/ConsultasReinf/ConsultaReciboEvento2030", ReplyAction="http://sped.fazenda.gov.br/ConsultasReinf/ConsultaReciboEvento2030Response")]
+        System.Threading.Tasks.Task<Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2030Response> ConsultaReciboEvento2030Async(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2030Request request);
+        
+        // CODEGEN: Generating message contract since element name nrInsc from namespace http://sped.fazenda.gov.br/ is not marked nillable
+        [System.ServiceModel.OperationContractAttribute(Action="http://sped.fazenda.gov.br/ConsultasReinf/ConsultaReciboEvento2040", ReplyAction="http://sped.fazenda.gov.br/ConsultasReinf/ConsultaReciboEvento2040Response")]
+        Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2040Response ConsultaReciboEvento2040(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2040Request request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://sped.fazenda.gov.br/ConsultasReinf/ConsultaReciboEvento2040", ReplyAction="http://sped.fazenda.gov.br/ConsultasReinf/ConsultaReciboEvento2040Response")]
+        System.Threading.Tasks.Task<Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2040Response> ConsultaReciboEvento2040Async(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2040Request request);
+        
+        // CODEGEN: Generating message contract since element name nrInsc from namespace http://sped.fazenda.gov.br/ is not marked nillable
+        [System.ServiceModel.OperationContractAttribute(Action="http://sped.fazenda.gov.br/ConsultasReinf/ConsultaReciboEvento2050", ReplyAction="http://sped.fazenda.gov.br/ConsultasReinf/ConsultaReciboEvento2050Response")]
+        Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2050Response ConsultaReciboEvento2050(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2050Request request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://sped.fazenda.gov.br/ConsultasReinf/ConsultaReciboEvento2050", ReplyAction="http://sped.fazenda.gov.br/ConsultasReinf/ConsultaReciboEvento2050Response")]
+        System.Threading.Tasks.Task<Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2050Response> ConsultaReciboEvento2050Async(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2050Request request);
+        
+        // CODEGEN: Generating message contract since element name nrInsc from namespace http://sped.fazenda.gov.br/ is not marked nillable
+        [System.ServiceModel.OperationContractAttribute(Action="http://sped.fazenda.gov.br/ConsultasReinf/ConsultaReciboEvento2060", ReplyAction="http://sped.fazenda.gov.br/ConsultasReinf/ConsultaReciboEvento2060Response")]
+        Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2060Response ConsultaReciboEvento2060(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2060Request request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://sped.fazenda.gov.br/ConsultasReinf/ConsultaReciboEvento2060", ReplyAction="http://sped.fazenda.gov.br/ConsultasReinf/ConsultaReciboEvento2060Response")]
+        System.Threading.Tasks.Task<Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2060Response> ConsultaReciboEvento2060Async(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2060Request request);
+        
+        // CODEGEN: Generating message contract since element name nrInsc from namespace http://sped.fazenda.gov.br/ is not marked nillable
+        [System.ServiceModel.OperationContractAttribute(Action="http://sped.fazenda.gov.br/ConsultasReinf/ConsultaReciboEvento2098", ReplyAction="http://sped.fazenda.gov.br/ConsultasReinf/ConsultaReciboEvento2098Response")]
+        Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2098Response ConsultaReciboEvento2098(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2098Request request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://sped.fazenda.gov.br/ConsultasReinf/ConsultaReciboEvento2098", ReplyAction="http://sped.fazenda.gov.br/ConsultasReinf/ConsultaReciboEvento2098Response")]
+        System.Threading.Tasks.Task<Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2098Response> ConsultaReciboEvento2098Async(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2098Request request);
+        
+        // CODEGEN: Generating message contract since element name nrInsc from namespace http://sped.fazenda.gov.br/ is not marked nillable
+        [System.ServiceModel.OperationContractAttribute(Action="http://sped.fazenda.gov.br/ConsultasReinf/ConsultaReciboEvento2099", ReplyAction="http://sped.fazenda.gov.br/ConsultasReinf/ConsultaReciboEvento2099Response")]
+        Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2099Response ConsultaReciboEvento2099(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2099Request request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://sped.fazenda.gov.br/ConsultasReinf/ConsultaReciboEvento2099", ReplyAction="http://sped.fazenda.gov.br/ConsultasReinf/ConsultaReciboEvento2099Response")]
+        System.Threading.Tasks.Task<Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2099Response> ConsultaReciboEvento2099Async(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2099Request request);
+        
+        // CODEGEN: Generating message contract since element name nrInsc from namespace http://sped.fazenda.gov.br/ is not marked nillable
+        [System.ServiceModel.OperationContractAttribute(Action="http://sped.fazenda.gov.br/ConsultasReinf/ConsultaReciboEvento3010", ReplyAction="http://sped.fazenda.gov.br/ConsultasReinf/ConsultaReciboEvento3010Response")]
+        Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento3010Response ConsultaReciboEvento3010(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento3010Request request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://sped.fazenda.gov.br/ConsultasReinf/ConsultaReciboEvento3010", ReplyAction="http://sped.fazenda.gov.br/ConsultasReinf/ConsultaReciboEvento3010Response")]
+        System.Threading.Tasks.Task<Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento3010Response> ConsultaReciboEvento3010Async(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento3010Request request);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -101,6 +178,926 @@ namespace Intech.EfdReinf.Transmissor.WSConsulta {
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class ConsultaReciboEvento1000Request {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="ConsultaReciboEvento1000", Namespace="http://sped.fazenda.gov.br/", Order=0)]
+        public Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento1000RequestBody Body;
+        
+        public ConsultaReciboEvento1000Request() {
+        }
+        
+        public ConsultaReciboEvento1000Request(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento1000RequestBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://sped.fazenda.gov.br/")]
+    public partial class ConsultaReciboEvento1000RequestBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
+        public int tipoEvento;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=1)]
+        public byte tpInsc;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=2)]
+        public string nrInsc;
+        
+        public ConsultaReciboEvento1000RequestBody() {
+        }
+        
+        public ConsultaReciboEvento1000RequestBody(int tipoEvento, byte tpInsc, string nrInsc) {
+            this.tipoEvento = tipoEvento;
+            this.tpInsc = tpInsc;
+            this.nrInsc = nrInsc;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class ConsultaReciboEvento1000Response {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="ConsultaReciboEvento1000Response", Namespace="http://sped.fazenda.gov.br/", Order=0)]
+        public Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento1000ResponseBody Body;
+        
+        public ConsultaReciboEvento1000Response() {
+        }
+        
+        public ConsultaReciboEvento1000Response(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento1000ResponseBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://sped.fazenda.gov.br/")]
+    public partial class ConsultaReciboEvento1000ResponseBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public System.Xml.Linq.XElement ConsultaReciboEvento1000Result;
+        
+        public ConsultaReciboEvento1000ResponseBody() {
+        }
+        
+        public ConsultaReciboEvento1000ResponseBody(System.Xml.Linq.XElement ConsultaReciboEvento1000Result) {
+            this.ConsultaReciboEvento1000Result = ConsultaReciboEvento1000Result;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class ConsultaReciboEvento1070Request {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="ConsultaReciboEvento1070", Namespace="http://sped.fazenda.gov.br/", Order=0)]
+        public Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento1070RequestBody Body;
+        
+        public ConsultaReciboEvento1070Request() {
+        }
+        
+        public ConsultaReciboEvento1070Request(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento1070RequestBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://sped.fazenda.gov.br/")]
+    public partial class ConsultaReciboEvento1070RequestBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
+        public int tipoEvento;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=1)]
+        public byte tpInsc;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=2)]
+        public string nrInsc;
+        
+        public ConsultaReciboEvento1070RequestBody() {
+        }
+        
+        public ConsultaReciboEvento1070RequestBody(int tipoEvento, byte tpInsc, string nrInsc) {
+            this.tipoEvento = tipoEvento;
+            this.tpInsc = tpInsc;
+            this.nrInsc = nrInsc;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class ConsultaReciboEvento1070Response {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="ConsultaReciboEvento1070Response", Namespace="http://sped.fazenda.gov.br/", Order=0)]
+        public Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento1070ResponseBody Body;
+        
+        public ConsultaReciboEvento1070Response() {
+        }
+        
+        public ConsultaReciboEvento1070Response(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento1070ResponseBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://sped.fazenda.gov.br/")]
+    public partial class ConsultaReciboEvento1070ResponseBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public System.Xml.Linq.XElement ConsultaReciboEvento1070Result;
+        
+        public ConsultaReciboEvento1070ResponseBody() {
+        }
+        
+        public ConsultaReciboEvento1070ResponseBody(System.Xml.Linq.XElement ConsultaReciboEvento1070Result) {
+            this.ConsultaReciboEvento1070Result = ConsultaReciboEvento1070Result;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class ConsultaReciboEvento2010Request {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="ConsultaReciboEvento2010", Namespace="http://sped.fazenda.gov.br/", Order=0)]
+        public Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2010RequestBody Body;
+        
+        public ConsultaReciboEvento2010Request() {
+        }
+        
+        public ConsultaReciboEvento2010Request(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2010RequestBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://sped.fazenda.gov.br/")]
+    public partial class ConsultaReciboEvento2010RequestBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
+        public int tipoEvento;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=1)]
+        public byte tpInsc;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=2)]
+        public string nrInsc;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=3)]
+        public string perApur;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=4)]
+        public byte tpInscEstab;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=5)]
+        public string nrInscEstab;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=6)]
+        public string cnpjPrestador;
+        
+        public ConsultaReciboEvento2010RequestBody() {
+        }
+        
+        public ConsultaReciboEvento2010RequestBody(int tipoEvento, byte tpInsc, string nrInsc, string perApur, byte tpInscEstab, string nrInscEstab, string cnpjPrestador) {
+            this.tipoEvento = tipoEvento;
+            this.tpInsc = tpInsc;
+            this.nrInsc = nrInsc;
+            this.perApur = perApur;
+            this.tpInscEstab = tpInscEstab;
+            this.nrInscEstab = nrInscEstab;
+            this.cnpjPrestador = cnpjPrestador;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class ConsultaReciboEvento2010Response {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="ConsultaReciboEvento2010Response", Namespace="http://sped.fazenda.gov.br/", Order=0)]
+        public Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2010ResponseBody Body;
+        
+        public ConsultaReciboEvento2010Response() {
+        }
+        
+        public ConsultaReciboEvento2010Response(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2010ResponseBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://sped.fazenda.gov.br/")]
+    public partial class ConsultaReciboEvento2010ResponseBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public System.Xml.Linq.XElement ConsultaReciboEvento2010Result;
+        
+        public ConsultaReciboEvento2010ResponseBody() {
+        }
+        
+        public ConsultaReciboEvento2010ResponseBody(System.Xml.Linq.XElement ConsultaReciboEvento2010Result) {
+            this.ConsultaReciboEvento2010Result = ConsultaReciboEvento2010Result;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class ConsultaReciboEvento2020Request {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="ConsultaReciboEvento2020", Namespace="http://sped.fazenda.gov.br/", Order=0)]
+        public Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2020RequestBody Body;
+        
+        public ConsultaReciboEvento2020Request() {
+        }
+        
+        public ConsultaReciboEvento2020Request(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2020RequestBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://sped.fazenda.gov.br/")]
+    public partial class ConsultaReciboEvento2020RequestBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
+        public int tipoEvento;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=1)]
+        public byte tpInsc;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=2)]
+        public string nrInsc;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=3)]
+        public string perApur;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=4)]
+        public string nrInscEstabPrest;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=5)]
+        public byte tpInscTomador;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=6)]
+        public string nrInscTomador;
+        
+        public ConsultaReciboEvento2020RequestBody() {
+        }
+        
+        public ConsultaReciboEvento2020RequestBody(int tipoEvento, byte tpInsc, string nrInsc, string perApur, string nrInscEstabPrest, byte tpInscTomador, string nrInscTomador) {
+            this.tipoEvento = tipoEvento;
+            this.tpInsc = tpInsc;
+            this.nrInsc = nrInsc;
+            this.perApur = perApur;
+            this.nrInscEstabPrest = nrInscEstabPrest;
+            this.tpInscTomador = tpInscTomador;
+            this.nrInscTomador = nrInscTomador;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class ConsultaReciboEvento2020Response {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="ConsultaReciboEvento2020Response", Namespace="http://sped.fazenda.gov.br/", Order=0)]
+        public Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2020ResponseBody Body;
+        
+        public ConsultaReciboEvento2020Response() {
+        }
+        
+        public ConsultaReciboEvento2020Response(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2020ResponseBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://sped.fazenda.gov.br/")]
+    public partial class ConsultaReciboEvento2020ResponseBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public System.Xml.Linq.XElement ConsultaReciboEvento2020Result;
+        
+        public ConsultaReciboEvento2020ResponseBody() {
+        }
+        
+        public ConsultaReciboEvento2020ResponseBody(System.Xml.Linq.XElement ConsultaReciboEvento2020Result) {
+            this.ConsultaReciboEvento2020Result = ConsultaReciboEvento2020Result;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class ConsultaReciboEvento2030Request {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="ConsultaReciboEvento2030", Namespace="http://sped.fazenda.gov.br/", Order=0)]
+        public Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2030RequestBody Body;
+        
+        public ConsultaReciboEvento2030Request() {
+        }
+        
+        public ConsultaReciboEvento2030Request(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2030RequestBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://sped.fazenda.gov.br/")]
+    public partial class ConsultaReciboEvento2030RequestBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
+        public int tipoEvento;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=1)]
+        public byte tpInsc;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=2)]
+        public string nrInsc;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=3)]
+        public string perApur;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=4)]
+        public string nrInscEstab;
+        
+        public ConsultaReciboEvento2030RequestBody() {
+        }
+        
+        public ConsultaReciboEvento2030RequestBody(int tipoEvento, byte tpInsc, string nrInsc, string perApur, string nrInscEstab) {
+            this.tipoEvento = tipoEvento;
+            this.tpInsc = tpInsc;
+            this.nrInsc = nrInsc;
+            this.perApur = perApur;
+            this.nrInscEstab = nrInscEstab;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class ConsultaReciboEvento2030Response {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="ConsultaReciboEvento2030Response", Namespace="http://sped.fazenda.gov.br/", Order=0)]
+        public Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2030ResponseBody Body;
+        
+        public ConsultaReciboEvento2030Response() {
+        }
+        
+        public ConsultaReciboEvento2030Response(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2030ResponseBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://sped.fazenda.gov.br/")]
+    public partial class ConsultaReciboEvento2030ResponseBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public System.Xml.Linq.XElement ConsultaReciboEvento2030Result;
+        
+        public ConsultaReciboEvento2030ResponseBody() {
+        }
+        
+        public ConsultaReciboEvento2030ResponseBody(System.Xml.Linq.XElement ConsultaReciboEvento2030Result) {
+            this.ConsultaReciboEvento2030Result = ConsultaReciboEvento2030Result;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class ConsultaReciboEvento2040Request {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="ConsultaReciboEvento2040", Namespace="http://sped.fazenda.gov.br/", Order=0)]
+        public Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2040RequestBody Body;
+        
+        public ConsultaReciboEvento2040Request() {
+        }
+        
+        public ConsultaReciboEvento2040Request(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2040RequestBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://sped.fazenda.gov.br/")]
+    public partial class ConsultaReciboEvento2040RequestBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
+        public int tipoEvento;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=1)]
+        public byte tpInsc;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=2)]
+        public string nrInsc;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=3)]
+        public string perApur;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=4)]
+        public string nrInscEstab;
+        
+        public ConsultaReciboEvento2040RequestBody() {
+        }
+        
+        public ConsultaReciboEvento2040RequestBody(int tipoEvento, byte tpInsc, string nrInsc, string perApur, string nrInscEstab) {
+            this.tipoEvento = tipoEvento;
+            this.tpInsc = tpInsc;
+            this.nrInsc = nrInsc;
+            this.perApur = perApur;
+            this.nrInscEstab = nrInscEstab;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class ConsultaReciboEvento2040Response {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="ConsultaReciboEvento2040Response", Namespace="http://sped.fazenda.gov.br/", Order=0)]
+        public Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2040ResponseBody Body;
+        
+        public ConsultaReciboEvento2040Response() {
+        }
+        
+        public ConsultaReciboEvento2040Response(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2040ResponseBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://sped.fazenda.gov.br/")]
+    public partial class ConsultaReciboEvento2040ResponseBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public System.Xml.Linq.XElement ConsultaReciboEvento2040Result;
+        
+        public ConsultaReciboEvento2040ResponseBody() {
+        }
+        
+        public ConsultaReciboEvento2040ResponseBody(System.Xml.Linq.XElement ConsultaReciboEvento2040Result) {
+            this.ConsultaReciboEvento2040Result = ConsultaReciboEvento2040Result;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class ConsultaReciboEvento2050Request {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="ConsultaReciboEvento2050", Namespace="http://sped.fazenda.gov.br/", Order=0)]
+        public Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2050RequestBody Body;
+        
+        public ConsultaReciboEvento2050Request() {
+        }
+        
+        public ConsultaReciboEvento2050Request(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2050RequestBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://sped.fazenda.gov.br/")]
+    public partial class ConsultaReciboEvento2050RequestBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
+        public int tipoEvento;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=1)]
+        public byte tpInsc;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=2)]
+        public string nrInsc;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=3)]
+        public string perApur;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=4)]
+        public string nrInscEstab;
+        
+        public ConsultaReciboEvento2050RequestBody() {
+        }
+        
+        public ConsultaReciboEvento2050RequestBody(int tipoEvento, byte tpInsc, string nrInsc, string perApur, string nrInscEstab) {
+            this.tipoEvento = tipoEvento;
+            this.tpInsc = tpInsc;
+            this.nrInsc = nrInsc;
+            this.perApur = perApur;
+            this.nrInscEstab = nrInscEstab;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class ConsultaReciboEvento2050Response {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="ConsultaReciboEvento2050Response", Namespace="http://sped.fazenda.gov.br/", Order=0)]
+        public Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2050ResponseBody Body;
+        
+        public ConsultaReciboEvento2050Response() {
+        }
+        
+        public ConsultaReciboEvento2050Response(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2050ResponseBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://sped.fazenda.gov.br/")]
+    public partial class ConsultaReciboEvento2050ResponseBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public System.Xml.Linq.XElement ConsultaReciboEvento2050Result;
+        
+        public ConsultaReciboEvento2050ResponseBody() {
+        }
+        
+        public ConsultaReciboEvento2050ResponseBody(System.Xml.Linq.XElement ConsultaReciboEvento2050Result) {
+            this.ConsultaReciboEvento2050Result = ConsultaReciboEvento2050Result;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class ConsultaReciboEvento2060Request {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="ConsultaReciboEvento2060", Namespace="http://sped.fazenda.gov.br/", Order=0)]
+        public Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2060RequestBody Body;
+        
+        public ConsultaReciboEvento2060Request() {
+        }
+        
+        public ConsultaReciboEvento2060Request(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2060RequestBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://sped.fazenda.gov.br/")]
+    public partial class ConsultaReciboEvento2060RequestBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
+        public int tipoEvento;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=1)]
+        public byte tpInsc;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=2)]
+        public string nrInsc;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=3)]
+        public string perApur;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=4)]
+        public byte tpInscEstab;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=5)]
+        public string nrInscEstab;
+        
+        public ConsultaReciboEvento2060RequestBody() {
+        }
+        
+        public ConsultaReciboEvento2060RequestBody(int tipoEvento, byte tpInsc, string nrInsc, string perApur, byte tpInscEstab, string nrInscEstab) {
+            this.tipoEvento = tipoEvento;
+            this.tpInsc = tpInsc;
+            this.nrInsc = nrInsc;
+            this.perApur = perApur;
+            this.tpInscEstab = tpInscEstab;
+            this.nrInscEstab = nrInscEstab;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class ConsultaReciboEvento2060Response {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="ConsultaReciboEvento2060Response", Namespace="http://sped.fazenda.gov.br/", Order=0)]
+        public Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2060ResponseBody Body;
+        
+        public ConsultaReciboEvento2060Response() {
+        }
+        
+        public ConsultaReciboEvento2060Response(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2060ResponseBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://sped.fazenda.gov.br/")]
+    public partial class ConsultaReciboEvento2060ResponseBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public System.Xml.Linq.XElement ConsultaReciboEvento2060Result;
+        
+        public ConsultaReciboEvento2060ResponseBody() {
+        }
+        
+        public ConsultaReciboEvento2060ResponseBody(System.Xml.Linq.XElement ConsultaReciboEvento2060Result) {
+            this.ConsultaReciboEvento2060Result = ConsultaReciboEvento2060Result;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class ConsultaReciboEvento2098Request {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="ConsultaReciboEvento2098", Namespace="http://sped.fazenda.gov.br/", Order=0)]
+        public Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2098RequestBody Body;
+        
+        public ConsultaReciboEvento2098Request() {
+        }
+        
+        public ConsultaReciboEvento2098Request(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2098RequestBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://sped.fazenda.gov.br/")]
+    public partial class ConsultaReciboEvento2098RequestBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
+        public int tipoEvento;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=1)]
+        public byte tpInsc;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=2)]
+        public string nrInsc;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=3)]
+        public string perApur;
+        
+        public ConsultaReciboEvento2098RequestBody() {
+        }
+        
+        public ConsultaReciboEvento2098RequestBody(int tipoEvento, byte tpInsc, string nrInsc, string perApur) {
+            this.tipoEvento = tipoEvento;
+            this.tpInsc = tpInsc;
+            this.nrInsc = nrInsc;
+            this.perApur = perApur;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class ConsultaReciboEvento2098Response {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="ConsultaReciboEvento2098Response", Namespace="http://sped.fazenda.gov.br/", Order=0)]
+        public Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2098ResponseBody Body;
+        
+        public ConsultaReciboEvento2098Response() {
+        }
+        
+        public ConsultaReciboEvento2098Response(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2098ResponseBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://sped.fazenda.gov.br/")]
+    public partial class ConsultaReciboEvento2098ResponseBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public System.Xml.Linq.XElement ConsultaReciboEvento2098Result;
+        
+        public ConsultaReciboEvento2098ResponseBody() {
+        }
+        
+        public ConsultaReciboEvento2098ResponseBody(System.Xml.Linq.XElement ConsultaReciboEvento2098Result) {
+            this.ConsultaReciboEvento2098Result = ConsultaReciboEvento2098Result;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class ConsultaReciboEvento2099Request {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="ConsultaReciboEvento2099", Namespace="http://sped.fazenda.gov.br/", Order=0)]
+        public Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2099RequestBody Body;
+        
+        public ConsultaReciboEvento2099Request() {
+        }
+        
+        public ConsultaReciboEvento2099Request(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2099RequestBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://sped.fazenda.gov.br/")]
+    public partial class ConsultaReciboEvento2099RequestBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
+        public int tipoEvento;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=1)]
+        public byte tpInsc;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=2)]
+        public string nrInsc;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=3)]
+        public string perApur;
+        
+        public ConsultaReciboEvento2099RequestBody() {
+        }
+        
+        public ConsultaReciboEvento2099RequestBody(int tipoEvento, byte tpInsc, string nrInsc, string perApur) {
+            this.tipoEvento = tipoEvento;
+            this.tpInsc = tpInsc;
+            this.nrInsc = nrInsc;
+            this.perApur = perApur;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class ConsultaReciboEvento2099Response {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="ConsultaReciboEvento2099Response", Namespace="http://sped.fazenda.gov.br/", Order=0)]
+        public Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2099ResponseBody Body;
+        
+        public ConsultaReciboEvento2099Response() {
+        }
+        
+        public ConsultaReciboEvento2099Response(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2099ResponseBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://sped.fazenda.gov.br/")]
+    public partial class ConsultaReciboEvento2099ResponseBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public System.Xml.Linq.XElement ConsultaReciboEvento2099Result;
+        
+        public ConsultaReciboEvento2099ResponseBody() {
+        }
+        
+        public ConsultaReciboEvento2099ResponseBody(System.Xml.Linq.XElement ConsultaReciboEvento2099Result) {
+            this.ConsultaReciboEvento2099Result = ConsultaReciboEvento2099Result;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class ConsultaReciboEvento3010Request {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="ConsultaReciboEvento3010", Namespace="http://sped.fazenda.gov.br/", Order=0)]
+        public Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento3010RequestBody Body;
+        
+        public ConsultaReciboEvento3010Request() {
+        }
+        
+        public ConsultaReciboEvento3010Request(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento3010RequestBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://sped.fazenda.gov.br/")]
+    public partial class ConsultaReciboEvento3010RequestBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
+        public int tipoEvento;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=1)]
+        public byte tpInsc;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=2)]
+        public string nrInsc;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=3)]
+        public string dtApur;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=4)]
+        public string nrInscEstabelecimento;
+        
+        public ConsultaReciboEvento3010RequestBody() {
+        }
+        
+        public ConsultaReciboEvento3010RequestBody(int tipoEvento, byte tpInsc, string nrInsc, string dtApur, string nrInscEstabelecimento) {
+            this.tipoEvento = tipoEvento;
+            this.tpInsc = tpInsc;
+            this.nrInsc = nrInsc;
+            this.dtApur = dtApur;
+            this.nrInscEstabelecimento = nrInscEstabelecimento;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class ConsultaReciboEvento3010Response {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="ConsultaReciboEvento3010Response", Namespace="http://sped.fazenda.gov.br/", Order=0)]
+        public Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento3010ResponseBody Body;
+        
+        public ConsultaReciboEvento3010Response() {
+        }
+        
+        public ConsultaReciboEvento3010Response(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento3010ResponseBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://sped.fazenda.gov.br/")]
+    public partial class ConsultaReciboEvento3010ResponseBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public System.Xml.Linq.XElement ConsultaReciboEvento3010Result;
+        
+        public ConsultaReciboEvento3010ResponseBody() {
+        }
+        
+        public ConsultaReciboEvento3010ResponseBody(System.Xml.Linq.XElement ConsultaReciboEvento3010Result) {
+            this.ConsultaReciboEvento3010Result = ConsultaReciboEvento3010Result;
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     public interface ConsultasReinfChannel : Intech.EfdReinf.Transmissor.WSConsulta.ConsultasReinf, System.ServiceModel.IClientChannel {
     }
@@ -155,6 +1152,367 @@ namespace Intech.EfdReinf.Transmissor.WSConsulta {
             inValue.Body.numeroInscricaoContribuinte = numeroInscricaoContribuinte;
             inValue.Body.numeroProtocoloFechamento = numeroProtocoloFechamento;
             return ((Intech.EfdReinf.Transmissor.WSConsulta.ConsultasReinf)(this)).ConsultaInformacoesConsolidadasAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento1000Response Intech.EfdReinf.Transmissor.WSConsulta.ConsultasReinf.ConsultaReciboEvento1000(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento1000Request request) {
+            return base.Channel.ConsultaReciboEvento1000(request);
+        }
+        
+        public System.Xml.Linq.XElement ConsultaReciboEvento1000(int tipoEvento, byte tpInsc, string nrInsc) {
+            Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento1000Request inValue = new Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento1000Request();
+            inValue.Body = new Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento1000RequestBody();
+            inValue.Body.tipoEvento = tipoEvento;
+            inValue.Body.tpInsc = tpInsc;
+            inValue.Body.nrInsc = nrInsc;
+            Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento1000Response retVal = ((Intech.EfdReinf.Transmissor.WSConsulta.ConsultasReinf)(this)).ConsultaReciboEvento1000(inValue);
+            return retVal.Body.ConsultaReciboEvento1000Result;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento1000Response> Intech.EfdReinf.Transmissor.WSConsulta.ConsultasReinf.ConsultaReciboEvento1000Async(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento1000Request request) {
+            return base.Channel.ConsultaReciboEvento1000Async(request);
+        }
+        
+        public System.Threading.Tasks.Task<Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento1000Response> ConsultaReciboEvento1000Async(int tipoEvento, byte tpInsc, string nrInsc) {
+            Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento1000Request inValue = new Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento1000Request();
+            inValue.Body = new Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento1000RequestBody();
+            inValue.Body.tipoEvento = tipoEvento;
+            inValue.Body.tpInsc = tpInsc;
+            inValue.Body.nrInsc = nrInsc;
+            return ((Intech.EfdReinf.Transmissor.WSConsulta.ConsultasReinf)(this)).ConsultaReciboEvento1000Async(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento1070Response Intech.EfdReinf.Transmissor.WSConsulta.ConsultasReinf.ConsultaReciboEvento1070(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento1070Request request) {
+            return base.Channel.ConsultaReciboEvento1070(request);
+        }
+        
+        public System.Xml.Linq.XElement ConsultaReciboEvento1070(int tipoEvento, byte tpInsc, string nrInsc) {
+            Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento1070Request inValue = new Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento1070Request();
+            inValue.Body = new Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento1070RequestBody();
+            inValue.Body.tipoEvento = tipoEvento;
+            inValue.Body.tpInsc = tpInsc;
+            inValue.Body.nrInsc = nrInsc;
+            Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento1070Response retVal = ((Intech.EfdReinf.Transmissor.WSConsulta.ConsultasReinf)(this)).ConsultaReciboEvento1070(inValue);
+            return retVal.Body.ConsultaReciboEvento1070Result;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento1070Response> Intech.EfdReinf.Transmissor.WSConsulta.ConsultasReinf.ConsultaReciboEvento1070Async(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento1070Request request) {
+            return base.Channel.ConsultaReciboEvento1070Async(request);
+        }
+        
+        public System.Threading.Tasks.Task<Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento1070Response> ConsultaReciboEvento1070Async(int tipoEvento, byte tpInsc, string nrInsc) {
+            Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento1070Request inValue = new Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento1070Request();
+            inValue.Body = new Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento1070RequestBody();
+            inValue.Body.tipoEvento = tipoEvento;
+            inValue.Body.tpInsc = tpInsc;
+            inValue.Body.nrInsc = nrInsc;
+            return ((Intech.EfdReinf.Transmissor.WSConsulta.ConsultasReinf)(this)).ConsultaReciboEvento1070Async(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2010Response Intech.EfdReinf.Transmissor.WSConsulta.ConsultasReinf.ConsultaReciboEvento2010(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2010Request request) {
+            return base.Channel.ConsultaReciboEvento2010(request);
+        }
+        
+        public System.Xml.Linq.XElement ConsultaReciboEvento2010(int tipoEvento, byte tpInsc, string nrInsc, string perApur, byte tpInscEstab, string nrInscEstab, string cnpjPrestador) {
+            Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2010Request inValue = new Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2010Request();
+            inValue.Body = new Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2010RequestBody();
+            inValue.Body.tipoEvento = tipoEvento;
+            inValue.Body.tpInsc = tpInsc;
+            inValue.Body.nrInsc = nrInsc;
+            inValue.Body.perApur = perApur;
+            inValue.Body.tpInscEstab = tpInscEstab;
+            inValue.Body.nrInscEstab = nrInscEstab;
+            inValue.Body.cnpjPrestador = cnpjPrestador;
+            Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2010Response retVal = ((Intech.EfdReinf.Transmissor.WSConsulta.ConsultasReinf)(this)).ConsultaReciboEvento2010(inValue);
+            return retVal.Body.ConsultaReciboEvento2010Result;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2010Response> Intech.EfdReinf.Transmissor.WSConsulta.ConsultasReinf.ConsultaReciboEvento2010Async(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2010Request request) {
+            return base.Channel.ConsultaReciboEvento2010Async(request);
+        }
+        
+        public System.Threading.Tasks.Task<Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2010Response> ConsultaReciboEvento2010Async(int tipoEvento, byte tpInsc, string nrInsc, string perApur, byte tpInscEstab, string nrInscEstab, string cnpjPrestador) {
+            Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2010Request inValue = new Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2010Request();
+            inValue.Body = new Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2010RequestBody();
+            inValue.Body.tipoEvento = tipoEvento;
+            inValue.Body.tpInsc = tpInsc;
+            inValue.Body.nrInsc = nrInsc;
+            inValue.Body.perApur = perApur;
+            inValue.Body.tpInscEstab = tpInscEstab;
+            inValue.Body.nrInscEstab = nrInscEstab;
+            inValue.Body.cnpjPrestador = cnpjPrestador;
+            return ((Intech.EfdReinf.Transmissor.WSConsulta.ConsultasReinf)(this)).ConsultaReciboEvento2010Async(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2020Response Intech.EfdReinf.Transmissor.WSConsulta.ConsultasReinf.ConsultaReciboEvento2020(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2020Request request) {
+            return base.Channel.ConsultaReciboEvento2020(request);
+        }
+        
+        public System.Xml.Linq.XElement ConsultaReciboEvento2020(int tipoEvento, byte tpInsc, string nrInsc, string perApur, string nrInscEstabPrest, byte tpInscTomador, string nrInscTomador) {
+            Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2020Request inValue = new Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2020Request();
+            inValue.Body = new Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2020RequestBody();
+            inValue.Body.tipoEvento = tipoEvento;
+            inValue.Body.tpInsc = tpInsc;
+            inValue.Body.nrInsc = nrInsc;
+            inValue.Body.perApur = perApur;
+            inValue.Body.nrInscEstabPrest = nrInscEstabPrest;
+            inValue.Body.tpInscTomador = tpInscTomador;
+            inValue.Body.nrInscTomador = nrInscTomador;
+            Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2020Response retVal = ((Intech.EfdReinf.Transmissor.WSConsulta.ConsultasReinf)(this)).ConsultaReciboEvento2020(inValue);
+            return retVal.Body.ConsultaReciboEvento2020Result;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2020Response> Intech.EfdReinf.Transmissor.WSConsulta.ConsultasReinf.ConsultaReciboEvento2020Async(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2020Request request) {
+            return base.Channel.ConsultaReciboEvento2020Async(request);
+        }
+        
+        public System.Threading.Tasks.Task<Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2020Response> ConsultaReciboEvento2020Async(int tipoEvento, byte tpInsc, string nrInsc, string perApur, string nrInscEstabPrest, byte tpInscTomador, string nrInscTomador) {
+            Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2020Request inValue = new Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2020Request();
+            inValue.Body = new Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2020RequestBody();
+            inValue.Body.tipoEvento = tipoEvento;
+            inValue.Body.tpInsc = tpInsc;
+            inValue.Body.nrInsc = nrInsc;
+            inValue.Body.perApur = perApur;
+            inValue.Body.nrInscEstabPrest = nrInscEstabPrest;
+            inValue.Body.tpInscTomador = tpInscTomador;
+            inValue.Body.nrInscTomador = nrInscTomador;
+            return ((Intech.EfdReinf.Transmissor.WSConsulta.ConsultasReinf)(this)).ConsultaReciboEvento2020Async(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2030Response Intech.EfdReinf.Transmissor.WSConsulta.ConsultasReinf.ConsultaReciboEvento2030(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2030Request request) {
+            return base.Channel.ConsultaReciboEvento2030(request);
+        }
+        
+        public System.Xml.Linq.XElement ConsultaReciboEvento2030(int tipoEvento, byte tpInsc, string nrInsc, string perApur, string nrInscEstab) {
+            Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2030Request inValue = new Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2030Request();
+            inValue.Body = new Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2030RequestBody();
+            inValue.Body.tipoEvento = tipoEvento;
+            inValue.Body.tpInsc = tpInsc;
+            inValue.Body.nrInsc = nrInsc;
+            inValue.Body.perApur = perApur;
+            inValue.Body.nrInscEstab = nrInscEstab;
+            Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2030Response retVal = ((Intech.EfdReinf.Transmissor.WSConsulta.ConsultasReinf)(this)).ConsultaReciboEvento2030(inValue);
+            return retVal.Body.ConsultaReciboEvento2030Result;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2030Response> Intech.EfdReinf.Transmissor.WSConsulta.ConsultasReinf.ConsultaReciboEvento2030Async(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2030Request request) {
+            return base.Channel.ConsultaReciboEvento2030Async(request);
+        }
+        
+        public System.Threading.Tasks.Task<Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2030Response> ConsultaReciboEvento2030Async(int tipoEvento, byte tpInsc, string nrInsc, string perApur, string nrInscEstab) {
+            Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2030Request inValue = new Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2030Request();
+            inValue.Body = new Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2030RequestBody();
+            inValue.Body.tipoEvento = tipoEvento;
+            inValue.Body.tpInsc = tpInsc;
+            inValue.Body.nrInsc = nrInsc;
+            inValue.Body.perApur = perApur;
+            inValue.Body.nrInscEstab = nrInscEstab;
+            return ((Intech.EfdReinf.Transmissor.WSConsulta.ConsultasReinf)(this)).ConsultaReciboEvento2030Async(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2040Response Intech.EfdReinf.Transmissor.WSConsulta.ConsultasReinf.ConsultaReciboEvento2040(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2040Request request) {
+            return base.Channel.ConsultaReciboEvento2040(request);
+        }
+        
+        public System.Xml.Linq.XElement ConsultaReciboEvento2040(int tipoEvento, byte tpInsc, string nrInsc, string perApur, string nrInscEstab) {
+            Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2040Request inValue = new Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2040Request();
+            inValue.Body = new Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2040RequestBody();
+            inValue.Body.tipoEvento = tipoEvento;
+            inValue.Body.tpInsc = tpInsc;
+            inValue.Body.nrInsc = nrInsc;
+            inValue.Body.perApur = perApur;
+            inValue.Body.nrInscEstab = nrInscEstab;
+            Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2040Response retVal = ((Intech.EfdReinf.Transmissor.WSConsulta.ConsultasReinf)(this)).ConsultaReciboEvento2040(inValue);
+            return retVal.Body.ConsultaReciboEvento2040Result;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2040Response> Intech.EfdReinf.Transmissor.WSConsulta.ConsultasReinf.ConsultaReciboEvento2040Async(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2040Request request) {
+            return base.Channel.ConsultaReciboEvento2040Async(request);
+        }
+        
+        public System.Threading.Tasks.Task<Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2040Response> ConsultaReciboEvento2040Async(int tipoEvento, byte tpInsc, string nrInsc, string perApur, string nrInscEstab) {
+            Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2040Request inValue = new Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2040Request();
+            inValue.Body = new Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2040RequestBody();
+            inValue.Body.tipoEvento = tipoEvento;
+            inValue.Body.tpInsc = tpInsc;
+            inValue.Body.nrInsc = nrInsc;
+            inValue.Body.perApur = perApur;
+            inValue.Body.nrInscEstab = nrInscEstab;
+            return ((Intech.EfdReinf.Transmissor.WSConsulta.ConsultasReinf)(this)).ConsultaReciboEvento2040Async(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2050Response Intech.EfdReinf.Transmissor.WSConsulta.ConsultasReinf.ConsultaReciboEvento2050(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2050Request request) {
+            return base.Channel.ConsultaReciboEvento2050(request);
+        }
+        
+        public System.Xml.Linq.XElement ConsultaReciboEvento2050(int tipoEvento, byte tpInsc, string nrInsc, string perApur, string nrInscEstab) {
+            Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2050Request inValue = new Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2050Request();
+            inValue.Body = new Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2050RequestBody();
+            inValue.Body.tipoEvento = tipoEvento;
+            inValue.Body.tpInsc = tpInsc;
+            inValue.Body.nrInsc = nrInsc;
+            inValue.Body.perApur = perApur;
+            inValue.Body.nrInscEstab = nrInscEstab;
+            Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2050Response retVal = ((Intech.EfdReinf.Transmissor.WSConsulta.ConsultasReinf)(this)).ConsultaReciboEvento2050(inValue);
+            return retVal.Body.ConsultaReciboEvento2050Result;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2050Response> Intech.EfdReinf.Transmissor.WSConsulta.ConsultasReinf.ConsultaReciboEvento2050Async(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2050Request request) {
+            return base.Channel.ConsultaReciboEvento2050Async(request);
+        }
+        
+        public System.Threading.Tasks.Task<Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2050Response> ConsultaReciboEvento2050Async(int tipoEvento, byte tpInsc, string nrInsc, string perApur, string nrInscEstab) {
+            Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2050Request inValue = new Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2050Request();
+            inValue.Body = new Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2050RequestBody();
+            inValue.Body.tipoEvento = tipoEvento;
+            inValue.Body.tpInsc = tpInsc;
+            inValue.Body.nrInsc = nrInsc;
+            inValue.Body.perApur = perApur;
+            inValue.Body.nrInscEstab = nrInscEstab;
+            return ((Intech.EfdReinf.Transmissor.WSConsulta.ConsultasReinf)(this)).ConsultaReciboEvento2050Async(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2060Response Intech.EfdReinf.Transmissor.WSConsulta.ConsultasReinf.ConsultaReciboEvento2060(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2060Request request) {
+            return base.Channel.ConsultaReciboEvento2060(request);
+        }
+        
+        public System.Xml.Linq.XElement ConsultaReciboEvento2060(int tipoEvento, byte tpInsc, string nrInsc, string perApur, byte tpInscEstab, string nrInscEstab) {
+            Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2060Request inValue = new Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2060Request();
+            inValue.Body = new Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2060RequestBody();
+            inValue.Body.tipoEvento = tipoEvento;
+            inValue.Body.tpInsc = tpInsc;
+            inValue.Body.nrInsc = nrInsc;
+            inValue.Body.perApur = perApur;
+            inValue.Body.tpInscEstab = tpInscEstab;
+            inValue.Body.nrInscEstab = nrInscEstab;
+            Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2060Response retVal = ((Intech.EfdReinf.Transmissor.WSConsulta.ConsultasReinf)(this)).ConsultaReciboEvento2060(inValue);
+            return retVal.Body.ConsultaReciboEvento2060Result;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2060Response> Intech.EfdReinf.Transmissor.WSConsulta.ConsultasReinf.ConsultaReciboEvento2060Async(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2060Request request) {
+            return base.Channel.ConsultaReciboEvento2060Async(request);
+        }
+        
+        public System.Threading.Tasks.Task<Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2060Response> ConsultaReciboEvento2060Async(int tipoEvento, byte tpInsc, string nrInsc, string perApur, byte tpInscEstab, string nrInscEstab) {
+            Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2060Request inValue = new Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2060Request();
+            inValue.Body = new Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2060RequestBody();
+            inValue.Body.tipoEvento = tipoEvento;
+            inValue.Body.tpInsc = tpInsc;
+            inValue.Body.nrInsc = nrInsc;
+            inValue.Body.perApur = perApur;
+            inValue.Body.tpInscEstab = tpInscEstab;
+            inValue.Body.nrInscEstab = nrInscEstab;
+            return ((Intech.EfdReinf.Transmissor.WSConsulta.ConsultasReinf)(this)).ConsultaReciboEvento2060Async(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2098Response Intech.EfdReinf.Transmissor.WSConsulta.ConsultasReinf.ConsultaReciboEvento2098(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2098Request request) {
+            return base.Channel.ConsultaReciboEvento2098(request);
+        }
+        
+        public System.Xml.Linq.XElement ConsultaReciboEvento2098(int tipoEvento, byte tpInsc, string nrInsc, string perApur) {
+            Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2098Request inValue = new Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2098Request();
+            inValue.Body = new Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2098RequestBody();
+            inValue.Body.tipoEvento = tipoEvento;
+            inValue.Body.tpInsc = tpInsc;
+            inValue.Body.nrInsc = nrInsc;
+            inValue.Body.perApur = perApur;
+            Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2098Response retVal = ((Intech.EfdReinf.Transmissor.WSConsulta.ConsultasReinf)(this)).ConsultaReciboEvento2098(inValue);
+            return retVal.Body.ConsultaReciboEvento2098Result;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2098Response> Intech.EfdReinf.Transmissor.WSConsulta.ConsultasReinf.ConsultaReciboEvento2098Async(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2098Request request) {
+            return base.Channel.ConsultaReciboEvento2098Async(request);
+        }
+        
+        public System.Threading.Tasks.Task<Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2098Response> ConsultaReciboEvento2098Async(int tipoEvento, byte tpInsc, string nrInsc, string perApur) {
+            Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2098Request inValue = new Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2098Request();
+            inValue.Body = new Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2098RequestBody();
+            inValue.Body.tipoEvento = tipoEvento;
+            inValue.Body.tpInsc = tpInsc;
+            inValue.Body.nrInsc = nrInsc;
+            inValue.Body.perApur = perApur;
+            return ((Intech.EfdReinf.Transmissor.WSConsulta.ConsultasReinf)(this)).ConsultaReciboEvento2098Async(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2099Response Intech.EfdReinf.Transmissor.WSConsulta.ConsultasReinf.ConsultaReciboEvento2099(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2099Request request) {
+            return base.Channel.ConsultaReciboEvento2099(request);
+        }
+        
+        public System.Xml.Linq.XElement ConsultaReciboEvento2099(int tipoEvento, byte tpInsc, string nrInsc, string perApur) {
+            Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2099Request inValue = new Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2099Request();
+            inValue.Body = new Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2099RequestBody();
+            inValue.Body.tipoEvento = tipoEvento;
+            inValue.Body.tpInsc = tpInsc;
+            inValue.Body.nrInsc = nrInsc;
+            inValue.Body.perApur = perApur;
+            Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2099Response retVal = ((Intech.EfdReinf.Transmissor.WSConsulta.ConsultasReinf)(this)).ConsultaReciboEvento2099(inValue);
+            return retVal.Body.ConsultaReciboEvento2099Result;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2099Response> Intech.EfdReinf.Transmissor.WSConsulta.ConsultasReinf.ConsultaReciboEvento2099Async(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2099Request request) {
+            return base.Channel.ConsultaReciboEvento2099Async(request);
+        }
+        
+        public System.Threading.Tasks.Task<Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2099Response> ConsultaReciboEvento2099Async(int tipoEvento, byte tpInsc, string nrInsc, string perApur) {
+            Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2099Request inValue = new Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2099Request();
+            inValue.Body = new Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento2099RequestBody();
+            inValue.Body.tipoEvento = tipoEvento;
+            inValue.Body.tpInsc = tpInsc;
+            inValue.Body.nrInsc = nrInsc;
+            inValue.Body.perApur = perApur;
+            return ((Intech.EfdReinf.Transmissor.WSConsulta.ConsultasReinf)(this)).ConsultaReciboEvento2099Async(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento3010Response Intech.EfdReinf.Transmissor.WSConsulta.ConsultasReinf.ConsultaReciboEvento3010(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento3010Request request) {
+            return base.Channel.ConsultaReciboEvento3010(request);
+        }
+        
+        public System.Xml.Linq.XElement ConsultaReciboEvento3010(int tipoEvento, byte tpInsc, string nrInsc, string dtApur, string nrInscEstabelecimento) {
+            Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento3010Request inValue = new Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento3010Request();
+            inValue.Body = new Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento3010RequestBody();
+            inValue.Body.tipoEvento = tipoEvento;
+            inValue.Body.tpInsc = tpInsc;
+            inValue.Body.nrInsc = nrInsc;
+            inValue.Body.dtApur = dtApur;
+            inValue.Body.nrInscEstabelecimento = nrInscEstabelecimento;
+            Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento3010Response retVal = ((Intech.EfdReinf.Transmissor.WSConsulta.ConsultasReinf)(this)).ConsultaReciboEvento3010(inValue);
+            return retVal.Body.ConsultaReciboEvento3010Result;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento3010Response> Intech.EfdReinf.Transmissor.WSConsulta.ConsultasReinf.ConsultaReciboEvento3010Async(Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento3010Request request) {
+            return base.Channel.ConsultaReciboEvento3010Async(request);
+        }
+        
+        public System.Threading.Tasks.Task<Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento3010Response> ConsultaReciboEvento3010Async(int tipoEvento, byte tpInsc, string nrInsc, string dtApur, string nrInscEstabelecimento) {
+            Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento3010Request inValue = new Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento3010Request();
+            inValue.Body = new Intech.EfdReinf.Transmissor.WSConsulta.ConsultaReciboEvento3010RequestBody();
+            inValue.Body.tipoEvento = tipoEvento;
+            inValue.Body.tpInsc = tpInsc;
+            inValue.Body.nrInsc = nrInsc;
+            inValue.Body.dtApur = dtApur;
+            inValue.Body.nrInscEstabelecimento = nrInscEstabelecimento;
+            return ((Intech.EfdReinf.Transmissor.WSConsulta.ConsultasReinf)(this)).ConsultaReciboEvento3010Async(inValue);
         }
     }
 }

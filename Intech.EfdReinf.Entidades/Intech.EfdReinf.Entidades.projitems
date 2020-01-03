@@ -12,13 +12,16 @@
     <Compile Include="$(MSBuildThisFileDirectory)ArquivoUploadEntidade.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ContribuinteEntidade.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ContribuinteEnvioEntidade.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DataR2010.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DominioEntidade.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ImportacaoCriticaEntidade.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)R1070Entidade.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)R2010Entidade.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)R2098Entidade.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)R2099Entidade.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SenhaLogin.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UsuarioContribuinteEntidade.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UsuarioEntidade.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UsuarioLogin.cs" />
   </ItemGroup>
 </Project>

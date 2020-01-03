@@ -15,6 +15,7 @@
     <Content Include="$(MSBuildThisFileDirectory)Scripts\Dominio\entidade.json" />
     <Content Include="$(MSBuildThisFileDirectory)Scripts\ImportacaoCritica\entidade.json" />
     <Content Include="$(MSBuildThisFileDirectory)Scripts\R1070\entidade.json" />
+    <Content Include="$(MSBuildThisFileDirectory)Scripts\R2010\BuscarDatasProcessadasOuEnviadas.sql" />
     <Content Include="$(MSBuildThisFileDirectory)Scripts\R2010\entidade.json" />
     <Content Include="$(MSBuildThisFileDirectory)Scripts\R2098\entidade.json" />
     <Content Include="$(MSBuildThisFileDirectory)Scripts\R2099\entidade.json" />
@@ -52,7 +53,9 @@
     <None Include="$(MSBuildThisFileDirectory)Scripts\R2010\BuscarPorOidContribuinte.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\R2010\BuscarPorOidContribuinteDtaInicioDtaFimIndSituacaoProcessamento.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\R2010\BuscarPorOidContribuinteMesEnvioAnoEnvio.sql" />
+    <None Include="$(MSBuildThisFileDirectory)Scripts\R2010\BuscarPrestadores.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\R2010\ExcluirPorOidContribuinteDtaApuracao.sql" />
+    <None Include="$(MSBuildThisFileDirectory)Scripts\R2010\UpdateReciboPorOidArquivoUploadCNPJPrestador.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\R2098\BuscarPorOidContribuinte.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\R2099\BuscarPorOidContribuinte.sql" />
     <None Include="$(MSBuildThisFileDirectory)Scripts\R2099\BuscarPorOidContribuinteAnoMesIndSituacaoProcessamento.sql" />

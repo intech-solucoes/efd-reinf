@@ -266,7 +266,7 @@ export default class GeracaoXml extends Component {
         for(var i = 0; i < this.datas.length; i++) {
             if(this.datas[i].Ano === Number(this.state.referenciaAno)) {
                 for(var j = 0; j < this.datas[i].Meses.length; j++) {
-                    mes = {nome: this.datas[i].Meses[j], valor: this.datas[i].Meses[j]}
+                    mes = {nome: this.datas[i].Meses[j].Mes, valor: this.datas[i].Meses[j].Mes}
                     this.combos.referenciaMes.push(mes);
                 }
                await this.setState({ combos: this.combos });

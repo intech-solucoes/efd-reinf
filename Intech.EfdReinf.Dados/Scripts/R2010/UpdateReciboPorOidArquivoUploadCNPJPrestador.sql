@@ -1,0 +1,14 @@
+﻿/*Config
+    Retorno
+        -void
+    Parametros
+        -NUM_RECIBO_ENVIO:string
+        -OID_ARQUIVO_UPLOAD:decimal
+        -CNPJ:string
+*/
+
+UPDATE EFD_R2010
+SET NUM_RECIBO_ENVIO = @NUM_RECIBO_ENVIO,
+    IND_SITUACAO_PROCESSAMENTO = 'ENV'
+WHERE OID_ARQUIVO_UPLOAD = @OID_ARQUIVO_UPLOAD
+  AND COD_CNPJ_PRESTADOR = @CNPJ

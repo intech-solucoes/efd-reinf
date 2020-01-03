@@ -89,6 +89,9 @@ namespace Intech.EfdReinf.Transmissor.Controles
                     dispatcher.DoEvents();
                     var xml = assinador.AssinarEventosDoArquivo(Global.Certificado, arquivo);
 
+                    if (xml == null)
+                        return;
+
                     LabelProgressBarSecundaria.Text = "Enviando lote...";
                     ProgressBarSecundaria.Value = 0;
                     ProgressBarSecundaria.Maximum = 1;
@@ -112,15 +115,23 @@ namespace Intech.EfdReinf.Transmissor.Controles
                         dispatcher.DoEvents();
 
                         if (eventos.Count == 0)
-                            throw new Exception("Nenhum evento encontrado.");
+                        {
+                            var resultado = BuscaResultadoEventoUnico(retorno);
+
+                            if(resultado == "ERRO")
+                            {
+                                var mensagem = BuscaMensagemEventoUnico(retorno);
+                                
+                                // Atualiza a ocorrência no banco utilizando a API
+                                //ServiceEfdReinf.UpdateRecibo(oidArquivoUpload, numRecibo);
+                                AdicionarLog("Erro: " + mensagem);
+                                sucesso = false;
+                                dispatcher.DoEvents();
+                            }
+                        }
 
                         for (int i = 0; i < eventos.Count; i++)
                         {
-                            // Busca o OID_OPER_FINANCEIRA na tag, onde os 3 primeiros caracteres são ignorados,
-                            // E o resto da string é o OID.
-                            //var idEvento = BuscaIDEvento(eventos[i]);
-                            //var oidMovimento = Convert.ToDecimal(idEvento.Replace("ID9", ""));
-
                             var resultado = BuscaResultadoEvento(eventos[i]);
 
                             if (resultado == "ERRO")
@@ -128,28 +139,31 @@ namespace Intech.EfdReinf.Transmissor.Controles
                                 // Mostra um dialogo para salvar o retorno
                                 //SalvarArquivoRetorno(eventos[i]);
 
+                                var mensagem = BuscaMensagemEvento(eventos[i]);
+
                                 try
                                 {
-                                    var mensagem = BuscaMensagemEvento(eventos[i]);
-
-                                    // Atualiza a ocorrência no banco utilizando o webservice da EFIWeb/WS/WSReinf.asmx
-                                    //wsReinf.AtualizarOcorrenciaMovimento(oidMovimento, mensagem);
+                                    // Atualiza a ocorrência no banco utilizando a API
+                                    //ServiceEfdReinf.UpdateRecibo(oidArquivoUpload, numRecibo);
+                                    AdicionarLog("Erro ao atualizar ocorrência: " + mensagem);
                                     sucesso = false;
                                     dispatcher.DoEvents();
                                 }
                                 catch (Exception ex)
                                 {
-                                    AdicionarLog("Erro ao atualizar ocorrência: " + BuscaMensagemEvento(eventos[i]));
+                                    AdicionarLog("Erro ao atualizar ocorrência: " + mensagem);
                                 }
                             }
                             else
                             {
                                 try
                                 {
-                                    // Atualiza o status e o nº do recibo no banco utilizando 
-                                    // o webservice da EFIWeb/WS/WSReinf.asmx
+                                    var idEvento = BuscaIDEvento(eventos[i]);
+                                    var oidR2010 = Convert.ToDecimal(idEvento.Substring(31));
+
+                                    // Atualiza o status e o nº do recibo no banco utilizando a API
                                     var numRecibo = BuscaRecibo(eventos[i]);
-                                    //wsReinf.AtualizarStatusMovimento(oidMovimento, numRecibo);
+                                    ServiceEfdReinf.UpdateRecibo(oidR2010, numRecibo);
                                 }
                                 catch (Exception ex)
                                 {
@@ -189,9 +203,8 @@ namespace Intech.EfdReinf.Transmissor.Controles
                             var numRecibo = BuscaRecibo(retorno);
                             MessageBox.Show("Arquivo enviado com sucesso!\nNúmero do recibo: " + numRecibo);
 
-                            // Atualiza o status e o nº do recibo no banco utilizando 
-                            // o webservice da EFIWeb/WS/WSReinf.asmx
-                            //wsReinf.AtualizarStatusArquivo(TextBoxArquivo.Text, numRecibo);
+                            // Atualiza o status e o nº do recibo no banco
+                            //ServiceEfdReinf.UpdateRecibo(oidArquivoUpload, numRecibo);
                         }
                     }
 
@@ -256,12 +269,48 @@ namespace Intech.EfdReinf.Transmissor.Controles
                 nsmgr.AddNamespace("a", NamespaceRetornoLoteEventos);
                 nsmgr.AddNamespace("b", NamespaceEvtTotal);
 
-                return xml.SelectSingleNode(".//b:Reinf/b:evtTotal", nsmgr).Attributes["id"].Value;
+                return xml.SelectSingleNode(".//b:Reinf/b:evtTotal/b:infoRecEv/b:idEv", nsmgr).InnerText;
             }
             catch (Exception ex)
             {
                 SalvarArquivoRetorno(xml);
                 throw new Exception("Erro no BuscaIDEvento()");
+            }
+        }
+
+        private string BuscaResultadoEventoUnico(XmlNode xml)
+        {
+            try
+            {
+                XPathNavigator nav = xml.CreateNavigator();
+                var nsmgr = new XmlNamespaceManager(nav.NameTable);
+                nsmgr.AddNamespace("a", NamespaceRetornoLoteEventos);
+                nsmgr.AddNamespace("b", NamespaceEvtTotal);
+
+                return xml.SelectSingleNode("//a:retornoLoteEventos/a:status/a:descRetorno", nsmgr).InnerText;
+            }
+            catch (Exception ex)
+            {
+                SalvarArquivoRetorno(xml);
+                throw new Exception("Erro no BuscaResultadoEvento()");
+            }
+        }
+
+        private string BuscaMensagemEventoUnico(XmlNode xml)
+        {
+            try
+            {
+                XPathNavigator nav = xml.CreateNavigator();
+                var nsmgr = new XmlNamespaceManager(nav.NameTable);
+                nsmgr.AddNamespace("a", NamespaceRetornoLoteEventos);
+                nsmgr.AddNamespace("b", NamespaceEvtTotal);
+
+                return xml.SelectSingleNode("//a:retornoLoteEventos/a:status/a:dadosRegistroOcorrenciaLote/a:ocorrencias/a:descricao", nsmgr).InnerText;
+            }
+            catch (Exception ex)
+            {
+                SalvarArquivoRetorno(xml);
+                throw new Exception("Erro no BuscaMensagemEvento()");
             }
         }
 
@@ -310,7 +359,7 @@ namespace Intech.EfdReinf.Transmissor.Controles
                 nsmgr.AddNamespace("a", NamespaceRetornoLoteEventos);
                 nsmgr.AddNamespace("b", NamespaceEvtTotal);
 
-                return xml.SelectSingleNode(".//b:Reinf/b:retornoEvento/b:dadosReciboEntrega/b:numeroRecibo", nsmgr).InnerText;
+                return xml.SelectSingleNode(".//b:Reinf/b:evtTotal/b:infoTotal/b:nrRecArqBase", nsmgr).InnerText;
             }
             catch (Exception ex)
             {
@@ -395,7 +444,7 @@ namespace Intech.EfdReinf.Transmissor.Controles
         /// </summary>
         /// <param name="mensagem"></param>
         private void AdicionarLog(string mensagem) => 
-            TextBoxLog.Text = TextBoxLog.Text + mensagem + "\r\n";
+            TextBoxLog.Text = TextBoxLog.Text + mensagem + "\r\n\r\n";
 
         /// <summary>
         /// Encripta o XML para envio

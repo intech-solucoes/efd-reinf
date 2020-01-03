@@ -37,15 +37,83 @@ namespace Intech.EfdReinf.API.Controllers
 
                 var datasFiltradas = from data in datas
                                      group data by data.Year into g
-                                     select new
+                                     select new AnoR2010
                                      {
                                          Ano = g.Key,
-                                         Meses = from mes in g
+                                         Meses = (from mes in g
                                                  group mes by mes.Month into g2
-                                                 select g2.Key
+                                                 select new MesR2010
+                                                 {
+                                                     Ano = g.Key,
+                                                     Mes = g2.Key
+                                                 }).ToList()
                                      };
 
                 return Json(datasFiltradas);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("datasProcessadasEnviadas/{oidContribuinte}")]
+        [Authorize("Bearer")]
+        public IActionResult BuscarDatasProcessadasEnviadas(decimal oidContribuinte)
+        {
+            try
+            {
+                var datas = new R2010Proxy().BuscarDatasProcessadasOuEnviadas(oidContribuinte).ToList();
+
+                var datasFiltradas = from data in datas
+                                     group data by data.Year into g
+                                     select new AnoR2010
+                                     {
+                                         Ano = g.Key,
+                                         Meses = (from mes in g
+                                                  group mes by mes.Month into g2
+                                                  select new MesR2010
+                                                  {
+                                                      Ano = g.Key,
+                                                      Mes = g2.Key
+                                                  }).ToList()
+                                     };
+
+                return Json(datasFiltradas);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("prestadores/{oidContribuinte}")]
+        [Authorize("Bearer")]
+        public IActionResult BuscarPrestadores(decimal oidContribuinte)
+        {
+            try
+            {
+                var prestadores = new R2010Proxy().BuscarPrestadores(oidContribuinte);
+
+                return Json(prestadores);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("atualizarR2010/{oidR2010}/{numRecibo}")]
+        public IActionResult AtualizarR2010(decimal oidR2010, string numRecibo)
+        {
+            try
+            {
+                var r2010Proxy = new R2010Proxy();
+                var r2010 = r2010Proxy.BuscarPorChave(oidR2010);
+
+                new R2010Proxy().UpdateReciboPorOidArquivoUploadCNPJPrestador(numRecibo, r2010.OID_ARQUIVO_UPLOAD, r2010.COD_CNPJ_PRESTADOR);
+
+                return Ok();
             }
             catch (Exception ex)
             {

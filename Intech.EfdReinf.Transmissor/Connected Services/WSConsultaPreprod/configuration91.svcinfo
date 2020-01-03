@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="ObQ/a4pXpTn8NI1SkrFfeFKpQA0=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="R84o+k7kQK2sKBYMwGqoZYWy2l8=">
   <bindingConfigurations>
     <bindingConfiguration bindingType="basicHttpBinding" name="BasicHttpBinding_ConsultasReinf">
       <properties>
@@ -221,10 +221,10 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="BasicHttpBinding_ConsultasReinf" contract="WSConsultaPreprod.ConsultasReinf" bindingType="basicHttpBinding" address="https://preprodefdreinf.receita.fazenda.gov.br/WsREINF/ConsultasReinf.svc" bindingConfiguration="BasicHttpBinding_ConsultasReinf">
+    <endpoint name="BasicHttpBinding_ConsultasReinf2" contract="WSConsultaPreprod.ConsultasReinf" bindingType="basicHttpBinding" address="https://preprodefdreinf.receita.fazenda.gov.br/WsREINFConsultas/ConsultasReinf.svc" bindingConfiguration="BasicHttpBinding_ConsultasReinf">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>https://preprodefdreinf.receita.fazenda.gov.br/WsREINF/ConsultasReinf.svc</serializedValue>
+          <serializedValue>https://preprodefdreinf.receita.fazenda.gov.br/WsREINFConsultas/ConsultasReinf.svc</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />
@@ -296,7 +296,7 @@
           <serializedValue>False</serializedValue>
         </property>
         <property path="/name" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>BasicHttpBinding_ConsultasReinf</serializedValue>
+          <serializedValue>BasicHttpBinding_ConsultasReinf2</serializedValue>
         </property>
         <property path="/kind" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />

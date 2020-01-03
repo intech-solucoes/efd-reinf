@@ -1,9 +1,9 @@
 #region Usings
 using Intech.EfdReinf.Dados.DAO;
 using Intech.EfdReinf.Entidades;
-using Intech.Lib.Data.Erros;
+using Intech.Lib.Dapper.Erros;
 using Intech.Lib.Dominios;
-using Intech.Lib.Util.Email;
+using Intech.Lib.Email;
 using Intech.Lib.Util.Validacoes;
 using Intech.Lib.Web;
 using System;
@@ -26,10 +26,10 @@ namespace Intech.EfdReinf.Negocio.Proxy
         }
 
         /// <summary>
-        /// Busca todos os contribuintes do usuário.
-        /// Aplica máscara do CNPJ ao retornar.
+        /// Busca todos os contribuintes do usuï¿½rio.
+        /// Aplica mï¿½scara do CNPJ ao retornar.
         /// </summary>
-        /// <param name="OID_USUARIO">OID do usuário.</param>
+        /// <param name="OID_USUARIO">OID do usuï¿½rio.</param>
         /// <returns></returns>
         public override IEnumerable<ContribuinteEntidade> BuscarPorOidUsuario(decimal OID_USUARIO)
         {
@@ -72,16 +72,16 @@ namespace Intech.EfdReinf.Negocio.Proxy
             var proxyContribuinte = new ContribuinteProxy();
             var proxyUsuarioContribuinte = new UsuarioContribuinteProxy();
 
-            // Valida se usuário possui um contribuinte com o mesmo CNPJ cadastrado
+            // Valida se usuï¿½rio possui um contribuinte com o mesmo CNPJ cadastrado
             var contribuinteExistente = proxyContribuinte.BuscarPorCpfCnpjOidUsuario(contribuinte.COD_CNPJ_CPF, oidUsuario);
 
             if (contribuinteExistente != null)
-                throw new Exception("Já existe um contribuinte com esse CNPJ vinculado ao usuário logado.");
+                throw new Exception("Jï¿½ existe um contribuinte com esse CNPJ vinculado ao usuï¿½rio logado.");
 
             contribuinteExistente = proxyContribuinte.BuscarPorCpfCnpj(contribuinte.COD_CNPJ_CPF);
 
             if (contribuinteExistente != null)
-                throw new Exception("Já existe um contribuinte com esse CNPJ vinculado a outro usuário. Favor entrar em contato com a Intech.");
+                throw new Exception("Jï¿½ existe um contribuinte com esse CNPJ vinculado a outro usuï¿½rio. Favor entrar em contato com a Intech.");
 
             var oidContribuinte = base.Inserir(contribuinte);
 
@@ -95,42 +95,42 @@ namespace Intech.EfdReinf.Negocio.Proxy
             var config = AppSettings.Get();
             var usuario = new UsuarioProxy().BuscarPorChave(oidUsuario);
 
-            var textoEmail = $"EFD-Reinf: Um novo contribuinte foi cadastrado pelo usuário {usuario.NOM_USUARIO}: {contribuinte.NOM_RAZAO_SOCIAL}.";
+            var textoEmail = $"EFD-Reinf: Um novo contribuinte foi cadastrado pelo usuï¿½rio {usuario.NOM_USUARIO}: {contribuinte.NOM_RAZAO_SOCIAL}.";
 
-            EnvioEmail.EnviarMailKit(config.Email, config.EmailsCadastroContribuintes, $"[EFD-Reinf] - Novo Contribuinte", textoEmail);
+            EnvioEmail.Enviar(config.Email, config.EmailsCadastroContribuintes, $"[EFD-Reinf] - Novo Contribuinte", textoEmail);
 
             return oidContribuinte;
         }
 
         private void Validar(ref ContribuinteEntidade contribuinte)
         {
-            // Validações pessoa jurídica
+            // Validaï¿½ï¿½es pessoa jurï¿½dica
             if (contribuinte.IND_TIPO_INSCRICAO == DMN_TIPO_INSCRICAO_EFD.PESSOA_JURIDICA)
             {
                 if (!Validador.ValidarCNPJ(contribuinte.COD_CNPJ_CPF))
-                    throw new Exception("CNPJ inválido.");
+                    throw new Exception("CNPJ invï¿½lido.");
             }
 
-            // Validações pessoa física
+            // Validaï¿½ï¿½es pessoa fï¿½sica
             else if (contribuinte.IND_TIPO_INSCRICAO == DMN_TIPO_INSCRICAO_EFD.PESSOA_FISICA)
             {
                 if (!Validador.ValidarCPF(contribuinte.COD_CNPJ_CPF))
-                    throw new Exception("CPF inválido.");
+                    throw new Exception("CPF invï¿½lido.");
 
                 if (contribuinte.IND_CLASSIF_TRIBUT != "21" || contribuinte.IND_CLASSIF_TRIBUT != "22")
-                    throw new Exception("Os códigos [21] \"Pessoa Física, exceto Segurado Especial\" e [22] \"Segurado Especial\" " +
-                        "somente podem ser utilizados se o \"Tipo de Inscrição\" for igual a \"PESSOA FÍSICA\". Para os demais códigos, " +
-                        "o \"Tipo de Inscrição\" deve ser igual a \"PESSOA JURÍDICA.\"");
+                    throw new Exception("Os cï¿½digos [21] \"Pessoa Fï¿½sica, exceto Segurado Especial\" e [22] \"Segurado Especial\" " +
+                        "somente podem ser utilizados se o \"Tipo de Inscriï¿½ï¿½o\" for igual a \"PESSOA Fï¿½SICA\". Para os demais cï¿½digos, " +
+                        "o \"Tipo de Inscriï¿½ï¿½o\" deve ser igual a \"PESSOA JURï¿½DICA.\"");
             }
 
             if (!string.IsNullOrEmpty(contribuinte.TXT_EMAIL_CONTATO) && !Validador.ValidarEmail(contribuinte.TXT_EMAIL_CONTATO))
-                throw new Exception("E-mail inválido.");
+                throw new Exception("E-mail invï¿½lido.");
 
             if (contribuinte.IND_EFR == DMN_EFR_EFD.SIM && string.IsNullOrEmpty(contribuinte.COD_CNPJ_EFR))
-                throw new Exception("CNPJ do Ente Federativo Responsável - EFR é obrigatório e exclusivo se EFR = Sim. Informação validada no cadastro do CNPJ da RFB.");
+                throw new Exception("CNPJ do Ente Federativo Responsï¿½vel - EFR ï¿½ obrigatï¿½rio e exclusivo se EFR = Sim. Informaï¿½ï¿½o validada no cadastro do CNPJ da RFB.");
 
             if (contribuinte.DTA_FIM_VALIDADE != null && contribuinte.DTA_INICIO_VALIDADE > contribuinte.DTA_FIM_VALIDADE)
-                throw new Exception("A data de Término Validade deve ser maior que a data de Início Validade");
+                throw new Exception("A data de Tï¿½rmino Validade deve ser maior que a data de Inï¿½cio Validade");
 
             contribuinte.COD_CNPJ_EFR = contribuinte.COD_CNPJ_EFR.LimparMascara();
             contribuinte.COD_CNPJ_CPF = contribuinte.COD_CNPJ_CPF.LimparMascara();

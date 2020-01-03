@@ -12,14 +12,19 @@
         <EmbeddedResource Include="Relatorios\RelatorioCriticasImportacao.repx" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Dapper.Contrib" Version="1.50.5" />
         <PackageReference Include="DevExpress.Reporting.Core" Version="18.1.10" />
-        <PackageReference Include="MailKit" Version="2.0.6" />
+        <PackageReference Include="Intech.Lib.Dapper" Version="1.1.1" />
+        <PackageReference Include="Intech.Lib.Email" Version="1.1.1" />
+        <PackageReference Include="Intech.Lib.JWT" Version="1.1.2" />
+        <PackageReference Include="Intech.Lib.Util" Version="1.1.1" />
         <PackageReference Include="Microsoft.AspNetCore.App" />
-        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.9" />
-        <PackageReference Include="Oracle.ManagedDataAccess" Version="18.3.0" />
-        <PackageReference Include="Scriban" Version="1.2.7" />
-        <PackageReference Include="SharpZipLib" Version="1.0.0" />
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.0" />
+        <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="2.19.60" />
+        <PackageReference Include="Scriban" Version="2.1.1" />
+        <PackageReference Include="SharpZipLib" Version="1.2.0" />
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\..\Intech.Lib\Intech.Lib.Dominios\Intech.Lib.Dominios.csproj" />
     </ItemGroup>
     <ItemGroup>
         <None Update="TemplatesXml\R1000.liquid">
@@ -38,13 +43,7 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
     </ItemGroup>
-    <Import Project="..\..\lib\dotnet-lib\Intech.Lib.Dapper\Intech.Lib.Dapper.projitems" Label="Shared" />
-    <Import Project="..\..\lib\dotnet-lib\Intech.Lib.Data\Intech.Lib.Data.projitems" Label="Shared" />
-    <Import Project="..\..\lib\dotnet-lib\Intech.Lib.Util\Intech.Lib.Util.projitems" Label="Shared" />
-    <Import Project="..\..\lib\dotnet-lib\Intech.Lib.Web\Intech.Lib.Web.projitems" Label="Shared" />
     <Import Project="..\Intech.EfdReinf.Negocio\Intech.EfdReinf.Negocio.projitems" Label="Shared" />
     <Import Project="..\Intech.EfdReinf.Entidades\Intech.EfdReinf.Entidades.projitems" Label="Shared" />
     <Import Project="..\Intech.EfdReinf.Dados\Intech.EfdReinf.Dados.projitems" Label="Shared" />
-    <Import Project="..\..\lib\dotnet-lib\Intech.Lib.Dominios\Intech.Lib.Dominios.projitems" Label="Shared" />
-    <Import Project="..\..\lib\dotnet-lib\Intech.Lib.Relatorios\Intech.Lib.Relatorios.projitems" Label="Shared" />
 </Project>

@@ -44,7 +44,6 @@ const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
         package.version = newVersion;
 
         await filesystem.writeAsync("./package.json", JSON.stringify(package, null, 4));
-
         await sleep(300);
     }
 

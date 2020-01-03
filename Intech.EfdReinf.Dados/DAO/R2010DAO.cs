@@ -30,6 +30,23 @@ namespace Intech.EfdReinf.Dados.DAO
 			}
 		}
 
+		public virtual IEnumerable<DateTime> BuscarDatasProcessadasOuEnviadas(decimal OID_CONTRIBUINTE)
+		{
+			try
+			{
+				if(AppSettings.IS_SQL_SERVER_PROVIDER)
+					return Conexao.Query<DateTime>("SELECT DTA_APURACAO  FROM EFD_R2010  WHERE OID_CONTRIBUINTE = @OID_CONTRIBUINTE    AND (IND_SITUACAO_PROCESSAMENTO = 'PRO' OR IND_SITUACAO_PROCESSAMENTO = 'ENV')  ORDER BY DTA_APURACAO", new { OID_CONTRIBUINTE });
+				else if(AppSettings.IS_ORACLE_PROVIDER)
+					return Conexao.Query<DateTime>("SELECT DTA_APURACAO FROM EFD_R2010 WHERE OID_CONTRIBUINTE=:OID_CONTRIBUINTE AND (IND_SITUACAO_PROCESSAMENTO='PRO' OR IND_SITUACAO_PROCESSAMENTO='ENV') ORDER BY DTA_APURACAO", new { OID_CONTRIBUINTE });
+				else
+					throw new Exception("Provider não suportado!");
+			}
+			finally
+			{
+				Conexao.Close();
+			}
+		}
+
 		public virtual IEnumerable<R2010Entidade> BuscarPorOidContribuinte(decimal OID_CONTRIBUINTE)
 		{
 			try
@@ -81,6 +98,23 @@ namespace Intech.EfdReinf.Dados.DAO
 			}
 		}
 
+		public virtual IEnumerable<string> BuscarPrestadores(decimal OID_CONTRIBUINTE)
+		{
+			try
+			{
+				if(AppSettings.IS_SQL_SERVER_PROVIDER)
+					return Conexao.Query<string>("SELECT DISTINCT COD_CNPJ_PRESTADOR    FROM EFD_R2010   WHERE OID_CONTRIBUINTE = @OID_CONTRIBUINTE", new { OID_CONTRIBUINTE });
+				else if(AppSettings.IS_ORACLE_PROVIDER)
+					return Conexao.Query<string>("SELECT DISTINCT COD_CNPJ_PRESTADOR FROM EFD_R2010 WHERE OID_CONTRIBUINTE=:OID_CONTRIBUINTE", new { OID_CONTRIBUINTE });
+				else
+					throw new Exception("Provider não suportado!");
+			}
+			finally
+			{
+				Conexao.Close();
+			}
+		}
+
 		public virtual R2010Entidade ExcluirPorOidContribuinteDtaApuracao(decimal OID_CONTRIBUINTE, DateTime DTA_APURACAO)
 		{
 			try
@@ -89,6 +123,23 @@ namespace Intech.EfdReinf.Dados.DAO
 					return Conexao.QuerySingleOrDefault<R2010Entidade>("DELETE  FROM EFD_R2010  WHERE EFD_R2010.OID_CONTRIBUINTE = @OID_CONTRIBUINTE    AND EFD_R2010.DTA_APURACAO = @DTA_APURACAO    AND EFD_R2010.IND_SITUACAO_PROCESSAMENTO IN('IMP', 'PRO')", new { OID_CONTRIBUINTE, DTA_APURACAO });
 				else if(AppSettings.IS_ORACLE_PROVIDER)
 					return Conexao.QuerySingleOrDefault<R2010Entidade>("DELETE FROM EFD_R2010 WHERE EFD_R2010.OID_CONTRIBUINTE=:OID_CONTRIBUINTE AND EFD_R2010.DTA_APURACAO=:DTA_APURACAO AND EFD_R2010.IND_SITUACAO_PROCESSAMENTO IN ('IMP', 'PRO')", new { OID_CONTRIBUINTE, DTA_APURACAO });
+				else
+					throw new Exception("Provider não suportado!");
+			}
+			finally
+			{
+				Conexao.Close();
+			}
+		}
+
+		public virtual void UpdateReciboPorOidArquivoUploadCNPJPrestador(string NUM_RECIBO_ENVIO, decimal OID_ARQUIVO_UPLOAD, string CNPJ)
+		{
+			try
+			{
+				if(AppSettings.IS_SQL_SERVER_PROVIDER)
+					Conexao.Execute("UPDATE EFD_R2010  SET NUM_RECIBO_ENVIO = @NUM_RECIBO_ENVIO,      IND_SITUACAO_PROCESSAMENTO = 'ENV'  WHERE OID_ARQUIVO_UPLOAD = @OID_ARQUIVO_UPLOAD    AND COD_CNPJ_PRESTADOR = @CNPJ", new { NUM_RECIBO_ENVIO, OID_ARQUIVO_UPLOAD, CNPJ });
+				else if(AppSettings.IS_ORACLE_PROVIDER)
+					Conexao.Execute("UPDATE EFD_R2010 SET NUM_RECIBO_ENVIO=:NUM_RECIBO_ENVIO, IND_SITUACAO_PROCESSAMENTO='ENV' WHERE OID_ARQUIVO_UPLOAD=:OID_ARQUIVO_UPLOAD AND COD_CNPJ_PRESTADOR=:CNPJ", new { NUM_RECIBO_ENVIO, OID_ARQUIVO_UPLOAD, CNPJ });
 				else
 					throw new Exception("Provider não suportado!");
 			}

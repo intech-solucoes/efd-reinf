@@ -1,8 +1,8 @@
 ﻿#region Usings
+using Intech.EfdReinf.API.Relatorios;
 using Intech.EfdReinf.Entidades;
 using Intech.EfdReinf.Negocio.Proxy;
 using Intech.Lib.Dominios;
-using Intech.Lib.Relatorios;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -128,7 +128,7 @@ namespace Intech.EfdReinf.API.Controllers
             }
         }
 
-        [HttpDelete("{oidArquivoUpload}")]
+        [HttpGet("[action]/{oidArquivoUpload}")]
         [Authorize("Bearer")]
         public IActionResult Deletar(decimal oidArquivoUpload)
         {

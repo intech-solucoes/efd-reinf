@@ -3,7 +3,7 @@ using Intech.EfdReinf.Entidades;
 using Intech.EfdReinf.Negocio.Proxy;
 using Intech.Lib.Dominios;
 using Intech.Lib.Web;
-using Intech.Lib.Web.JWT;
+using Intech.Lib.JWT;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -48,14 +48,7 @@ namespace Intech.EfdReinf.API.Controllers
 
                 var token = AuthenticationToken.Generate(signingConfigurations, tokenConfigurations, usuario.OID_USUARIO.ToString(), claims);
 
-                return Json(new
-                {
-                    token.AccessToken,
-                    token.Authenticated,
-                    token.Created,
-                    token.Expiration,
-                    token.Message
-                });
+                return Json(token);
             }
             catch (Exception ex)
             {
@@ -190,17 +183,5 @@ namespace Intech.EfdReinf.API.Controllers
         }
 
         #endregion
-    }
-
-    public class UsuarioLogin
-    {
-        public string Email { get; set; }
-        public string Senha { get; set; }
-    }
-
-    public class SenhaLogin
-    {
-        public string SenhaAtual { get; set; }
-        public string SenhaNova { get; set; }
     }
 }

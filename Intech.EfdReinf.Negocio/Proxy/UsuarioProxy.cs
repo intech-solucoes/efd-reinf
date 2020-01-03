@@ -1,9 +1,9 @@
 #region Usings
 using Intech.EfdReinf.Dados.DAO;
 using Intech.EfdReinf.Entidades;
-using Intech.Lib.Data.Erros;
+using Intech.Lib.Dapper.Erros;
 using Intech.Lib.Dominios;
-using Intech.Lib.Util.Email;
+using Intech.Lib.Email;
 using Intech.Lib.Util.Seguranca;
 using Intech.Lib.Util.Validacoes;
 using Intech.Lib.Web;
@@ -27,13 +27,13 @@ namespace Intech.EfdReinf.Negocio.Proxy
             if (usuario == null)
                 throw new Exception("E-mail não cadastrado.");
 
-            if (usuario.IND_EMAIL_VERIFICADO == DMN_SN.NAO)
+            if (usuario.IND_EMAIL_VERIFICADO == DMN_SIM_NAO.NAO)
                 throw new Exception("IND_EMAIL_VERIFICADO");
 
-            if (usuario.IND_ATIVO == DMN_SN.NAO)
+            if (usuario.IND_ATIVO == DMN_SIM_NAO.NAO)
                 throw new Exception("O E-mail cadastrado não está ativo. Favor entrar em contato com a Intech.");
 
-            if(usuario.IND_BLOQUEADO == DMN_SN.SIM)
+            if(usuario.IND_BLOQUEADO == DMN_SIM_NAO.SIM)
                 throw new Exception("O E-mail cadastrado está bloqueado. Favor entrar em contato com a Intech.");
             
             var senhaEncriptada = Criptografia.Encriptar(senhaSemCriptografia);
@@ -44,7 +44,7 @@ namespace Intech.EfdReinf.Negocio.Proxy
 
                 if (usuario.NUM_TENTATIVA >= 5)
                 {
-                    usuario.IND_BLOQUEADO = DMN_SN.SIM;
+                    usuario.IND_BLOQUEADO = DMN_SIM_NAO.SIM;
                     base.Atualizar(usuario);
                     throw new Exception("Número de tentativas de acesso esgotado. O usuário está bloqueado. Favor entrar em contato com a Intech");
                 }
@@ -151,7 +151,7 @@ namespace Intech.EfdReinf.Negocio.Proxy
             var textoEmail = $"<h2>Bem-Vindo ao Intech EFD-Reinf</h2>" +
                 $"Para confirmar seu cadastro, clique no link a seguir: <a href=\"{config.PublicacaoAPI}/usuario/confirmarEmail/{usuario.TXT_TOKEN}\">Confirmar e-mail</a>";
 
-            EnvioEmail.EnviarMailKit(config.Email, usuario.TXT_EMAIL, $"EFD-Reinf - Confirmação de Cadastro", textoEmail);
+            EnvioEmail.Enviar(config.Email, usuario.TXT_EMAIL, $"EFD-Reinf - Confirmação de Cadastro", textoEmail);
         }
         
         /// <summary>
@@ -182,7 +182,7 @@ namespace Intech.EfdReinf.Negocio.Proxy
             var textoEmail = $"<h2>Bem-Vindo ao Intech EFD-Reinf</h2>" +
                 $"A sua nova senha é {novaSenha}";
 
-            EnvioEmail.EnviarMailKit(config.Email, usuario.TXT_EMAIL, $"EFD-Reinf - Recuperação de Senha", textoEmail);
+            EnvioEmail.Enviar(config.Email, usuario.TXT_EMAIL, $"EFD-Reinf - Recuperação de Senha", textoEmail);
         }
 
         /// <summary>

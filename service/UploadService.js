@@ -18,7 +18,7 @@ class Upload extends BaseService {
     }
 
     Deletar(oidArquivoUpload) {
-        return this.CriarRequisicao("DELETE", `/upload/${oidArquivoUpload}`);
+        return this.CriarRequisicao("GET", `/upload/deletar/${oidArquivoUpload}`);
     }
 }
 

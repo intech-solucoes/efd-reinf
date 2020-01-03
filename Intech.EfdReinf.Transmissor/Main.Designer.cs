@@ -33,14 +33,12 @@ namespace Intech.EfdReinf.Transmissor
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.label1 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.home1 = new Intech.EfdReinf.Transmissor.Controles.Home();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.ButtonInicio = new System.Windows.Forms.Button();
             this.ButtonTransmitir = new System.Windows.Forms.Button();
             this.ButtonConsultar = new System.Windows.Forms.Button();
             this.ButtonUtilitarios = new System.Windows.Forms.Button();
             this.LabelVersao = new System.Windows.Forms.Label();
-            this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -55,18 +53,10 @@ namespace Intech.EfdReinf.Transmissor
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.home1);
             this.panel1.Location = new System.Drawing.Point(131, 70);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(657, 280);
             this.panel1.TabIndex = 1;
-            // 
-            // home1
-            // 
-            this.home1.Location = new System.Drawing.Point(4, 4);
-            this.home1.Name = "home1";
-            this.home1.Size = new System.Drawing.Size(650, 273);
-            this.home1.TabIndex = 0;
             // 
             // pictureBox1
             // 
@@ -146,7 +136,8 @@ namespace Intech.EfdReinf.Transmissor
             this.Name = "Main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Intech Transmissor EFD-Reinf";
-            this.panel1.ResumeLayout(false);
+            this.TopMost = true;
+            this.Load += new System.EventHandler(this.Main_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -162,7 +153,6 @@ namespace Intech.EfdReinf.Transmissor
         private System.Windows.Forms.Button ButtonTransmitir;
         private System.Windows.Forms.Button ButtonConsultar;
         private System.Windows.Forms.Button ButtonUtilitarios;
-        private Home home1;
         private System.Windows.Forms.Label LabelVersao;
     }
 }
